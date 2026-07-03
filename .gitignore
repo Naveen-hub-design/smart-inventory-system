@@ -16,3 +16,4 @@ server/logs/*
 *.log
 .vscode/
 .idea/
+server/instance/*.db
