@@ -1,0 +1,1236 @@
+id,sale_id,product_id,product_name,size,color,quantity,unit_price,discount,total_price
+1,1,185,Elegant Duffle Bag,34,Red,7,4657.74,31.44,32572.74
+2,1,166,Sporty Night Suit,XXL,Coral,6,9498.99,16.33,56977.62
+3,1,195,Slim Fit Blazer,40,Brown,1,2677.86,16.2,2661.66
+4,2,131,Modern Gloves,32,Coral,1,2301.01,35.68,2265.33
+5,3,17,Sporty Windcheater,S,Charcoal,2,5851.62,5.11,11698.13
+6,3,42,Modern Salwar Suit,32,Teal,4,2896.7,18.02,11568.79
+7,3,92,Comfort Bathrobe,32,Beige,6,1421.33,17.18,8510.79
+8,3,18,Premium Casual Shirt,28,Burgundy,8,5683.19,3.11,45462.43
+9,4,165,Elegant Stole,28,Charcoal,7,7362.15,27.4,51507.63
+10,4,23,Luxury Beret,XL,Khaki,4,3494.9,5.76,13973.86
+11,4,67,Basic Joggers,XL,Cream,4,1598.8,32.24,6362.96
+12,4,143,Casual Tie,M,Lavender,1,8008.88,42.14,7966.74
+13,5,123,Traditional Shawl,XL,Cream,1,4699.89,37.93,4661.96
+14,5,40,Regular Fit Casual Shirt,S,Mustard,3,3718.48,16.15,11139.29
+15,6,5,Slim Fit Stole,XL,Charcoal,9,6300.11,24.61,56676.37
+16,6,172,Slim Fit Tank Top,30,Navy Blue,7,4174.33,2.01,29218.29
+17,6,151,Traditional Chinos,32,Burgundy,1,2096.24,29.14,2067.1
+18,6,2,Trendy Stole,38,Beige,6,6345.56,29.08,38044.25
+19,7,131,Modern Gloves,32,Coral,3,2223.96,7.61,6664.26
+20,7,2,Trendy Stole,38,Beige,10,6070.59,27.81,60678.04
+21,7,131,Modern Gloves,32,Coral,7,2167.79,10.08,15164.46
+22,8,86,Contemporary Bomber Jacket,38,Coral,4,3020.27,13.02,12068.06
+23,8,31,Traditional Hat,32,Lavender,5,1102.11,22.28,5488.27
+24,8,167,Modern Tote Bag,28,Grey,9,7678.89,10.23,69099.79
+25,9,11,Sporty Muffler,28,Coral,7,9089.2,37.14,63587.27
+26,10,52,Comfort Tote Bag,M,White,10,8359.83,14.93,83583.41
+27,10,177,Formal Rain Jacket,S,Sky Blue,4,4443.66,40.89,17733.77
+28,11,119,Designer Joggers,XL,Black,1,11118.53,11.49,11107.04
+29,11,65,Ethnic Formal Shirt,M,Charcoal,4,4118.36,15.5,16457.95
+30,11,56,Modern Down Jacket,S,Peach,3,3756.59,10.32,11259.45
+31,12,185,Elegant Duffle Bag,34,Red,6,4612.75,19.54,27656.97
+32,12,193,Comfort Lehenga,XL,Sky Blue,3,6861.31,24.01,20559.91
+33,12,153,Traditional Shorts,XXL,Grey,5,1448.71,33.35,7210.2
+34,12,64,Sporty Windcheater,XS,Dark Green,2,423.24,44.22,802.25
+35,13,159,Traditional Waistcoat,40,Charcoal,1,3985.85,47.34,3938.51
+36,14,78,Contemporary Leather Jacket,XXL,Sky Blue,8,1284.34,28.41,10246.27
+37,15,25,Traditional Polo Shirt,36,Beige,1,2058.03,32.29,2025.74
+38,15,109,Trendy Crop Top,40,Dark Green,6,4228.53,20.87,25350.3
+39,16,77,Casual Salwar Suit,M,Mustard,1,8569.36,15.1,8554.26
+40,17,117,Luxury Leather Jacket,M,Teal,4,2145.4,31.84,8549.77
+41,17,175,Sporty Tank Top,40,Dark Green,1,2067.2,46.6,2020.6
+42,17,45,Casual Salwar Suit,L,Sky Blue,1,1359.51,36.24,1323.27
+43,18,149,Regular Fit Anarkali Dress,XXL,Charcoal,9,4265.35,1.13,38386.98
+44,18,145,Modern Kaftan,30,Coral,8,5984.03,34.59,47837.68
+45,18,56,Modern Down Jacket,S,Peach,2,3580.26,18.87,7141.66
+46,18,10,Luxury Hoodie,XS,White,8,6761.49,23.29,54068.63
+47,19,4,Urban Beanie,XL,Sky Blue,10,1833.39,32.83,18301.03
+48,19,198,Modern Tie,XL,Navy Blue,5,7442.96,35.94,37178.86
+49,20,69,Contemporary Track Pants,L,Dark Green,1,5129.57,48.16,5081.41
+50,20,49,Casual Sling Bag,M,Beige,4,7419.28,40.52,29636.59
+51,21,145,Modern Kaftan,30,Coral,7,6311.29,35.15,44143.9
+52,22,184,Elegant Hat,36,Navy Blue,1,3792.52,4.42,3788.1
+53,22,95,Slim Fit Crop Top,38,Cream,8,4968.94,27.23,39724.27
+54,23,169,Basic Night Suit,28,Grey,6,7159.54,27.04,42930.21
+55,23,83,Urban Hoodie,S,Teal,6,6431.16,29.01,38557.97
+56,23,96,Designer Bathrobe,40,Brown,8,2099.99,38.37,16761.57
+57,24,173,Regular Fit Skirt,36,Dark Green,8,3451.86,20.39,27594.48
+58,24,111,Traditional Tank Top,28,Sky Blue,2,3402.06,44.24,6759.88
+59,25,92,Comfort Bathrobe,32,Beige,8,1479.18,26.96,11806.46
+60,25,175,Sporty Tank Top,40,Dark Green,3,2069.18,17.17,6190.37
+61,25,161,Elegant Anarkali Dress,30,Red,3,2449.65,27.01,7321.94
+62,26,147,Comfort Tote Bag,S,Black,3,2681.15,39.61,8003.84
+63,26,178,Essential Belt,28,Olive,7,8548.35,20.95,59817.47
+64,27,129,Modern Top,28,Lavender,9,500.56,5.19,4499.89
+65,28,66,Comfort Shawl,L,Red,9,6823.2,8.24,61400.6
+66,29,176,Trendy Duffle Bag,36,Brown,6,4826.63,16.27,28943.53
+67,29,96,Designer Bathrobe,40,Brown,9,2090.19,26.16,18785.58
+68,30,57,Sporty Tote Bag,XXL,Sky Blue,10,7941.68,20.4,79396.35
+69,30,193,Comfort Lehenga,XL,Sky Blue,2,6380.64,32.2,12729.08
+70,30,40,Regular Fit Casual Shirt,S,Mustard,4,3802.87,44.66,15166.83
+71,30,130,Comfort Vest,32,White,2,2613.47,45.79,5181.15
+72,31,62,Trendy Lehenga,S,Mustard,7,3080.06,10.46,21549.99
+73,31,164,Classic Nehru Jacket,38,Dark Green,2,1442.17,9.55,2874.79
+74,31,5,Slim Fit Stole,XL,Charcoal,1,5997.05,10.35,5986.7
+75,32,18,Premium Casual Shirt,28,Burgundy,5,5714.65,5.95,28567.32
+76,33,170,Elegant Blazer,36,Maroon,7,3111.93,29.88,21753.66
+77,33,88,Essential Trousers,XS,Coral,7,1844.04,15.19,12893.07
+78,33,159,Traditional Waistcoat,40,Charcoal,10,4011.08,31.76,40079.05
+79,34,174,Regular Fit Crop Top,36,Charcoal,8,808.48,25.0,6442.82
+80,35,8,Essential Cotton T-Shirt,32,Red,5,4132.96,43.06,20621.76
+81,35,99,Regular Fit Suspenders,30,Beige,9,6751.64,21.14,60743.59
+82,35,151,Traditional Chinos,32,Burgundy,10,2249.16,47.46,22444.13
+83,36,7,Comfort Sling Bag,30,Navy Blue,7,5405.84,24.37,37816.51
+84,36,23,Luxury Beret,XL,Khaki,8,3422.28,4.6,27373.64
+85,36,63,Basic Formal Shirt,34,Burgundy,2,6916.08,37.45,13794.72
+86,36,62,Trendy Lehenga,S,Mustard,10,3305.58,1.72,33054.11
+87,37,142,Essential Lehenga,38,Cream,8,2609.94,20.53,20859.02
+88,37,3,Ethnic Anarkali Dress,XL,Brown,3,9810.07,33.76,29396.44
+89,37,8,Essential Cotton T-Shirt,32,Red,9,4023.81,25.1,36189.18
+90,38,71,Regular Fit Lehenga,30,Charcoal,10,1664.15,46.25,16595.23
+91,38,168,Regular Fit Vest,40,Mustard,1,707.69,5.88,701.81
+92,38,133,Contemporary Beanie,XS,Red,8,1628.43,22.59,13004.81
+93,38,42,Modern Salwar Suit,32,Teal,1,2959.92,16.57,2943.35
+94,39,176,Trendy Duffle Bag,36,Brown,3,5070.47,3.84,15207.57
+95,40,125,Luxury Cardigan,S,Dark Green,4,2014.2,38.79,8018.03
+96,40,168,Regular Fit Vest,40,Mustard,3,747.41,2.19,2240.03
+97,40,47,Classic Crop Top,36,Sky Blue,4,6401.67,34.15,25572.55
+98,40,127,Luxury Sling Bag,S,Red,4,2617.95,40.42,10431.4
+99,41,26,Regular Fit Vest,S,Dark Green,3,1053.11,37.02,3122.31
+100,42,113,Essential Kaftan,32,Grey,8,1936.71,34.95,15458.73
+101,43,182,Classic Saree,S,Black,9,5261.93,18.41,47338.95
+102,44,108,Premium Beanie,34,Navy Blue,8,4263.44,21.81,34085.72
+103,45,18,Premium Casual Shirt,28,Burgundy,2,5493.77,43.89,10943.66
+104,45,171,Slim Fit Cotton T-Shirt,30,Navy Blue,6,5520.34,25.36,33096.7
+105,45,63,Basic Formal Shirt,34,Burgundy,3,6672.0,8.1,20007.9
+106,45,147,Comfort Tote Bag,S,Black,3,2597.15,22.31,7769.14
+107,46,143,Casual Tie,M,Lavender,5,8385.23,48.54,41877.62
+108,46,169,Basic Night Suit,28,Grey,3,7053.49,5.79,21154.67
+109,46,11,Sporty Muffler,28,Coral,4,8530.95,15.02,34108.8
+110,47,3,Ethnic Anarkali Dress,XL,Brown,6,9264.59,39.4,55548.12
+111,47,29,Trendy Gloves,30,Peach,9,635.03,29.28,5686.0
+112,47,3,Ethnic Anarkali Dress,XL,Brown,5,10103.5,6.85,50510.67
+113,47,63,Basic Formal Shirt,34,Burgundy,8,7169.58,9.43,57347.18
+114,48,123,Traditional Shawl,XL,Cream,8,4789.26,8.62,38305.47
+115,48,142,Essential Lehenga,38,Cream,9,2791.78,3.55,25122.51
+116,48,171,Slim Fit Cotton T-Shirt,30,Navy Blue,3,5743.62,7.27,17223.6
+117,48,195,Slim Fit Blazer,40,Brown,2,2631.78,49.49,5214.08
+118,49,145,Modern Kaftan,30,Coral,3,6105.38,37.67,18278.46
+119,50,58,Comfort Wallet,40,Charcoal,5,6874.0,37.62,34332.39
+120,50,11,Sporty Muffler,28,Coral,6,9066.95,1.38,54400.31
+121,50,172,Slim Fit Tank Top,30,Navy Blue,6,4104.72,30.32,24597.99
+122,51,192,Regular Fit Stole,S,Coral,3,5263.09,47.47,15741.79
+123,51,131,Modern Gloves,32,Coral,7,2282.85,37.77,15942.19
+124,52,62,Trendy Lehenga,S,Mustard,10,3152.37,24.86,31498.88
+125,52,20,Slim Fit Tote Bag,36,Lavender,7,5077.68,20.87,35522.9
+126,53,181,Essential Tie,XL,Burgundy,3,590.93,2.0,1770.79
+127,54,101,Modern Top,M,Dark Green,5,2600.01,40.34,12959.73
+128,54,88,Essential Trousers,XS,Coral,5,1934.8,30.26,9643.72
+129,54,79,Urban Crop Top,M,Mustard,8,1518.63,19.3,12129.78
+130,55,121,Designer Night Suit,40,Cream,6,7272.11,24.48,43608.17
+131,55,88,Essential Trousers,XS,Coral,9,1871.98,31.57,16816.29
+132,56,162,Oversized Scarf,40,Grey,5,7995.25,43.74,39932.52
+133,56,153,Traditional Shorts,XXL,Grey,9,1364.83,46.34,12237.09
+134,56,83,Urban Hoodie,S,Teal,4,6539.87,17.43,26142.06
+135,57,50,Modern Backpack,XL,Charcoal,6,5610.52,20.58,33642.57
+136,57,68,Comfort Muffler,38,Navy Blue,10,9786.27,32.96,97829.74
+137,57,197,Slim Fit Sling Bag,S,Black,10,10242.55,6.96,102418.49
+138,58,49,Casual Sling Bag,M,Beige,6,7436.85,27.65,44593.43
+139,58,53,Premium Blazer,XL,Grey,8,5853.42,8.67,46818.72
+140,58,186,Sporty Skirt,M,White,5,1908.11,10.29,9530.28
+141,59,47,Classic Crop Top,36,Sky Blue,8,6425.61,19.58,51385.34
+142,59,184,Elegant Hat,36,Navy Blue,5,4056.33,22.95,20258.69
+143,59,88,Essential Trousers,XS,Coral,3,1820.4,3.6,5457.59
+144,60,97,Traditional Beanie,M,Burgundy,9,6277.3,0.16,56495.51
+145,61,66,Comfort Shawl,L,Red,8,6675.03,49.54,53350.72
+146,61,150,Modern Saree,40,Red,5,8434.57,21.02,42151.85
+147,62,14,Formal Cardigan,L,Navy Blue,7,6559.87,24.48,45894.64
+148,62,28,Elegant Kaftan,30,Khaki,8,3175.49,15.66,25388.23
+149,62,36,Designer Night Suit,40,Coral,3,7430.55,38.01,22253.65
+150,63,11,Sporty Muffler,28,Coral,2,8600.4,27.42,17173.37
+151,64,33,Basic Belt,S,Burgundy,2,2649.18,34.34,5264.02
+152,64,53,Premium Blazer,XL,Grey,1,6042.53,28.33,6014.2
+153,64,3,Ethnic Anarkali Dress,XL,Brown,2,9548.47,31.22,19065.72
+154,65,73,Modern Sherwani,36,Lavender,7,1163.7,11.02,8134.86
+155,65,155,Regular Fit Lehenga,L,Brown,10,2157.72,46.39,21530.77
+156,65,91,Designer Jeans,XL,Lavender,4,2801.52,27.69,11178.39
+157,66,196,Contemporary Casual Shirt,XL,Maroon,4,10169.12,48.32,40628.14
+158,66,99,Regular Fit Suspenders,30,Beige,4,6594.02,0.87,26375.21
+159,66,42,Modern Salwar Suit,32,Teal,2,3049.44,30.71,6068.16
+160,67,125,Luxury Cardigan,S,Dark Green,2,2034.33,42.27,4026.39
+161,67,57,Sporty Tote Bag,XXL,Sky Blue,4,8033.71,8.28,32126.57
+162,67,45,Casual Salwar Suit,L,Sky Blue,4,1384.4,0.16,5537.46
+163,68,112,Luxury Scarf,L,Grey,10,845.0,42.48,8407.52
+164,68,115,Luxury Leather Jacket,XS,Olive,4,6152.84,42.36,24569.01
+165,68,105,Urban Tote Bag,32,Charcoal,8,987.16,36.96,7860.32
+166,69,158,Luxury Hat,30,Maroon,7,5884.85,38.25,41155.67
+167,69,53,Premium Blazer,XL,Grey,8,5764.78,43.76,46074.51
+168,69,88,Essential Trousers,XS,Coral,6,1774.37,25.38,10620.81
+169,69,100,Premium Beanie,40,Brown,8,2238.38,18.65,17888.35
+170,70,154,Essential Scarf,34,Red,7,3149.01,20.2,22022.86
+171,71,81,Designer Waistcoat,XS,Red,6,1216.28,12.44,7285.22
+172,71,75,Ethnic Sherwani,40,Coral,4,3945.54,43.89,15738.26
+173,72,176,Trendy Duffle Bag,36,Brown,10,4701.96,34.88,46984.73
+174,73,183,Oversized Maxi Dress,38,Beige,1,4878.42,17.26,4861.16
+175,73,98,Classic Cotton T-Shirt,34,Khaki,1,7516.52,36.21,7480.31
+176,73,109,Trendy Crop Top,40,Dark Green,2,4396.84,17.41,8776.27
+177,73,69,Contemporary Track Pants,L,Dark Green,6,5257.05,12.99,31529.32
+178,74,44,Comfort Wallet,36,Peach,4,5849.47,32.25,23365.63
+179,74,154,Essential Scarf,34,Red,9,3369.43,42.3,30282.58
+180,75,94,Elegant Leather Jacket,M,Red,1,2722.72,4.5,2718.22
+181,75,41,Urban Chinos,XXL,Brown,2,3498.27,27.64,6968.91
+182,75,65,Ethnic Formal Shirt,M,Charcoal,2,4124.49,12.76,8236.22
+183,75,39,Essential Night Suit,32,White,5,8276.74,21.79,41361.93
+184,76,59,Classic Tote Bag,XS,Mustard,7,6135.82,26.03,42924.72
+185,76,60,Casual Waistcoat,40,White,2,3206.24,28.63,6383.85
+186,77,74,Ethnic Tie,M,Khaki,9,7928.79,21.16,71337.99
+187,77,43,Ethnic Muffler,XXL,Brown,4,1503.72,48.07,5966.82
+188,78,18,Premium Casual Shirt,28,Burgundy,2,5603.68,39.16,11168.21
+189,79,200,Sporty Joggers,XL,Beige,8,5683.7,18.45,45451.18
+190,80,40,Regular Fit Casual Shirt,S,Mustard,9,3887.39,12.28,34974.27
+191,80,3,Ethnic Anarkali Dress,XL,Brown,6,10077.96,38.32,60429.45
+192,81,129,Modern Top,28,Lavender,9,547.78,19.69,4910.31
+193,82,13,Classic Top,L,Red,8,846.33,6.61,6764.0
+194,82,156,Ethnic Skirt,M,Cream,6,5134.66,13.96,30794.03
+195,83,117,Luxury Leather Jacket,M,Teal,3,2284.16,35.67,6816.81
+196,83,42,Modern Salwar Suit,32,Teal,10,3107.83,3.35,31074.92
+197,84,35,Regular Fit Kurta,M,Beige,1,1365.95,26.44,1339.51
+198,84,126,Designer Muffler,XS,Black,7,383.48,36.31,2648.07
+199,84,135,Essential Blazer,XL,Sky Blue,8,810.56,47.16,6437.29
+200,84,91,Designer Jeans,XL,Lavender,10,2931.86,41.88,29276.68
+201,85,193,Comfort Lehenga,XL,Sky Blue,5,6586.5,20.38,32912.11
+202,85,129,Modern Top,28,Lavender,8,505.23,1.82,4040.01
+203,85,19,Modern Cardigan,34,Coral,10,4026.35,42.1,40221.41
+204,85,30,Casual Duffle Bag,40,Beige,10,2258.11,19.13,22561.97
+205,86,96,Designer Bathrobe,40,Brown,1,1959.28,9.94,1949.34
+206,86,5,Slim Fit Stole,XL,Charcoal,4,6087.21,31.92,24316.94
+207,86,38,Trendy Night Suit,XS,White,8,5745.57,39.53,45925.03
+208,87,167,Modern Tote Bag,28,Grey,5,7385.21,7.12,36918.93
+209,87,59,Classic Tote Bag,XS,Mustard,8,6097.16,19.96,48757.29
+210,88,96,Designer Bathrobe,40,Brown,4,1990.57,20.79,7941.48
+211,88,14,Formal Cardigan,L,Navy Blue,4,6777.63,44.85,27065.69
+212,88,26,Regular Fit Vest,S,Dark Green,5,1080.17,17.53,5383.32
+213,88,99,Regular Fit Suspenders,30,Beige,7,6273.65,14.7,43900.82
+214,89,11,Sporty Muffler,28,Coral,8,8406.09,16.57,67232.15
+215,89,80,Premium Blazer,32,Charcoal,9,1885.32,49.6,16918.32
+216,89,38,Trendy Night Suit,XS,White,9,5398.69,1.23,48587.02
+217,89,56,Modern Down Jacket,S,Peach,9,3570.26,22.42,32109.88
+218,90,157,Classic Anarkali Dress,30,Dark Green,8,9422.98,16.33,75367.52
+219,90,95,Slim Fit Crop Top,38,Cream,1,4959.08,29.28,4929.8
+220,90,113,Essential Kaftan,32,Grey,8,1950.51,25.7,15578.36
+221,91,40,Regular Fit Casual Shirt,S,Mustard,7,3651.77,35.71,25526.71
+222,92,37,Comfort Trousers,S,Cream,3,7073.11,9.82,21209.5
+223,92,158,Luxury Hat,30,Maroon,7,6049.68,11.01,42336.74
+224,92,12,Classic Cap,L,Charcoal,5,9980.71,6.65,49896.9
+225,93,146,Traditional Bow Tie,S,Sky Blue,4,1833.76,41.3,7293.76
+226,93,39,Essential Night Suit,32,White,7,8643.81,12.76,60493.9
+227,93,54,Formal Saree,XS,Sky Blue,1,6645.78,8.17,6637.61
+228,93,10,Luxury Hoodie,XS,White,5,6972.78,39.35,34824.53
+229,94,120,Casual Top,32,Mustard,3,3844.29,24.67,11508.2
+230,94,21,Slim Fit Lehenga,XXL,Beige,8,9951.81,17.14,79597.34
+231,95,121,Designer Night Suit,40,Cream,5,7660.92,27.4,38277.18
+232,95,190,Premium Salwar Suit,40,Teal,6,1219.63,16.33,7301.45
+233,95,40,Regular Fit Casual Shirt,S,Mustard,10,3726.1,13.95,37247.04
+234,96,58,Comfort Wallet,40,Charcoal,1,6894.09,13.61,6880.48
+235,96,131,Modern Gloves,32,Coral,5,2248.02,36.21,11203.9
+236,97,14,Formal Cardigan,L,Navy Blue,10,6336.56,43.16,63322.4
+237,97,28,Elegant Kaftan,30,Khaki,3,3215.14,42.22,9603.19
+238,97,57,Sporty Tote Bag,XXL,Sky Blue,4,8037.82,7.66,32143.64
+239,97,26,Regular Fit Vest,S,Dark Green,9,1095.36,20.63,9837.6
+240,98,108,Premium Beanie,34,Navy Blue,10,4403.93,4.06,44035.25
+241,98,42,Modern Salwar Suit,32,Teal,10,3020.74,46.42,30160.98
+242,98,17,Sporty Windcheater,S,Charcoal,6,6354.97,2.85,38126.99
+243,98,104,Formal Cardigan,M,Charcoal,7,3885.93,23.66,27177.84
+244,99,86,Contemporary Bomber Jacket,38,Coral,6,2952.65,11.78,17704.1
+245,100,102,Comfort Saree,38,Coral,10,2263.09,21.51,22609.34
+246,100,61,Oversized Rain Jacket,XXL,Peach,5,8103.79,40.23,40478.74
+247,100,87,Premium Bow Tie,XL,Coral,3,7005.0,29.67,20985.33
+248,100,22,Luxury Sweater,40,Dark Green,2,5368.04,39.81,10696.28
+249,101,39,Essential Night Suit,32,White,9,8536.51,44.83,76783.74
+250,102,14,Formal Cardigan,L,Navy Blue,1,6452.97,1.63,6451.34
+251,102,75,Ethnic Sherwani,40,Coral,6,4071.44,45.9,24382.74
+252,103,171,Slim Fit Cotton T-Shirt,30,Navy Blue,10,5294.8,8.26,52939.72
+253,103,80,Premium Blazer,32,Charcoal,6,1871.75,49.82,11180.71
+254,103,22,Luxury Sweater,40,Dark Green,1,5682.65,41.07,5641.58
+255,104,44,Comfort Wallet,36,Peach,7,5831.98,24.52,40799.37
+256,104,69,Contemporary Track Pants,L,Dark Green,10,4928.12,41.84,49239.34
+257,105,157,Classic Anarkali Dress,30,Dark Green,5,9212.98,23.12,46041.76
+258,106,41,Urban Chinos,XXL,Brown,9,3309.33,30.32,29753.67
+259,106,177,Formal Rain Jacket,S,Sky Blue,5,4059.55,42.61,20255.12
+260,106,171,Slim Fit Cotton T-Shirt,30,Navy Blue,3,5648.69,40.51,16905.56
+261,107,131,Modern Gloves,32,Coral,5,2199.45,35.28,10961.99
+262,107,103,Trendy Chinos,36,Peach,7,7088.74,11.76,49609.42
+263,107,80,Premium Blazer,32,Charcoal,6,1894.5,23.06,11343.93
+264,108,10,Luxury Hoodie,XS,White,2,6493.58,43.76,12943.4
+265,108,38,Trendy Night Suit,XS,White,2,5823.05,6.31,11639.78
+266,109,73,Modern Sherwani,36,Lavender,6,1219.99,28.96,7291.01
+267,110,112,Luxury Scarf,L,Grey,7,781.74,32.22,5439.93
+268,110,172,Slim Fit Tank Top,30,Navy Blue,9,4252.72,15.13,38259.37
+269,110,182,Classic Saree,S,Black,4,5260.81,32.81,21010.44
+270,110,94,Elegant Leather Jacket,M,Red,3,2619.53,17.25,7841.35
+271,111,9,Slim Fit Gloves,30,Black,5,6746.13,40.63,33690.0
+272,112,169,Basic Night Suit,28,Grey,7,7201.89,43.13,50370.09
+273,112,116,Oversized Backpack,30,Sky Blue,3,3393.29,37.26,10142.6
+274,112,182,Classic Saree,S,Black,7,5134.72,47.9,35895.12
+275,112,193,Comfort Lehenga,XL,Sky Blue,10,6824.87,9.2,68239.5
+276,113,65,Ethnic Formal Shirt,M,Charcoal,7,3937.42,43.78,27518.14
+277,113,86,Contemporary Bomber Jacket,38,Coral,3,2927.97,7.02,8776.89
+278,114,72,Luxury Windcheater,S,Peach,4,2360.54,20.89,9421.26
+279,114,198,Modern Tie,XL,Navy Blue,1,7382.89,35.57,7347.32
+280,114,158,Luxury Hat,30,Maroon,6,6089.74,5.23,36533.19
+281,114,198,Modern Tie,XL,Navy Blue,9,7053.42,7.39,63473.36
+282,115,136,Comfort Maxi Dress,S,Black,7,5050.36,49.68,35302.87
+283,115,157,Classic Anarkali Dress,30,Dark Green,10,9271.49,38.49,92676.45
+284,115,188,Trendy Lehenga,32,Charcoal,1,3025.22,35.96,2989.26
+285,116,138,Essential Cotton T-Shirt,28,Teal,8,6535.85,16.63,52270.14
+286,116,105,Urban Tote Bag,32,Charcoal,10,1006.45,39.59,10024.91
+287,116,122,Premium Sherwani,34,Coral,7,2411.33,45.71,16833.59
+288,117,81,Designer Waistcoat,XS,Red,10,1192.71,13.24,11913.91
+289,117,167,Modern Tote Bag,28,Grey,1,7715.61,33.42,7682.19
+290,118,102,Comfort Saree,38,Coral,5,2211.57,11.46,11046.39
+291,118,57,Sporty Tote Bag,XXL,Sky Blue,8,7846.43,0.11,62771.29
+292,118,13,Classic Top,L,Red,2,906.08,13.68,1798.49
+293,119,5,Slim Fit Stole,XL,Charcoal,9,6366.56,36.64,57262.44
+294,119,197,Slim Fit Sling Bag,S,Black,5,10116.57,33.17,50549.66
+295,119,128,Modern Maxi Dress,30,Coral,10,7168.7,33.06,71653.94
+296,119,74,Ethnic Tie,M,Khaki,2,8251.12,46.28,16455.95
+297,120,144,Modern Wallet,36,Cream,6,4702.27,32.81,28180.81
+298,120,4,Urban Beanie,XL,Sky Blue,7,1681.91,32.34,11741.03
+299,120,123,Traditional Shawl,XL,Cream,1,4729.66,46.55,4683.11
+300,120,188,Trendy Lehenga,32,Charcoal,5,2933.73,14.62,14654.03
+301,121,107,Classic Night Suit,32,Burgundy,3,5631.54,10.2,16884.41
+302,121,42,Modern Salwar Suit,32,Teal,6,2898.53,46.59,17344.61
+303,121,80,Premium Blazer,32,Charcoal,9,1993.44,31.95,17908.98
+304,122,40,Regular Fit Casual Shirt,S,Mustard,2,3856.43,0.17,7712.68
+305,123,17,Sporty Windcheater,S,Charcoal,5,6379.95,5.67,31894.1
+306,123,116,Oversized Backpack,30,Sky Blue,6,3153.25,38.3,18881.22
+307,124,131,Modern Gloves,32,Coral,2,2243.85,30.72,4456.98
+308,124,22,Luxury Sweater,40,Dark Green,6,5785.87,17.66,34697.54
+309,124,100,Premium Beanie,40,Brown,4,2224.1,12.51,8883.9
+310,124,5,Slim Fit Stole,XL,Charcoal,10,6325.17,39.67,63211.98
+311,125,17,Sporty Windcheater,S,Charcoal,3,5855.4,8.02,17558.17
+312,126,123,Traditional Shawl,XL,Cream,6,4693.45,42.68,28118.02
+313,126,194,Oversized Kaftan,XXL,Burgundy,7,6150.74,25.62,43029.53
+314,127,55,Premium Stole,34,Sky Blue,3,1869.64,31.87,5577.06
+315,127,199,Slim Fit Formal Shirt,XS,Maroon,10,7150.73,3.35,71503.98
+316,127,191,Elegant Blazer,L,Peach,4,6097.65,46.69,24343.92
+317,127,200,Sporty Joggers,XL,Beige,8,5686.09,22.89,45465.87
+318,128,165,Elegant Stole,28,Charcoal,6,6985.88,2.1,41913.18
+319,128,116,Oversized Backpack,30,Sky Blue,4,3112.56,17.77,12432.47
+320,128,171,Slim Fit Cotton T-Shirt,30,Navy Blue,6,5621.78,20.78,33709.88
+321,129,81,Designer Waistcoat,XS,Red,8,1174.91,42.15,9357.13
+322,130,152,Essential Polo Shirt,L,Charcoal,3,4138.27,27.68,12387.13
+323,131,31,Traditional Hat,32,Lavender,10,1143.99,39.31,11400.61
+324,131,164,Classic Nehru Jacket,38,Dark Green,6,1339.93,26.85,8012.71
+325,131,109,Trendy Crop Top,40,Dark Green,5,4211.21,5.33,21050.74
+326,132,171,Slim Fit Cotton T-Shirt,30,Navy Blue,3,5649.27,40.78,16907.03
+327,132,40,Regular Fit Casual Shirt,S,Mustard,5,3655.61,20.6,18257.43
+328,132,20,Slim Fit Tote Bag,36,Lavender,9,4952.83,24.91,44550.59
+329,133,105,Urban Tote Bag,32,Charcoal,1,943.63,14.26,929.37
+330,133,48,Trendy Sling Bag,L,Olive,2,3862.66,46.57,7678.75
+331,133,155,Regular Fit Lehenga,L,Brown,10,2179.81,18.13,21779.95
+332,134,68,Comfort Muffler,38,Navy Blue,6,9676.68,6.19,58053.86
+333,135,150,Modern Saree,40,Red,2,8186.62,13.83,16359.41
+334,135,195,Slim Fit Blazer,40,Brown,9,2708.74,45.65,24333.04
+335,136,183,Oversized Maxi Dress,38,Beige,9,5162.3,43.52,46417.14
+336,137,142,Essential Lehenga,38,Cream,5,2577.06,20.18,12865.13
+337,137,11,Sporty Muffler,28,Coral,5,9195.07,21.01,45954.34
+338,137,169,Basic Night Suit,28,Grey,6,6823.03,2.6,40935.58
+339,138,25,Traditional Polo Shirt,36,Beige,10,1978.05,44.57,19735.98
+340,139,121,Designer Night Suit,40,Cream,6,7524.09,5.34,45139.17
+341,140,152,Essential Polo Shirt,L,Charcoal,9,4322.43,12.38,38889.52
+342,140,86,Contemporary Bomber Jacket,38,Coral,3,2974.31,45.91,8877.02
+343,141,162,Oversized Scarf,40,Grey,1,7621.94,36.44,7585.5
+344,142,44,Comfort Wallet,36,Peach,9,5484.35,20.4,49338.73
+345,142,175,Sporty Tank Top,40,Dark Green,9,2066.11,28.83,18566.18
+346,143,127,Luxury Sling Bag,S,Red,9,2489.69,21.49,22385.73
+347,143,157,Classic Anarkali Dress,30,Dark Green,7,9267.27,26.39,64844.51
+348,144,35,Regular Fit Kurta,M,Beige,7,1466.92,20.58,10247.89
+349,144,149,Regular Fit Anarkali Dress,XXL,Charcoal,5,4263.61,30.82,21287.23
+350,144,32,Comfort Vest,34,Teal,7,2568.97,30.26,17952.56
+351,145,30,Casual Duffle Bag,40,Beige,7,2186.65,37.34,15269.21
+352,146,148,Formal Kaftan,28,Charcoal,3,2378.78,29.01,7107.32
+353,146,172,Slim Fit Tank Top,30,Navy Blue,4,3991.8,2.01,15965.2
+354,147,191,Elegant Blazer,L,Peach,1,6033.63,34.2,5999.43
+355,147,35,Regular Fit Kurta,M,Beige,4,1364.39,5.63,5451.91
+356,148,167,Modern Tote Bag,28,Grey,4,7637.41,41.5,30508.13
+357,149,106,Traditional Trousers,XXL,Peach,2,1031.12,22.35,2039.89
+358,150,186,Sporty Skirt,M,White,2,1953.69,16.26,3891.11
+359,150,106,Traditional Trousers,XXL,Peach,7,1066.24,34.02,7429.64
+360,151,170,Elegant Blazer,36,Maroon,4,3404.52,7.3,13610.8
+361,151,100,Premium Beanie,40,Brown,6,2140.85,33.29,12811.81
+362,151,170,Elegant Blazer,36,Maroon,4,3277.48,47.46,13062.48
+363,151,112,Luxury Scarf,L,Grey,1,792.83,21.66,771.17
+364,152,16,Formal Tie,XS,Maroon,1,862.81,26.21,836.6
+365,152,53,Premium Blazer,XL,Grey,7,5565.49,14.36,38944.07
+366,153,72,Luxury Windcheater,S,Peach,3,2288.99,0.69,6866.28
+367,153,196,Contemporary Casual Shirt,XL,Maroon,9,10050.98,22.72,90436.12
+368,153,78,Contemporary Leather Jacket,XXL,Sky Blue,4,1293.63,34.42,5140.12
+369,154,123,Traditional Shawl,XL,Cream,7,4818.12,24.02,33702.8
+370,154,113,Essential Kaftan,32,Grey,3,1864.44,11.72,5581.6
+371,154,125,Luxury Cardigan,S,Dark Green,7,2061.88,47.43,14385.76
+372,155,29,Trendy Gloves,30,Peach,5,638.67,26.1,3167.23
+373,155,177,Formal Rain Jacket,S,Sky Blue,2,4167.32,32.91,8301.73
+374,156,192,Regular Fit Stole,S,Coral,7,5008.21,28.36,35029.08
+375,156,28,Elegant Kaftan,30,Khaki,4,3330.81,12.6,13310.64
+376,156,63,Basic Formal Shirt,34,Burgundy,9,7209.53,28.72,64857.09
+377,157,161,Elegant Anarkali Dress,30,Red,8,2546.29,0.17,20370.11
+378,157,6,Oversized Jeans,40,Lavender,6,6377.58,38.48,38226.97
+379,158,146,Traditional Bow Tie,S,Sky Blue,6,1752.74,9.67,10506.75
+380,158,28,Elegant Kaftan,30,Khaki,5,3270.95,21.24,16333.51
+381,158,179,Premium Sherwani,XS,White,5,5134.02,31.44,25638.66
+382,158,172,Slim Fit Tank Top,30,Navy Blue,10,4180.97,17.84,41791.81
+383,159,121,Designer Night Suit,40,Cream,10,7356.33,12.24,73551.01
+384,159,12,Classic Cap,L,Charcoal,6,10362.53,37.95,62137.23
+385,159,137,Basic Leather Jacket,32,Burgundy,6,454.13,21.54,2703.26
+386,159,144,Modern Wallet,36,Cream,1,4964.86,5.16,4959.7
+387,160,60,Casual Waistcoat,40,White,7,3288.09,10.25,23006.36
+388,160,106,Traditional Trousers,XXL,Peach,9,1103.37,3.63,9926.73
+389,161,184,Elegant Hat,36,Navy Blue,3,3765.65,10.73,11286.23
+390,161,95,Slim Fit Crop Top,38,Cream,2,4572.21,0.58,9143.84
+391,161,151,Traditional Chinos,32,Burgundy,7,2076.08,14.02,14518.51
+392,161,151,Traditional Chinos,32,Burgundy,8,2252.0,4.67,18011.3
+393,162,157,Classic Anarkali Dress,30,Dark Green,2,9167.5,12.52,18322.49
+394,162,154,Essential Scarf,34,Red,9,3347.54,46.91,30080.98
+395,163,12,Classic Cap,L,Charcoal,8,10730.34,27.05,85815.68
+396,163,169,Basic Night Suit,28,Grey,1,7306.79,24.48,7282.31
+397,164,106,Traditional Trousers,XXL,Peach,6,1004.49,25.19,6001.73
+398,164,59,Classic Tote Bag,XS,Mustard,10,6113.46,21.36,61113.29
+399,165,92,Comfort Bathrobe,32,Beige,8,1495.69,8.21,11957.33
+400,165,190,Premium Salwar Suit,40,Teal,2,1263.85,28.59,2499.1
+401,165,171,Slim Fit Cotton T-Shirt,30,Navy Blue,5,5355.99,41.12,26738.83
+402,166,189,Sporty Tie,40,Grey,1,2072.25,9.79,2062.46
+403,166,54,Formal Saree,XS,Sky Blue,4,6074.8,23.04,24276.14
+404,167,58,Comfort Wallet,40,Charcoal,10,6675.32,5.89,66747.32
+405,167,186,Sporty Skirt,M,White,4,1854.28,37.83,7379.28
+406,167,195,Slim Fit Blazer,40,Brown,5,2730.93,21.59,13633.07
+407,167,177,Formal Rain Jacket,S,Sky Blue,2,4419.83,7.95,8831.71
+408,168,2,Trendy Stole,38,Beige,3,6131.49,26.65,18367.82
+409,168,176,Trendy Duffle Bag,36,Brown,7,4633.01,38.22,32392.88
+410,168,55,Premium Stole,34,Sky Blue,2,1862.24,5.42,3719.05
+411,168,59,Classic Tote Bag,XS,Mustard,3,6105.87,26.01,18291.59
+412,169,116,Oversized Backpack,30,Sky Blue,3,3397.78,29.71,10163.62
+413,169,170,Elegant Blazer,36,Maroon,10,3182.74,22.45,31804.96
+414,169,45,Casual Salwar Suit,L,Sky Blue,10,1467.54,22.25,14653.11
+415,170,67,Basic Joggers,XL,Cream,10,1594.45,36.67,15907.86
+416,170,198,Modern Tie,XL,Navy Blue,1,7049.24,14.78,7034.46
+417,170,198,Modern Tie,XL,Navy Blue,9,7255.13,4.55,65291.66
+418,171,178,Essential Belt,28,Olive,3,9319.33,11.49,27946.49
+419,172,144,Modern Wallet,36,Cream,8,4813.65,32.48,38476.69
+420,173,14,Formal Cardigan,L,Navy Blue,9,6254.42,43.79,56246.01
+421,173,33,Basic Belt,S,Burgundy,4,2644.45,25.42,10552.36
+422,174,62,Trendy Lehenga,S,Mustard,9,3162.64,16.96,28446.84
+423,175,67,Basic Joggers,XL,Cream,5,1614.86,6.81,8067.49
+424,176,12,Classic Cap,L,Charcoal,7,10510.52,41.9,73531.74
+425,176,36,Designer Night Suit,40,Coral,4,7899.58,4.47,31593.87
+426,177,160,Classic Backpack,32,Grey,8,1347.04,36.05,10740.23
+427,177,140,Modern Maxi Dress,L,Cream,2,3376.32,16.09,6736.55
+428,178,175,Sporty Tank Top,40,Dark Green,5,2090.73,16.88,10436.79
+429,178,9,Slim Fit Gloves,30,Black,1,7026.68,38.77,6987.91
+430,179,186,Sporty Skirt,M,White,1,1798.25,8.25,1790.0
+431,180,22,Luxury Sweater,40,Dark Green,4,5603.69,40.27,22374.49
+432,181,138,Essential Cotton T-Shirt,28,Teal,6,6545.05,31.54,39238.75
+433,181,155,Regular Fit Lehenga,L,Brown,1,2150.52,49.42,2101.1
+434,181,81,Designer Waistcoat,XS,Red,7,1250.82,39.73,8715.98
+435,181,130,Comfort Vest,32,White,5,2684.3,13.04,13408.44
+436,182,140,Modern Maxi Dress,L,Cream,3,3328.68,28.82,9957.22
+437,183,74,Ethnic Tie,M,Khaki,8,7972.31,38.4,63740.07
+438,183,39,Essential Night Suit,32,White,3,8894.87,14.45,26670.17
+439,183,160,Classic Backpack,32,Grey,1,1383.07,23.44,1359.63
+440,183,130,Comfort Vest,32,White,7,2605.79,2.21,18238.34
+441,184,1,Elegant Night Suit,36,Black,5,9444.1,18.89,47201.59
+442,185,23,Luxury Beret,XL,Khaki,6,3596.77,13.75,21566.89
+443,185,39,Essential Night Suit,32,White,7,8490.49,6.15,59427.31
+444,185,106,Traditional Trousers,XXL,Peach,3,1081.49,25.58,3218.89
+445,186,95,Slim Fit Crop Top,38,Cream,1,4738.97,41.08,4697.89
+446,186,148,Formal Kaftan,28,Charcoal,7,2358.21,27.63,16479.85
+447,186,11,Sporty Muffler,28,Coral,8,8392.45,10.4,67129.17
+448,187,155,Regular Fit Lehenga,L,Brown,10,2114.91,30.9,21118.19
+449,187,5,Slim Fit Stole,XL,Charcoal,10,6308.55,47.66,63037.8
+450,187,135,Essential Blazer,XL,Sky Blue,3,742.51,3.04,2224.49
+451,187,13,Classic Top,L,Red,2,911.89,12.64,1811.15
+452,188,143,Casual Tie,M,Lavender,9,8615.81,13.08,77529.23
+453,189,165,Elegant Stole,28,Charcoal,3,7250.43,23.68,21727.61
+454,189,64,Sporty Windcheater,XS,Dark Green,9,404.64,35.91,3605.85
+455,189,49,Casual Sling Bag,M,Beige,9,7387.17,19.99,66464.54
+456,190,40,Regular Fit Casual Shirt,S,Mustard,2,3577.94,20.0,7135.88
+457,190,174,Regular Fit Crop Top,36,Charcoal,5,788.14,26.09,3914.59
+458,191,105,Urban Tote Bag,32,Charcoal,5,957.48,12.14,4775.24
+459,191,108,Premium Beanie,34,Navy Blue,3,4421.41,36.26,13227.98
+460,191,136,Comfort Maxi Dress,S,Black,7,4705.3,15.48,32921.59
+461,192,22,Luxury Sweater,40,Dark Green,8,5835.78,41.1,46645.13
+462,192,75,Ethnic Sherwani,40,Coral,7,3851.83,47.31,26915.48
+463,192,96,Designer Bathrobe,40,Brown,5,2075.33,2.12,10374.54
+464,193,59,Classic Tote Bag,XS,Mustard,6,6154.49,34.16,36892.79
+465,193,76,Trendy Bathrobe,40,Teal,4,4975.85,45.57,19857.85
+466,193,6,Oversized Jeans,40,Lavender,2,6182.59,15.39,12349.79
+467,193,72,Luxury Windcheater,S,Peach,5,2310.08,48.0,11502.38
+468,194,198,Modern Tie,XL,Navy Blue,4,7458.96,18.42,29817.44
+469,195,71,Regular Fit Lehenga,30,Charcoal,6,1723.94,6.71,10336.94
+470,195,157,Classic Anarkali Dress,30,Dark Green,1,9752.39,17.0,9735.39
+471,196,176,Trendy Duffle Bag,36,Brown,1,5082.96,14.57,5068.39
+472,196,53,Premium Blazer,XL,Grey,4,5625.68,38.25,22464.45
+473,196,91,Designer Jeans,XL,Lavender,4,3008.71,12.89,12021.94
+474,197,182,Classic Saree,S,Black,2,4994.53,11.09,9977.98
+475,197,37,Comfort Trousers,S,Cream,2,6586.17,35.57,13136.78
+476,197,117,Luxury Leather Jacket,M,Teal,9,2226.82,43.93,19997.46
+477,198,140,Modern Maxi Dress,L,Cream,1,3330.8,9.93,3320.87
+478,199,162,Oversized Scarf,40,Grey,4,7639.86,6.74,30552.69
+479,200,58,Comfort Wallet,40,Charcoal,1,7221.85,42.74,7179.11
+480,200,186,Sporty Skirt,M,White,2,1970.99,45.91,3896.07
+481,200,157,Classic Anarkali Dress,30,Dark Green,9,9573.94,48.09,86117.38
+482,201,25,Traditional Polo Shirt,36,Beige,8,2188.24,42.92,17462.96
+483,201,200,Sporty Joggers,XL,Beige,9,5782.97,26.22,52020.49
+484,201,3,Ethnic Anarkali Dress,XL,Brown,1,10135.33,10.44,10124.89
+485,201,7,Comfort Sling Bag,30,Navy Blue,1,5733.24,16.73,5716.51
+486,202,29,Trendy Gloves,30,Peach,9,599.69,29.86,5367.31
+487,202,4,Urban Beanie,XL,Sky Blue,4,1794.67,16.69,7161.99
+488,202,164,Classic Nehru Jacket,38,Dark Green,8,1342.51,14.18,10725.93
+489,202,153,Traditional Shorts,XXL,Grey,2,1473.17,45.4,2900.94
+490,203,159,Traditional Waistcoat,40,Charcoal,4,3797.66,30.49,15160.16
+491,204,35,Regular Fit Kurta,M,Beige,1,1334.93,30.18,1304.75
+492,204,32,Comfort Vest,34,Teal,9,2675.64,28.75,24052.05
+493,204,28,Elegant Kaftan,30,Khaki,9,3126.72,11.57,28128.9
+494,205,88,Essential Trousers,XS,Coral,1,1885.67,37.83,1847.84
+495,205,105,Urban Tote Bag,32,Charcoal,4,958.73,36.15,3798.78
+496,205,56,Modern Down Jacket,S,Peach,10,3658.15,7.39,36574.08
+497,205,62,Trendy Lehenga,S,Mustard,8,3070.85,16.88,24549.9
+498,206,24,Slim Fit Anarkali Dress,XXL,Red,5,6613.06,34.77,33030.55
+499,207,34,Formal Salwar Suit,S,Peach,9,3980.52,47.03,35777.68
+500,207,11,Sporty Muffler,28,Coral,6,8927.75,38.9,53527.61
+501,207,87,Premium Bow Tie,XL,Coral,4,6927.92,19.77,27691.93
+502,208,191,Elegant Blazer,L,Peach,1,5902.24,4.8,5897.44
+503,208,192,Regular Fit Stole,S,Coral,3,5233.74,42.33,15658.9
+504,208,11,Sporty Muffler,28,Coral,4,9154.27,2.77,36614.32
+505,208,53,Premium Blazer,XL,Grey,6,5736.65,44.23,34375.64
+506,209,196,Contemporary Casual Shirt,XL,Maroon,1,10406.87,34.25,10372.62
+507,210,83,Urban Hoodie,S,Teal,4,6221.24,8.78,24876.19
+508,211,66,Comfort Shawl,L,Red,6,6605.16,40.87,39590.11
+509,211,131,Modern Gloves,32,Coral,9,2173.36,28.6,19531.66
+510,212,161,Elegant Anarkali Dress,30,Red,8,2405.16,28.07,19213.24
+511,212,37,Comfort Trousers,S,Cream,10,6673.7,26.22,66710.78
+512,212,68,Comfort Muffler,38,Navy Blue,5,10124.62,2.02,50621.06
+513,212,62,Trendy Lehenga,S,Mustard,5,3276.57,0.25,16382.58
+514,213,200,Sporty Joggers,XL,Beige,4,5558.27,11.87,22221.22
+515,213,171,Slim Fit Cotton T-Shirt,30,Navy Blue,9,5673.02,26.43,51030.71
+516,213,105,Urban Tote Bag,32,Charcoal,1,963.06,32.26,930.8
+517,213,158,Luxury Hat,30,Maroon,2,5904.65,33.35,11775.96
+518,214,177,Formal Rain Jacket,S,Sky Blue,1,4317.38,2.37,4315.01
+519,214,95,Slim Fit Crop Top,38,Cream,10,4847.57,3.24,48472.48
+520,214,75,Ethnic Sherwani,40,Coral,5,4027.42,46.75,20090.33
+521,214,183,Oversized Maxi Dress,38,Beige,8,5191.75,29.14,41504.85
+522,215,104,Formal Cardigan,M,Charcoal,10,4120.3,31.19,41171.85
+523,215,161,Elegant Anarkali Dress,30,Red,7,2492.48,28.64,17418.74
+524,216,200,Sporty Joggers,XL,Beige,5,5848.41,32.09,29209.95
+525,216,195,Slim Fit Blazer,40,Brown,10,2706.29,33.8,27029.14
+526,216,195,Slim Fit Blazer,40,Brown,8,2524.03,26.11,20166.16
+527,216,38,Trendy Night Suit,XS,White,9,5698.01,28.96,51253.1
+528,217,38,Trendy Night Suit,XS,White,6,5570.93,14.72,33410.86
+529,217,198,Modern Tie,XL,Navy Blue,9,7578.97,28.47,68182.27
+530,218,45,Casual Salwar Suit,L,Sky Blue,4,1358.88,41.96,5393.54
+531,218,58,Comfort Wallet,40,Charcoal,5,7147.41,38.81,35698.26
+532,219,104,Formal Cardigan,M,Charcoal,10,4058.19,46.88,40535.06
+533,219,105,Urban Tote Bag,32,Charcoal,10,1014.04,49.5,10090.93
+534,219,122,Premium Sherwani,34,Coral,3,2282.36,5.89,6841.19
+535,219,196,Contemporary Casual Shirt,XL,Maroon,7,11056.66,1.53,77395.06
+536,220,45,Casual Salwar Suit,L,Sky Blue,4,1388.88,47.15,5508.39
+537,220,186,Sporty Skirt,M,White,4,1884.64,11.02,7527.52
+538,220,172,Slim Fit Tank Top,30,Navy Blue,10,4330.74,32.51,43274.85
+539,220,134,Premium Stole,40,Charcoal,3,2382.7,28.06,7120.03
+540,221,73,Modern Sherwani,36,Lavender,1,1246.38,48.0,1198.38
+541,222,37,Comfort Trousers,S,Cream,10,6962.9,17.07,69611.95
+542,223,104,Formal Cardigan,M,Charcoal,10,4144.48,27.23,41417.54
+543,223,38,Trendy Night Suit,XS,White,7,5626.6,4.67,39381.5
+544,224,147,Comfort Tote Bag,S,Black,7,2511.18,31.52,17546.73
+545,224,56,Modern Down Jacket,S,Peach,1,3642.84,40.44,3602.4
+546,224,26,Regular Fit Vest,S,Dark Green,3,1125.39,40.36,3335.82
+547,224,81,Designer Waistcoat,XS,Red,10,1207.45,46.19,12028.32
+548,225,65,Ethnic Formal Shirt,M,Charcoal,4,4233.59,19.93,16914.45
+549,226,62,Trendy Lehenga,S,Mustard,10,3243.43,15.54,32418.78
+550,226,131,Modern Gloves,32,Coral,5,2278.12,2.03,11388.56
+551,227,43,Ethnic Muffler,XXL,Brown,8,1626.32,0.05,13010.5
+552,228,154,Essential Scarf,34,Red,7,3402.81,19.46,23800.24
+553,228,15,Premium Nehru Jacket,M,Lavender,2,5664.49,38.16,11290.82
+554,228,129,Modern Top,28,Lavender,4,502.4,33.42,1976.16
+555,228,157,Classic Anarkali Dress,30,Dark Green,6,9903.49,41.17,59379.8
+556,229,13,Classic Top,L,Red,2,866.6,2.8,1730.39
+557,230,21,Slim Fit Lehenga,XXL,Beige,5,9767.39,3.66,48833.27
+558,230,189,Sporty Tie,40,Grey,6,1927.86,20.39,11546.8
+559,230,46,Contemporary Formal Shirt,40,Khaki,9,4160.77,29.12,37417.79
+560,231,165,Elegant Stole,28,Charcoal,7,7310.8,2.51,51173.12
+561,231,95,Slim Fit Crop Top,38,Cream,4,4876.24,13.51,19491.45
+562,231,127,Luxury Sling Bag,S,Red,8,2544.88,14.08,20344.97
+563,231,42,Modern Salwar Suit,32,Teal,1,3095.02,22.45,3072.57
+564,232,186,Sporty Skirt,M,White,7,1932.74,20.58,13508.57
+565,232,34,Formal Salwar Suit,S,Peach,10,3814.01,0.97,38139.14
+566,233,191,Elegant Blazer,L,Peach,8,6029.75,41.3,48196.66
+567,234,13,Classic Top,L,Red,3,884.18,46.62,2605.92
+568,234,18,Premium Casual Shirt,28,Burgundy,5,5454.78,46.83,27227.05
+569,234,173,Regular Fit Skirt,36,Dark Green,9,3304.55,48.51,29692.44
+570,234,51,Luxury Casual Shirt,32,Olive,4,2673.44,4.46,10689.3
+571,235,81,Designer Waistcoat,XS,Red,6,1256.34,8.56,7529.5
+572,235,89,Luxury Windcheater,30,White,7,4790.65,27.23,33507.35
+573,236,119,Designer Joggers,XL,Black,1,10608.1,49.81,10558.29
+574,237,174,Regular Fit Crop Top,36,Charcoal,2,735.67,8.17,1463.18
+575,237,98,Classic Cotton T-Shirt,34,Khaki,2,7301.03,21.09,14580.97
+576,238,34,Formal Salwar Suit,S,Peach,8,3963.68,28.67,31680.75
+577,238,89,Luxury Windcheater,30,White,7,4797.26,10.91,33569.88
+578,238,20,Slim Fit Tote Bag,36,Lavender,9,4917.36,13.23,44243.05
+579,239,186,Sporty Skirt,M,White,3,1952.85,16.15,5842.39
+580,240,102,Comfort Saree,38,Coral,5,2335.85,48.65,11630.58
+581,240,25,Traditional Polo Shirt,36,Beige,7,2037.67,49.75,14213.97
+582,241,116,Oversized Backpack,30,Sky Blue,4,3347.06,41.6,13346.62
+583,241,102,Comfort Saree,38,Coral,8,2341.72,46.38,18687.37
+584,242,190,Premium Salwar Suit,40,Teal,8,1224.16,8.52,9784.74
+585,242,48,Trendy Sling Bag,L,Olive,2,3527.84,8.07,7047.61
+586,242,24,Slim Fit Anarkali Dress,XXL,Red,8,6586.76,29.45,52664.64
+587,242,47,Classic Crop Top,36,Sky Blue,2,6599.2,13.05,13185.36
+588,243,44,Comfort Wallet,36,Peach,10,5666.91,36.73,56632.41
+589,243,126,Designer Muffler,XS,Black,10,378.97,37.89,3751.82
+590,243,60,Casual Waistcoat,40,White,9,3080.3,5.75,27716.91
+591,243,132,Modern Saree,34,Sky Blue,3,6385.57,49.8,19106.92
+592,244,8,Essential Cotton T-Shirt,32,Red,6,3931.99,37.51,23554.4
+593,244,190,Premium Salwar Suit,40,Teal,1,1202.07,35.14,1166.93
+594,244,140,Modern Maxi Dress,L,Cream,7,3260.18,46.36,22774.9
+595,244,31,Traditional Hat,32,Lavender,8,1105.22,3.05,8838.71
+596,245,61,Oversized Rain Jacket,XXL,Peach,7,8344.93,40.38,58374.14
+597,245,4,Urban Beanie,XL,Sky Blue,6,1808.77,18.81,10833.83
+598,245,37,Comfort Trousers,S,Cream,2,6998.33,8.55,13988.12
+599,245,58,Comfort Wallet,40,Charcoal,6,6816.64,7.96,40891.86
+600,246,174,Regular Fit Crop Top,36,Charcoal,6,730.51,16.75,4366.3
+601,246,115,Luxury Leather Jacket,XS,Olive,2,6455.79,20.25,12891.33
+602,246,39,Essential Night Suit,32,White,2,8621.88,38.5,17205.26
+603,246,45,Casual Salwar Suit,L,Sky Blue,2,1489.17,6.94,2971.4
+604,247,117,Luxury Leather Jacket,M,Teal,10,2341.72,27.88,23389.31
+605,247,137,Basic Leather Jacket,32,Burgundy,5,441.79,31.17,2177.8
+606,247,139,Essential Chinos,XL,Brown,5,3421.34,43.4,17063.32
+607,247,41,Urban Chinos,XXL,Brown,3,3598.95,1.89,10794.97
+608,248,9,Slim Fit Gloves,30,Black,10,6963.27,11.49,69621.23
+609,248,139,Essential Chinos,XL,Brown,7,3488.37,29.91,24388.68
+610,248,178,Essential Belt,28,Olive,5,8948.97,14.59,44730.24
+611,249,77,Casual Salwar Suit,M,Mustard,10,8083.86,36.77,80801.84
+612,249,132,Modern Saree,34,Sky Blue,9,6443.12,32.36,57955.71
+613,250,89,Luxury Windcheater,30,White,8,5062.75,25.38,40476.64
+614,250,193,Comfort Lehenga,XL,Sky Blue,1,6705.32,22.07,6683.25
+615,250,92,Comfort Bathrobe,32,Beige,3,1445.45,27.2,4309.15
+616,251,100,Premium Beanie,40,Brown,8,2142.71,38.46,17103.23
+617,251,169,Basic Night Suit,28,Grey,3,6644.28,30.78,19902.06
+618,251,71,Regular Fit Lehenga,30,Charcoal,7,1733.65,48.18,12087.35
+619,251,17,Sporty Windcheater,S,Charcoal,8,6078.89,26.61,48604.51
+620,252,139,Essential Chinos,XL,Brown,3,3447.11,28.73,10312.6
+621,252,112,Luxury Scarf,L,Grey,9,813.84,42.28,7282.25
+622,252,34,Formal Salwar Suit,S,Peach,6,3972.18,9.81,23823.27
+623,252,192,Regular Fit Stole,S,Coral,1,5435.85,26.61,5409.24
+624,253,103,Trendy Chinos,36,Peach,3,6998.66,39.62,20956.35
+625,254,14,Formal Cardigan,L,Navy Blue,5,6733.55,33.18,33634.56
+626,254,93,Trendy Formal Shirt,38,Navy Blue,7,9068.19,30.98,63446.34
+627,254,176,Trendy Duffle Bag,36,Brown,8,4867.33,1.53,38937.13
+628,255,43,Ethnic Muffler,XXL,Brown,5,1650.9,8.8,8245.72
+629,256,96,Designer Bathrobe,40,Brown,5,1945.95,46.71,9683.06
+630,256,101,Modern Top,M,Dark Green,8,2635.48,9.81,21074.0
+631,256,91,Designer Jeans,XL,Lavender,10,2845.13,31.92,28419.37
+632,257,175,Sporty Tank Top,40,Dark Green,9,2037.72,42.34,18297.12
+633,257,101,Modern Top,M,Dark Green,4,2710.39,9.73,10831.83
+634,258,88,Essential Trousers,XS,Coral,7,1802.63,3.98,12614.45
+635,259,48,Trendy Sling Bag,L,Olive,9,3820.39,36.12,34347.36
+636,259,124,Designer Shorts,36,White,3,5811.25,17.17,17416.59
+637,259,43,Ethnic Muffler,XXL,Brown,10,1529.52,47.3,15247.87
+638,260,178,Essential Belt,28,Olive,4,8794.56,30.4,35147.85
+639,260,176,Trendy Duffle Bag,36,Brown,6,4629.81,43.02,27735.83
+640,261,144,Modern Wallet,36,Cream,7,4800.64,1.28,33603.23
+641,262,133,Contemporary Beanie,XS,Red,5,1767.3,47.48,8789.0
+642,262,144,Modern Wallet,36,Cream,6,4619.47,16.02,27700.77
+643,262,125,Luxury Cardigan,S,Dark Green,5,2197.42,11.21,10975.88
+644,262,50,Modern Backpack,XL,Charcoal,5,5675.64,6.0,28372.18
+645,263,29,Trendy Gloves,30,Peach,8,630.64,8.24,5036.84
+646,264,134,Premium Stole,40,Charcoal,6,2364.12,13.46,14171.28
+647,264,10,Luxury Hoodie,XS,White,2,7052.58,10.51,14094.64
+648,265,23,Luxury Beret,XL,Khaki,6,3437.63,5.38,20620.39
+649,265,84,Contemporary Top,XS,White,4,1260.97,36.45,5007.42
+650,265,94,Elegant Leather Jacket,M,Red,10,2757.7,40.88,27536.1
+651,266,187,Sporty Hoodie,36,White,9,2151.51,39.94,19323.67
+652,266,115,Luxury Leather Jacket,XS,Olive,6,6028.62,47.99,36123.74
+653,266,69,Contemporary Track Pants,L,Dark Green,3,5143.3,32.17,15397.72
+654,266,28,Elegant Kaftan,30,Khaki,5,3348.18,39.62,16701.26
+655,267,199,Slim Fit Formal Shirt,XS,Maroon,6,6732.29,19.15,40374.61
+656,268,179,Premium Sherwani,XS,White,10,5100.56,28.07,50977.55
+657,269,194,Oversized Kaftan,XXL,Burgundy,8,6085.3,18.05,48664.39
+658,269,61,Oversized Rain Jacket,XXL,Peach,9,8352.39,42.82,75128.67
+659,270,103,Trendy Chinos,36,Peach,3,7148.89,46.76,21399.92
+660,270,143,Casual Tie,M,Lavender,7,8330.56,47.78,58266.14
+661,270,198,Modern Tie,XL,Navy Blue,10,7287.0,39.61,72830.39
+662,271,138,Essential Cotton T-Shirt,28,Teal,8,6705.68,43.13,53602.33
+663,271,36,Designer Night Suit,40,Coral,8,7905.55,25.51,63218.9
+664,271,190,Premium Salwar Suit,40,Teal,5,1208.21,16.98,6024.08
+665,271,151,Traditional Chinos,32,Burgundy,7,2268.26,39.83,15837.97
+666,272,183,Oversized Maxi Dress,38,Beige,10,4826.02,25.1,48235.15
+667,272,78,Contemporary Leather Jacket,XXL,Sky Blue,10,1356.77,48.38,13519.27
+668,272,178,Essential Belt,28,Olive,7,9398.91,1.27,65791.13
+669,273,11,Sporty Muffler,28,Coral,1,8487.84,15.34,8472.5
+670,274,151,Traditional Chinos,32,Burgundy,4,2065.26,11.82,8249.21
+671,274,165,Elegant Stole,28,Charcoal,2,7441.68,43.42,14839.93
+672,275,54,Formal Saree,XS,Sky Blue,1,6202.08,24.03,6178.05
+673,276,163,Comfort Hat,XL,Coral,7,8737.44,9.11,61152.96
+674,276,26,Regular Fit Vest,S,Dark Green,5,1072.01,42.56,5317.51
+675,277,99,Regular Fit Suspenders,30,Beige,10,6648.1,35.84,66445.12
+676,277,37,Comfort Trousers,S,Cream,8,7218.73,34.52,57715.33
+677,277,57,Sporty Tote Bag,XXL,Sky Blue,7,8024.79,31.87,56141.69
+678,277,113,Essential Kaftan,32,Grey,5,1993.87,7.49,9961.88
+679,278,34,Formal Salwar Suit,S,Peach,6,4109.86,49.24,24609.94
+680,279,95,Slim Fit Crop Top,38,Cream,5,4659.51,47.93,23249.61
+681,279,135,Essential Blazer,XL,Sky Blue,4,797.81,8.64,3182.58
+682,280,189,Sporty Tie,40,Grey,3,1956.84,3.15,5867.38
+683,281,156,Ethnic Skirt,M,Cream,3,5298.13,32.26,15862.14
+684,281,161,Elegant Anarkali Dress,30,Red,5,2456.1,2.95,12277.55
+685,282,24,Slim Fit Anarkali Dress,XXL,Red,9,6154.37,13.12,55376.19
+686,283,53,Premium Blazer,XL,Grey,9,5780.99,1.21,52027.74
+687,283,43,Ethnic Muffler,XXL,Brown,8,1568.23,35.31,12510.56
+688,284,46,Contemporary Formal Shirt,40,Khaki,3,4479.28,24.0,13413.83
+689,284,83,Urban Hoodie,S,Teal,5,6663.49,18.16,33299.27
+690,284,161,Elegant Anarkali Dress,30,Red,5,2420.31,18.95,12082.61
+691,284,147,Comfort Tote Bag,S,Black,1,2506.0,30.93,2475.07
+692,285,98,Classic Cotton T-Shirt,34,Khaki,9,7318.63,5.11,65862.54
+693,285,14,Formal Cardigan,L,Navy Blue,9,6724.02,35.91,60480.24
+694,285,31,Traditional Hat,32,Lavender,8,1069.91,22.86,8536.46
+695,285,56,Modern Down Jacket,S,Peach,4,3597.55,35.86,14354.32
+696,286,145,Modern Kaftan,30,Coral,10,6580.46,47.83,65756.78
+697,286,8,Essential Cotton T-Shirt,32,Red,6,3911.91,7.76,23463.7
+698,287,190,Premium Salwar Suit,40,Teal,7,1251.29,47.77,8711.27
+699,287,188,Trendy Lehenga,32,Charcoal,7,3135.43,32.86,21915.13
+700,288,164,Classic Nehru Jacket,38,Dark Green,5,1338.51,27.53,6665.03
+701,289,43,Ethnic Muffler,XXL,Brown,6,1609.81,35.12,9623.72
+702,289,63,Basic Formal Shirt,34,Burgundy,10,7209.42,27.01,72067.23
+703,290,143,Casual Tie,M,Lavender,5,8198.47,6.11,40986.22
+704,290,186,Sporty Skirt,M,White,8,1927.62,44.13,15376.81
+705,290,57,Sporty Tote Bag,XXL,Sky Blue,3,8329.88,14.49,24975.16
+706,291,147,Comfort Tote Bag,S,Black,6,2488.69,12.69,14919.46
+707,292,157,Classic Anarkali Dress,30,Dark Green,2,9255.16,22.34,18487.98
+708,292,150,Modern Saree,40,Red,8,7983.69,28.55,63840.98
+709,292,113,Essential Kaftan,32,Grey,2,1894.41,16.56,3772.26
+710,292,171,Slim Fit Cotton T-Shirt,30,Navy Blue,10,5516.78,26.35,55141.46
+711,293,185,Elegant Duffle Bag,34,Red,2,4493.92,35.4,8952.44
+712,293,84,Contemporary Top,XS,White,3,1326.37,27.92,3951.19
+713,293,133,Contemporary Beanie,XS,Red,4,1620.75,1.4,6481.59
+714,293,173,Regular Fit Skirt,36,Dark Green,2,3258.86,18.22,6499.49
+715,294,141,Comfort Kaftan,28,Khaki,4,2983.66,44.17,11890.47
+716,295,195,Slim Fit Blazer,40,Brown,9,2634.91,40.54,23673.64
+717,295,176,Trendy Duffle Bag,36,Brown,8,4841.61,25.3,38707.58
+718,295,146,Traditional Bow Tie,S,Sky Blue,8,1820.47,10.53,14553.23
+719,296,171,Slim Fit Cotton T-Shirt,30,Navy Blue,9,5452.02,11.84,49056.35
+720,296,137,Basic Leather Jacket,32,Burgundy,7,474.76,39.93,3283.38
+721,296,193,Comfort Lehenga,XL,Sky Blue,1,6364.16,13.91,6350.25
+722,297,61,Oversized Rain Jacket,XXL,Peach,7,8456.39,40.73,59153.99
+723,297,147,Comfort Tote Bag,S,Black,6,2447.96,3.32,14684.46
+724,297,42,Modern Salwar Suit,32,Teal,4,3145.26,28.53,12552.51
+725,298,6,Oversized Jeans,40,Lavender,3,6295.59,8.37,18878.39
+726,299,170,Elegant Blazer,36,Maroon,1,3140.22,9.94,3130.28
+727,299,71,Regular Fit Lehenga,30,Charcoal,9,1629.52,30.6,14635.12
+728,299,51,Luxury Casual Shirt,32,Olive,1,2708.13,49.61,2658.52
+729,300,54,Formal Saree,XS,Sky Blue,10,6319.07,30.43,63160.3
+730,301,38,Trendy Night Suit,XS,White,7,5269.87,7.55,36881.54
+731,302,30,Casual Duffle Bag,40,Beige,4,2087.85,43.34,8308.07
+732,302,180,Modern Stole,32,Khaki,8,2353.17,37.63,18787.71
+733,303,14,Formal Cardigan,L,Navy Blue,2,6544.7,37.3,13052.09
+734,303,23,Luxury Beret,XL,Khaki,2,3370.7,20.13,6721.27
+735,304,47,Classic Crop Top,36,Sky Blue,1,6251.49,36.08,6215.41
+736,304,115,Luxury Leather Jacket,XS,Olive,3,6479.95,33.09,19406.76
+737,305,64,Sporty Windcheater,XS,Dark Green,4,436.84,37.34,1710.02
+738,305,55,Premium Stole,34,Sky Blue,1,1890.69,9.62,1881.07
+739,305,98,Classic Cotton T-Shirt,34,Khaki,6,7292.74,0.67,43755.78
+740,305,46,Contemporary Formal Shirt,40,Khaki,8,4366.51,33.26,34898.84
+741,306,199,Slim Fit Formal Shirt,XS,Maroon,9,6678.23,38.22,60065.86
+742,306,73,Modern Sherwani,36,Lavender,3,1146.04,14.22,3423.9
+743,306,143,Casual Tie,M,Lavender,7,8515.7,7.03,59602.87
+744,307,3,Ethnic Anarkali Dress,XL,Brown,10,9883.18,49.1,98782.67
+745,307,39,Essential Night Suit,32,White,10,8408.1,6.44,84074.53
+746,307,152,Essential Polo Shirt,L,Charcoal,4,4237.51,18.34,16931.72
+747,308,185,Elegant Duffle Bag,34,Red,7,4798.94,3.3,33589.3
+748,308,190,Premium Salwar Suit,40,Teal,1,1241.64,10.73,1230.91
+749,308,171,Slim Fit Cotton T-Shirt,30,Navy Blue,10,5591.18,6.41,55905.39
+750,309,5,Slim Fit Stole,XL,Charcoal,2,5953.88,22.69,11885.07
+751,309,37,Comfort Trousers,S,Cream,5,6659.14,46.76,33248.92
+752,309,141,Comfort Kaftan,28,Khaki,6,3102.82,19.37,18597.58
+753,309,196,Contemporary Casual Shirt,XL,Maroon,3,10213.65,1.35,30639.61
+754,310,191,Elegant Blazer,L,Peach,3,5596.13,49.5,16738.9
+755,311,109,Trendy Crop Top,40,Dark Green,2,4361.65,8.1,8715.19
+756,312,143,Casual Tie,M,Lavender,8,8208.33,8.32,65658.35
+757,312,159,Traditional Waistcoat,40,Charcoal,1,3818.43,36.08,3782.35
+758,313,111,Traditional Tank Top,28,Sky Blue,7,3494.11,1.12,24457.68
+759,314,34,Formal Salwar Suit,S,Peach,3,4115.73,26.55,12320.63
+760,314,28,Elegant Kaftan,30,Khaki,6,3135.87,47.65,18767.56
+761,315,176,Trendy Duffle Bag,36,Brown,1,4690.65,35.52,4655.13
+762,315,74,Ethnic Tie,M,Khaki,1,7744.14,6.23,7737.91
+763,316,104,Formal Cardigan,M,Charcoal,8,4060.14,38.42,32442.68
+764,316,116,Oversized Backpack,30,Sky Blue,6,3257.57,39.34,19506.07
+765,316,160,Classic Backpack,32,Grey,2,1391.5,29.51,2753.49
+766,317,96,Designer Bathrobe,40,Brown,5,1982.55,8.62,9904.11
+767,317,64,Sporty Windcheater,XS,Dark Green,5,417.21,5.32,2080.75
+768,317,65,Ethnic Formal Shirt,M,Charcoal,8,4085.06,5.53,32674.94
+769,318,197,Slim Fit Sling Bag,S,Black,2,10145.93,25.71,20266.16
+770,319,54,Formal Saree,XS,Sky Blue,1,6522.77,36.83,6485.94
+771,320,142,Essential Lehenga,38,Cream,4,2577.04,19.93,10288.25
+772,320,196,Contemporary Casual Shirt,XL,Maroon,2,10520.74,21.19,21020.29
+773,320,11,Sporty Muffler,28,Coral,9,8355.45,4.87,75194.18
+774,320,187,Sporty Hoodie,36,White,6,2234.38,7.41,13398.85
+775,321,185,Elegant Duffle Bag,34,Red,2,4864.57,35.22,9693.92
+776,322,22,Luxury Sweater,40,Dark Green,4,5619.99,20.43,22459.55
+777,322,27,Sporty Saree,40,Coral,4,5968.61,35.63,23838.81
+778,322,86,Contemporary Bomber Jacket,38,Coral,2,3228.07,40.65,6415.49
+779,322,74,Ethnic Tie,M,Khaki,6,8347.18,47.69,50035.37
+780,323,77,Casual Salwar Suit,M,Mustard,4,8484.95,8.75,33931.07
+781,323,181,Essential Tie,XL,Burgundy,4,545.69,28.26,2154.51
+782,323,47,Classic Crop Top,36,Sky Blue,6,6533.01,26.41,39171.66
+783,323,91,Designer Jeans,XL,Lavender,8,2885.46,21.47,23062.2
+784,324,128,Modern Maxi Dress,30,Coral,1,7161.81,28.06,7133.75
+785,324,86,Contemporary Bomber Jacket,38,Coral,4,3238.1,40.18,12912.23
+786,324,199,Slim Fit Formal Shirt,XS,Maroon,4,7047.47,7.83,28182.03
+787,325,66,Comfort Shawl,L,Red,7,6982.05,21.84,48852.54
+788,325,39,Essential Night Suit,32,White,2,8468.32,3.2,16933.45
+789,325,62,Trendy Lehenga,S,Mustard,3,3211.38,23.75,9610.39
+790,325,9,Slim Fit Gloves,30,Black,1,7170.21,20.15,7150.06
+791,326,26,Regular Fit Vest,S,Dark Green,5,1148.28,31.34,5710.04
+792,326,7,Comfort Sling Bag,30,Navy Blue,2,5858.25,2.53,11713.96
+793,326,151,Traditional Chinos,32,Burgundy,8,2200.42,6.22,17597.16
+794,326,65,Ethnic Formal Shirt,M,Charcoal,1,3905.56,32.76,3872.8
+795,327,140,Modern Maxi Dress,L,Cream,9,3144.08,35.75,28261.0
+796,327,194,Oversized Kaftan,XXL,Burgundy,5,6468.69,15.75,32327.71
+797,328,82,Classic Vest,L,Olive,3,872.74,30.53,2587.7
+798,329,151,Traditional Chinos,32,Burgundy,5,2195.88,29.9,10949.5
+799,330,102,Comfort Saree,38,Coral,10,2340.49,24.64,23380.28
+800,330,58,Comfort Wallet,40,Charcoal,2,6722.2,29.52,13414.88
+801,330,176,Trendy Duffle Bag,36,Brown,2,4991.68,19.11,9964.25
+802,330,143,Casual Tie,M,Lavender,5,8052.73,45.4,40218.27
+803,331,39,Essential Night Suit,32,White,4,8587.58,47.63,34302.71
+804,332,123,Traditional Shawl,XL,Cream,10,4816.32,11.66,48151.5
+805,332,45,Casual Salwar Suit,L,Sky Blue,6,1407.89,10.55,8436.79
+806,332,177,Formal Rain Jacket,S,Sky Blue,9,4346.17,29.76,39085.74
+807,332,150,Modern Saree,40,Red,10,8790.05,49.78,87850.76
+808,333,4,Urban Beanie,XL,Sky Blue,2,1798.95,45.55,3552.34
+809,333,43,Ethnic Muffler,XXL,Brown,7,1642.29,47.79,11448.26
+810,333,36,Designer Night Suit,40,Coral,1,7505.02,2.55,7502.47
+811,333,118,Casual Casual Shirt,28,Khaki,9,6589.51,5.28,59300.27
+812,334,15,Premium Nehru Jacket,M,Lavender,3,5564.87,32.96,16661.64
+813,334,162,Oversized Scarf,40,Grey,5,7319.94,46.54,36553.15
+814,334,140,Modern Maxi Dress,L,Cream,2,3202.08,34.22,6369.94
+815,334,193,Comfort Lehenga,XL,Sky Blue,10,6619.76,29.77,66167.83
+816,335,38,Trendy Night Suit,XS,White,2,5290.3,22.22,10558.39
+817,335,6,Oversized Jeans,40,Lavender,9,6204.67,29.38,55812.62
+818,335,75,Ethnic Sherwani,40,Coral,9,3798.77,41.02,34147.88
+819,335,19,Modern Cardigan,34,Coral,9,3999.51,44.71,35950.84
+820,336,137,Basic Leather Jacket,32,Burgundy,3,438.23,6.01,1308.68
+821,336,92,Comfort Bathrobe,32,Beige,9,1488.94,46.36,13354.1
+822,336,147,Comfort Tote Bag,S,Black,8,2679.89,18.69,21420.39
+823,337,139,Essential Chinos,XL,Brown,3,3168.98,1.28,9505.66
+824,338,108,Premium Beanie,34,Navy Blue,8,4398.73,33.33,35156.53
+825,339,49,Casual Sling Bag,M,Beige,7,7322.61,14.98,51243.31
+826,339,104,Formal Cardigan,M,Charcoal,2,4145.12,33.4,8256.83
+827,340,131,Modern Gloves,32,Coral,8,2289.55,29.52,18286.87
+828,340,43,Ethnic Muffler,XXL,Brown,10,1612.66,27.98,16098.59
+829,341,119,Designer Joggers,XL,Black,7,11038.74,49.95,77221.22
+830,341,123,Traditional Shawl,XL,Cream,1,4816.82,29.44,4787.38
+831,342,183,Oversized Maxi Dress,38,Beige,2,4810.76,39.52,9582.0
+832,342,149,Regular Fit Anarkali Dress,XXL,Charcoal,7,4191.46,21.36,29318.83
+833,343,142,Essential Lehenga,38,Cream,4,2598.75,14.21,10380.79
+834,343,177,Formal Rain Jacket,S,Sky Blue,9,4296.03,16.67,38647.62
+835,343,97,Traditional Beanie,M,Burgundy,6,5725.98,46.55,34309.31
+836,343,149,Regular Fit Anarkali Dress,XXL,Charcoal,7,4223.3,32.0,29531.1
+837,344,180,Modern Stole,32,Khaki,5,2459.44,18.82,12278.38
+838,344,140,Modern Maxi Dress,L,Cream,4,3370.29,46.78,13434.38
+839,344,110,Traditional Cardigan,S,Maroon,1,5467.3,25.59,5441.71
+840,344,39,Essential Night Suit,32,White,2,8550.45,7.65,17093.26
+841,345,27,Sporty Saree,40,Coral,7,6026.92,49.06,42139.4
+842,345,92,Comfort Bathrobe,32,Beige,10,1527.58,41.28,15234.56
+843,345,105,Urban Tote Bag,32,Charcoal,5,997.62,6.25,4981.87
+844,346,69,Contemporary Track Pants,L,Dark Green,9,4985.77,34.83,44837.13
+845,346,59,Classic Tote Bag,XS,Mustard,10,5957.57,21.8,59553.91
+846,347,102,Comfort Saree,38,Coral,8,2247.69,49.38,17932.12
+847,347,135,Essential Blazer,XL,Sky Blue,8,781.25,3.41,6246.61
+848,347,6,Oversized Jeans,40,Lavender,10,6419.7,4.46,64192.58
+849,348,55,Premium Stole,34,Sky Blue,2,1950.28,37.83,3862.72
+850,349,92,Comfort Bathrobe,32,Beige,10,1508.81,8.16,15079.94
+851,349,53,Premium Blazer,XL,Grey,7,5563.99,10.67,38937.26
+852,350,1,Elegant Night Suit,36,Black,6,8776.12,12.43,52644.31
+853,350,66,Comfort Shawl,L,Red,6,6746.71,4.72,40475.57
+854,350,86,Contemporary Bomber Jacket,38,Coral,1,3209.04,18.02,3191.02
+855,350,72,Luxury Windcheater,S,Peach,5,2305.85,13.11,11516.15
+856,351,110,Traditional Cardigan,S,Maroon,6,5694.27,43.65,34121.95
+857,352,71,Regular Fit Lehenga,30,Charcoal,1,1734.97,20.82,1714.15
+858,352,17,Sporty Windcheater,S,Charcoal,8,6245.8,24.21,49942.21
+859,352,192,Regular Fit Stole,S,Coral,2,5425.78,6.34,10845.23
+860,353,153,Traditional Shorts,XXL,Grey,9,1415.91,27.33,12715.86
+861,353,11,Sporty Muffler,28,Coral,9,8844.84,45.38,79558.19
+862,353,1,Elegant Night Suit,36,Black,7,9038.98,27.56,63245.27
+863,354,70,Regular Fit Scarf,S,Brown,2,10206.76,20.68,20392.84
+864,355,58,Comfort Wallet,40,Charcoal,6,7031.97,45.96,42145.83
+865,356,68,Comfort Muffler,38,Navy Blue,9,9784.54,33.16,88027.73
+866,356,159,Traditional Waistcoat,40,Charcoal,4,3921.85,29.09,15658.31
+867,356,179,Premium Sherwani,XS,White,10,5114.4,15.58,51128.38
+868,356,130,Comfort Vest,32,White,7,2633.29,34.43,18398.61
+869,357,84,Contemporary Top,XS,White,6,1327.58,48.94,7916.56
+870,358,29,Trendy Gloves,30,Peach,2,631.6,36.12,1227.08
+871,359,15,Premium Nehru Jacket,M,Lavender,8,5757.22,12.32,46045.42
+872,359,98,Classic Cotton T-Shirt,34,Khaki,1,7405.88,3.52,7402.36
+873,360,109,Trendy Crop Top,40,Dark Green,1,4298.86,29.8,4269.06
+874,361,54,Formal Saree,XS,Sky Blue,7,6195.7,20.54,43349.35
+875,361,182,Classic Saree,S,Black,3,4837.86,28.96,14484.61
+876,361,84,Contemporary Top,XS,White,6,1329.13,18.95,7955.81
+877,361,2,Trendy Stole,38,Beige,1,5902.73,32.8,5869.93
+878,362,35,Regular Fit Kurta,M,Beige,5,1401.71,29.02,6979.55
+879,362,46,Contemporary Formal Shirt,40,Khaki,1,4204.85,18.82,4186.03
+880,362,97,Traditional Beanie,M,Burgundy,5,6152.59,37.03,30725.9
+881,363,111,Traditional Tank Top,28,Sky Blue,8,3334.14,16.34,26656.82
+882,363,112,Luxury Scarf,L,Grey,5,785.1,41.01,3884.47
+883,363,80,Premium Blazer,32,Charcoal,6,1938.32,18.21,11611.71
+884,363,194,Oversized Kaftan,XXL,Burgundy,8,6310.42,44.62,50438.75
+885,364,79,Urban Crop Top,M,Mustard,6,1591.01,9.61,9536.47
+886,364,130,Comfort Vest,32,White,10,2485.12,6.54,24844.67
+887,364,95,Slim Fit Crop Top,38,Cream,5,4957.92,43.79,24745.79
+888,364,34,Formal Salwar Suit,S,Peach,3,4078.33,16.83,12218.16
+889,365,14,Formal Cardigan,L,Navy Blue,2,6402.06,16.7,12787.43
+890,365,156,Ethnic Skirt,M,Cream,6,4949.65,2.68,29695.24
+891,365,178,Essential Belt,28,Olive,7,8622.25,9.34,60346.44
+892,366,39,Essential Night Suit,32,White,5,8312.43,38.1,41524.03
+893,366,116,Oversized Backpack,30,Sky Blue,7,3444.64,23.92,24088.56
+894,367,80,Premium Blazer,32,Charcoal,7,1878.82,15.8,13135.96
+895,367,18,Premium Casual Shirt,28,Burgundy,7,5457.81,3.95,38200.7
+896,367,72,Luxury Windcheater,S,Peach,2,2207.92,45.54,4370.3
+897,367,129,Modern Top,28,Lavender,5,527.77,25.85,2613.0
+898,368,16,Formal Tie,XS,Maroon,1,863.89,48.97,814.92
+899,368,4,Urban Beanie,XL,Sky Blue,2,1755.06,25.81,3484.32
+900,368,102,Comfort Saree,38,Coral,8,2385.14,49.58,19031.54
+901,368,33,Basic Belt,S,Burgundy,4,2635.54,8.64,10533.5
+902,369,114,Comfort Kurta,M,Peach,1,3490.05,13.66,3476.39
+903,369,35,Regular Fit Kurta,M,Beige,7,1440.28,42.64,10039.29
+904,369,164,Classic Nehru Jacket,38,Dark Green,7,1315.31,36.52,9170.62
+905,370,14,Formal Cardigan,L,Navy Blue,4,6492.18,11.44,25957.29
+906,370,195,Slim Fit Blazer,40,Brown,8,2594.15,21.5,20731.68
+907,371,193,Comfort Lehenga,XL,Sky Blue,9,6257.72,27.71,56291.81
+908,371,163,Comfort Hat,XL,Coral,3,8566.4,13.24,25685.97
+909,371,132,Modern Saree,34,Sky Blue,3,6229.17,6.17,18681.35
+910,371,143,Casual Tie,M,Lavender,4,8407.87,43.93,33587.53
+911,372,193,Comfort Lehenga,XL,Sky Blue,5,6257.07,33.79,31251.57
+912,372,110,Traditional Cardigan,S,Maroon,5,5490.82,18.37,27435.75
+913,372,167,Modern Tote Bag,28,Grey,8,7339.76,7.28,58710.84
+914,373,20,Slim Fit Tote Bag,36,Lavender,2,4834.44,9.68,9659.19
+915,373,183,Oversized Maxi Dress,38,Beige,8,4824.69,26.86,38570.67
+916,374,175,Sporty Tank Top,40,Dark Green,10,2036.48,49.16,20315.63
+917,374,116,Oversized Backpack,30,Sky Blue,8,3422.8,19.91,27362.53
+918,374,53,Premium Blazer,XL,Grey,4,5903.97,32.25,23583.65
+919,374,174,Regular Fit Crop Top,36,Charcoal,3,768.95,1.54,2305.32
+920,375,176,Trendy Duffle Bag,36,Brown,3,4994.72,44.89,14939.28
+921,375,91,Designer Jeans,XL,Lavender,1,2955.61,3.04,2952.57
+922,375,18,Premium Casual Shirt,28,Burgundy,10,5915.03,48.12,59102.16
+923,375,11,Sporty Muffler,28,Coral,5,8648.23,31.77,43209.37
+924,376,99,Regular Fit Suspenders,30,Beige,10,6906.81,48.94,69019.18
+925,377,185,Elegant Duffle Bag,34,Red,9,4634.78,7.24,41705.74
+926,377,160,Classic Backpack,32,Grey,4,1385.58,11.48,5530.85
+927,377,79,Urban Crop Top,M,Mustard,1,1442.69,46.04,1396.65
+928,378,132,Modern Saree,34,Sky Blue,2,6500.42,19.82,12981.02
+929,379,130,Comfort Vest,32,White,5,2618.69,3.35,13090.12
+930,379,109,Trendy Crop Top,40,Dark Green,6,4653.8,13.94,27908.85
+931,379,66,Comfort Shawl,L,Red,6,6538.7,21.37,39210.82
+932,379,137,Basic Leather Jacket,32,Burgundy,4,469.74,43.95,1835.02
+933,380,122,Premium Sherwani,34,Coral,10,2336.16,22.52,23339.11
+934,381,4,Urban Beanie,XL,Sky Blue,6,1711.78,29.79,10240.89
+935,382,138,Essential Cotton T-Shirt,28,Teal,8,7197.65,25.62,57555.61
+936,382,66,Comfort Shawl,L,Red,9,6873.12,40.2,61817.89
+937,383,151,Traditional Chinos,32,Burgundy,9,2165.81,7.75,19484.56
+938,383,196,Contemporary Casual Shirt,XL,Maroon,10,10046.13,49.66,100411.67
+939,383,81,Designer Waistcoat,XS,Red,8,1238.74,6.64,9903.25
+940,383,123,Traditional Shawl,XL,Cream,2,4820.51,22.47,9618.55
+941,384,65,Ethnic Formal Shirt,M,Charcoal,7,3997.75,40.51,27943.74
+942,384,187,Sporty Hoodie,36,White,10,2256.3,48.18,22514.79
+943,385,45,Casual Salwar Suit,L,Sky Blue,5,1362.43,10.19,6801.98
+944,385,143,Casual Tie,M,Lavender,4,8486.54,8.14,33938.03
+945,385,61,Oversized Rain Jacket,XXL,Peach,4,8388.54,5.16,33548.98
+946,386,166,Sporty Night Suit,XXL,Coral,9,9604.57,19.59,86421.57
+947,387,146,Traditional Bow Tie,S,Sky Blue,4,1943.94,25.85,7749.91
+948,387,132,Modern Saree,34,Sky Blue,1,6498.1,27.85,6470.25
+949,388,43,Ethnic Muffler,XXL,Brown,3,1521.06,40.81,4522.36
+950,388,4,Urban Beanie,XL,Sky Blue,3,1709.76,44.45,5084.83
+951,389,17,Sporty Windcheater,S,Charcoal,9,6009.13,21.7,54060.49
+952,390,12,Classic Cap,L,Charcoal,1,10529.81,31.57,10498.24
+953,391,184,Elegant Hat,36,Navy Blue,7,3725.21,27.39,26049.1
+954,391,76,Trendy Bathrobe,40,Teal,4,4682.8,39.84,18691.37
+955,391,74,Ethnic Tie,M,Khaki,1,8303.06,11.76,8291.3
+956,391,142,Essential Lehenga,38,Cream,5,2811.57,32.49,14025.35
+957,392,151,Traditional Chinos,32,Burgundy,9,2220.59,39.31,19945.97
+958,393,108,Premium Beanie,34,Navy Blue,9,4550.38,9.75,40943.67
+959,393,80,Premium Blazer,32,Charcoal,7,2029.39,29.44,14176.3
+960,393,174,Regular Fit Crop Top,36,Charcoal,2,732.13,9.93,1454.33
+961,394,118,Casual Casual Shirt,28,Khaki,7,6637.53,0.18,46462.54
+962,395,85,Contemporary Cardigan,34,Mustard,10,3933.14,41.7,39289.74
+963,395,85,Contemporary Cardigan,34,Mustard,1,4152.78,2.3,4150.48
+964,395,111,Traditional Tank Top,28,Sky Blue,7,3338.26,4.6,23363.24
+965,396,166,Sporty Night Suit,XXL,Coral,7,10025.33,14.95,70162.34
+966,397,182,Classic Saree,S,Black,2,5159.0,44.59,10273.41
+967,398,73,Modern Sherwani,36,Lavender,1,1235.11,27.08,1208.03
+968,398,26,Regular Fit Vest,S,Dark Green,7,1107.83,46.12,7708.72
+969,399,198,Modern Tie,XL,Navy Blue,10,7258.63,26.14,72560.19
+970,399,4,Urban Beanie,XL,Sky Blue,6,1810.34,38.01,10824.04
+971,399,111,Traditional Tank Top,28,Sky Blue,7,3382.96,14.71,23666.0
+972,400,97,Traditional Beanie,M,Burgundy,9,6114.92,28.23,55006.07
+973,400,104,Formal Cardigan,M,Charcoal,3,3985.42,22.96,11933.3
+974,401,136,Comfort Maxi Dress,S,Black,4,4871.81,27.9,19459.33
+975,402,121,Designer Night Suit,40,Cream,9,7995.26,33.02,71924.28
+976,403,158,Luxury Hat,30,Maroon,2,6107.28,18.55,12196.02
+977,403,152,Essential Polo Shirt,L,Charcoal,7,4010.36,22.68,28049.82
+978,403,20,Slim Fit Tote Bag,36,Lavender,10,5000.8,18.85,49989.15
+979,403,178,Essential Belt,28,Olive,10,8694.25,1.11,86941.35
+980,404,34,Formal Salwar Suit,S,Peach,7,4124.56,38.2,28833.74
+981,405,117,Luxury Leather Jacket,M,Teal,9,2252.9,41.55,20234.55
+982,405,48,Trendy Sling Bag,L,Olive,7,3528.11,48.89,24647.86
+983,405,142,Essential Lehenga,38,Cream,1,2764.13,49.02,2715.11
+984,406,36,Designer Night Suit,40,Coral,2,7968.97,18.06,15919.88
+985,406,131,Modern Gloves,32,Coral,6,2359.88,5.89,14153.38
+986,406,125,Luxury Cardigan,S,Dark Green,8,2077.97,4.51,16619.24
+987,407,125,Luxury Cardigan,S,Dark Green,5,2099.06,9.24,10486.07
+988,407,20,Slim Fit Tote Bag,36,Lavender,2,5047.0,39.86,10054.14
+989,408,72,Luxury Windcheater,S,Peach,2,2333.28,29.61,4636.96
+990,408,36,Designer Night Suit,40,Coral,7,7547.31,8.14,52823.05
+991,409,86,Contemporary Bomber Jacket,38,Coral,9,3104.65,22.46,27919.38
+992,409,182,Classic Saree,S,Black,5,5168.0,18.32,25821.67
+993,409,34,Formal Salwar Suit,S,Peach,2,4100.41,17.33,8183.48
+994,409,76,Trendy Bathrobe,40,Teal,6,4739.48,41.75,28395.11
+995,410,112,Luxury Scarf,L,Grey,9,782.06,42.25,6996.3
+996,410,37,Comfort Trousers,S,Cream,3,7132.85,18.36,21380.19
+997,410,1,Elegant Night Suit,36,Black,10,8615.13,36.72,86114.63
+998,411,162,Oversized Scarf,40,Grey,7,7420.12,35.21,51905.64
+999,412,105,Urban Tote Bag,32,Charcoal,5,1040.28,22.97,5178.43
+1000,412,55,Premium Stole,34,Sky Blue,3,1887.61,43.23,5619.59
+1001,412,46,Contemporary Formal Shirt,40,Khaki,9,4145.86,28.0,37284.75
+1002,413,185,Elegant Duffle Bag,34,Red,5,4391.9,4.45,21955.06
+1003,413,134,Premium Stole,40,Charcoal,9,2265.63,34.44,20356.21
+1004,413,184,Elegant Hat,36,Navy Blue,8,3773.67,6.81,30182.59
+1005,414,19,Modern Cardigan,34,Coral,7,4004.95,27.11,28007.56
+1006,414,198,Modern Tie,XL,Navy Blue,6,6903.59,3.3,41418.21
+1007,414,90,Oversized Night Suit,XXL,Lavender,9,7737.76,37.65,69602.19
+1008,414,16,Formal Tie,XS,Maroon,2,806.86,18.59,1595.14
+1009,415,157,Classic Anarkali Dress,30,Dark Green,3,9923.94,44.3,29727.52
+1010,416,169,Basic Night Suit,28,Grey,2,6856.84,21.37,13692.32
+1011,417,191,Elegant Blazer,L,Peach,6,5721.24,40.85,34286.56
+1012,418,14,Formal Cardigan,L,Navy Blue,10,6224.7,2.19,62244.78
+1013,418,119,Designer Joggers,XL,Black,2,11305.03,29.68,22580.37
+1014,418,175,Sporty Tank Top,40,Dark Green,1,1883.99,24.19,1859.8
+1015,418,180,Modern Stole,32,Khaki,2,2469.99,28.7,4911.27
+1016,419,144,Modern Wallet,36,Cream,6,4969.68,11.35,29806.71
+1017,419,166,Sporty Night Suit,XXL,Coral,3,9905.33,26.1,29689.89
+1018,419,106,Traditional Trousers,XXL,Peach,10,1054.74,10.67,10536.7
+1019,420,89,Luxury Windcheater,30,White,3,5046.51,13.95,15125.57
+1020,420,121,Designer Night Suit,40,Cream,2,7530.03,36.64,15023.42
+1021,420,160,Classic Backpack,32,Grey,9,1473.89,48.87,13216.11
+1022,420,52,Comfort Tote Bag,M,White,5,8424.44,4.13,42118.05
+1023,421,10,Luxury Hoodie,XS,White,5,6689.67,7.69,33440.64
+1024,422,57,Sporty Tote Bag,XXL,Sky Blue,3,7701.83,44.62,23060.87
+1025,422,55,Premium Stole,34,Sky Blue,6,1920.04,26.2,11494.02
+1026,422,62,Trendy Lehenga,S,Mustard,6,3268.29,7.57,19602.16
+1027,422,136,Comfort Maxi Dress,S,Black,1,4803.22,13.65,4789.57
+1028,423,10,Luxury Hoodie,XS,White,7,6772.47,29.41,47377.88
+1029,423,57,Sporty Tote Bag,XXL,Sky Blue,5,8400.17,46.55,41954.28
+1030,423,129,Modern Top,28,Lavender,4,528.53,48.38,2065.74
+1031,423,82,Classic Vest,L,Olive,4,905.59,49.07,3573.3
+1032,424,104,Formal Cardigan,M,Charcoal,3,4049.85,16.54,12133.01
+1033,424,14,Formal Cardigan,L,Navy Blue,8,6688.09,46.35,53458.4
+1034,424,181,Essential Tie,XL,Burgundy,1,567.99,22.45,545.54
+1035,425,91,Designer Jeans,XL,Lavender,2,2866.58,19.85,5713.3
+1036,425,53,Premium Blazer,XL,Grey,10,5609.69,41.23,56055.68
+1037,425,153,Traditional Shorts,XXL,Grey,1,1411.12,16.67,1394.45
+1038,426,28,Elegant Kaftan,30,Khaki,1,3194.4,34.99,3159.41
+1039,426,188,Trendy Lehenga,32,Charcoal,1,3092.77,30.0,3062.77
+1040,426,60,Casual Waistcoat,40,White,2,3316.24,49.84,6582.65
+1041,427,200,Sporty Joggers,XL,Beige,9,5914.52,4.74,53225.93
+1042,427,176,Trendy Duffle Bag,36,Brown,1,4650.21,40.27,4609.94
+1043,427,181,Essential Tie,XL,Burgundy,8,585.43,2.7,4680.74
+1044,427,180,Modern Stole,32,Khaki,3,2292.67,1.19,6876.82
+1045,428,60,Casual Waistcoat,40,White,6,3271.76,46.61,19583.98
+1046,428,179,Premium Sherwani,XS,White,2,5185.65,49.91,10321.38
+1047,428,22,Luxury Sweater,40,Dark Green,3,5427.24,45.06,16236.65
+1048,429,16,Formal Tie,XS,Maroon,1,810.56,20.88,789.68
+1049,429,180,Modern Stole,32,Khaki,1,2270.35,5.55,2264.8
+1050,429,55,Premium Stole,34,Sky Blue,3,2015.38,17.35,6028.79
+1051,430,113,Essential Kaftan,32,Grey,10,1931.15,21.9,19289.6
+1052,430,12,Classic Cap,L,Charcoal,8,10077.92,22.15,80601.23
+1053,430,49,Casual Sling Bag,M,Beige,3,7246.25,27.54,21711.2
+1054,431,182,Classic Saree,S,Black,10,5143.05,32.2,51398.26
+1055,431,60,Casual Waistcoat,40,White,2,3015.35,49.13,5981.57
+1056,431,74,Ethnic Tie,M,Khaki,10,7716.12,15.2,77146.04
+1057,432,53,Premium Blazer,XL,Grey,10,5570.44,13.87,55690.52
+1058,433,9,Slim Fit Gloves,30,Black,4,6774.04,25.32,27070.83
+1059,433,179,Premium Sherwani,XS,White,5,4854.57,27.14,24245.72
+1060,434,57,Sporty Tote Bag,XXL,Sky Blue,6,8391.25,30.83,50316.68
+1061,435,140,Modern Maxi Dress,L,Cream,6,3240.53,37.5,19405.68
+1062,435,96,Designer Bathrobe,40,Brown,10,1964.73,2.29,19645.01
+1063,436,19,Modern Cardigan,34,Coral,1,3649.53,48.19,3601.34
+1064,436,146,Traditional Bow Tie,S,Sky Blue,10,1754.99,0.96,17548.98
+1065,436,147,Comfort Tote Bag,S,Black,7,2671.93,45.44,18658.05
+1066,436,141,Comfort Kaftan,28,Khaki,1,2951.27,19.34,2931.93
+1067,437,123,Traditional Shawl,XL,Cream,5,4700.88,34.77,23469.64
+1068,437,62,Trendy Lehenga,S,Mustard,8,3145.65,34.72,25130.49
+1069,437,33,Basic Belt,S,Burgundy,4,2578.84,28.51,10286.87
+1070,437,74,Ethnic Tie,M,Khaki,5,8021.56,48.16,40059.66
+1071,438,58,Comfort Wallet,40,Charcoal,1,6579.05,24.54,6554.51
+1072,438,97,Traditional Beanie,M,Burgundy,3,5868.81,0.4,17606.02
+1073,438,42,Modern Salwar Suit,32,Teal,6,3131.38,3.64,18784.65
+1074,439,98,Classic Cotton T-Shirt,34,Khaki,6,7329.73,44.94,43933.43
+1075,439,48,Trendy Sling Bag,L,Olive,5,3563.75,26.86,17791.9
+1076,440,150,Modern Saree,40,Red,1,8537.99,33.07,8504.92
+1077,440,147,Comfort Tote Bag,S,Black,3,2477.35,11.07,7420.98
+1078,441,25,Traditional Polo Shirt,36,Beige,2,1980.52,39.37,3921.67
+1079,441,147,Comfort Tote Bag,S,Black,1,2591.38,44.62,2546.76
+1080,441,174,Regular Fit Crop Top,36,Charcoal,1,758.17,0.28,757.89
+1081,442,131,Modern Gloves,32,Coral,5,2187.46,7.57,10929.74
+1082,442,30,Casual Duffle Bag,40,Beige,2,2139.52,22.2,4256.84
+1083,442,35,Regular Fit Kurta,M,Beige,10,1460.13,14.08,14587.21
+1084,442,174,Regular Fit Crop Top,36,Charcoal,6,806.91,46.18,4795.29
+1085,443,86,Contemporary Bomber Jacket,38,Coral,10,3094.56,49.1,30896.51
+1086,443,116,Oversized Backpack,30,Sky Blue,6,3407.61,43.04,20402.61
+1087,443,23,Luxury Beret,XL,Khaki,3,3548.51,29.68,10615.85
+1088,443,109,Trendy Crop Top,40,Dark Green,5,4271.1,2.32,21353.2
+1089,444,108,Premium Beanie,34,Navy Blue,3,4623.92,44.24,13827.53
+1090,444,37,Comfort Trousers,S,Cream,8,6789.04,26.03,54286.27
+1091,445,66,Comfort Shawl,L,Red,8,7048.18,44.5,56340.96
+1092,446,1,Elegant Night Suit,36,Black,8,8707.3,40.06,69618.32
+1093,446,42,Modern Salwar Suit,32,Teal,4,3094.82,27.54,12351.75
+1094,447,49,Casual Sling Bag,M,Beige,7,7427.51,8.41,51984.15
+1095,447,166,Sporty Night Suit,XXL,Coral,10,9832.65,8.55,98317.9
+1096,448,135,Essential Blazer,XL,Sky Blue,2,774.77,45.49,1504.05
+1097,448,186,Sporty Skirt,M,White,1,1917.58,28.28,1889.3
+1098,448,112,Luxury Scarf,L,Grey,2,837.45,25.16,1649.74
+1099,449,138,Essential Cotton T-Shirt,28,Teal,6,6743.82,27.53,40435.39
+1100,449,187,Sporty Hoodie,36,White,10,2336.77,28.45,23339.27
+1101,450,177,Formal Rain Jacket,S,Sky Blue,8,4120.42,34.54,32928.86
+1102,450,98,Classic Cotton T-Shirt,34,Khaki,9,7536.95,35.44,67797.14
+1103,450,193,Comfort Lehenga,XL,Sky Blue,6,6858.78,23.94,41128.76
+1104,450,196,Contemporary Casual Shirt,XL,Maroon,10,10929.97,3.36,109296.33
+1105,451,156,Ethnic Skirt,M,Cream,3,5099.62,29.09,15269.77
+1106,451,45,Casual Salwar Suit,L,Sky Blue,9,1383.9,48.07,12407.06
+1107,451,80,Premium Blazer,32,Charcoal,1,1986.4,49.77,1936.63
+1108,451,36,Designer Night Suit,40,Coral,3,7918.81,23.84,23732.6
+1109,452,14,Formal Cardigan,L,Navy Blue,3,6507.47,30.75,19491.66
+1110,453,161,Elegant Anarkali Dress,30,Red,4,2331.36,47.28,9278.15
+1111,453,16,Formal Tie,XS,Maroon,5,804.43,13.94,4008.21
+1112,454,168,Regular Fit Vest,40,Mustard,4,744.25,46.23,2930.76
+1113,454,135,Essential Blazer,XL,Sky Blue,2,737.65,48.7,1426.6
+1114,454,93,Trendy Formal Shirt,38,Navy Blue,10,9282.31,9.81,92813.27
+1115,455,173,Regular Fit Skirt,36,Dark Green,3,3473.27,36.74,10383.06
+1116,456,10,Luxury Hoodie,XS,White,4,7153.01,13.85,28598.21
+1117,456,183,Oversized Maxi Dress,38,Beige,3,4790.16,6.56,14363.93
+1118,457,128,Modern Maxi Dress,30,Coral,6,7664.39,6.36,45979.97
+1119,457,27,Sporty Saree,40,Coral,4,6178.94,9.7,24706.04
+1120,457,199,Slim Fit Formal Shirt,XS,Maroon,3,6971.45,20.9,20893.45
+1121,457,13,Classic Top,L,Red,7,855.34,9.85,5977.56
+1122,458,89,Luxury Windcheater,30,White,10,4854.87,41.41,48507.29
+1123,459,118,Casual Casual Shirt,28,Khaki,6,6290.72,29.23,37715.08
+1124,459,157,Classic Anarkali Dress,30,Dark Green,9,9299.3,38.4,83655.32
+1125,459,176,Trendy Duffle Bag,36,Brown,1,4909.33,49.53,4859.8
+1126,459,23,Luxury Beret,XL,Khaki,7,3581.51,40.65,25029.92
+1127,460,121,Designer Night Suit,40,Cream,5,7501.79,30.41,37478.55
+1128,461,150,Modern Saree,40,Red,9,8174.78,47.21,73525.84
+1129,461,8,Essential Cotton T-Shirt,32,Red,5,3940.09,48.27,19652.2
+1130,462,18,Premium Casual Shirt,28,Burgundy,10,5675.06,8.11,56742.44
+1131,462,146,Traditional Bow Tie,S,Sky Blue,2,1908.51,10.15,3806.87
+1132,462,31,Traditional Hat,32,Lavender,7,1106.21,25.05,7718.45
+1133,463,104,Formal Cardigan,M,Charcoal,9,4196.14,48.44,37716.79
+1134,463,107,Classic Night Suit,32,Burgundy,7,5378.3,37.66,37610.42
+1135,463,11,Sporty Muffler,28,Coral,7,8560.08,19.7,59900.87
+1136,464,22,Luxury Sweater,40,Dark Green,10,5622.23,19.69,56202.6
+1137,464,93,Trendy Formal Shirt,38,Navy Blue,1,8993.04,14.35,8978.69
+1138,465,77,Casual Salwar Suit,M,Mustard,1,8173.25,21.57,8151.68
+1139,465,51,Luxury Casual Shirt,32,Olive,5,2716.08,9.43,13570.98
+1140,465,58,Comfort Wallet,40,Charcoal,10,6881.63,0.43,68815.9
+1141,466,43,Ethnic Muffler,XXL,Brown,8,1532.5,42.33,12217.71
+1142,466,99,Regular Fit Suspenders,30,Beige,3,6519.47,41.7,19516.72
+1143,466,23,Luxury Beret,XL,Khaki,5,3687.31,12.79,18423.74
+1144,466,106,Traditional Trousers,XXL,Peach,3,1094.95,36.94,3247.91
+1145,467,69,Contemporary Track Pants,L,Dark Green,3,4827.33,25.73,14456.27
+1146,467,132,Modern Saree,34,Sky Blue,1,6379.08,24.65,6354.43
+1147,467,153,Traditional Shorts,XXL,Grey,10,1345.63,31.14,13425.2
+1148,468,38,Trendy Night Suit,XS,White,4,5663.54,45.37,22608.8
+1149,468,183,Oversized Maxi Dress,38,Beige,2,5018.27,28.54,10007.99
+1150,468,98,Classic Cotton T-Shirt,34,Khaki,5,7302.4,27.99,36484.03
+1151,468,62,Trendy Lehenga,S,Mustard,3,3218.23,48.12,9606.57
+1152,469,118,Casual Casual Shirt,28,Khaki,3,6619.43,33.34,19824.96
+1153,469,94,Elegant Leather Jacket,M,Red,9,2576.31,12.28,23174.53
+1154,469,52,Comfort Tote Bag,M,White,1,8422.7,12.04,8410.66
+1155,470,181,Essential Tie,XL,Burgundy,6,595.49,26.45,3546.49
+1156,471,8,Essential Cotton T-Shirt,32,Red,6,4252.05,13.35,25498.94
+1157,471,120,Casual Top,32,Mustard,7,3840.93,28.19,26858.3
+1158,471,69,Contemporary Track Pants,L,Dark Green,8,4949.01,22.68,39569.43
+1159,471,151,Traditional Chinos,32,Burgundy,5,2212.99,47.14,11017.81
+1160,472,52,Comfort Tote Bag,M,White,6,8558.49,21.83,51329.11
+1161,472,145,Modern Kaftan,30,Coral,8,6596.64,13.54,52759.6
+1162,472,99,Regular Fit Suspenders,30,Beige,10,6756.57,19.12,67546.54
+1163,473,111,Traditional Tank Top,28,Sky Blue,4,3509.7,6.32,14032.46
+1164,474,88,Essential Trousers,XS,Coral,5,1843.06,26.77,9188.52
+1165,474,3,Ethnic Anarkali Dress,XL,Brown,10,9542.78,41.94,95385.83
+1166,475,131,Modern Gloves,32,Coral,2,2322.78,9.27,4636.29
+1167,475,103,Trendy Chinos,36,Peach,10,6608.51,39.33,66045.82
+1168,475,96,Designer Bathrobe,40,Brown,10,1973.32,15.1,19718.06
+1169,476,47,Classic Crop Top,36,Sky Blue,2,6753.54,11.98,13495.11
+1170,476,117,Luxury Leather Jacket,M,Teal,5,2149.26,18.4,10727.88
+1171,476,184,Elegant Hat,36,Navy Blue,10,4078.71,13.28,40773.85
+1172,476,99,Regular Fit Suspenders,30,Beige,2,6864.51,14.3,13714.73
+1173,477,167,Modern Tote Bag,28,Grey,9,7532.31,12.39,67778.42
+1174,477,41,Urban Chinos,XXL,Brown,7,3571.45,15.05,24985.08
+1175,477,82,Classic Vest,L,Olive,5,889.27,40.48,4405.86
+1176,478,146,Traditional Bow Tie,S,Sky Blue,7,1795.29,38.52,12528.53
+1177,478,58,Comfort Wallet,40,Charcoal,2,7279.34,34.03,14524.64
+1178,478,5,Slim Fit Stole,XL,Charcoal,1,6150.84,34.31,6116.53
+1179,478,32,Comfort Vest,34,Teal,8,2759.16,41.1,22032.15
+1180,479,37,Comfort Trousers,S,Cream,2,6578.45,36.49,13120.42
+1181,479,115,Luxury Leather Jacket,XS,Olive,2,6608.68,27.85,13189.51
+1182,480,41,Urban Chinos,XXL,Brown,4,3406.34,48.47,13576.88
+1183,480,72,Luxury Windcheater,S,Peach,3,2290.64,45.29,6826.63
+1184,480,118,Casual Casual Shirt,28,Khaki,5,6203.15,34.01,30981.73
+1185,481,13,Classic Top,L,Red,2,877.88,32.14,1723.61
+1186,481,42,Modern Salwar Suit,32,Teal,1,3087.75,20.55,3067.2
+1187,481,88,Essential Trousers,XS,Coral,3,1814.07,22.24,5419.97
+1188,481,116,Oversized Backpack,30,Sky Blue,3,3310.85,20.02,9912.52
+1189,482,105,Urban Tote Bag,32,Charcoal,4,961.28,0.17,3844.95
+1190,482,72,Luxury Windcheater,S,Peach,1,2342.31,2.33,2339.98
+1191,482,196,Contemporary Casual Shirt,XL,Maroon,6,10882.53,40.68,65254.48
+1192,483,7,Comfort Sling Bag,30,Navy Blue,6,5577.38,25.96,33438.3
+1193,484,10,Luxury Hoodie,XS,White,1,7111.51,24.19,7087.32
+1194,485,187,Sporty Hoodie,36,White,3,2144.02,9.32,6422.75
+1195,485,119,Designer Joggers,XL,Black,4,10510.14,1.32,42039.23
+1196,486,59,Classic Tote Bag,XS,Mustard,10,6386.68,6.17,63860.66
+1197,486,56,Modern Down Jacket,S,Peach,7,3630.38,31.38,25381.29
+1198,486,23,Luxury Beret,XL,Khaki,8,3696.48,45.42,29526.41
+1199,487,32,Comfort Vest,34,Teal,4,2603.14,17.29,10395.27
+1200,487,182,Classic Saree,S,Black,3,5060.13,19.54,15160.84
+1201,488,154,Essential Scarf,34,Red,3,3288.88,31.56,9835.08
+1202,489,64,Sporty Windcheater,XS,Dark Green,6,401.73,18.68,2391.72
+1203,489,158,Luxury Hat,30,Maroon,6,6409.36,42.99,38413.17
+1204,489,175,Sporty Tank Top,40,Dark Green,4,2073.32,7.42,8285.88
+1205,489,39,Essential Night Suit,32,White,8,8353.89,30.8,66800.31
+1206,490,1,Elegant Night Suit,36,Black,5,8945.23,23.68,44702.45
+1207,490,178,Essential Belt,28,Olive,4,9207.34,11.28,36818.08
+1208,491,109,Trendy Crop Top,40,Dark Green,7,4233.66,17.5,29618.09
+1209,491,9,Slim Fit Gloves,30,Black,8,6751.54,45.37,53966.96
+1210,492,12,Classic Cap,L,Charcoal,9,10174.88,30.36,91543.52
+1211,492,31,Traditional Hat,32,Lavender,9,1143.54,41.49,10250.34
+1212,492,52,Comfort Tote Bag,M,White,7,7761.22,0.71,54327.86
+1213,492,32,Comfort Vest,34,Teal,3,2608.23,17.71,7806.98
+1214,493,143,Casual Tie,M,Lavender,9,8521.69,9.14,76686.08
+1215,493,23,Luxury Beret,XL,Khaki,8,3575.44,42.09,28561.42
+1216,494,182,Classic Saree,S,Black,5,5068.65,12.91,25330.34
+1217,494,104,Formal Cardigan,M,Charcoal,8,3905.57,22.13,31222.4
+1218,494,68,Comfort Muffler,38,Navy Blue,3,9496.85,48.98,28441.58
+1219,494,56,Modern Down Jacket,S,Peach,3,3482.77,8.07,10440.24
+1220,495,163,Comfort Hat,XL,Coral,2,8919.25,14.6,17823.9
+1221,496,89,Luxury Windcheater,30,White,9,5254.37,42.9,47246.39
+1222,496,145,Modern Kaftan,30,Coral,3,6415.88,33.25,19214.4
+1223,497,46,Contemporary Formal Shirt,40,Khaki,6,4255.39,18.85,25513.49
+1224,497,159,Traditional Waistcoat,40,Charcoal,6,3724.59,32.8,22314.77
+1225,498,63,Basic Formal Shirt,34,Burgundy,8,7215.86,12.23,57714.63
+1226,498,166,Sporty Night Suit,XXL,Coral,2,9636.52,13.58,19259.47
+1227,498,176,Trendy Duffle Bag,36,Brown,8,4718.09,41.38,37703.33
+1228,498,2,Trendy Stole,38,Beige,8,6324.09,11.46,50581.25
+1229,499,198,Modern Tie,XL,Navy Blue,2,7399.5,16.2,14782.79
+1230,499,4,Urban Beanie,XL,Sky Blue,2,1707.86,19.27,3396.45
+1231,499,103,Trendy Chinos,36,Peach,1,6873.16,14.34,6858.82
+1232,500,59,Classic Tote Bag,XS,Mustard,10,6476.21,23.68,64738.47
+1233,500,94,Elegant Leather Jacket,M,Red,7,2528.17,36.52,17660.66
+1234,500,122,Premium Sherwani,34,Coral,1,2273.5,12.57,2260.93
+1235,500,19,Modern Cardigan,34,Coral,3,4003.01,32.98,11976.06

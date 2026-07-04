@@ -56,44 +56,56 @@ export default function MaterialForm({ material, suppliers, onSuccess, onCancel 
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Material Name *</label>
-          <input {...register('material_name')} className="input-field" />
-          {errors.material_name && <p className="text-red-500 text-xs">{errors.material_name.message}</p>}
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Material Name *</label>
+          <div className="relative group">
+            <input {...register('material_name')} className="input-field peer" placeholder="Enter material name" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
+          {errors.material_name && <p className="text-red-500 text-xs mt-1.5 animate-fade-in">{errors.material_name.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Unit *</label>
-          <input {...register('unit')} className="input-field" placeholder="Meters, Kg, Pieces" />
-          {errors.unit && <p className="text-red-500 text-xs">{errors.unit.message}</p>}
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Unit *</label>
+          <div className="relative group">
+            <input {...register('unit')} className="input-field peer" placeholder="Meters, Kg, Pieces" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
+          {errors.unit && <p className="text-red-500 text-xs mt-1.5 animate-fade-in">{errors.unit.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Supplier</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Supplier</label>
           <select {...register('supplier_id')} className="input-field">
             <option value="">Select Supplier</option>
             {suppliers.map((s) => <option key={s.id} value={s.id}>{s.supplier_name}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Quantity *</label>
-          <input {...register('quantity')} type="number" step="0.01" className="input-field" />
-          {errors.quantity && <p className="text-red-500 text-xs">{errors.quantity.message}</p>}
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Quantity *</label>
+          <div className="relative group">
+            <input {...register('quantity')} type="number" step="0.01" className="input-field peer" placeholder="0" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
+          {errors.quantity && <p className="text-red-500 text-xs mt-1.5 animate-fade-in">{errors.quantity.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Min Stock</label>
-          <input {...register('min_stock')} type="number" step="0.01" className="input-field" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Min Stock</label>
+          <input {...register('min_stock')} type="number" step="0.01" className="input-field" placeholder="10" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Cost per Unit *</label>
-          <input {...register('cost')} type="number" step="0.01" className="input-field" />
-          {errors.cost && <p className="text-red-500 text-xs">{errors.cost.message}</p>}
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cost per Unit *</label>
+          <div className="relative group">
+            <input {...register('cost')} type="number" step="0.01" className="input-field peer" placeholder="0.00" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
+          {errors.cost && <p className="text-red-500 text-xs mt-1.5 animate-fade-in">{errors.cost.message}</p>}
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
-        <textarea {...register('description')} rows={3} className="input-field" />
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Description</label>
+        <textarea {...register('description')} rows={3} className="input-field" placeholder="Material description..." />
       </div>
-      <div className="flex justify-end gap-3">
+      <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
         <button type="button" onClick={onCancel} className="btn-secondary">Cancel</button>
-        <button type="submit" className="btn-primary">{material ? 'Update' : 'Create'} Material</button>
+        <button type="submit" className="btn-primary shadow-lg shadow-primary-500/20">{material ? 'Update' : 'Create'} Material</button>
       </div>
     </form>
   )

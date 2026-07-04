@@ -1,0 +1,101 @@
+id,material_name,unit,quantity,min_stock,cost,supplier_id,description,created_at
+1,Cotton Fabric,Packs,3856,190,1481.9,39,Cotton Fabric for garment production,2024-11-20T00:00:00
+2,Polyester Fabric,Sets,3675,176,1080.31,33,Polyester Fabric for garment production,2025-03-12T00:00:00
+3,Linen Fabric,Kgs,4538,134,1116.76,31,Linen Fabric for garment production,2025-04-05T00:00:00
+4,Silk Fabric,Sets,2173,83,958.3,50,Silk Fabric for garment production,2025-06-17T00:00:00
+5,Wool Fabric,Kgs,4019,180,415.52,5,Wool Fabric for garment production,2024-10-19T00:00:00
+6,Denim Fabric,Pieces,1970,89,482.97,35,Denim Fabric for garment production,2024-03-23T00:00:00
+7,Viscose Fabric,Kgs,1183,58,577.64,10,Viscose Fabric for garment production,2024-08-07T00:00:00
+8,Rayon Fabric,Rolls,576,126,499.67,30,Rayon Fabric for garment production,2025-03-01T00:00:00
+9,Nylon Fabric,Sets,560,72,633.11,50,Nylon Fabric for garment production,2025-08-21T00:00:00
+10,Spandex Fabric,Rolls,210,167,718.08,23,Spandex Fabric for garment production,2024-11-01T00:00:00
+11,Cotton Thread,Packs,3244,127,1122.54,35,Cotton Thread for garment production,2025-09-09T00:00:00
+12,Polyester Thread,Kgs,1856,144,413.04,32,Polyester Thread for garment production,2024-01-30T00:00:00
+13,Silk Thread,Dozen,3235,106,1020.32,26,Silk Thread for garment production,2024-06-18T00:00:00
+14,Nylon Thread,Packs,3878,52,803.51,26,Nylon Thread for garment production,2025-08-29T00:00:00
+15,Zipper - Nylon,Meters,4673,189,130.5,28,Zipper - Nylon for garment production,2024-05-18T00:00:00
+16,Zipper - Metal,Meters,3832,66,393.93,21,Zipper - Metal for garment production,2024-08-04T00:00:00
+17,Zipper - Plastic,Pieces,3774,103,1143.04,25,Zipper - Plastic for garment production,2024-10-11T00:00:00
+18,Button - Plastic,Sets,3503,84,127.45,2,Button - Plastic for garment production,2025-07-06T00:00:00
+19,Button - Metal,Kgs,476,109,976.97,50,Button - Metal for garment production,2025-10-29T00:00:00
+20,Button - Wooden,Kgs,379,27,303.04,2,Button - Wooden for garment production,2025-09-28T00:00:00
+21,Button - Shell,Kgs,1298,81,712.97,8,Button - Shell for garment production,2025-07-31T00:00:00
+22,Hook & Eye,Dozen,1835,139,388.08,24,Hook & Eye for garment production,2024-06-20T00:00:00
+23,Elastic Band,Pieces,988,61,166.61,2,Elastic Band for garment production,2024-11-15T00:00:00
+24,Lace Trim,Rolls,4766,193,598.0,46,Lace Trim for garment production,2024-07-22T00:00:00
+25,Ribbon,Dozen,672,171,1246.7,16,Ribbon for garment production,2024-04-14T00:00:00
+26,Velcro Tape,Packs,2520,195,1209.26,37,Velcro Tape for garment production,2024-02-12T00:00:00
+27,Interfacing Fabric,Rolls,2894,156,993.97,5,Interfacing Fabric for garment production,2025-06-02T00:00:00
+28,Bias Tape,Sets,2845,23,632.99,32,Bias Tape for garment production,2024-04-18T00:00:00
+29,Drawstring Cord,Dozen,3601,112,1337.9,30,Drawstring Cord for garment production,2024-06-05T00:00:00
+30,Label - Woven,Dozen,3617,65,785.01,42,Label - Woven for garment production,2024-10-03T00:00:00
+31,Label - Printed,Rolls,4458,143,656.18,47,Label - Printed for garment production,2025-08-29T00:00:00
+32,Tag - Paper,Sets,2248,102,372.02,6,Tag - Paper for garment production,2024-10-12T00:00:00
+33,Tag - Plastic,Sets,3742,82,699.74,40,Tag - Plastic for garment production,2025-11-15T00:00:00
+34,Hanger - Plastic,Meters,3154,106,743.99,21,Hanger - Plastic for garment production,2024-07-05T00:00:00
+35,Hanger - Wooden,Pieces,4044,74,1197.76,22,Hanger - Wooden for garment production,2024-10-13T00:00:00
+36,Polybag,Pieces,4933,199,835.91,34,Polybag for garment production,2024-07-14T00:00:00
+37,Tissue Paper,Dozen,751,81,612.61,36,Tissue Paper for garment production,2024-09-03T00:00:00
+38,Carton Box,Dozen,3950,185,738.78,2,Carton Box for garment production,2024-04-05T00:00:00
+39,Thread - Embroidery,Rolls,2460,76,1039.22,20,Thread - Embroidery for garment production,2025-11-10T00:00:00
+40,Sequins,Rolls,4814,114,832.44,23,Sequins for garment production,2025-03-11T00:00:00
+41,Beads,Pieces,4558,104,1055.77,18,Beads for garment production,2024-11-09T00:00:00
+42,Stone Studs,Meters,2109,79,1083.32,21,Stone Studs for garment production,2024-05-02T00:00:00
+43,Lace Fabric,Kgs,4439,196,291.35,48,Lace Fabric for garment production,2025-05-10T00:00:00
+44,Net Fabric,Sets,2315,170,789.33,19,Net Fabric for garment production,2024-04-12T00:00:00
+45,Jute Fabric,Kgs,1640,95,544.52,20,Jute Fabric for garment production,2024-01-15T00:00:00
+46,Fleece Fabric,Pieces,4425,52,73.05,4,Fleece Fabric for garment production,2025-07-20T00:00:00
+47,Terry Cloth,Kgs,2443,198,958.62,49,Terry Cloth for garment production,2025-05-17T00:00:00
+48,Wadding,Packs,890,23,430.09,31,Wadding for garment production,2025-03-27T00:00:00
+49,PVC Fabric,Meters,2841,67,382.46,31,PVC Fabric for garment production,2024-04-26T00:00:00
+50,Leather - Synthetic,Rolls,585,122,115.75,41,Leather - Synthetic for garment production,2024-02-24T00:00:00
+51,Button - Brass,Sets,1292,58,846.45,20,Button - Brass for garment production,2024-03-28T00:00:00
+52,Button - Coconut,Packs,2083,50,1147.84,39,Button - Coconut for garment production,2025-09-02T00:00:00
+53,Eyelet,Rolls,1898,153,678.52,29,Eyelet for garment production,2024-10-31T00:00:00
+54,Grommet,Pieces,4871,129,855.1,4,Grommet for garment production,2025-09-16T00:00:00
+55,Rivet,Dozen,862,73,320.48,43,Rivet for garment production,2024-03-24T00:00:00
+56,Snap Button,Kgs,1336,81,830.23,11,Snap Button for garment production,2024-01-03T00:00:00
+57,Magnetic Snap,Dozen,3396,135,892.75,19,Magnetic Snap for garment production,2024-02-03T00:00:00
+58,Buckle - Metal,Dozen,1946,93,427.66,30,Buckle - Metal for garment production,2024-03-13T00:00:00
+59,Buckle - Plastic,Sets,1962,87,1187.92,38,Buckle - Plastic for garment production,2025-11-08T00:00:00
+60,Slider,Meters,1670,128,819.12,42,Slider for garment production,2024-06-01T00:00:00
+61,Stopper,Meters,2226,56,94.16,20,Stopper for garment production,2025-09-01T00:00:00
+62,Cord End,Rolls,4712,93,190.91,45,Cord End for garment production,2024-11-07T00:00:00
+63,Chain - Metal,Packs,3347,89,812.27,29,Chain - Metal for garment production,2024-03-23T00:00:00
+64,Chain - Plastic,Rolls,4949,30,1103.13,39,Chain - Plastic for garment production,2024-09-13T00:00:00
+65,Tassel,Kgs,261,43,1443.06,37,Tassel for garment production,2025-08-24T00:00:00
+66,Fringe Trim,Sets,219,192,407.92,3,Fringe Trim for garment production,2024-06-28T00:00:00
+67,Pom Pom,Dozen,3904,152,666.13,18,Pom Pom for garment production,2024-07-04T00:00:00
+68,Patch - Embroidered,Dozen,4845,131,1222.3,6,Patch - Embroidered for garment production,2025-04-26T00:00:00
+69,Patch - Iron On,Pieces,2900,124,484.98,7,Patch - Iron On for garment production,2024-06-13T00:00:00
+70,Badge,Dozen,2751,125,745.73,43,Badge for garment production,2025-02-14T00:00:00
+71,Hook & Loop Tape,Rolls,4556,29,136.65,17,Hook & Loop Tape for garment production,2024-11-27T00:00:00
+72,Knit Fabric,Sets,999,123,774.32,1,Knit Fabric for garment production,2025-11-04T00:00:00
+73,Mesh Fabric,Rolls,4494,138,86.04,34,Mesh Fabric for garment production,2025-01-05T00:00:00
+74,Satin Fabric,Rolls,4133,180,1141.19,14,Satin Fabric for garment production,2024-09-30T00:00:00
+75,Chiffon Fabric,Pieces,4549,53,659.98,45,Chiffon Fabric for garment production,2025-05-11T00:00:00
+76,Georgette Fabric,Dozen,1044,27,915.26,16,Georgette Fabric for garment production,2024-06-11T00:00:00
+77,Organza Fabric,Meters,2595,161,830.62,6,Organza Fabric for garment production,2024-08-18T00:00:00
+78,Velvet Fabric,Meters,979,138,973.33,10,Velvet Fabric for garment production,2025-05-25T00:00:00
+79,Corduroy Fabric,Dozen,2440,150,413.77,31,Corduroy Fabric for garment production,2025-04-28T00:00:00
+80,Tweed Fabric,Packs,2046,136,221.24,13,Tweed Fabric for garment production,2025-09-05T00:00:00
+81,Canvas Fabric,Sets,4213,54,109.37,50,Canvas Fabric for garment production,2025-02-28T00:00:00
+82,Denim Thread,Pieces,2834,149,1231.72,19,Denim Thread for garment production,2024-11-01T00:00:00
+83,Buttons Pack - 12mm,Dozen,4858,168,737.01,10,Buttons Pack - 12mm for garment production,2025-04-02T00:00:00
+84,Buttons Pack - 16mm,Pieces,4462,143,502.0,49,Buttons Pack - 16mm for garment production,2025-07-10T00:00:00
+85,Buttons Pack - 20mm,Pieces,3140,136,1305.05,45,Buttons Pack - 20mm for garment production,2024-09-01T00:00:00
+86,Zipper - Invisible,Kgs,4734,118,1284.74,27,Zipper - Invisible for garment production,2024-02-14T00:00:00
+87,Zipper - Open End,Dozen,2656,141,1370.58,25,Zipper - Open End for garment production,2025-01-30T00:00:00
+88,Zipper - Closed End,Meters,1296,146,193.74,38,Zipper - Closed End for garment production,2024-12-05T00:00:00
+89,Elastic Cord,Meters,872,132,791.3,30,Elastic Cord for garment production,2024-01-16T00:00:00
+90,Drawstring - Cotton,Sets,1230,124,983.9,10,Drawstring - Cotton for garment production,2024-03-17T00:00:00
+91,Drawstring - Polyester,Pieces,3896,87,936.77,26,Drawstring - Polyester for garment production,2025-10-27T00:00:00
+92,Ribbon - Satin,Sets,707,104,1013.16,35,Ribbon - Satin for garment production,2025-01-24T00:00:00
+93,Ribbon - Grosgrain,Dozen,2644,180,1331.72,32,Ribbon - Grosgrain for garment production,2025-07-08T00:00:00
+94,Lace - Cotton,Meters,344,178,355.98,44,Lace - Cotton for garment production,2024-10-21T00:00:00
+95,Lace - Polyester,Rolls,1913,43,1467.61,49,Lace - Polyester for garment production,2025-10-10T00:00:00
+96,Netting,Kgs,873,133,1042.53,2,Netting for garment production,2024-02-17T00:00:00
+97,Tulle Fabric,Pieces,2707,34,540.9,28,Tulle Fabric for garment production,2024-05-29T00:00:00
+98,Fusible Interfacing,Rolls,2050,155,851.06,12,Fusible Interfacing for garment production,2024-06-23T00:00:00
+99,Sewing Thread - Black,Packs,1484,40,1306.91,40,Sewing Thread - Black for garment production,2025-11-30T00:00:00
+100,Sewing Thread - White,Packs,2022,147,218.96,30,Sewing Thread - White for garment production,2025-10-15T00:00:00

@@ -35,22 +35,22 @@ export default function PurchaseList() {
   useEffect(() => { fetchData() }, [page, statusFilter])
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold">Purchases</h1>
-          <p className="text-gray-500 mt-1">Manage purchase orders</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Purchases</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Manage purchase orders</p>
         </div>
-        <button onClick={() => setModalOpen(true)} className="btn-primary flex items-center gap-2">
+        <button onClick={() => setModalOpen(true)} className="btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/20">
           <Plus className="w-4 h-4" /> New Purchase
         </button>
       </div>
 
       <div className="card">
-        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-5">
           <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchData() }} className="flex-1 flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative flex-1 group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
               <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by invoice..." className="input-field pl-9" />
             </div>
             <button type="submit" className="btn-primary">Search</button>
@@ -70,34 +70,34 @@ export default function PurchaseList() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left">
-                    <th className="py-3 px-2">Invoice</th>
-                    <th className="py-3 px-2">Supplier</th>
-                    <th className="py-3 px-2">Date</th>
-                    <th className="py-3 px-2 text-right">Total</th>
-                    <th className="py-3 px-2 text-right">Discount</th>
-                    <th className="py-3 px-2 text-right">Grand Total</th>
-                    <th className="py-3 px-2">Status</th>
-                    <th className="py-3 px-2">Actions</th>
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
+                    <th className="table-header">Invoice</th>
+                    <th className="table-header">Supplier</th>
+                    <th className="table-header">Date</th>
+                    <th className="table-header text-right">Total</th>
+                    <th className="table-header text-right">Discount</th>
+                    <th className="table-header text-right">Grand Total</th>
+                    <th className="table-header">Status</th>
+                    <th className="table-header">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {purchases.map((p) => (
-                    <tr key={p.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                      <td className="py-3 px-2 font-medium">{p.invoice_number}</td>
-                      <td className="py-3 px-2">{p.supplier_name || 'N/A'}</td>
-                      <td className="py-3 px-2">{p.purchase_date ? new Date(p.purchase_date).toLocaleDateString() : 'N/A'}</td>
-                      <td className="py-3 px-2 text-right">₹{p.total_amount.toLocaleString()}</td>
-                      <td className="py-3 px-2 text-right">₹{p.discount.toLocaleString()}</td>
-                      <td className="py-3 px-2 text-right font-medium">₹{p.grand_total.toLocaleString()}</td>
-                      <td className="py-3 px-2">
+                  {purchases.map((p, i) => (
+                    <tr key={p.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                      <td className="table-cell font-medium text-gray-900 dark:text-white">{p.invoice_number}</td>
+                      <td className="table-cell">{p.supplier_name || 'N/A'}</td>
+                      <td className="table-cell text-gray-500 dark:text-gray-400">{p.purchase_date ? new Date(p.purchase_date).toLocaleDateString() : 'N/A'}</td>
+                      <td className="table-cell text-right tabular-nums">₹{p.total_amount.toLocaleString()}</td>
+                      <td className="table-cell text-right tabular-nums">₹{p.discount.toLocaleString()}</td>
+                      <td className="table-cell text-right font-semibold tabular-nums">₹{p.grand_total.toLocaleString()}</td>
+                      <td className="table-cell">
                         <span className={`badge-${p.status === 'completed' ? 'success' : p.status === 'cancelled' ? 'danger' : 'warning'}`}>
                           {p.status}
                         </span>
                       </td>
-                      <td className="py-3 px-2">
-                        <button onClick={() => setViewPurchase(p)} className="p-1.5 hover:bg-blue-50 rounded-lg">
-                          <Eye className="w-4 h-4 text-blue-600" />
+                      <td className="table-cell">
+                        <button onClick={() => setViewPurchase(p)} className="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="View Details">
+                          <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         </button>
                       </td>
                     </tr>
@@ -118,36 +118,38 @@ export default function PurchaseList() {
         {viewPurchase && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-gray-500">Supplier:</span> {viewPurchase.supplier_name || 'N/A'}</div>
-              <div><span className="text-gray-500">Date:</span> {viewPurchase.purchase_date ? new Date(viewPurchase.purchase_date).toLocaleDateString() : 'N/A'}</div>
-              <div><span className="text-gray-500">Status:</span> {viewPurchase.status}</div>
-              <div><span className="text-gray-500">Notes:</span> {viewPurchase.notes || 'N/A'}</div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Supplier:</span> <span className="font-medium text-gray-900 dark:text-white">{viewPurchase.supplier_name || 'N/A'}</span></div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Date:</span> <span className="font-medium text-gray-900 dark:text-white">{viewPurchase.purchase_date ? new Date(viewPurchase.purchase_date).toLocaleDateString() : 'N/A'}</span></div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Status:</span> <span className="font-medium"><span className={`badge-${viewPurchase.status === 'completed' ? 'success' : viewPurchase.status === 'cancelled' ? 'danger' : 'warning'}`}>{viewPurchase.status}</span></span></div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Notes:</span> <span className="font-medium text-gray-900 dark:text-white">{viewPurchase.notes || 'N/A'}</span></div>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b text-left">
-                  <th className="py-2">Material</th>
-                  <th className="py-2 text-right">Qty</th>
-                  <th className="py-2 text-right">Unit Price</th>
-                  <th className="py-2 text-right">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {viewPurchase.items?.map((item) => (
-                  <tr key={item.id} className="border-b">
-                    <td className="py-2">{item.material_name || 'N/A'}</td>
-                    <td className="py-2 text-right">{item.quantity} {item.unit || ''}</td>
-                    <td className="py-2 text-right">₹{item.unit_price.toFixed(2)}</td>
-                    <td className="py-2 text-right">₹{item.total_price.toFixed(2)}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
+                    <th className="table-header">Material</th>
+                    <th className="table-header text-right">Qty</th>
+                    <th className="table-header text-right">Unit Price</th>
+                    <th className="table-header text-right">Total</th>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr><td colSpan={3} className="py-2 text-right font-medium">Total:</td><td className="py-2 text-right">₹{viewPurchase.total_amount.toLocaleString()}</td></tr>
-                <tr><td colSpan={3} className="py-2 text-right font-medium">Discount:</td><td className="py-2 text-right">-₹{viewPurchase.discount.toLocaleString()}</td></tr>
-                <tr><td colSpan={3} className="py-2 text-right font-medium">Grand Total:</td><td className="py-2 text-right font-bold">₹{viewPurchase.grand_total.toLocaleString()}</td></tr>
-              </tfoot>
-            </table>
+                </thead>
+                <tbody>
+                  {viewPurchase.items?.map((item) => (
+                    <tr key={item.id} className="table-row">
+                      <td className="table-cell">{item.material_name || 'N/A'}</td>
+                      <td className="table-cell text-right tabular-nums">{item.quantity} {item.unit || ''}</td>
+                      <td className="table-cell text-right tabular-nums">₹{item.unit_price.toFixed(2)}</td>
+                      <td className="table-cell text-right tabular-nums">₹{item.total_price.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr><td colSpan={3} className="table-cell text-right font-medium">Total:</td><td className="table-cell text-right">₹{viewPurchase.total_amount.toLocaleString()}</td></tr>
+                  <tr><td colSpan={3} className="table-cell text-right font-medium">Discount:</td><td className="table-cell text-right text-red-600">-₹{viewPurchase.discount.toLocaleString()}</td></tr>
+                  <tr className="border-t-2 border-gray-200 dark:border-gray-700"><td colSpan={3} className="table-cell text-right font-bold text-base">Grand Total:</td><td className="table-cell text-right font-bold text-base">₹{viewPurchase.grand_total.toLocaleString()}</td></tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         )}
       </Modal>

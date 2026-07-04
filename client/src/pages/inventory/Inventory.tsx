@@ -43,19 +43,21 @@ export default function Inventory() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Inventory</h1>
-        <p className="text-gray-500 mt-1">Monitor stock levels and movements</p>
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="animate-fade-in">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Inventory</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Monitor stock levels and movements</p>
       </div>
 
-      <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 border-b border-gray-100 dark:border-gray-800 pb-0.5">
         {(['stock', 'movements', 'alerts'] as const).map((t) => (
           <button
             key={t}
             onClick={() => { setTab(t); setPage(1) }}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              tab === t ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700'
+            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-all duration-200 ${
+              tab === t
+                ? 'border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
             }`}
           >
             {t === 'stock' ? 'Current Stock' : t === 'movements' ? 'Stock Movements' : 'Low Stock Alerts'}
@@ -66,26 +68,28 @@ export default function Inventory() {
       {loading ? <CardSkeleton /> : (
         <>
           {tab === 'stock' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
               <div className="card">
-                <h3 className="text-lg font-semibold mb-4">Products</h3>
+                <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full" /> Products
+                </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b text-left">
-                        <th className="py-2">Product</th>
-                        <th className="py-2 text-right">Quantity</th>
-                        <th className="py-2 text-right">Min Stock</th>
-                        <th className="py-2">Status</th>
+                      <tr className="border-b border-gray-100 dark:border-gray-800">
+                        <th className="table-header">Product</th>
+                        <th className="table-header text-right">Quantity</th>
+                        <th className="table-header text-right">Min Stock</th>
+                        <th className="table-header">Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {stock.products.map((p: any) => (
-                        <tr key={p.id} className="border-b">
-                          <td className="py-2">{p.name}</td>
-                          <td className="py-2 text-right">{p.quantity}</td>
-                          <td className="py-2 text-right">{p.min_stock}</td>
-                          <td className="py-2">{statusBadge(p.status)}</td>
+                      {stock.products.map((p: any, i: number) => (
+                        <tr key={p.id} className="table-row" style={{ animationDelay: `${i * 30}ms` }}>
+                          <td className="table-cell font-medium text-gray-900 dark:text-white">{p.name}</td>
+                          <td className="table-cell text-right tabular-nums">{p.quantity}</td>
+                          <td className="table-cell text-right tabular-nums">{p.min_stock}</td>
+                          <td className="table-cell">{statusBadge(p.status)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -93,24 +97,26 @@ export default function Inventory() {
                 </div>
               </div>
               <div className="card">
-                <h3 className="text-lg font-semibold mb-4">Raw Materials</h3>
+                <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+                  <span className="w-2 h-2 bg-emerald-500 rounded-full" /> Raw Materials
+                </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b text-left">
-                        <th className="py-2">Material</th>
-                        <th className="py-2 text-right">Quantity</th>
-                        <th className="py-2 text-right">Min Stock</th>
-                        <th className="py-2">Status</th>
+                      <tr className="border-b border-gray-100 dark:border-gray-800">
+                        <th className="table-header">Material</th>
+                        <th className="table-header text-right">Quantity</th>
+                        <th className="table-header text-right">Min Stock</th>
+                        <th className="table-header">Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {stock.materials.map((m: any) => (
-                        <tr key={m.id} className="border-b">
-                          <td className="py-2">{m.name}</td>
-                          <td className="py-2 text-right">{m.quantity} {m.unit}</td>
-                          <td className="py-2 text-right">{m.min_stock}</td>
-                          <td className="py-2">{statusBadge(m.status)}</td>
+                      {stock.materials.map((m: any, i: number) => (
+                        <tr key={m.id} className="table-row" style={{ animationDelay: `${i * 30}ms` }}>
+                          <td className="table-cell font-medium text-gray-900 dark:text-white">{m.name}</td>
+                          <td className="table-cell text-right tabular-nums">{m.quantity} <span className="text-gray-400 text-xs">{m.unit}</span></td>
+                          <td className="table-cell text-right tabular-nums">{m.min_stock}</td>
+                          <td className="table-cell">{statusBadge(m.status)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -121,33 +127,33 @@ export default function Inventory() {
           )}
 
           {tab === 'movements' && (
-            <div className="card">
-              <h3 className="text-lg font-semibold mb-4">Recent Stock Movements</h3>
+            <div className="card animate-fade-in">
+              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Recent Stock Movements</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b text-left">
-                      <th className="py-2">Date</th>
-                      <th className="py-2">Item</th>
-                      <th className="py-2">Type</th>
-                      <th className="py-2 text-right">Quantity</th>
-                      <th className="py-2">Reference</th>
-                      <th className="py-2">User</th>
+                    <tr className="border-b border-gray-100 dark:border-gray-800">
+                      <th className="table-header">Date</th>
+                      <th className="table-header">Item</th>
+                      <th className="table-header">Type</th>
+                      <th className="table-header text-right">Quantity</th>
+                      <th className="table-header">Reference</th>
+                      <th className="table-header">User</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {movements.map((m) => (
-                      <tr key={m.id} className="border-b">
-                        <td className="py-2">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</td>
-                        <td className="py-2">{m.product_name || m.material_name || 'N/A'}</td>
-                        <td className="py-2">
+                    {movements.map((m, i) => (
+                      <tr key={m.id} className="table-row" style={{ animationDelay: `${i * 30}ms` }}>
+                        <td className="table-cell text-gray-500 dark:text-gray-400 text-xs">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</td>
+                        <td className="table-cell font-medium text-gray-900 dark:text-white">{m.product_name || m.material_name || 'N/A'}</td>
+                        <td className="table-cell">
                           <span className={`badge-${m.change_type === 'in' ? 'success' : m.change_type === 'out' ? 'danger' : 'warning'}`}>
                             {m.change_type}
                           </span>
                         </td>
-                        <td className="py-2 text-right">{Math.abs(m.quantity)}</td>
-                        <td className="py-2">{m.reference_type || 'Manual'}</td>
-                        <td className="py-2">{m.user_name || 'N/A'}</td>
+                        <td className="table-cell text-right tabular-nums font-medium">{Math.abs(m.quantity)}</td>
+                        <td className="table-cell">{m.reference_type || 'Manual'}</td>
+                        <td className="table-cell">{m.user_name || 'N/A'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -158,65 +164,71 @@ export default function Inventory() {
           )}
 
           {tab === 'alerts' && lowStock && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="card ring-2 ring-yellow-200">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-yellow-500" /> Low Stock Products
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
+              <div className="card relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-500" />
+                <h3 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+                  <AlertTriangle className="w-4 h-4 text-yellow-500" /> Low Stock Products
                 </h3>
                 {lowStock.low_stock_products?.length === 0 ? (
-                  <p className="text-gray-500 text-sm">No low stock products</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No low stock products</p>
                 ) : (
                   <div className="space-y-2">
-                    {lowStock.low_stock_products?.map((p: any) => (
-                      <div key={p.id} className="flex justify-between p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                        <span>{p.product_name}</span>
-                        <span className="font-medium">{p.quantity} / {p.min_stock}</span>
+                    {lowStock.low_stock_products?.map((p: any, i: number) => (
+                      <div key={p.id} className="flex justify-between items-center p-3 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
+                        <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
+                        <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">{p.quantity} / {p.min_stock}</span>
                       </div>
                     ))}
                   </div>
                 )}
-                <h4 className="font-semibold mt-4 mb-2 flex items-center gap-2 text-red-600">
-                  <AlertTriangle className="w-5 h-5" /> Out of Stock Products
+                <h4 className="font-semibold mt-5 mb-3 flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
+                  <AlertTriangle className="w-4 h-4" /> Out of Stock Products
                 </h4>
                 {lowStock.out_of_stock_products?.length === 0 ? (
-                  <p className="text-gray-500 text-sm">No out of stock products</p>
-                ) : (
-                  lowStock.out_of_stock_products?.map((p: any) => (
-                    <div key={p.id} className="flex justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded-lg mb-1">
-                      <span>{p.product_name}</span>
-                      <span className="font-medium text-red-600">Out of Stock</span>
-                    </div>
-                  ))
-                )}
-              </div>
-              <div className="card ring-2 ring-yellow-200">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-yellow-500" /> Low Stock Materials
-                </h3>
-                {lowStock.low_stock_materials?.length === 0 ? (
-                  <p className="text-gray-500 text-sm">No low stock materials</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No out of stock products</p>
                 ) : (
                   <div className="space-y-2">
-                    {lowStock.low_stock_materials?.map((m: any) => (
-                      <div key={m.id} className="flex justify-between p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                        <span>{m.material_name}</span>
-                        <span className="font-medium">{m.quantity} / {m.min_stock} {m.unit}</span>
+                    {lowStock.out_of_stock_products?.map((p: any, i: number) => (
+                      <div key={p.id} className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
+                        <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
+                        <span className="text-sm font-semibold text-red-600 dark:text-red-400">Out of Stock</span>
                       </div>
                     ))}
                   </div>
                 )}
-                <h4 className="font-semibold mt-4 mb-2 flex items-center gap-2 text-red-600">
-                  <AlertTriangle className="w-5 h-5" /> Out of Stock Materials
+              </div>
+              <div className="card relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-500" />
+                <h3 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+                  <AlertTriangle className="w-4 h-4 text-yellow-500" /> Low Stock Materials
+                </h3>
+                {lowStock.low_stock_materials?.length === 0 ? (
+                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No low stock materials</p>
+                ) : (
+                  <div className="space-y-2">
+                    {lowStock.low_stock_materials?.map((m: any, i: number) => (
+                      <div key={m.id} className="flex justify-between items-center p-3 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
+                        <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
+                        <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">{m.quantity} / {m.min_stock} {m.unit}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <h4 className="font-semibold mt-5 mb-3 flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
+                  <AlertTriangle className="w-4 h-4" /> Out of Stock Materials
                 </h4>
                 {lowStock.out_of_stock_materials?.length === 0 ? (
-                  <p className="text-gray-500 text-sm">No out of stock materials</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No out of stock materials</p>
                 ) : (
-                  lowStock.out_of_stock_materials?.map((m: any) => (
-                    <div key={m.id} className="flex justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded-lg mb-1">
-                      <span>{m.material_name}</span>
-                      <span className="font-medium text-red-600">Out of Stock</span>
-                    </div>
-                  ))
+                  <div className="space-y-2">
+                    {lowStock.out_of_stock_materials?.map((m: any, i: number) => (
+                      <div key={m.id} className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
+                        <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
+                        <span className="text-sm font-semibold text-red-600 dark:text-red-400">Out of Stock</span>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

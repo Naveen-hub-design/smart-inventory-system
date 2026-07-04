@@ -40,22 +40,22 @@ export default function SupplierList() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold">Suppliers</h1>
-          <p className="text-gray-500 mt-1">Manage your suppliers</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Suppliers</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your suppliers</p>
         </div>
-        <button onClick={() => { setEditing(null); setModalOpen(true) }} className="btn-primary flex items-center gap-2">
+        <button onClick={() => { setEditing(null); setModalOpen(true) }} className="btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/20">
           <Plus className="w-4 h-4" /> Add Supplier
         </button>
       </div>
 
       <div className="card">
-        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-5">
           <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchData() }} className="flex-1 flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative flex-1 group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
               <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search suppliers..." className="input-field pl-9" />
             </div>
             <button type="submit" className="btn-primary">Search</button>
@@ -74,33 +74,41 @@ export default function SupplierList() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left">
-                    <th className="py-3 px-2">Supplier</th>
-                    <th className="py-3 px-2">Contact</th>
-                    <th className="py-3 px-2">Phone</th>
-                    <th className="py-3 px-2">Email</th>
-                    <th className="py-3 px-2">GST</th>
-                    <th className="py-3 px-2">Status</th>
-                    <th className="py-3 px-2 text-right">Actions</th>
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
+                    <th className="table-header">Supplier</th>
+                    <th className="table-header">Contact</th>
+                    <th className="table-header">Phone</th>
+                    <th className="table-header">Email</th>
+                    <th className="table-header">GST</th>
+                    <th className="table-header">Status</th>
+                    <th className="table-header text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {suppliers.map((s) => (
-                    <tr key={s.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                      <td className="py-3 px-2 font-medium">{s.supplier_name}</td>
-                      <td className="py-3 px-2">{s.contact_person || 'N/A'}</td>
-                      <td className="py-3 px-2">{s.phone || 'N/A'}</td>
-                      <td className="py-3 px-2">{s.email || 'N/A'}</td>
-                      <td className="py-3 px-2">{s.gst_number || 'N/A'}</td>
-                      <td className="py-3 px-2">
+                  {suppliers.map((s, i) => (
+                    <tr key={s.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                      <td className="table-cell font-medium text-gray-900 dark:text-white">{s.supplier_name}</td>
+                      <td className="table-cell">{s.contact_person || 'N/A'}</td>
+                      <td className="table-cell">
+                        {s.phone ? (
+                          <a href={`tel:${s.phone}`} className="hover:text-primary-600 transition-colors">{s.phone}</a>
+                        ) : 'N/A'}
+                      </td>
+                      <td className="table-cell">
+                        {s.email ? (
+                          <a href={`mailto:${s.email}`} className="hover:text-primary-600 transition-colors">{s.email}</a>
+                        ) : 'N/A'}
+                      </td>
+                      <td className="table-cell font-mono text-xs">{s.gst_number || 'N/A'}</td>
+                      <td className="table-cell">
                         <span className={s.status === 'active' ? 'badge-success' : 'badge-warning'}>{s.status}</span>
                       </td>
-                      <td className="py-3 px-2 text-right">
-                        <button onClick={() => { setEditing(s); setModalOpen(true) }} className="p-1.5 hover:bg-blue-50 rounded-lg">
-                          <Edit2 className="w-4 h-4 text-blue-600" />
+                      <td className="table-cell text-right">
+                        <button onClick={() => { setEditing(s); setModalOpen(true) }} className="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="Edit">
+                          <Edit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         </button>
-                        <button onClick={() => handleDelete(s.id)} className="p-1.5 hover:bg-red-50 rounded-lg">
-                          <Trash2 className="w-4 h-4 text-red-600" />
+                        <button onClick={() => handleDelete(s.id)} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Delete">
+                          <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
                         </button>
                       </td>
                     </tr>

@@ -54,41 +54,56 @@ export default function SupplierForm({ supplier, onSuccess, onCancel }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium mb-1">Supplier Name *</label>
-          <input {...register('supplier_name')} className="input-field" />
-          {errors.supplier_name && <p className="text-red-500 text-xs">{errors.supplier_name.message}</p>}
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Supplier Name *</label>
+          <div className="relative group">
+            <input {...register('supplier_name')} className="input-field peer" placeholder="Enter supplier name" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
+          {errors.supplier_name && <p className="text-red-500 text-xs mt-1.5 animate-fade-in">{errors.supplier_name.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Contact Person</label>
-          <input {...register('contact_person')} className="input-field" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Contact Person</label>
+          <div className="relative group">
+            <input {...register('contact_person')} className="input-field peer" placeholder="Contact person name" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Phone</label>
-          <input {...register('phone')} className="input-field" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Phone</label>
+          <div className="relative group">
+            <input {...register('phone')} className="input-field peer" placeholder="Phone number" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input {...register('email')} type="email" className="input-field" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+          <div className="relative group">
+            <input {...register('email')} type="email" className="input-field peer" placeholder="email@example.com" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">GST Number</label>
-          <input {...register('gst_number')} className="input-field" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">GST Number</label>
+          <div className="relative group">
+            <input {...register('gst_number')} className="input-field peer" placeholder="GSTIN" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Status</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Status</label>
           <select {...register('status')} className="input-field">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium mb-1">Address</label>
-          <textarea {...register('address')} rows={3} className="input-field" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Address</label>
+          <textarea {...register('address')} rows={3} className="input-field" placeholder="Full address..." />
         </div>
       </div>
-      <div className="flex justify-end gap-3">
+      <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
         <button type="button" onClick={onCancel} className="btn-secondary">Cancel</button>
-        <button type="submit" className="btn-primary">{supplier ? 'Update' : 'Create'} Supplier</button>
+        <button type="submit" className="btn-primary shadow-lg shadow-primary-500/20">{supplier ? 'Update' : 'Create'} Supplier</button>
       </div>
     </form>
   )

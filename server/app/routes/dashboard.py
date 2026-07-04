@@ -6,6 +6,7 @@ from app.models.supplier import Supplier
 from app.models.purchase import Purchase
 from app.models.sale import Sale, SaleItem
 from app.models.notification import Notification
+from app.models.category import Category
 from app import db
 from datetime import datetime
 from sqlalchemy import func
@@ -94,10 +95,7 @@ def get_stock_by_category():
 
     data = []
     for r in results:
-        category = None
-        if r.category_id:
-            from app.models.category import Category
-            category = Category.query.get(r.category_id)
+        category = Category.query.get(r.category_id) if r.category_id else None
         data.append({
             'name': category.name if category else 'Uncategorized',
             'quantity': int(r.total_quantity) if r.total_quantity else 0
@@ -110,16 +108,16 @@ def get_stock_by_category():
 def get_monthly_sales():
     year = datetime.utcnow().year
     results = db.session.query(
-        func.month(Sale.created_at).label('month'),
+        func.extract('month', Sale.created_at).label('month'),
         func.coalesce(func.sum(Sale.grand_total), 0).label('total')
     ).filter(
-        func.year(Sale.created_at) == year,
+        func.extract('year', Sale.created_at) == year,
         Sale.status == 'completed'
-    ).group_by(func.month(Sale.created_at)).order_by(func.month(Sale.created_at)).all()
+    ).group_by(func.extract('month', Sale.created_at)).order_by(func.extract('month', Sale.created_at)).all()
 
     monthly_data = [{'month': i, 'total': 0} for i in range(1, 13)]
     for r in results:
-        monthly_data[r.month - 1]['total'] = float(r.total)
+        monthly_data[int(r.month) - 1]['total'] = float(r.total)
 
     return jsonify({'data': monthly_data, 'year': year}), 200
 
@@ -128,15 +126,15 @@ def get_monthly_sales():
 def get_monthly_purchases():
     year = datetime.utcnow().year
     results = db.session.query(
-        func.month(Purchase.created_at).label('month'),
+        func.extract('month', Purchase.created_at).label('month'),
         func.coalesce(func.sum(Purchase.grand_total), 0).label('total')
     ).filter(
-        func.year(Purchase.created_at) == year
-    ).group_by(func.month(Purchase.created_at)).order_by(func.month(Purchase.created_at)).all()
+        func.extract('year', Purchase.created_at) == year
+    ).group_by(func.extract('month', Purchase.created_at)).order_by(func.extract('month', Purchase.created_at)).all()
 
     monthly_data = [{'month': i, 'total': 0} for i in range(1, 13)]
     for r in results:
-        monthly_data[r.month - 1]['total'] = float(r.total)
+        monthly_data[int(r.month) - 1]['total'] = float(r.total)
 
     return jsonify({'data': monthly_data, 'year': year}), 200
 

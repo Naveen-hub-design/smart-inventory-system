@@ -17,7 +17,21 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             position="top-right"
             toastOptions={{
               duration: 3000,
-              style: { background: '#363636', color: '#fff', borderRadius: '10px' },
+              style: {
+                background: '#1e293b',
+                color: '#f1f5f9',
+                borderRadius: '12px',
+                padding: '14px 18px',
+                fontSize: '14px',
+                boxShadow: '0 10px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(148,163,184,0.1)',
+                backdropFilter: 'blur(12px)',
+              },
+              success: {
+                iconTheme: { primary: '#10b981', secondary: '#f0fdf4' },
+              },
+              error: {
+                iconTheme: { primary: '#ef4444', secondary: '#fef2f2' },
+              },
             }}
           />
         </ThemeProvider>

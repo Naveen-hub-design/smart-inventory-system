@@ -49,35 +49,44 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   }
 
   return (
-    <header className="sticky top-0 z-30 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="flex items-center justify-between px-4 py-3">
+    <header className="sticky top-0 z-30 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50">
+      <div className="flex items-center justify-between px-4 py-2.5">
         <div className="flex items-center gap-3">
-          <button onClick={onMenuClick} className="lg:hidden p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+          <button onClick={onMenuClick} className="lg:hidden p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
             <Menu className="w-5 h-5" />
           </button>
           <form onSubmit={handleSearch} className="hidden sm:flex items-center">
-            <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative group">
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-200" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, suppliers..."
-                className="pl-9 pr-4 py-2 w-64 lg:w-80 bg-gray-100 dark:bg-gray-800 border-0 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="pl-9 pr-4 py-2 w-64 lg:w-80 bg-gray-100 dark:bg-gray-800/50 border border-transparent focus:border-primary-500/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50"
               />
             </div>
           </form>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button onClick={toggleDarkMode} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={toggleDarkMode}
+            className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            <div className="transition-transform duration-500 ease-in-out rotate-0 dark:-rotate-180">
+              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </div>
           </button>
 
-          <button className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" onClick={() => navigate('/notifications')}>
-            <Bell className="w-5 h-5" />
+          <button
+            className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 group"
+            onClick={() => navigate('/notifications')}
+          >
+            <Bell className="w-5 h-5 group-hover:animate-bounce-gentle" />
             {notifCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-500/30 animate-scale-in">
                 {notifCount > 9 ? '9+' : notifCount}
               </span>
             )}
@@ -86,30 +95,30 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center gap-2 p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              className="flex items-center gap-2 p-1.5 pl-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-95"
             >
-              <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 text-white rounded-full flex items-center justify-center text-sm font-medium shadow-md shadow-primary-500/20">
                 {user?.full_name?.charAt(0) || 'U'}
               </div>
-              <span className="hidden md:block text-sm font-medium">{user?.full_name}</span>
+              <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-300">{user?.full_name}</span>
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1">
-                <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                  <p className="text-sm font-medium">{user?.full_name}</p>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
-                  <span className="inline-block mt-1 badge-info">{isAdmin ? 'Admin' : 'Staff'}</span>
+              <div className="absolute right-0 mt-2 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-premium-xl border border-gray-200/80 dark:border-gray-700/50 py-1 animate-scale-in origin-top-right">
+                <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.full_name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{user?.email}</p>
+                  <span className="inline-block mt-2 badge-info">{isAdmin ? 'Admin' : 'Staff'}</span>
                 </div>
                 <button
                   onClick={() => { navigate('/profile'); setProfileOpen(false) }}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
-                  <User className="w-4 h-4" /> Profile
+                  <User className="w-4 h-4 text-gray-400" /> Profile
                 </button>
                 <button
                   onClick={logout}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                 >
                   <LogOut className="w-4 h-4" /> Logout
                 </button>

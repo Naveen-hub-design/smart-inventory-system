@@ -1,0 +1,12 @@
+id,username,full_name,email,role,phone,is_active
+1,admin,Admin User,admin@sims.com,admin,9876543210,True
+2,ravi2,Ravi Gupta,ravi.gupta@sims.com,staff,9813356886,True
+3,divya3,Divya Nair,divya.nair@sims.com,staff,9842868828,True
+4,meera4,Meera Singh,meera.singh@sims.com,staff,9823756669,True
+5,shweta5,Shweta Pillai,shweta.pillai@sims.com,staff,9821668732,True
+6,vijay6,Vijay Malhotra,vijay.malhotra@sims.com,staff,9814265799,True
+7,amit7,Amit Patel,amit.patel@sims.com,staff,9839345092,True
+8,meera8,Meera Menon,meera.menon@sims.com,staff,9890801586,True
+9,amit9,Amit Pillai,amit.pillai@sims.com,staff,9836687537,True
+10,nitin10,Nitin Pillai,nitin.pillai@sims.com,staff,9866306997,True
+11,meera11,Meera Kapoor,meera.kapoor@sims.com,staff,9889089901,True

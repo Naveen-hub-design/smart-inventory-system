@@ -35,22 +35,22 @@ export default function SaleList() {
   useEffect(() => { fetchData() }, [page, statusFilter])
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold">Sales</h1>
-          <p className="text-gray-500 mt-1">Manage sales and invoices</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Sales</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Manage sales and invoices</p>
         </div>
-        <button onClick={() => setModalOpen(true)} className="btn-primary flex items-center gap-2">
+        <button onClick={() => setModalOpen(true)} className="btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/20">
           <Plus className="w-4 h-4" /> New Sale
         </button>
       </div>
 
       <div className="card">
-        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-5">
           <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchData() }} className="flex-1 flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative flex-1 group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
               <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by invoice or customer..." className="input-field pl-9" />
             </div>
             <button type="submit" className="btn-primary">Search</button>
@@ -70,38 +70,38 @@ export default function SaleList() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left">
-                    <th className="py-3 px-2">Invoice</th>
-                    <th className="py-3 px-2">Customer</th>
-                    <th className="py-3 px-2">Date</th>
-                    <th className="py-3 px-2 text-right">Total</th>
-                    <th className="py-3 px-2 text-right">Discount</th>
-                    <th className="py-3 px-2 text-right">Grand Total</th>
-                    <th className="py-3 px-2">Payment</th>
-                    <th className="py-3 px-2">Status</th>
-                    <th className="py-3 px-2">Actions</th>
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
+                    <th className="table-header">Invoice</th>
+                    <th className="table-header">Customer</th>
+                    <th className="table-header">Date</th>
+                    <th className="table-header text-right">Total</th>
+                    <th className="table-header text-right">Discount</th>
+                    <th className="table-header text-right">Grand Total</th>
+                    <th className="table-header">Payment</th>
+                    <th className="table-header">Status</th>
+                    <th className="table-header">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {sales.map((s) => (
-                    <tr key={s.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                      <td className="py-3 px-2 font-medium">{s.invoice_number}</td>
-                      <td className="py-3 px-2">{s.customer_name || 'Walk-in'}</td>
-                      <td className="py-3 px-2">{s.sale_date ? new Date(s.sale_date).toLocaleDateString() : 'N/A'}</td>
-                      <td className="py-3 px-2 text-right">₹{s.total_amount.toLocaleString()}</td>
-                      <td className="py-3 px-2 text-right">₹{s.discount.toLocaleString()}</td>
-                      <td className="py-3 px-2 text-right font-medium">₹{s.grand_total.toLocaleString()}</td>
-                      <td className="py-3 px-2">
-                        <span className="badge-info">{s.payment_method}</span>
+                  {sales.map((s, i) => (
+                    <tr key={s.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                      <td className="table-cell font-medium text-gray-900 dark:text-white">{s.invoice_number}</td>
+                      <td className="table-cell">{s.customer_name || 'Walk-in'}</td>
+                      <td className="table-cell text-gray-500 dark:text-gray-400">{s.sale_date ? new Date(s.sale_date).toLocaleDateString() : 'N/A'}</td>
+                      <td className="table-cell text-right tabular-nums">₹{s.total_amount.toLocaleString()}</td>
+                      <td className="table-cell text-right tabular-nums">₹{s.discount.toLocaleString()}</td>
+                      <td className="table-cell text-right font-semibold tabular-nums">₹{s.grand_total.toLocaleString()}</td>
+                      <td className="table-cell">
+                        <span className="badge-info capitalize">{s.payment_method}</span>
                       </td>
-                      <td className="py-3 px-2">
+                      <td className="table-cell">
                         <span className={`badge-${s.status === 'completed' ? 'success' : s.status === 'cancelled' ? 'danger' : 'warning'}`}>
                           {s.status}
                         </span>
                       </td>
-                      <td className="py-3 px-2">
-                        <button onClick={() => setViewSale(s)} className="p-1.5 hover:bg-blue-50 rounded-lg">
-                          <Eye className="w-4 h-4 text-blue-600" />
+                      <td className="table-cell">
+                        <button onClick={() => setViewSale(s)} className="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="View Details">
+                          <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         </button>
                       </td>
                     </tr>
@@ -122,38 +122,40 @@ export default function SaleList() {
         {viewSale && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-gray-500">Customer:</span> {viewSale.customer_name || 'Walk-in'}</div>
-              <div><span className="text-gray-500">Date:</span> {viewSale.sale_date ? new Date(viewSale.sale_date).toLocaleDateString() : 'N/A'}</div>
-              <div><span className="text-gray-500">Payment:</span> {viewSale.payment_method}</div>
-              <div><span className="text-gray-500">Status:</span> {viewSale.status}</div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Customer:</span> <span className="font-medium text-gray-900 dark:text-white">{viewSale.customer_name || 'Walk-in'}</span></div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Date:</span> <span className="font-medium text-gray-900 dark:text-white">{viewSale.sale_date ? new Date(viewSale.sale_date).toLocaleDateString() : 'N/A'}</span></div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Payment:</span> <span className="font-medium"><span className="badge-info capitalize">{viewSale.payment_method}</span></span></div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"><span className="text-gray-500 dark:text-gray-400">Status:</span> <span className="font-medium"><span className={`badge-${viewSale.status === 'completed' ? 'success' : viewSale.status === 'cancelled' ? 'danger' : 'warning'}`}>{viewSale.status}</span></span></div>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b text-left">
-                  <th className="py-2">Product</th>
-                  <th className="py-2 text-right">Qty</th>
-                  <th className="py-2 text-right">Price</th>
-                  <th className="py-2 text-right">Discount</th>
-                  <th className="py-2 text-right">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {viewSale.items?.map((item) => (
-                  <tr key={item.id} className="border-b">
-                    <td className="py-2">{item.product_name || 'N/A'} {item.size ? `(${item.size})` : ''}</td>
-                    <td className="py-2 text-right">{item.quantity}</td>
-                    <td className="py-2 text-right">₹{item.unit_price.toFixed(2)}</td>
-                    <td className="py-2 text-right">₹{item.discount.toFixed(2)}</td>
-                    <td className="py-2 text-right">₹{item.total_price.toFixed(2)}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
+                    <th className="table-header">Product</th>
+                    <th className="table-header text-right">Qty</th>
+                    <th className="table-header text-right">Price</th>
+                    <th className="table-header text-right">Discount</th>
+                    <th className="table-header text-right">Total</th>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr><td colSpan={4} className="py-2 text-right font-medium">Total:</td><td className="py-2 text-right">₹{viewSale.total_amount.toLocaleString()}</td></tr>
-                <tr><td colSpan={4} className="py-2 text-right font-medium">Discount:</td><td className="py-2 text-right">-₹{viewSale.discount.toLocaleString()}</td></tr>
-                <tr><td colSpan={4} className="py-2 text-right font-medium">Grand Total:</td><td className="py-2 text-right font-bold">₹{viewSale.grand_total.toLocaleString()}</td></tr>
-              </tfoot>
-            </table>
+                </thead>
+                <tbody>
+                  {viewSale.items?.map((item) => (
+                    <tr key={item.id} className="table-row">
+                      <td className="table-cell">{item.product_name || 'N/A'} {item.size ? <span className="text-gray-400">({item.size})</span> : ''}</td>
+                      <td className="table-cell text-right tabular-nums">{item.quantity}</td>
+                      <td className="table-cell text-right tabular-nums">₹{item.unit_price.toFixed(2)}</td>
+                      <td className="table-cell text-right tabular-nums">₹{item.discount.toFixed(2)}</td>
+                      <td className="table-cell text-right tabular-nums">₹{item.total_price.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr><td colSpan={4} className="table-cell text-right font-medium">Total:</td><td className="table-cell text-right">₹{viewSale.total_amount.toLocaleString()}</td></tr>
+                  <tr><td colSpan={4} className="table-cell text-right font-medium">Discount:</td><td className="table-cell text-right text-red-600">-₹{viewSale.discount.toLocaleString()}</td></tr>
+                  <tr className="border-t-2 border-gray-200 dark:border-gray-700"><td colSpan={4} className="table-cell text-right font-bold text-base">Grand Total:</td><td className="table-cell text-right font-bold text-base">₹{viewSale.grand_total.toLocaleString()}</td></tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         )}
       </Modal>

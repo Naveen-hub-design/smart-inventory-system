@@ -1,0 +1,51 @@
+id,supplier_name,contact_person,phone,email,gst_number,address,status,created_at
+1,Raj Textile Mills,Deepak Sharma,9866722344,info@rajtextilemills.com,27AABCU6574D5Z2,"221, Lake View, Hyderabad, Telangana",active,2024-04-04T00:00:00
+2,Sharma Fabrics Pvt Ltd,Manish Gupta,9856164955,info@sharmafabricspvtltd.com,27AABCU5333D1Z4,"550, Main Street, Kanpur, Uttar Pradesh",active,2024-03-21T00:00:00
+3,Gupta Synthetics,Swati Mehta,9858537831,info@guptasynthetics.com,27AABCU4150D2Z1,"678, Market Road, Ludhiana, Punjab",active,2024-03-22T00:00:00
+4,Patel Cotton Co,Preeti Joshi,9861019678,info@patelcottonco.com,27AABCU5554D8Z3,"167, Lake View, Chennai, Tamil Nadu",active,2024-08-02T00:00:00
+5,Singh Threads & Co,Shweta Nair,9891756179,info@singhthreadsco.com,27AABCU3803D9Z2,"168, Tech Park, Bangalore, Karnataka",active,2024-10-03T00:00:00
+6,Verma Yarn Traders,Sneha Pillai,9853524491,info@vermayarntraders.com,27AABCU1916D4Z1,"825, Lake View, Ahmedabad, Gujarat",active,2024-10-01T00:00:00
+7,Malhotra Zipper Works,Rajesh Reddy,9852235350,info@malhotrazipperworks.com,27AABCU4483D8Z4,"906, Tech Park, Ghaziabad, Uttar Pradesh",active,2024-09-28T00:00:00
+8,Kapoor Button House,Vikram Joshi,9882340307,info@kapoorbuttonhouse.com,27AABCU5304D7Z5,"409, Lake View, Vadodara, Gujarat",active,2024-05-21T00:00:00
+9,Desai Trims & Accessories,Arun Desai,9816323852,info@desaitrimsaccessories.com,27AABCU2796D3Z2,"812, Green Park, Bangalore, Karnataka",inactive,2024-03-06T00:00:00
+10,Mehta Packaging Solutions,Manish Choudhary,9872820592,info@mehtapackagingsolutions.com,27AABCU9669D5Z5,"882, MG Road, Ludhiana, Punjab",active,2025-11-29T00:00:00
+11,Agarwal Labels & Tags,Gaurav Pillai,9896028436,info@agarwallabelstags.com,27AABCU6573D2Z3,"446, Industrial Area, Jaipur, Rajasthan",active,2024-01-04T00:00:00
+12,Saxena Hanger Industries,Divya Nair,9833978249,info@saxenahangerindustries.com,27AABCU9317D2Z3,"862, Business Hub, Visakhapatnam, Andhra Pradesh",inactive,2024-07-22T00:00:00
+13,Choudhary Polybags,Vikram Saxena,9882394227,info@choudharypolybags.com,27AABCU9689D1Z5,"332, Tech Park, Hyderabad, Telangana",active,2024-04-24T00:00:00
+14,Reddy Lace Creations,Sneha Saxena,9842138745,info@reddylacecreations.com,27AABCU1949D4Z5,"970, Main Street, Surat, Gujarat",active,2025-05-12T00:00:00
+15,Joshi Embroidery Works,Mohan Patel,9826879290,info@joshiembroideryworks.com,27AABCU3103D8Z5,"170, Ring Road, Vadodara, Gujarat",inactive,2025-09-13T00:00:00
+16,Nair Silk House,Neha Reddy,9836998038,info@nairsilkhouse.com,27AABCU6107D7Z3,"449, Business Hub, Vadodara, Gujarat",active,2024-05-03T00:00:00
+17,Menon Cotton Mills,Meera Joshi,9855377076,info@menoncottonmills.com,27AABCU1344D9Z2,"603, Market Road, Bangalore, Karnataka",active,2024-03-13T00:00:00
+18,Pillai Knit Fabrics,Nitin Verma,9819046318,info@pillaiknitfabrics.com,27AABCU1514D6Z1,"527, Market Road, Ahmedabad, Gujarat",active,2025-11-16T00:00:00
+19,Bose Denim Works,Ritu Reddy,9827758595,info@bosedenimworks.com,27AABCU8744D4Z4,"827, Green Park, Vadodara, Gujarat",active,2024-04-06T00:00:00
+20,Das Linen Traders,Sunita Malhotra,9866851760,info@daslinentraders.com,27AABCU7735D8Z1,"690, Main Street, Kanpur, Uttar Pradesh",active,2025-02-16T00:00:00
+21,Kohli Woolens,Divya Agarwal,9843374088,info@kohliwoolens.com,27AABCU4139D4Z5,"460, Industrial Area, Chennai, Tamil Nadu",active,2024-07-06T00:00:00
+22,Iyer Fabric House,Deepak Kapoor,9820117988,info@iyerfabrichouse.com,27AABCU8260D9Z1,"52, Business Hub, Ahmedabad, Gujarat",active,2024-04-05T00:00:00
+23,Banerjee Textiles,Sneha Joshi,9864547971,info@banerjeetextiles.com,27AABCU8956D8Z2,"886, Green Park, Hyderabad, Telangana",active,2024-06-17T00:00:00
+24,Chatterjee Silk Mills,Manish Sharma,9845594951,info@chatterjeesilkmills.com,27AABCU8454D5Z4,"714, Business Hub, Nagpur, Maharashtra",active,2024-06-07T00:00:00
+25,Mukherjee Saree House,Suresh Mehta,9817849494,info@mukherjeesareehouse.com,27AABCU9883D1Z3,"59, MG Road, Pune, Maharashtra",inactive,2025-05-03T00:00:00
+26,Bhagat Jute Products,Arun Menon,9817634247,info@bhagatjuteproducts.com,27AABCU9320D2Z2,"71, City Center, Hyderabad, Telangana",active,2025-11-22T00:00:00
+27,Thakur Leather Works,Preeti Joshi,9826090908,info@thakurleatherworks.com,27AABCU5033D1Z5,"84, Green Park, Nagpur, Maharashtra",inactive,2025-08-01T00:00:00
+28,Rathore Canvas Industries,Arun Agarwal,9837415205,info@rathorecanvasindustries.com,27AABCU6147D4Z3,"406, Industrial Area, Jaipur, Rajasthan",active,2025-04-13T00:00:00
+29,Solanki Printers,Rahul Patel,9871510041,info@solankiprinters.com,27AABCU2638D2Z5,"219, Business Hub, Mumbai, Maharashtra",active,2024-05-15T00:00:00
+30,Pawar Dyeing Works,Sneha Saxena,9842787299,info@pawardyeingworks.com,27AABCU7054D5Z2,"449, Business Hub, Bangalore, Karnataka",active,2025-09-18T00:00:00
+31,Kadam Spinning Mills,Nidhi Menon,9899639081,info@kadamspinningmills.com,27AABCU5905D2Z2,"271, Main Street, Mumbai, Maharashtra",active,2025-07-20T00:00:00
+32,Gavaskar Trims,Vikram Nair,9891178885,info@gavaskartrims.com,27AABCU4450D6Z2,"704, Ring Road, Surat, Gujarat",inactive,2025-05-15T00:00:00
+33,Tendulkar Labels,Deepak Verma,9895132217,info@tendulkarlabels.com,27AABCU7939D5Z1,"4, Lake View, Bangalore, Karnataka",active,2025-10-14T00:00:00
+34,Dhoni Sports Wear Fabrics,Deepak Kumar,9884045292,info@dhonisportswearfabrics.com,27AABCU8007D9Z1,"115, Main Street, Thane, Maharashtra",active,2025-07-12T00:00:00
+35,Kumble Silk House,Priya Saxena,9884158663,info@kumblesilkhouse.com,27AABCU3426D7Z2,"43, Ring Road, Ghaziabad, Uttar Pradesh",active,2024-02-10T00:00:00
+36,Dravid Textiles,Gaurav Saxena,9843491314,info@dravidtextiles.com,27AABCU2684D6Z5,"906, Green Park, Pune, Maharashtra",inactive,2024-06-07T00:00:00
+37,Laxman Cotton Co,Sneha Joshi,9833763566,info@laxmancottonco.com,27AABCU7755D1Z2,"755, Lake View, Hyderabad, Telangana",active,2025-11-16T00:00:00
+38,Ganguly Fabric House,Preeti Joshi,9831367172,info@gangulyfabrichouse.com,27AABCU2771D7Z1,"880, Tech Park, Jaipur, Rajasthan",active,2024-07-23T00:00:00
+39,Sehwag Threads,Mohan Kapoor,9850962024,info@sehwagthreads.com,27AABCU4728D4Z1,"676, Market Road, Kanpur, Uttar Pradesh",active,2024-12-02T00:00:00
+40,Yuvraj Yarn Traders,Deepak Patel,9857130035,info@yuvrajyarntraders.com,27AABCU9346D7Z5,"340, MG Road, Jaipur, Rajasthan",active,2024-09-24T00:00:00
+41,Harbhajan Synthetics,Anjali Bose,9815134794,info@harbhajansynthetics.com,27AABCU2776D7Z3,"747, Lake View, Jaipur, Rajasthan",active,2025-09-12T00:00:00
+42,Zaheer Knit Fabrics,Arun Gupta,9887388337,info@zaheerknitfabrics.com,27AABCU4114D5Z1,"726, Green Park, Nagpur, Maharashtra",active,2025-06-16T00:00:00
+43,Nehra Polyester Works,Sneha Pillai,9858884978,info@nehrapolyesterworks.com,27AABCU8066D2Z3,"639, Lake View, Pune, Maharashtra",active,2024-11-03T00:00:00
+44,Bhuvneshwar Trims,Arun Mehta,9853779528,info@bhuvneshwartrims.com,27AABCU7592D5Z5,"131, Market Road, Indore, Madhya Pradesh",active,2025-11-11T00:00:00
+45,Bumrah Packaging,Manish Kumar,9886384014,info@bumrahpackaging.com,27AABCU5930D7Z5,"854, MG Road, Ludhiana, Punjab",active,2024-10-20T00:00:00
+46,Jadeja Labels,Suresh Malhotra,9891424737,info@jadejalabels.com,27AABCU6279D8Z4,"453, Market Road, Ghaziabad, Uttar Pradesh",inactive,2025-04-29T00:00:00
+47,Ashwin Button House,Nidhi Kumar,9848089166,info@ashwinbuttonhouse.com,27AABCU9445D6Z1,"839, Market Road, Bangalore, Karnataka",active,2024-08-18T00:00:00
+48,Rahane Zipper Works,Nidhi Reddy,9813278320,info@rahanezipperworks.com,27AABCU1757D4Z4,"626, Main Street, Kolkata, West Bengal",active,2025-02-28T00:00:00
+49,Rohit Textile Mills,Gaurav Bose,9861536717,info@rohittextilemills.com,27AABCU9099D7Z2,"152, MG Road, Pune, Maharashtra",active,2025-03-11T00:00:00
+50,Pant Hanger Industries,Meera Kumar,9872350830,info@panthangerindustries.com,27AABCU1822D9Z2,"940, Main Street, Visakhapatnam, Andhra Pradesh",active,2024-05-16T00:00:00

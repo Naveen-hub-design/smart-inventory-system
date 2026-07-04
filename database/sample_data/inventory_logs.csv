@@ -1,0 +1,1001 @@
+id,product_id,product_name,material_id,material_name,change_type,quantity,reference_type,reference_id,notes,user_id,created_at
+1,185,Elegant Duffle Bag,,,in,-121,purchase,45,Return,6,2025-08-02T21:00:00
+2,,,12,Polyester Thread,out,390,sale,140,Stock adjustment,10,2025-01-19T18:00:00
+3,92,Comfort Bathrobe,8,Rayon Fabric,in,288,purchase,231,,5,2024-01-01T04:00:00
+4,171,Slim Fit Cotton T-Shirt,,,in,437,purchase,223,,3,2025-10-29T15:00:00
+5,39,Essential Night Suit,,,adjustment,6,,,Quality check,10,2025-08-08T07:00:00
+6,166,Sporty Night Suit,5,Wool Fabric,out,379,sale,237,Stock adjustment,2,2025-06-19T15:00:00
+7,124,Designer Shorts,,,in,416,purchase,219,Inventory count,11,2024-07-08T04:00:00
+8,118,Casual Casual Shirt,90,Drawstring - Cotton,out,390,sale,346,Inventory count,11,2025-06-27T17:00:00
+9,,,27,Interfacing Fabric,out,446,sale,216,Damaged goods,4,2025-08-08T22:00:00
+10,,,43,Lace Fabric,in,116,purchase,309,Return,3,2024-07-11T00:00:00
+11,,,,,in,400,purchase,64,,6,2024-03-11T11:00:00
+12,,,73,Mesh Fabric,out,455,sale,414,Inventory count,1,2025-04-12T09:00:00
+13,,,,,adjustment,374,,,Damaged goods,5,2025-04-20T12:00:00
+14,128,Modern Maxi Dress,74,Satin Fabric,out,258,sale,341,Damaged goods,2,2025-08-30T14:00:00
+15,,,55,Rivet,out,-166,sale,418,,1,2024-09-20T10:00:00
+16,,,61,Stopper,out,3,sale,126,Quality check,5,2024-02-08T18:00:00
+17,119,Designer Joggers,15,Zipper - Nylon,out,450,sale,219,Return,3,2025-08-02T20:00:00
+18,,,,,out,-150,sale,357,Inventory count,1,2025-01-14T18:00:00
+19,,,,,in,-36,purchase,189,Stock adjustment,7,2025-04-18T13:00:00
+20,81,Designer Waistcoat,68,Patch - Embroidered,in,435,purchase,121,Return,10,2025-07-27T18:00:00
+21,106,Traditional Trousers,32,Tag - Paper,out,105,sale,179,Damaged goods,4,2024-12-04T08:00:00
+22,,,,,in,112,purchase,364,Quality check,10,2025-09-18T03:00:00
+23,,,91,Drawstring - Polyester,out,64,sale,302,Inventory count,5,2024-10-09T18:00:00
+24,105,Urban Tote Bag,,,in,338,purchase,295,,3,2025-11-23T21:00:00
+25,129,Modern Top,78,Velvet Fabric,in,288,purchase,25,Damaged goods,2,2024-08-11T18:00:00
+26,,,,,in,384,purchase,81,,3,2025-04-01T04:00:00
+27,12,Classic Cap,39,Thread - Embroidery,in,331,purchase,441,Damaged goods,11,2024-12-22T06:00:00
+28,95,Slim Fit Crop Top,,,adjustment,399,,,,4,2024-05-15T04:00:00
+29,,,39,Thread - Embroidery,in,190,purchase,22,Stock adjustment,10,2024-03-06T04:00:00
+30,,,46,Fleece Fabric,in,-91,purchase,422,Stock adjustment,8,2024-05-19T03:00:00
+31,,,,,in,409,purchase,440,Return,10,2025-02-05T06:00:00
+32,121,Designer Night Suit,72,Knit Fabric,in,240,purchase,322,Stock adjustment,2,2024-03-21T18:00:00
+33,,,,,in,65,purchase,362,Quality check,4,2024-12-01T12:00:00
+34,,,48,Wadding,in,-151,purchase,38,,4,2024-07-28T09:00:00
+35,190,Premium Salwar Suit,,,out,54,sale,81,Inventory count,5,2024-07-18T09:00:00
+36,168,Regular Fit Vest,,,in,108,purchase,136,Inventory count,10,2024-08-25T21:00:00
+37,173,Regular Fit Skirt,51,Button - Brass,out,353,sale,259,Return,3,2024-01-29T01:00:00
+38,,,7,Viscose Fabric,out,-44,sale,441,Inventory count,8,2025-10-31T02:00:00
+39,49,Casual Sling Bag,39,Thread - Embroidery,in,12,purchase,33,,4,2024-11-22T01:00:00
+40,94,Elegant Leather Jacket,21,Button - Shell,out,-35,sale,407,Damaged goods,7,2025-07-26T19:00:00
+41,,,94,Lace - Cotton,out,-37,sale,174,,9,2024-07-22T06:00:00
+42,3,Ethnic Anarkali Dress,,,in,-63,purchase,320,,4,2024-12-04T12:00:00
+43,,,,,in,2,purchase,450,Inventory count,8,2024-09-16T13:00:00
+44,172,Slim Fit Tank Top,59,Buckle - Plastic,in,173,purchase,376,Quality check,3,2024-01-11T14:00:00
+45,193,Comfort Lehenga,32,Tag - Paper,out,-142,sale,313,Return,4,2024-06-26T08:00:00
+46,45,Casual Salwar Suit,95,Lace - Polyester,in,395,purchase,41,Inventory count,3,2025-07-23T08:00:00
+47,,,17,Zipper - Plastic,in,-153,purchase,15,Damaged goods,8,2024-05-10T17:00:00
+48,149,Regular Fit Anarkali Dress,99,Sewing Thread - Black,in,-184,purchase,485,,3,2024-04-03T14:00:00
+49,75,Ethnic Sherwani,,,adjustment,182,,,Quality check,5,2024-02-29T14:00:00
+50,119,Designer Joggers,14,Nylon Thread,adjustment,287,,,Inventory count,6,2025-10-19T20:00:00
+51,,,77,Organza Fabric,in,-13,purchase,212,Quality check,6,2024-09-27T01:00:00
+52,138,Essential Cotton T-Shirt,57,Magnetic Snap,adjustment,-43,,,,6,2025-11-24T15:00:00
+53,47,Classic Crop Top,,,out,413,sale,447,Return,7,2024-02-11T18:00:00
+54,183,Oversized Maxi Dress,,,out,319,sale,389,Inventory count,4,2024-05-30T07:00:00
+55,,,10,Spandex Fabric,adjustment,-10,,,,2,2024-04-12T04:00:00
+56,132,Modern Saree,,,in,154,purchase,62,,11,2025-07-20T13:00:00
+57,125,Luxury Cardigan,,,in,-164,purchase,233,,6,2025-10-06T07:00:00
+58,159,Traditional Waistcoat,,,in,163,purchase,301,Return,2,2024-07-01T19:00:00
+59,,,,,out,304,sale,53,Damaged goods,4,2025-02-01T23:00:00
+60,42,Modern Salwar Suit,,,in,96,purchase,286,,7,2024-06-02T04:00:00
+61,176,Trendy Duffle Bag,76,Georgette Fabric,in,461,purchase,193,Stock adjustment,1,2025-01-26T06:00:00
+62,51,Luxury Casual Shirt,,,adjustment,96,,,Inventory count,1,2024-10-28T09:00:00
+63,128,Modern Maxi Dress,75,Chiffon Fabric,in,138,purchase,258,Inventory count,1,2024-01-13T08:00:00
+64,158,Luxury Hat,99,Sewing Thread - Black,in,319,purchase,6,,10,2025-12-01T11:00:00
+65,115,Luxury Leather Jacket,80,Tweed Fabric,in,-14,purchase,98,Stock adjustment,3,2025-02-10T13:00:00
+66,,,,,out,-11,sale,380,Inventory count,6,2025-04-08T15:00:00
+67,146,Traditional Bow Tie,,,in,228,purchase,82,Return,9,2024-03-23T12:00:00
+68,35,Regular Fit Kurta,,,in,177,purchase,73,,3,2025-08-09T23:00:00
+69,,,,,out,220,sale,147,,10,2024-08-11T01:00:00
+70,180,Modern Stole,30,Label - Woven,in,246,purchase,162,,11,2024-09-07T14:00:00
+71,186,Sporty Skirt,,,out,-16,sale,89,Quality check,2,2024-02-13T13:00:00
+72,,,83,Buttons Pack - 12mm,in,484,purchase,340,,4,2025-07-18T10:00:00
+73,,,98,Fusible Interfacing,in,-159,purchase,371,Stock adjustment,3,2024-02-14T08:00:00
+74,46,Contemporary Formal Shirt,13,Silk Thread,in,-23,purchase,420,Damaged goods,9,2024-03-19T11:00:00
+75,29,Trendy Gloves,69,Patch - Iron On,adjustment,-43,,,Quality check,9,2025-03-21T17:00:00
+76,,,,,out,396,sale,206,Return,5,2024-04-22T16:00:00
+77,,,,,out,112,sale,276,,1,2024-05-16T21:00:00
+78,129,Modern Top,64,Chain - Plastic,out,252,sale,91,Inventory count,4,2025-10-15T16:00:00
+79,,,50,Leather - Synthetic,in,453,purchase,267,Quality check,5,2025-02-15T09:00:00
+80,,,17,Zipper - Plastic,adjustment,22,,,,2,2024-10-30T21:00:00
+81,112,Luxury Scarf,23,Elastic Band,out,-124,sale,73,,5,2024-07-16T05:00:00
+82,,,,,adjustment,426,,,Stock adjustment,2,2024-09-16T17:00:00
+83,131,Modern Gloves,73,Mesh Fabric,in,-86,purchase,376,Inventory count,3,2024-04-02T15:00:00
+84,157,Classic Anarkali Dress,,,out,339,sale,302,,9,2024-04-08T20:00:00
+85,,,3,Linen Fabric,adjustment,-142,,,Quality check,7,2024-08-12T13:00:00
+86,44,Comfort Wallet,8,Rayon Fabric,in,-195,purchase,378,,9,2024-12-22T06:00:00
+87,49,Casual Sling Bag,1,Cotton Fabric,in,129,purchase,100,Return,3,2025-10-08T01:00:00
+88,61,Oversized Rain Jacket,1,Cotton Fabric,in,163,purchase,126,,7,2025-07-20T22:00:00
+89,145,Modern Kaftan,8,Rayon Fabric,out,-139,sale,88,Quality check,3,2025-04-06T12:00:00
+90,63,Basic Formal Shirt,23,Elastic Band,out,369,sale,388,Quality check,11,2024-07-30T16:00:00
+91,105,Urban Tote Bag,11,Cotton Thread,in,317,purchase,110,,11,2024-12-10T20:00:00
+92,197,Slim Fit Sling Bag,51,Button - Brass,out,265,sale,468,Quality check,9,2024-04-17T07:00:00
+93,1,Elegant Night Suit,25,Ribbon,in,-42,purchase,495,,4,2025-11-10T16:00:00
+94,26,Regular Fit Vest,66,Fringe Trim,in,29,purchase,368,Inventory count,10,2024-12-23T05:00:00
+95,136,Comfort Maxi Dress,91,Drawstring - Polyester,adjustment,-180,,,Inventory count,7,2025-02-19T15:00:00
+96,,,93,Ribbon - Grosgrain,in,179,purchase,334,,11,2025-08-18T05:00:00
+97,,,35,Hanger - Wooden,out,53,sale,268,,8,2024-03-17T19:00:00
+98,30,Casual Duffle Bag,65,Tassel,out,-87,sale,228,Quality check,10,2024-12-26T18:00:00
+99,,,45,Jute Fabric,out,476,sale,330,,3,2025-05-24T05:00:00
+100,,,,,adjustment,208,,,,10,2025-06-30T12:00:00
+101,36,Designer Night Suit,,,in,9,purchase,295,,6,2024-11-11T19:00:00
+102,172,Slim Fit Tank Top,82,Denim Thread,in,-191,purchase,115,Damaged goods,3,2025-03-31T23:00:00
+103,114,Comfort Kurta,,,out,286,sale,442,Quality check,7,2024-05-26T19:00:00
+104,,,80,Tweed Fabric,out,205,sale,156,,9,2025-05-11T00:00:00
+105,,,33,Tag - Plastic,out,372,sale,235,Damaged goods,7,2024-12-26T21:00:00
+106,50,Modern Backpack,65,Tassel,in,109,purchase,39,Inventory count,4,2024-04-25T13:00:00
+107,162,Oversized Scarf,,,in,208,purchase,430,,7,2025-08-18T17:00:00
+108,8,Essential Cotton T-Shirt,,,in,123,purchase,398,,11,2024-01-11T19:00:00
+109,101,Modern Top,42,Stone Studs,adjustment,-25,,,,7,2024-05-01T01:00:00
+110,102,Comfort Saree,71,Hook & Loop Tape,in,416,purchase,493,,5,2024-03-03T00:00:00
+111,,,99,Sewing Thread - Black,out,26,sale,427,Stock adjustment,11,2024-01-01T17:00:00
+112,171,Slim Fit Cotton T-Shirt,71,Hook & Loop Tape,in,42,purchase,169,Inventory count,5,2025-09-25T19:00:00
+113,142,Essential Lehenga,,,adjustment,42,,,Inventory count,6,2024-01-15T04:00:00
+114,,,,,in,153,purchase,25,Quality check,2,2025-02-03T21:00:00
+115,153,Traditional Shorts,,,out,8,sale,455,Quality check,5,2024-01-18T11:00:00
+116,,,57,Magnetic Snap,in,354,purchase,286,Quality check,8,2025-11-11T09:00:00
+117,123,Traditional Shawl,3,Linen Fabric,out,469,sale,27,Inventory count,3,2024-05-01T16:00:00
+118,9,Slim Fit Gloves,,,out,446,sale,450,Return,2,2024-07-27T13:00:00
+119,,,,,in,58,purchase,119,,7,2024-05-14T19:00:00
+120,109,Trendy Crop Top,52,Button - Coconut,out,183,sale,141,,7,2024-06-17T09:00:00
+121,30,Casual Duffle Bag,,,in,152,purchase,404,Quality check,8,2025-09-17T19:00:00
+122,197,Slim Fit Sling Bag,,,in,-15,purchase,162,,6,2024-05-07T19:00:00
+123,166,Sporty Night Suit,57,Magnetic Snap,in,-170,purchase,111,Damaged goods,8,2024-09-21T15:00:00
+124,176,Trendy Duffle Bag,48,Wadding,out,411,sale,156,Quality check,6,2024-08-16T19:00:00
+125,60,Casual Waistcoat,41,Beads,in,-194,purchase,50,,5,2025-05-15T02:00:00
+126,,,,,in,410,purchase,374,Stock adjustment,7,2024-02-27T00:00:00
+127,,,,,in,-131,purchase,338,,11,2025-04-28T07:00:00
+128,,,69,Patch - Iron On,out,457,sale,254,Stock adjustment,10,2025-07-12T23:00:00
+129,,,71,Hook & Loop Tape,in,132,purchase,285,Damaged goods,3,2024-06-24T05:00:00
+130,36,Designer Night Suit,41,Beads,adjustment,-97,,,Return,8,2025-02-19T03:00:00
+131,,,,,in,144,purchase,315,,6,2024-02-23T16:00:00
+132,,,40,Sequins,in,75,purchase,307,Return,11,2025-04-27T07:00:00
+133,77,Casual Salwar Suit,68,Patch - Embroidered,in,102,purchase,183,,6,2024-04-24T14:00:00
+134,147,Comfort Tote Bag,34,Hanger - Plastic,out,96,sale,154,,6,2025-09-09T06:00:00
+135,8,Essential Cotton T-Shirt,,,in,-73,purchase,251,Quality check,2,2025-06-26T06:00:00
+136,,,67,Pom Pom,in,415,purchase,353,,9,2024-07-05T13:00:00
+137,45,Casual Salwar Suit,72,Knit Fabric,out,-131,sale,260,Inventory count,9,2024-12-27T05:00:00
+138,,,56,Snap Button,out,-12,sale,101,,6,2024-11-19T21:00:00
+139,79,Urban Crop Top,85,Buttons Pack - 20mm,in,17,purchase,63,Stock adjustment,8,2024-12-01T23:00:00
+140,,,14,Nylon Thread,out,164,sale,26,Inventory count,4,2025-03-11T21:00:00
+141,128,Modern Maxi Dress,,,in,290,purchase,143,Quality check,3,2025-03-29T23:00:00
+142,,,40,Sequins,out,29,sale,415,,10,2024-08-02T12:00:00
+143,,,,,out,240,sale,295,,10,2024-09-25T10:00:00
+144,8,Essential Cotton T-Shirt,15,Zipper - Nylon,out,-151,sale,295,Return,8,2025-06-29T19:00:00
+145,,,88,Zipper - Closed End,in,148,purchase,296,,9,2024-06-16T03:00:00
+146,75,Ethnic Sherwani,22,Hook & Eye,out,466,sale,210,Damaged goods,9,2024-10-28T12:00:00
+147,172,Slim Fit Tank Top,59,Buckle - Plastic,out,396,sale,153,,9,2025-01-14T14:00:00
+148,126,Designer Muffler,,,in,384,purchase,422,,9,2024-12-22T16:00:00
+149,,,23,Elastic Band,adjustment,-54,,,Inventory count,9,2024-03-14T14:00:00
+150,162,Oversized Scarf,18,Button - Plastic,out,106,sale,339,Stock adjustment,11,2025-06-25T17:00:00
+151,21,Slim Fit Lehenga,43,Lace Fabric,out,394,sale,465,Damaged goods,6,2025-06-25T09:00:00
+152,,,55,Rivet,in,308,purchase,405,Quality check,9,2024-06-12T16:00:00
+153,,,,,in,-170,purchase,43,Return,7,2024-08-02T16:00:00
+154,148,Formal Kaftan,,,out,303,sale,59,Damaged goods,6,2025-07-05T02:00:00
+155,6,Oversized Jeans,80,Tweed Fabric,out,472,sale,6,,2,2025-08-09T20:00:00
+156,95,Slim Fit Crop Top,,,out,373,sale,240,Stock adjustment,4,2025-03-11T13:00:00
+157,169,Basic Night Suit,,,in,316,purchase,46,Inventory count,1,2025-07-05T00:00:00
+158,,,,,adjustment,204,,,,2,2024-01-21T23:00:00
+159,21,Slim Fit Lehenga,,,out,345,sale,124,Inventory count,5,2024-05-08T18:00:00
+160,90,Oversized Night Suit,,,in,236,purchase,331,,9,2024-02-13T18:00:00
+161,26,Regular Fit Vest,92,Ribbon - Satin,in,-75,purchase,424,Return,1,2024-02-13T09:00:00
+162,,,52,Button - Coconut,in,-129,purchase,154,Inventory count,4,2024-12-17T22:00:00
+163,113,Essential Kaftan,,,out,157,sale,388,Quality check,10,2025-06-05T23:00:00
+164,,,8,Rayon Fabric,in,-193,purchase,108,Return,7,2025-10-03T10:00:00
+165,75,Ethnic Sherwani,32,Tag - Paper,in,-112,purchase,188,Quality check,7,2025-10-28T10:00:00
+166,48,Trendy Sling Bag,,,in,-82,purchase,300,Damaged goods,4,2024-04-13T12:00:00
+167,11,Sporty Muffler,66,Fringe Trim,out,45,sale,490,,8,2025-04-27T15:00:00
+168,,,99,Sewing Thread - Black,in,465,purchase,438,,6,2025-01-22T13:00:00
+169,,,,,in,61,purchase,152,Quality check,2,2024-09-19T02:00:00
+170,,,60,Slider,in,131,purchase,458,Return,9,2025-10-11T06:00:00
+171,105,Urban Tote Bag,6,Denim Fabric,adjustment,182,,,Stock adjustment,11,2024-05-07T01:00:00
+172,,,28,Bias Tape,out,-192,sale,280,Inventory count,7,2024-09-27T04:00:00
+173,,,14,Nylon Thread,in,69,purchase,217,Damaged goods,8,2025-10-10T08:00:00
+174,59,Classic Tote Bag,28,Bias Tape,in,-178,purchase,271,,7,2025-08-12T13:00:00
+175,,,85,Buttons Pack - 20mm,out,421,sale,206,,10,2025-10-03T22:00:00
+176,196,Contemporary Casual Shirt,79,Corduroy Fabric,in,321,purchase,89,Return,6,2025-04-10T08:00:00
+177,197,Slim Fit Sling Bag,,,in,264,purchase,439,,8,2024-05-19T15:00:00
+178,,,55,Rivet,in,366,purchase,455,,7,2025-07-27T03:00:00
+179,9,Slim Fit Gloves,,,in,13,purchase,398,,9,2025-08-27T16:00:00
+180,114,Comfort Kurta,46,Fleece Fabric,out,324,sale,106,Stock adjustment,4,2024-08-15T23:00:00
+181,116,Oversized Backpack,,,out,57,sale,146,,10,2024-04-06T07:00:00
+182,90,Oversized Night Suit,,,in,452,purchase,319,,9,2025-03-05T00:00:00
+183,,,,,in,-30,purchase,203,,11,2024-02-10T08:00:00
+184,22,Luxury Sweater,93,Ribbon - Grosgrain,in,468,purchase,442,Inventory count,3,2024-12-30T14:00:00
+185,17,Sporty Windcheater,,,in,306,purchase,138,Damaged goods,2,2025-08-28T22:00:00
+186,,,,,out,45,sale,111,,1,2025-07-18T20:00:00
+187,80,Premium Blazer,,,out,449,sale,248,Damaged goods,9,2024-05-27T04:00:00
+188,189,Sporty Tie,20,Button - Wooden,out,199,sale,15,Quality check,4,2024-09-18T18:00:00
+189,,,39,Thread - Embroidery,in,-53,purchase,91,,5,2024-07-08T09:00:00
+190,55,Premium Stole,,,adjustment,-98,,,,1,2024-04-20T17:00:00
+191,,,89,Elastic Cord,in,190,purchase,157,Inventory count,1,2024-08-08T01:00:00
+192,,,22,Hook & Eye,in,-143,purchase,280,,10,2024-06-04T01:00:00
+193,101,Modern Top,54,Grommet,in,-62,purchase,400,Return,4,2024-03-12T18:00:00
+194,8,Essential Cotton T-Shirt,,,out,276,sale,491,Return,1,2025-05-02T19:00:00
+195,35,Regular Fit Kurta,,,in,376,purchase,50,Inventory count,4,2024-01-13T00:00:00
+196,,,5,Wool Fabric,out,470,sale,237,,2,2025-04-07T05:00:00
+197,98,Classic Cotton T-Shirt,96,Netting,in,321,purchase,105,Quality check,8,2025-04-28T02:00:00
+198,,,33,Tag - Plastic,in,123,purchase,96,Quality check,2,2024-10-13T23:00:00
+199,141,Comfort Kaftan,9,Nylon Fabric,out,285,sale,57,Damaged goods,5,2024-01-07T14:00:00
+200,,,29,Drawstring Cord,in,108,purchase,209,,6,2024-10-27T04:00:00
+201,4,Urban Beanie,,,in,-15,purchase,48,Damaged goods,2,2024-08-07T18:00:00
+202,171,Slim Fit Cotton T-Shirt,75,Chiffon Fabric,in,78,purchase,489,Inventory count,8,2024-11-08T23:00:00
+203,54,Formal Saree,54,Grommet,in,456,purchase,193,Return,2,2025-10-02T11:00:00
+204,,,84,Buttons Pack - 16mm,in,276,purchase,473,,11,2025-09-09T09:00:00
+205,178,Essential Belt,,,in,353,purchase,139,Quality check,1,2024-12-25T03:00:00
+206,,,41,Beads,in,349,purchase,55,,7,2025-08-18T02:00:00
+207,194,Oversized Kaftan,94,Lace - Cotton,out,421,sale,451,Damaged goods,8,2025-07-02T13:00:00
+208,132,Modern Saree,17,Zipper - Plastic,out,19,sale,220,,1,2025-04-19T12:00:00
+209,,,4,Silk Fabric,out,323,sale,270,,10,2024-08-24T14:00:00
+210,,,,,in,380,purchase,293,Quality check,5,2024-05-13T02:00:00
+211,189,Sporty Tie,68,Patch - Embroidered,in,6,purchase,26,,4,2025-02-06T19:00:00
+212,,,,,in,247,purchase,118,,9,2024-10-03T14:00:00
+213,,,53,Eyelet,in,126,purchase,61,,3,2024-10-07T13:00:00
+214,44,Comfort Wallet,,,adjustment,-30,,,Inventory count,11,2024-07-23T23:00:00
+215,,,,,adjustment,136,,,Stock adjustment,1,2024-01-02T06:00:00
+216,,,32,Tag - Paper,in,98,purchase,11,Stock adjustment,10,2025-02-16T14:00:00
+217,,,74,Satin Fabric,in,381,purchase,314,Damaged goods,2,2024-04-02T03:00:00
+218,,,12,Polyester Thread,out,193,sale,409,,4,2025-08-04T23:00:00
+219,117,Luxury Leather Jacket,75,Chiffon Fabric,in,489,purchase,351,Inventory count,10,2025-06-28T18:00:00
+220,,,44,Net Fabric,in,107,purchase,199,Quality check,8,2025-07-10T02:00:00
+221,,,,,in,411,purchase,199,Damaged goods,11,2025-08-26T16:00:00
+222,25,Traditional Polo Shirt,32,Tag - Paper,in,256,purchase,128,,6,2024-03-25T03:00:00
+223,166,Sporty Night Suit,,,in,65,purchase,340,,10,2024-12-03T16:00:00
+224,49,Casual Sling Bag,86,Zipper - Invisible,in,-188,purchase,77,Stock adjustment,6,2024-03-11T11:00:00
+225,8,Essential Cotton T-Shirt,49,PVC Fabric,in,388,purchase,143,Damaged goods,5,2025-09-13T19:00:00
+226,104,Formal Cardigan,19,Button - Metal,out,-146,sale,456,,5,2024-04-07T01:00:00
+227,36,Designer Night Suit,70,Badge,adjustment,-107,,,,11,2025-06-03T04:00:00
+228,197,Slim Fit Sling Bag,,,in,-199,purchase,263,,1,2024-06-01T12:00:00
+229,18,Premium Casual Shirt,89,Elastic Cord,out,132,sale,178,Stock adjustment,6,2024-05-19T14:00:00
+230,106,Traditional Trousers,,,adjustment,27,,,,1,2024-12-18T14:00:00
+231,,,,,in,373,purchase,45,Return,2,2024-05-22T17:00:00
+232,18,Premium Casual Shirt,81,Canvas Fabric,out,135,sale,60,,5,2024-12-20T18:00:00
+233,102,Comfort Saree,,,adjustment,-168,,,,4,2024-03-03T14:00:00
+234,7,Comfort Sling Bag,,,in,-70,purchase,136,,8,2025-07-29T07:00:00
+235,,,23,Elastic Band,in,5,purchase,16,Quality check,2,2024-05-10T18:00:00
+236,,,34,Hanger - Plastic,in,345,purchase,46,Inventory count,7,2025-01-18T00:00:00
+237,,,99,Sewing Thread - Black,out,64,sale,385,,5,2024-11-15T12:00:00
+238,,,,,adjustment,250,,,Damaged goods,7,2025-03-05T07:00:00
+239,86,Contemporary Bomber Jacket,,,in,174,purchase,55,Stock adjustment,5,2025-05-26T23:00:00
+240,,,,,out,371,sale,433,Inventory count,7,2025-03-07T02:00:00
+241,,,,,out,-97,sale,87,Inventory count,11,2025-11-26T04:00:00
+242,1,Elegant Night Suit,54,Grommet,in,196,purchase,202,Quality check,3,2024-12-25T22:00:00
+243,160,Classic Backpack,53,Eyelet,in,358,purchase,142,Damaged goods,10,2025-03-28T16:00:00
+244,21,Slim Fit Lehenga,75,Chiffon Fabric,in,-139,purchase,243,Return,1,2025-10-16T06:00:00
+245,28,Elegant Kaftan,39,Thread - Embroidery,in,312,purchase,212,Damaged goods,3,2025-08-02T15:00:00
+246,,,,,in,14,purchase,121,Damaged goods,7,2024-11-10T01:00:00
+247,141,Comfort Kaftan,,,adjustment,-87,,,Return,11,2024-06-03T02:00:00
+248,,,46,Fleece Fabric,out,-33,sale,432,,1,2024-12-31T08:00:00
+249,73,Modern Sherwani,12,Polyester Thread,out,-74,sale,338,Inventory count,4,2024-04-13T21:00:00
+250,,,,,out,55,sale,282,Quality check,4,2024-01-03T21:00:00
+251,,,37,Tissue Paper,in,312,purchase,116,,9,2025-05-29T05:00:00
+252,108,Premium Beanie,52,Button - Coconut,out,214,sale,142,Return,2,2024-09-22T00:00:00
+253,,,,,in,179,purchase,23,Damaged goods,2,2024-11-14T06:00:00
+254,,,16,Zipper - Metal,adjustment,211,,,Quality check,1,2024-02-22T09:00:00
+255,,,83,Buttons Pack - 12mm,in,317,purchase,255,,4,2025-01-29T01:00:00
+256,52,Comfort Tote Bag,,,in,257,purchase,32,,2,2025-07-17T18:00:00
+257,,,27,Interfacing Fabric,in,104,purchase,414,Stock adjustment,2,2025-05-01T03:00:00
+258,26,Regular Fit Vest,60,Slider,adjustment,467,,,,2,2025-07-22T13:00:00
+259,40,Regular Fit Casual Shirt,46,Fleece Fabric,adjustment,500,,,Damaged goods,2,2025-09-23T01:00:00
+260,,,60,Slider,out,336,sale,332,,11,2024-12-02T11:00:00
+261,,,29,Drawstring Cord,in,145,purchase,40,,1,2025-06-26T05:00:00
+262,,,57,Magnetic Snap,out,335,sale,473,,8,2024-01-04T15:00:00
+263,,,,,out,-86,sale,390,Quality check,1,2025-03-01T03:00:00
+264,200,Sporty Joggers,20,Button - Wooden,out,-68,sale,354,Quality check,5,2024-07-26T21:00:00
+265,138,Essential Cotton T-Shirt,,,out,146,sale,252,Inventory count,7,2024-08-20T01:00:00
+266,,,24,Lace Trim,out,93,sale,443,Return,6,2025-07-14T00:00:00
+267,9,Slim Fit Gloves,,,out,466,sale,444,Damaged goods,4,2024-09-20T21:00:00
+268,48,Trendy Sling Bag,,,in,-76,purchase,110,,7,2025-02-04T18:00:00
+269,142,Essential Lehenga,,,out,266,sale,343,Inventory count,1,2024-09-22T12:00:00
+270,175,Sporty Tank Top,,,out,247,sale,411,,4,2025-09-26T22:00:00
+271,94,Elegant Leather Jacket,19,Button - Metal,out,-109,sale,436,,7,2024-11-25T01:00:00
+272,,,,,in,291,purchase,422,Stock adjustment,6,2024-01-10T06:00:00
+273,167,Modern Tote Bag,34,Hanger - Plastic,in,-40,purchase,482,,10,2024-10-15T06:00:00
+274,,,,,out,354,sale,444,,4,2024-10-26T16:00:00
+275,,,,,in,235,purchase,6,,6,2025-09-07T02:00:00
+276,,,,,in,-128,purchase,24,Return,9,2025-01-21T15:00:00
+277,,,32,Tag - Paper,out,36,sale,358,Return,4,2025-11-14T19:00:00
+278,,,,,in,-183,purchase,282,Inventory count,7,2024-05-01T08:00:00
+279,126,Designer Muffler,75,Chiffon Fabric,in,234,purchase,394,Inventory count,4,2024-05-05T10:00:00
+280,,,15,Zipper - Nylon,out,-60,sale,173,Inventory count,8,2025-07-13T02:00:00
+281,,,,,in,181,purchase,414,,6,2025-07-30T15:00:00
+282,,,82,Denim Thread,in,-154,purchase,133,Inventory count,3,2025-11-18T19:00:00
+283,,,,,in,99,purchase,376,Return,5,2025-03-21T23:00:00
+284,37,Comfort Trousers,,,out,-134,sale,396,,8,2025-03-28T03:00:00
+285,119,Designer Joggers,,,in,193,purchase,32,Inventory count,9,2024-09-26T20:00:00
+286,124,Designer Shorts,8,Rayon Fabric,adjustment,21,,,Return,5,2024-04-10T15:00:00
+287,,,,,in,252,purchase,272,Damaged goods,9,2024-10-30T02:00:00
+288,47,Classic Crop Top,,,in,-35,purchase,362,Return,5,2025-07-30T05:00:00
+289,38,Trendy Night Suit,24,Lace Trim,out,368,sale,351,,8,2025-06-12T09:00:00
+290,,,,,out,468,sale,220,Stock adjustment,3,2025-01-21T21:00:00
+291,,,27,Interfacing Fabric,out,146,sale,485,Quality check,8,2024-08-01T23:00:00
+292,,,28,Bias Tape,out,341,sale,355,Inventory count,10,2025-03-17T23:00:00
+293,178,Essential Belt,,,in,69,purchase,209,Quality check,10,2025-06-13T16:00:00
+294,,,,,adjustment,142,,,Damaged goods,1,2025-01-14T07:00:00
+295,,,78,Velvet Fabric,in,-52,purchase,404,Quality check,2,2025-04-30T06:00:00
+296,110,Traditional Cardigan,100,Sewing Thread - White,in,-191,purchase,306,Return,7,2024-11-17T06:00:00
+297,129,Modern Top,60,Slider,out,311,sale,30,Damaged goods,3,2024-12-13T11:00:00
+298,,,4,Silk Fabric,out,47,sale,436,,3,2025-06-23T08:00:00
+299,192,Regular Fit Stole,59,Buckle - Plastic,out,11,sale,108,,3,2024-07-03T01:00:00
+300,,,,,adjustment,-124,,,Inventory count,7,2025-04-20T11:00:00
+301,28,Elegant Kaftan,8,Rayon Fabric,out,101,sale,62,Return,2,2024-06-10T19:00:00
+302,104,Formal Cardigan,30,Label - Woven,in,-167,purchase,138,,7,2025-01-18T05:00:00
+303,,,23,Elastic Band,out,-9,sale,5,Quality check,10,2024-01-31T05:00:00
+304,,,35,Hanger - Wooden,out,-12,sale,8,Damaged goods,8,2025-11-25T12:00:00
+305,7,Comfort Sling Bag,58,Buckle - Metal,in,275,purchase,32,,7,2024-01-20T06:00:00
+306,11,Sporty Muffler,88,Zipper - Closed End,in,-189,purchase,229,Stock adjustment,4,2024-02-03T09:00:00
+307,47,Classic Crop Top,,,in,86,purchase,212,Stock adjustment,2,2025-01-20T18:00:00
+308,114,Comfort Kurta,31,Label - Printed,out,368,sale,82,Stock adjustment,10,2024-01-06T17:00:00
+309,,,34,Hanger - Plastic,in,-138,purchase,380,Return,2,2024-06-09T11:00:00
+310,189,Sporty Tie,17,Zipper - Plastic,adjustment,273,,,,9,2024-06-10T15:00:00
+311,31,Traditional Hat,29,Drawstring Cord,in,156,purchase,82,Damaged goods,10,2025-10-29T01:00:00
+312,,,54,Grommet,out,263,sale,31,Return,3,2025-02-08T20:00:00
+313,,,46,Fleece Fabric,out,10,sale,442,Damaged goods,10,2025-08-25T15:00:00
+314,96,Designer Bathrobe,,,adjustment,-200,,,Quality check,5,2025-06-01T17:00:00
+315,94,Elegant Leather Jacket,3,Linen Fabric,in,-27,purchase,215,,11,2024-02-15T17:00:00
+316,145,Modern Kaftan,22,Hook & Eye,adjustment,409,,,,2,2024-02-17T05:00:00
+317,77,Casual Salwar Suit,31,Label - Printed,in,434,purchase,398,Damaged goods,9,2024-02-03T08:00:00
+318,,,,,out,-40,sale,468,Stock adjustment,4,2024-12-22T06:00:00
+319,63,Basic Formal Shirt,,,in,-159,purchase,4,Return,6,2024-06-06T11:00:00
+320,187,Sporty Hoodie,,,in,145,purchase,59,,4,2024-10-17T10:00:00
+321,142,Essential Lehenga,37,Tissue Paper,out,13,sale,298,Stock adjustment,4,2025-09-30T06:00:00
+322,101,Modern Top,76,Georgette Fabric,in,236,purchase,151,,6,2024-05-15T00:00:00
+323,166,Sporty Night Suit,,,out,-71,sale,383,,3,2024-10-02T08:00:00
+324,86,Contemporary Bomber Jacket,51,Button - Brass,out,120,sale,30,,1,2025-09-18T19:00:00
+325,,,26,Velcro Tape,in,-123,purchase,74,Damaged goods,10,2025-05-07T14:00:00
+326,,,50,Leather - Synthetic,in,-14,purchase,143,,10,2025-09-01T08:00:00
+327,160,Classic Backpack,13,Silk Thread,in,400,purchase,462,Quality check,8,2024-05-15T05:00:00
+328,,,30,Label - Woven,in,210,purchase,360,Damaged goods,8,2024-05-11T13:00:00
+329,131,Modern Gloves,52,Button - Coconut,in,57,purchase,78,,1,2025-01-27T03:00:00
+330,,,30,Label - Woven,out,-173,sale,218,,11,2024-01-05T18:00:00
+331,69,Contemporary Track Pants,,,adjustment,-60,,,Stock adjustment,3,2024-10-03T01:00:00
+332,,,,,adjustment,35,,,,6,2024-12-05T11:00:00
+333,,,13,Silk Thread,in,395,purchase,139,Damaged goods,4,2025-10-17T03:00:00
+334,133,Contemporary Beanie,63,Chain - Metal,adjustment,405,,,,5,2025-04-17T20:00:00
+335,96,Designer Bathrobe,33,Tag - Plastic,out,-66,sale,310,Stock adjustment,5,2024-06-06T02:00:00
+336,83,Urban Hoodie,70,Badge,adjustment,-88,,,,5,2025-08-27T05:00:00
+337,111,Traditional Tank Top,49,PVC Fabric,out,388,sale,248,Stock adjustment,3,2024-07-22T06:00:00
+338,111,Traditional Tank Top,,,out,166,sale,302,,6,2025-09-24T01:00:00
+339,75,Ethnic Sherwani,36,Polybag,out,-142,sale,367,Return,9,2025-06-16T10:00:00
+340,139,Essential Chinos,,,out,128,sale,99,Inventory count,3,2025-03-23T22:00:00
+341,,,35,Hanger - Wooden,out,207,sale,404,,6,2025-05-08T04:00:00
+342,,,41,Beads,in,182,purchase,474,Quality check,3,2024-03-23T18:00:00
+343,,,2,Polyester Fabric,out,-92,sale,82,Return,11,2025-06-30T05:00:00
+344,194,Oversized Kaftan,39,Thread - Embroidery,adjustment,257,,,Quality check,4,2024-06-25T17:00:00
+345,,,,,out,-187,sale,390,,4,2024-04-02T05:00:00
+346,,,77,Organza Fabric,in,-189,purchase,45,Quality check,7,2024-01-14T19:00:00
+347,11,Sporty Muffler,,,in,208,purchase,426,Return,1,2024-01-01T08:00:00
+348,48,Trendy Sling Bag,,,out,91,sale,185,,4,2025-10-24T01:00:00
+349,,,74,Satin Fabric,out,24,sale,39,Stock adjustment,9,2024-09-08T11:00:00
+350,,,,,out,274,sale,91,Stock adjustment,7,2024-04-05T02:00:00
+351,,,68,Patch - Embroidered,in,-53,purchase,356,,6,2025-04-17T15:00:00
+352,176,Trendy Duffle Bag,8,Rayon Fabric,out,285,sale,144,Quality check,5,2025-03-22T04:00:00
+353,91,Designer Jeans,,,in,386,purchase,363,Inventory count,3,2024-11-29T07:00:00
+354,114,Comfort Kurta,85,Buttons Pack - 20mm,in,-50,purchase,139,,4,2024-08-16T21:00:00
+355,4,Urban Beanie,80,Tweed Fabric,in,65,purchase,403,,7,2024-10-16T22:00:00
+356,184,Elegant Hat,,,in,157,purchase,71,,4,2024-10-09T09:00:00
+357,169,Basic Night Suit,67,Pom Pom,out,170,sale,92,,7,2025-05-03T13:00:00
+358,,,,,adjustment,99,,,,5,2024-07-03T19:00:00
+359,,,,,out,148,sale,415,Inventory count,1,2024-04-12T16:00:00
+360,159,Traditional Waistcoat,25,Ribbon,in,-24,purchase,428,,1,2024-11-02T22:00:00
+361,114,Comfort Kurta,,,in,73,purchase,147,,4,2024-03-20T15:00:00
+362,86,Contemporary Bomber Jacket,65,Tassel,in,198,purchase,177,Inventory count,10,2025-08-09T08:00:00
+363,,,,,in,348,purchase,85,Stock adjustment,7,2025-01-13T23:00:00
+364,11,Sporty Muffler,,,in,278,purchase,215,Quality check,5,2024-06-26T06:00:00
+365,,,77,Organza Fabric,in,147,purchase,335,Return,11,2024-08-20T16:00:00
+366,69,Contemporary Track Pants,,,in,200,purchase,247,Return,10,2024-10-12T07:00:00
+367,9,Slim Fit Gloves,29,Drawstring Cord,out,288,sale,9,Damaged goods,11,2025-06-30T02:00:00
+368,,,82,Denim Thread,out,220,sale,26,Stock adjustment,8,2024-04-06T09:00:00
+369,68,Comfort Muffler,,,out,268,sale,490,Quality check,2,2024-02-22T12:00:00
+370,167,Modern Tote Bag,45,Jute Fabric,out,225,sale,386,Inventory count,3,2024-09-19T13:00:00
+371,194,Oversized Kaftan,,,adjustment,366,,,Damaged goods,2,2024-03-09T11:00:00
+372,192,Regular Fit Stole,5,Wool Fabric,out,-139,sale,191,Inventory count,3,2024-06-01T14:00:00
+373,,,40,Sequins,out,142,sale,432,Inventory count,11,2024-02-11T22:00:00
+374,,,47,Terry Cloth,out,221,sale,198,Return,1,2025-03-14T01:00:00
+375,,,,,in,235,purchase,362,Stock adjustment,4,2025-08-29T16:00:00
+376,113,Essential Kaftan,3,Linen Fabric,in,214,purchase,203,,9,2025-04-27T22:00:00
+377,108,Premium Beanie,61,Stopper,in,388,purchase,94,,10,2025-10-19T08:00:00
+378,131,Modern Gloves,56,Snap Button,in,136,purchase,395,Return,11,2024-08-11T16:00:00
+379,100,Premium Beanie,27,Interfacing Fabric,out,386,sale,414,Damaged goods,11,2025-02-28T06:00:00
+380,159,Traditional Waistcoat,65,Tassel,in,293,purchase,357,Return,11,2025-02-13T00:00:00
+381,,,39,Thread - Embroidery,in,384,purchase,435,,8,2024-05-21T04:00:00
+382,144,Modern Wallet,90,Drawstring - Cotton,in,-121,purchase,135,Inventory count,1,2025-07-12T12:00:00
+383,,,98,Fusible Interfacing,out,-129,sale,201,,8,2025-02-15T05:00:00
+384,149,Regular Fit Anarkali Dress,,,in,321,purchase,484,,8,2025-09-22T02:00:00
+385,,,99,Sewing Thread - Black,in,8,purchase,288,,8,2024-08-26T14:00:00
+386,2,Trendy Stole,40,Sequins,adjustment,425,,,Quality check,10,2024-09-25T05:00:00
+387,,,76,Georgette Fabric,in,348,purchase,81,,11,2025-11-11T07:00:00
+388,,,82,Denim Thread,in,415,purchase,491,Damaged goods,6,2024-01-20T03:00:00
+389,116,Oversized Backpack,,,out,189,sale,313,,10,2025-09-05T05:00:00
+390,49,Casual Sling Bag,,,in,64,purchase,420,,5,2025-09-13T16:00:00
+391,191,Elegant Blazer,85,Buttons Pack - 20mm,in,51,purchase,288,,11,2024-02-25T22:00:00
+392,,,15,Zipper - Nylon,adjustment,224,,,,7,2025-04-27T16:00:00
+393,,,85,Buttons Pack - 20mm,adjustment,27,,,Return,11,2025-11-25T03:00:00
+394,195,Slim Fit Blazer,7,Viscose Fabric,out,-95,sale,297,Damaged goods,10,2025-01-23T20:00:00
+395,168,Regular Fit Vest,43,Lace Fabric,adjustment,-199,,,,2,2024-07-23T14:00:00
+396,40,Regular Fit Casual Shirt,39,Thread - Embroidery,out,-157,sale,28,Stock adjustment,1,2025-04-01T01:00:00
+397,133,Contemporary Beanie,9,Nylon Fabric,out,265,sale,323,,9,2024-06-12T12:00:00
+398,141,Comfort Kaftan,,,in,103,purchase,308,Return,1,2024-11-02T16:00:00
+399,118,Casual Casual Shirt,,,adjustment,319,,,Return,10,2025-11-06T18:00:00
+400,162,Oversized Scarf,,,in,-123,purchase,329,,7,2025-03-05T17:00:00
+401,,,50,Leather - Synthetic,out,-88,sale,351,Quality check,7,2024-06-24T15:00:00
+402,136,Comfort Maxi Dress,,,in,-183,purchase,8,,8,2024-09-02T19:00:00
+403,45,Casual Salwar Suit,54,Grommet,in,-1,purchase,326,Damaged goods,5,2025-11-19T08:00:00
+404,98,Classic Cotton T-Shirt,24,Lace Trim,in,457,purchase,167,Inventory count,1,2024-09-16T10:00:00
+405,,,85,Buttons Pack - 20mm,in,473,purchase,92,,11,2024-05-26T09:00:00
+406,5,Slim Fit Stole,20,Button - Wooden,in,28,purchase,111,Stock adjustment,1,2025-04-14T11:00:00
+407,146,Traditional Bow Tie,91,Drawstring - Polyester,in,-140,purchase,283,Quality check,11,2024-09-12T19:00:00
+408,,,32,Tag - Paper,out,184,sale,1,Damaged goods,1,2024-11-21T04:00:00
+409,,,33,Tag - Plastic,in,313,purchase,182,Inventory count,6,2024-03-22T22:00:00
+410,,,,,in,209,purchase,348,,2,2024-10-05T16:00:00
+411,116,Oversized Backpack,32,Tag - Paper,in,330,purchase,448,Quality check,7,2025-01-13T08:00:00
+412,60,Casual Waistcoat,49,PVC Fabric,in,212,purchase,102,Quality check,5,2025-04-19T19:00:00
+413,,,73,Mesh Fabric,out,296,sale,38,,1,2025-11-13T05:00:00
+414,100,Premium Beanie,,,in,220,purchase,96,,1,2025-07-31T19:00:00
+415,,,73,Mesh Fabric,out,397,sale,214,Stock adjustment,6,2025-02-21T05:00:00
+416,154,Essential Scarf,20,Button - Wooden,out,402,sale,313,Stock adjustment,4,2025-09-09T23:00:00
+417,123,Traditional Shawl,52,Button - Coconut,in,369,purchase,385,Inventory count,8,2025-06-11T14:00:00
+418,,,2,Polyester Fabric,out,108,sale,96,Damaged goods,9,2024-05-04T07:00:00
+419,65,Ethnic Formal Shirt,32,Tag - Paper,in,-103,purchase,26,Stock adjustment,10,2024-12-01T06:00:00
+420,104,Formal Cardigan,,,in,-196,purchase,80,Damaged goods,1,2024-03-09T09:00:00
+421,179,Premium Sherwani,52,Button - Coconut,adjustment,-50,,,,5,2025-09-23T23:00:00
+422,59,Classic Tote Bag,37,Tissue Paper,adjustment,377,,,Damaged goods,2,2024-03-13T06:00:00
+423,148,Formal Kaftan,20,Button - Wooden,in,450,purchase,105,,1,2025-07-10T15:00:00
+424,165,Elegant Stole,,,out,487,sale,314,,11,2025-01-27T09:00:00
+425,,,43,Lace Fabric,adjustment,435,,,,9,2025-10-26T04:00:00
+426,,,,,in,383,purchase,120,Quality check,10,2025-05-11T13:00:00
+427,144,Modern Wallet,52,Button - Coconut,in,-72,purchase,319,,11,2025-08-05T17:00:00
+428,2,Trendy Stole,,,in,474,purchase,206,,8,2025-01-08T07:00:00
+429,135,Essential Blazer,43,Lace Fabric,out,291,sale,210,Damaged goods,1,2024-06-05T20:00:00
+430,79,Urban Crop Top,16,Zipper - Metal,in,-33,purchase,127,,11,2024-11-21T07:00:00
+431,81,Designer Waistcoat,13,Silk Thread,in,-187,purchase,247,Inventory count,8,2024-02-23T15:00:00
+432,,,45,Jute Fabric,in,-137,purchase,329,,10,2024-08-19T13:00:00
+433,,,,,adjustment,141,,,,10,2025-09-28T23:00:00
+434,54,Formal Saree,25,Ribbon,in,105,purchase,265,Damaged goods,5,2024-07-07T09:00:00
+435,1,Elegant Night Suit,64,Chain - Plastic,out,241,sale,147,Quality check,3,2024-01-27T14:00:00
+436,2,Trendy Stole,61,Stopper,in,223,purchase,162,,8,2024-11-25T02:00:00
+437,,,72,Knit Fabric,adjustment,165,,,Stock adjustment,11,2024-04-01T15:00:00
+438,89,Luxury Windcheater,,,in,160,purchase,443,Damaged goods,1,2025-01-27T06:00:00
+439,,,66,Fringe Trim,out,-199,sale,417,,2,2024-12-18T11:00:00
+440,67,Basic Joggers,,,in,434,purchase,459,Return,4,2025-02-05T21:00:00
+441,,,,,out,462,sale,342,,1,2025-05-18T15:00:00
+442,4,Urban Beanie,41,Beads,in,119,purchase,6,Damaged goods,1,2024-04-30T17:00:00
+443,183,Oversized Maxi Dress,23,Elastic Band,in,-117,purchase,310,Stock adjustment,10,2025-07-06T00:00:00
+444,197,Slim Fit Sling Bag,94,Lace - Cotton,out,-160,sale,202,Return,9,2024-09-01T16:00:00
+445,72,Luxury Windcheater,89,Elastic Cord,out,-179,sale,205,,3,2025-11-06T14:00:00
+446,,,12,Polyester Thread,out,191,sale,165,Quality check,10,2024-10-16T22:00:00
+447,,,,,in,227,purchase,444,,4,2024-05-15T06:00:00
+448,,,65,Tassel,out,319,sale,240,Inventory count,1,2024-02-24T13:00:00
+449,143,Casual Tie,6,Denim Fabric,out,410,sale,369,,10,2024-06-21T01:00:00
+450,139,Essential Chinos,89,Elastic Cord,adjustment,444,,,,2,2024-10-15T07:00:00
+451,38,Trendy Night Suit,49,PVC Fabric,in,-98,purchase,349,Damaged goods,9,2024-04-08T10:00:00
+452,,,,,in,208,purchase,288,,2,2024-09-03T05:00:00
+453,76,Trendy Bathrobe,88,Zipper - Closed End,out,488,sale,336,,6,2024-06-11T04:00:00
+454,174,Regular Fit Crop Top,,,in,288,purchase,308,Damaged goods,5,2024-10-06T11:00:00
+455,15,Premium Nehru Jacket,87,Zipper - Open End,out,495,sale,372,Stock adjustment,2,2024-05-20T20:00:00
+456,,,,,out,-125,sale,385,Return,4,2025-09-24T18:00:00
+457,125,Luxury Cardigan,53,Eyelet,out,-65,sale,140,Stock adjustment,6,2025-02-21T05:00:00
+458,97,Traditional Beanie,47,Terry Cloth,adjustment,37,,,Quality check,2,2024-01-14T04:00:00
+459,5,Slim Fit Stole,,,adjustment,297,,,,4,2025-07-22T14:00:00
+460,85,Contemporary Cardigan,7,Viscose Fabric,out,202,sale,265,Quality check,7,2024-08-30T01:00:00
+461,95,Slim Fit Crop Top,,,in,343,purchase,223,Quality check,5,2025-10-18T02:00:00
+462,31,Traditional Hat,,,in,21,purchase,320,,3,2025-08-23T01:00:00
+463,164,Classic Nehru Jacket,,,in,173,purchase,413,Damaged goods,6,2024-05-18T00:00:00
+464,,,97,Tulle Fabric,in,179,purchase,353,Return,4,2025-08-05T14:00:00
+465,48,Trendy Sling Bag,6,Denim Fabric,in,-150,purchase,295,Quality check,1,2025-09-30T22:00:00
+466,90,Oversized Night Suit,64,Chain - Plastic,in,102,purchase,442,Damaged goods,5,2025-11-08T10:00:00
+467,36,Designer Night Suit,,,adjustment,92,,,Damaged goods,5,2025-07-24T19:00:00
+468,32,Comfort Vest,81,Canvas Fabric,in,374,purchase,116,Quality check,6,2024-05-03T22:00:00
+469,,,,,adjustment,89,,,Quality check,3,2024-12-04T12:00:00
+470,95,Slim Fit Crop Top,,,in,305,purchase,306,,6,2025-09-23T15:00:00
+471,4,Urban Beanie,,,adjustment,218,,,,5,2024-04-15T13:00:00
+472,,,,,out,259,sale,217,Quality check,7,2025-10-17T04:00:00
+473,,,9,Nylon Fabric,in,174,purchase,68,,2,2025-05-31T11:00:00
+474,,,,,in,251,purchase,489,,7,2024-08-23T21:00:00
+475,,,45,Jute Fabric,out,339,sale,415,,6,2025-03-26T18:00:00
+476,,,,,in,51,purchase,92,Damaged goods,8,2025-08-27T10:00:00
+477,,,,,out,70,sale,136,,11,2025-01-09T06:00:00
+478,120,Casual Top,41,Beads,in,271,purchase,356,,11,2024-05-06T18:00:00
+479,102,Comfort Saree,96,Netting,out,107,sale,327,Stock adjustment,7,2025-02-18T18:00:00
+480,142,Essential Lehenga,,,in,130,purchase,199,Damaged goods,11,2025-09-13T15:00:00
+481,102,Comfort Saree,1,Cotton Fabric,adjustment,183,,,,4,2025-04-24T01:00:00
+482,122,Premium Sherwani,12,Polyester Thread,adjustment,355,,,,11,2024-09-28T07:00:00
+483,,,,,in,168,purchase,289,Stock adjustment,4,2025-03-18T15:00:00
+484,177,Formal Rain Jacket,90,Drawstring - Cotton,in,290,purchase,436,,4,2024-08-05T21:00:00
+485,67,Basic Joggers,,,out,374,sale,441,Stock adjustment,3,2024-05-16T10:00:00
+486,118,Casual Casual Shirt,,,out,407,sale,479,Damaged goods,3,2025-10-30T05:00:00
+487,160,Classic Backpack,21,Button - Shell,out,29,sale,243,,1,2025-07-01T10:00:00
+488,6,Oversized Jeans,33,Tag - Plastic,in,-200,purchase,123,Stock adjustment,4,2024-03-07T13:00:00
+489,,,,,in,104,purchase,265,,10,2025-05-21T21:00:00
+490,,,87,Zipper - Open End,out,294,sale,269,,6,2024-12-05T10:00:00
+491,,,8,Rayon Fabric,in,253,purchase,354,,4,2024-11-27T13:00:00
+492,,,,,out,202,sale,492,Stock adjustment,11,2024-10-18T07:00:00
+493,111,Traditional Tank Top,93,Ribbon - Grosgrain,in,-46,purchase,95,Inventory count,8,2024-05-11T15:00:00
+494,,,,,out,318,sale,112,Quality check,5,2024-02-04T12:00:00
+495,114,Comfort Kurta,,,adjustment,371,,,Stock adjustment,7,2025-01-05T01:00:00
+496,44,Comfort Wallet,39,Thread - Embroidery,in,-62,purchase,172,,1,2025-10-07T09:00:00
+497,182,Classic Saree,,,adjustment,-146,,,Damaged goods,1,2024-05-15T15:00:00
+498,112,Luxury Scarf,98,Fusible Interfacing,adjustment,175,,,Quality check,8,2025-06-02T05:00:00
+499,,,56,Snap Button,out,-37,sale,71,Stock adjustment,7,2024-01-15T01:00:00
+500,92,Comfort Bathrobe,52,Button - Coconut,in,68,purchase,413,,5,2025-02-25T23:00:00
+501,,,83,Buttons Pack - 12mm,out,400,sale,230,Stock adjustment,10,2024-08-01T03:00:00
+502,174,Regular Fit Crop Top,74,Satin Fabric,adjustment,354,,,,5,2024-10-11T19:00:00
+503,110,Traditional Cardigan,,,out,435,sale,468,,5,2024-11-18T10:00:00
+504,54,Formal Saree,,,out,226,sale,360,Stock adjustment,3,2025-03-22T09:00:00
+505,,,49,PVC Fabric,in,-97,purchase,382,,9,2024-05-13T03:00:00
+506,137,Basic Leather Jacket,10,Spandex Fabric,out,476,sale,361,Damaged goods,9,2024-04-16T10:00:00
+507,,,,,in,-126,purchase,117,Inventory count,7,2024-07-05T21:00:00
+508,42,Modern Salwar Suit,,,adjustment,-3,,,Damaged goods,8,2025-08-28T16:00:00
+509,164,Classic Nehru Jacket,,,in,207,purchase,89,Inventory count,2,2025-04-17T23:00:00
+510,37,Comfort Trousers,17,Zipper - Plastic,out,9,sale,397,Inventory count,1,2025-04-06T16:00:00
+511,75,Ethnic Sherwani,,,in,334,purchase,337,,4,2024-02-20T12:00:00
+512,148,Formal Kaftan,52,Button - Coconut,adjustment,113,,,Damaged goods,7,2025-04-23T23:00:00
+513,132,Modern Saree,57,Magnetic Snap,in,438,purchase,386,Quality check,4,2024-10-02T18:00:00
+514,1,Elegant Night Suit,57,Magnetic Snap,adjustment,-43,,,,1,2024-07-25T12:00:00
+515,37,Comfort Trousers,50,Leather - Synthetic,out,210,sale,31,,7,2024-05-15T00:00:00
+516,188,Trendy Lehenga,65,Tassel,in,216,purchase,183,Inventory count,11,2024-10-11T10:00:00
+517,,,,,out,167,sale,485,,3,2025-05-20T11:00:00
+518,2,Trendy Stole,,,in,195,purchase,241,Return,9,2025-06-20T14:00:00
+519,34,Formal Salwar Suit,,,out,-142,sale,414,Quality check,7,2024-12-31T02:00:00
+520,,,,,in,62,purchase,131,,9,2024-11-05T08:00:00
+521,76,Trendy Bathrobe,,,out,6,sale,314,Quality check,9,2024-07-25T16:00:00
+522,60,Casual Waistcoat,61,Stopper,out,-158,sale,9,,4,2024-03-06T14:00:00
+523,,,35,Hanger - Wooden,out,-43,sale,100,Quality check,1,2024-08-05T16:00:00
+524,86,Contemporary Bomber Jacket,70,Badge,in,426,purchase,24,,10,2025-07-01T07:00:00
+525,,,,,in,392,purchase,383,Quality check,11,2024-01-13T18:00:00
+526,153,Traditional Shorts,74,Satin Fabric,in,298,purchase,422,Return,3,2024-05-18T08:00:00
+527,,,,,out,424,sale,138,,5,2024-10-03T16:00:00
+528,,,,,in,186,purchase,469,,10,2025-05-18T09:00:00
+529,58,Comfort Wallet,87,Zipper - Open End,in,-181,purchase,256,,3,2024-12-10T18:00:00
+530,1,Elegant Night Suit,,,adjustment,431,,,,11,2024-09-13T08:00:00
+531,,,,,in,343,purchase,411,Return,9,2025-09-06T04:00:00
+532,5,Slim Fit Stole,40,Sequins,in,-43,purchase,313,,10,2024-02-11T07:00:00
+533,118,Casual Casual Shirt,69,Patch - Iron On,adjustment,247,,,Return,2,2025-04-16T11:00:00
+534,,,55,Rivet,adjustment,73,,,,4,2025-06-19T23:00:00
+535,186,Sporty Skirt,,,in,420,purchase,257,Quality check,9,2024-11-23T20:00:00
+536,41,Urban Chinos,,,in,25,purchase,55,,11,2024-06-21T13:00:00
+537,184,Elegant Hat,36,Polybag,in,-31,purchase,370,Inventory count,5,2025-04-15T13:00:00
+538,,,25,Ribbon,out,-198,sale,108,,10,2025-01-28T12:00:00
+539,175,Sporty Tank Top,,,in,-106,purchase,337,Inventory count,9,2025-06-26T02:00:00
+540,,,,,out,190,sale,77,Damaged goods,7,2025-01-05T10:00:00
+541,6,Oversized Jeans,20,Button - Wooden,out,41,sale,281,,4,2024-05-16T14:00:00
+542,116,Oversized Backpack,75,Chiffon Fabric,adjustment,-173,,,Stock adjustment,8,2024-06-04T05:00:00
+543,15,Premium Nehru Jacket,,,adjustment,238,,,Inventory count,1,2024-11-19T08:00:00
+544,72,Luxury Windcheater,58,Buckle - Metal,adjustment,394,,,Damaged goods,2,2024-11-26T22:00:00
+545,108,Premium Beanie,41,Beads,adjustment,7,,,,9,2025-08-30T16:00:00
+546,116,Oversized Backpack,60,Slider,out,326,sale,320,,6,2024-03-08T11:00:00
+547,,,48,Wadding,out,322,sale,309,Quality check,3,2025-09-15T22:00:00
+548,130,Comfort Vest,,,out,324,sale,424,Stock adjustment,9,2025-03-29T13:00:00
+549,,,,,in,290,purchase,441,,4,2025-02-12T02:00:00
+550,47,Classic Crop Top,,,out,446,sale,205,,11,2025-11-14T19:00:00
+551,,,70,Badge,in,-98,purchase,378,Quality check,11,2024-06-07T18:00:00
+552,7,Comfort Sling Bag,63,Chain - Metal,in,-193,purchase,262,,2,2025-02-15T12:00:00
+553,57,Sporty Tote Bag,19,Button - Metal,in,403,purchase,233,Quality check,9,2025-07-22T04:00:00
+554,,,,,out,323,sale,458,Damaged goods,10,2025-11-09T13:00:00
+555,,,6,Denim Fabric,out,230,sale,472,Inventory count,9,2025-05-17T10:00:00
+556,187,Sporty Hoodie,25,Ribbon,out,146,sale,212,Inventory count,1,2024-12-28T22:00:00
+557,,,,,out,-26,sale,227,,6,2025-11-04T06:00:00
+558,175,Sporty Tank Top,41,Beads,in,250,purchase,175,Return,3,2025-11-23T01:00:00
+559,,,78,Velvet Fabric,adjustment,491,,,Damaged goods,5,2024-08-15T16:00:00
+560,,,69,Patch - Iron On,in,14,purchase,23,Damaged goods,2,2024-04-17T02:00:00
+561,14,Formal Cardigan,90,Drawstring - Cotton,in,-96,purchase,455,Return,1,2024-06-05T07:00:00
+562,114,Comfort Kurta,,,in,442,purchase,206,,1,2025-02-06T17:00:00
+563,116,Oversized Backpack,69,Patch - Iron On,out,-146,sale,328,Damaged goods,11,2024-05-25T07:00:00
+564,75,Ethnic Sherwani,,,in,284,purchase,183,,4,2025-08-11T09:00:00
+565,77,Casual Salwar Suit,9,Nylon Fabric,out,242,sale,372,Return,8,2024-08-11T04:00:00
+566,170,Elegant Blazer,,,in,-79,purchase,389,Inventory count,6,2024-12-29T18:00:00
+567,154,Essential Scarf,86,Zipper - Invisible,out,-50,sale,362,Stock adjustment,2,2025-11-09T14:00:00
+568,199,Slim Fit Formal Shirt,91,Drawstring - Polyester,out,-162,sale,202,,6,2024-05-19T18:00:00
+569,170,Elegant Blazer,,,out,-33,sale,189,,5,2024-08-20T07:00:00
+570,189,Sporty Tie,,,in,363,purchase,193,Damaged goods,9,2024-12-21T20:00:00
+571,100,Premium Beanie,,,in,277,purchase,299,Damaged goods,7,2024-07-31T09:00:00
+572,,,,,out,-75,sale,364,Return,9,2024-12-19T23:00:00
+573,,,35,Hanger - Wooden,in,424,purchase,333,,8,2024-04-27T13:00:00
+574,,,,,in,-31,purchase,173,,7,2024-03-19T16:00:00
+575,,,37,Tissue Paper,out,-99,sale,283,Damaged goods,11,2024-08-21T09:00:00
+576,15,Premium Nehru Jacket,33,Tag - Plastic,out,375,sale,198,Inventory count,8,2024-07-27T22:00:00
+577,33,Basic Belt,93,Ribbon - Grosgrain,in,-72,purchase,14,Damaged goods,11,2025-07-02T12:00:00
+578,52,Comfort Tote Bag,4,Silk Fabric,adjustment,-45,,,Return,1,2025-03-10T20:00:00
+579,99,Regular Fit Suspenders,24,Lace Trim,out,-81,sale,372,Quality check,7,2025-07-25T06:00:00
+580,,,54,Grommet,out,223,sale,236,,3,2025-03-21T02:00:00
+581,,,,,in,-22,purchase,383,,3,2024-02-02T04:00:00
+582,57,Sporty Tote Bag,,,adjustment,402,,,,4,2025-07-11T01:00:00
+583,109,Trendy Crop Top,54,Grommet,adjustment,299,,,,2,2025-01-01T19:00:00
+584,19,Modern Cardigan,,,out,450,sale,443,Quality check,2,2024-11-07T08:00:00
+585,,,,,in,51,purchase,151,Inventory count,5,2024-12-24T02:00:00
+586,,,18,Button - Plastic,out,185,sale,465,Quality check,4,2024-02-23T03:00:00
+587,,,,,out,381,sale,385,Quality check,10,2025-08-21T11:00:00
+588,,,21,Button - Shell,adjustment,454,,,Inventory count,7,2024-07-06T15:00:00
+589,,,4,Silk Fabric,in,21,purchase,416,,3,2025-07-14T10:00:00
+590,88,Essential Trousers,,,adjustment,13,,,Damaged goods,9,2024-10-04T09:00:00
+591,,,69,Patch - Iron On,out,34,sale,247,Damaged goods,8,2025-08-09T00:00:00
+592,,,,,in,169,purchase,490,,6,2024-10-09T12:00:00
+593,149,Regular Fit Anarkali Dress,20,Button - Wooden,adjustment,166,,,Damaged goods,10,2024-04-05T03:00:00
+594,151,Traditional Chinos,28,Bias Tape,out,-135,sale,270,,5,2024-05-17T22:00:00
+595,,,,,in,307,purchase,299,Quality check,2,2025-10-28T13:00:00
+596,,,48,Wadding,out,314,sale,100,,9,2024-02-22T01:00:00
+597,,,,,out,396,sale,495,,2,2024-03-27T10:00:00
+598,137,Basic Leather Jacket,81,Canvas Fabric,in,-94,purchase,118,,9,2024-01-16T15:00:00
+599,,,81,Canvas Fabric,out,337,sale,50,Damaged goods,3,2024-11-23T13:00:00
+600,14,Formal Cardigan,71,Hook & Loop Tape,in,467,purchase,390,Quality check,10,2024-01-03T04:00:00
+601,,,93,Ribbon - Grosgrain,adjustment,-127,,,,4,2025-01-16T08:00:00
+602,,,,,in,-145,purchase,207,Quality check,6,2024-07-08T16:00:00
+603,86,Contemporary Bomber Jacket,3,Linen Fabric,adjustment,491,,,,5,2024-11-30T04:00:00
+604,,,,,adjustment,-43,,,Quality check,8,2024-01-28T12:00:00
+605,,,,,in,402,purchase,53,,2,2025-08-02T04:00:00
+606,53,Premium Blazer,67,Pom Pom,out,-56,sale,218,,5,2024-05-11T04:00:00
+607,60,Casual Waistcoat,76,Georgette Fabric,in,-67,purchase,17,,1,2024-07-07T21:00:00
+608,,,,,in,479,purchase,194,,2,2025-09-20T01:00:00
+609,54,Formal Saree,,,in,-97,purchase,132,,6,2024-07-16T07:00:00
+610,,,28,Bias Tape,in,-38,purchase,265,Damaged goods,6,2024-09-06T23:00:00
+611,,,,,out,111,sale,348,Quality check,5,2024-07-09T16:00:00
+612,2,Trendy Stole,,,in,397,purchase,313,Quality check,4,2025-06-08T13:00:00
+613,187,Sporty Hoodie,46,Fleece Fabric,in,53,purchase,90,Inventory count,11,2025-03-23T14:00:00
+614,141,Comfort Kaftan,47,Terry Cloth,in,-19,purchase,142,Stock adjustment,6,2025-09-28T15:00:00
+615,86,Contemporary Bomber Jacket,50,Leather - Synthetic,out,213,sale,428,,5,2025-01-14T10:00:00
+616,41,Urban Chinos,,,out,52,sale,392,,10,2025-10-16T16:00:00
+617,,,,,out,178,sale,214,Quality check,10,2024-08-12T07:00:00
+618,,,,,adjustment,252,,,Quality check,6,2024-10-04T12:00:00
+619,,,,,adjustment,394,,,Return,4,2025-02-21T04:00:00
+620,,,97,Tulle Fabric,in,197,purchase,149,,5,2025-05-20T18:00:00
+621,41,Urban Chinos,83,Buttons Pack - 12mm,in,228,purchase,174,Stock adjustment,6,2024-07-20T23:00:00
+622,74,Ethnic Tie,43,Lace Fabric,in,312,purchase,109,,7,2025-03-15T07:00:00
+623,38,Trendy Night Suit,,,in,281,purchase,202,Stock adjustment,10,2025-08-27T20:00:00
+624,140,Modern Maxi Dress,10,Spandex Fabric,out,225,sale,386,Stock adjustment,11,2024-04-08T11:00:00
+625,,,66,Fringe Trim,out,471,sale,43,Inventory count,2,2024-07-20T22:00:00
+626,,,61,Stopper,in,-67,purchase,126,Inventory count,3,2025-01-23T01:00:00
+627,,,55,Rivet,in,293,purchase,483,,9,2025-07-21T22:00:00
+628,147,Comfort Tote Bag,,,in,-66,purchase,198,Quality check,4,2024-05-05T09:00:00
+629,,,51,Button - Brass,out,-12,sale,394,Damaged goods,3,2024-11-27T20:00:00
+630,163,Comfort Hat,,,adjustment,103,,,Stock adjustment,4,2024-12-18T12:00:00
+631,192,Regular Fit Stole,76,Georgette Fabric,out,445,sale,56,Stock adjustment,7,2024-11-03T00:00:00
+632,171,Slim Fit Cotton T-Shirt,,,out,483,sale,135,Quality check,7,2024-04-22T05:00:00
+633,,,80,Tweed Fabric,adjustment,219,,,,7,2025-04-07T21:00:00
+634,58,Comfort Wallet,,,adjustment,25,,,,2,2025-09-06T03:00:00
+635,,,74,Satin Fabric,out,-172,sale,56,Stock adjustment,10,2024-04-26T12:00:00
+636,9,Slim Fit Gloves,11,Cotton Thread,out,-1,sale,140,Damaged goods,5,2024-08-19T07:00:00
+637,108,Premium Beanie,85,Buttons Pack - 20mm,in,10,purchase,244,,5,2024-10-07T17:00:00
+638,177,Formal Rain Jacket,,,in,-137,purchase,423,Inventory count,10,2024-03-13T13:00:00
+639,,,,,in,357,purchase,20,Quality check,1,2024-04-03T03:00:00
+640,152,Essential Polo Shirt,11,Cotton Thread,in,-175,purchase,297,,1,2024-02-18T09:00:00
+641,107,Classic Night Suit,16,Zipper - Metal,in,213,purchase,272,,10,2025-07-11T01:00:00
+642,,,,,out,5,sale,21,Return,5,2024-09-21T16:00:00
+643,16,Formal Tie,,,out,2,sale,134,,8,2024-03-17T13:00:00
+644,,,76,Georgette Fabric,out,-98,sale,344,Quality check,1,2024-07-29T17:00:00
+645,26,Regular Fit Vest,12,Polyester Thread,in,307,purchase,166,,2,2024-04-28T06:00:00
+646,,,3,Linen Fabric,out,-62,sale,350,,3,2024-11-06T14:00:00
+647,23,Luxury Beret,,,out,-78,sale,285,Inventory count,11,2024-05-15T17:00:00
+648,,,90,Drawstring - Cotton,in,-124,purchase,163,Quality check,8,2025-09-14T06:00:00
+649,76,Trendy Bathrobe,25,Ribbon,out,419,sale,189,,1,2024-03-14T07:00:00
+650,158,Luxury Hat,85,Buttons Pack - 20mm,adjustment,188,,,Damaged goods,3,2024-05-05T18:00:00
+651,,,,,in,-151,purchase,329,Stock adjustment,2,2024-03-18T22:00:00
+652,,,85,Buttons Pack - 20mm,in,243,purchase,112,Quality check,2,2025-11-08T05:00:00
+653,,,,,out,-29,sale,281,Inventory count,5,2024-11-26T05:00:00
+654,,,,,in,298,purchase,2,Inventory count,10,2024-03-07T22:00:00
+655,71,Regular Fit Lehenga,46,Fleece Fabric,out,236,sale,306,Damaged goods,9,2025-02-03T19:00:00
+656,15,Premium Nehru Jacket,,,out,-92,sale,487,Return,7,2025-08-28T20:00:00
+657,103,Trendy Chinos,,,out,172,sale,179,,3,2025-05-31T09:00:00
+658,117,Luxury Leather Jacket,,,out,213,sale,327,Return,7,2024-05-16T20:00:00
+659,,,61,Stopper,in,-177,purchase,14,,5,2025-11-10T01:00:00
+660,29,Trendy Gloves,1,Cotton Fabric,adjustment,187,,,Quality check,3,2025-06-05T20:00:00
+661,132,Modern Saree,14,Nylon Thread,in,-195,purchase,21,Quality check,7,2024-01-04T20:00:00
+662,,,,,out,-98,sale,307,,1,2025-05-12T04:00:00
+663,,,15,Zipper - Nylon,out,-76,sale,209,,3,2024-12-25T21:00:00
+664,47,Classic Crop Top,,,in,-42,purchase,74,Damaged goods,8,2024-10-17T00:00:00
+665,,,,,in,420,purchase,444,Damaged goods,1,2025-08-28T19:00:00
+666,,,71,Hook & Loop Tape,in,74,purchase,140,,4,2025-04-08T19:00:00
+667,181,Essential Tie,,,in,52,purchase,456,,6,2024-12-21T21:00:00
+668,114,Comfort Kurta,22,Hook & Eye,in,458,purchase,164,,1,2025-06-27T18:00:00
+669,,,86,Zipper - Invisible,out,168,sale,149,,10,2025-05-16T17:00:00
+670,,,,,out,353,sale,269,,5,2024-01-18T02:00:00
+671,,,43,Lace Fabric,in,48,purchase,319,Return,3,2024-11-04T02:00:00
+672,168,Regular Fit Vest,,,out,280,sale,390,Inventory count,5,2025-07-23T13:00:00
+673,33,Basic Belt,23,Elastic Band,adjustment,-113,,,Stock adjustment,1,2025-10-18T16:00:00
+674,128,Modern Maxi Dress,72,Knit Fabric,out,457,sale,114,Stock adjustment,8,2024-01-26T21:00:00
+675,171,Slim Fit Cotton T-Shirt,,,out,27,sale,300,Inventory count,5,2025-11-07T19:00:00
+676,153,Traditional Shorts,41,Beads,in,139,purchase,421,Return,8,2025-07-19T10:00:00
+677,179,Premium Sherwani,70,Badge,in,84,purchase,304,,7,2024-07-10T18:00:00
+678,164,Classic Nehru Jacket,,,out,105,sale,494,Quality check,1,2025-01-02T04:00:00
+679,100,Premium Beanie,,,out,270,sale,35,Inventory count,5,2024-09-03T07:00:00
+680,22,Luxury Sweater,,,in,-53,purchase,228,,4,2025-03-30T13:00:00
+681,77,Casual Salwar Suit,71,Hook & Loop Tape,out,-141,sale,340,Stock adjustment,11,2024-05-23T11:00:00
+682,,,52,Button - Coconut,in,430,purchase,263,Quality check,5,2025-09-20T05:00:00
+683,128,Modern Maxi Dress,24,Lace Trim,in,130,purchase,155,Damaged goods,11,2024-01-10T17:00:00
+684,65,Ethnic Formal Shirt,,,in,108,purchase,124,,5,2025-06-08T00:00:00
+685,79,Urban Crop Top,,,in,138,purchase,233,Quality check,10,2024-12-16T07:00:00
+686,81,Designer Waistcoat,75,Chiffon Fabric,in,-171,purchase,168,Inventory count,10,2025-01-28T05:00:00
+687,,,,,out,263,sale,8,Stock adjustment,4,2024-03-03T07:00:00
+688,,,87,Zipper - Open End,adjustment,414,,,,4,2024-10-25T11:00:00
+689,36,Designer Night Suit,29,Drawstring Cord,in,-153,purchase,165,,10,2024-10-13T00:00:00
+690,,,80,Tweed Fabric,out,414,sale,201,,2,2024-04-02T14:00:00
+691,154,Essential Scarf,,,out,-66,sale,152,,7,2024-01-28T09:00:00
+692,46,Contemporary Formal Shirt,46,Fleece Fabric,out,500,sale,278,,7,2024-09-03T18:00:00
+693,,,1,Cotton Fabric,out,205,sale,310,Return,1,2024-08-14T04:00:00
+694,151,Traditional Chinos,,,in,-154,purchase,63,Return,1,2024-11-05T17:00:00
+695,,,,,in,399,purchase,78,Stock adjustment,11,2024-02-19T03:00:00
+696,,,,,in,418,purchase,109,,1,2025-05-13T02:00:00
+697,,,83,Buttons Pack - 12mm,in,149,purchase,331,Quality check,3,2025-03-16T03:00:00
+698,,,87,Zipper - Open End,in,87,purchase,431,Return,6,2025-05-19T02:00:00
+699,,,80,Tweed Fabric,out,-54,sale,159,Damaged goods,6,2024-08-20T00:00:00
+700,56,Modern Down Jacket,,,adjustment,39,,,Inventory count,8,2024-03-25T12:00:00
+701,,,,,out,96,sale,394,Damaged goods,4,2025-03-27T23:00:00
+702,31,Traditional Hat,97,Tulle Fabric,out,161,sale,7,,2,2024-07-19T21:00:00
+703,128,Modern Maxi Dress,54,Grommet,adjustment,238,,,Return,3,2024-12-14T01:00:00
+704,195,Slim Fit Blazer,17,Zipper - Plastic,adjustment,-173,,,,11,2025-08-12T05:00:00
+705,105,Urban Tote Bag,93,Ribbon - Grosgrain,in,439,purchase,245,,4,2024-03-02T04:00:00
+706,,,71,Hook & Loop Tape,in,496,purchase,346,Quality check,11,2025-03-28T00:00:00
+707,86,Contemporary Bomber Jacket,,,out,-46,sale,324,Inventory count,2,2024-07-22T21:00:00
+708,19,Modern Cardigan,49,PVC Fabric,out,451,sale,183,Damaged goods,11,2025-06-13T23:00:00
+709,128,Modern Maxi Dress,,,out,92,sale,189,Damaged goods,4,2024-06-04T19:00:00
+710,,,59,Buckle - Plastic,in,144,purchase,21,,4,2024-09-08T18:00:00
+711,54,Formal Saree,,,adjustment,247,,,Quality check,7,2024-12-18T19:00:00
+712,,,69,Patch - Iron On,out,64,sale,107,Stock adjustment,11,2024-04-15T15:00:00
+713,,,,,out,149,sale,212,,1,2024-08-03T16:00:00
+714,171,Slim Fit Cotton T-Shirt,50,Leather - Synthetic,in,161,purchase,51,Quality check,7,2024-06-16T22:00:00
+715,57,Sporty Tote Bag,48,Wadding,in,-135,purchase,95,,5,2024-05-27T15:00:00
+716,,,32,Tag - Paper,in,300,purchase,483,Quality check,6,2025-01-09T21:00:00
+717,106,Traditional Trousers,,,out,251,sale,315,Quality check,3,2025-06-07T09:00:00
+718,148,Formal Kaftan,,,in,176,purchase,143,Damaged goods,7,2024-05-03T00:00:00
+719,,,,,adjustment,223,,,Quality check,6,2025-08-15T04:00:00
+720,29,Trendy Gloves,,,out,488,sale,274,,8,2024-02-25T13:00:00
+721,153,Traditional Shorts,95,Lace - Polyester,out,127,sale,365,Inventory count,10,2024-01-23T19:00:00
+722,69,Contemporary Track Pants,10,Spandex Fabric,in,-66,purchase,132,Damaged goods,7,2025-08-12T03:00:00
+723,,,,,adjustment,-50,,,Inventory count,8,2024-07-19T09:00:00
+724,180,Modern Stole,90,Drawstring - Cotton,out,-194,sale,439,Inventory count,10,2024-10-20T11:00:00
+725,96,Designer Bathrobe,,,out,332,sale,440,,8,2024-10-25T22:00:00
+726,,,18,Button - Plastic,in,-105,purchase,105,,4,2024-10-26T14:00:00
+727,40,Regular Fit Casual Shirt,73,Mesh Fabric,in,76,purchase,228,Quality check,8,2024-11-20T02:00:00
+728,4,Urban Beanie,,,out,216,sale,393,,9,2025-10-07T07:00:00
+729,,,,,out,-59,sale,103,,11,2024-06-04T00:00:00
+730,69,Contemporary Track Pants,,,out,59,sale,150,Stock adjustment,4,2025-07-10T06:00:00
+731,148,Formal Kaftan,,,out,321,sale,435,Quality check,8,2024-06-19T22:00:00
+732,22,Luxury Sweater,49,PVC Fabric,adjustment,-192,,,Damaged goods,10,2024-12-09T20:00:00
+733,154,Essential Scarf,,,in,375,purchase,457,Damaged goods,10,2025-01-14T13:00:00
+734,30,Casual Duffle Bag,19,Button - Metal,adjustment,67,,,,10,2025-09-28T11:00:00
+735,,,1,Cotton Fabric,in,-121,purchase,192,Damaged goods,7,2024-04-20T10:00:00
+736,,,92,Ribbon - Satin,in,457,purchase,244,,4,2024-03-02T17:00:00
+737,164,Classic Nehru Jacket,95,Lace - Polyester,out,-164,sale,376,,1,2024-10-19T08:00:00
+738,,,,,in,215,purchase,32,Return,2,2025-01-29T16:00:00
+739,,,,,adjustment,334,,,,5,2025-10-11T20:00:00
+740,,,,,out,127,sale,331,,4,2024-12-26T16:00:00
+741,27,Sporty Saree,67,Pom Pom,in,125,purchase,320,Inventory count,2,2025-01-25T09:00:00
+742,141,Comfort Kaftan,,,out,-107,sale,431,,8,2025-09-14T01:00:00
+743,,,68,Patch - Embroidered,adjustment,372,,,Stock adjustment,8,2025-10-23T22:00:00
+744,,,,,adjustment,174,,,Quality check,9,2025-06-12T12:00:00
+745,,,50,Leather - Synthetic,out,249,sale,58,Stock adjustment,11,2024-12-30T18:00:00
+746,122,Premium Sherwani,93,Ribbon - Grosgrain,in,128,purchase,82,Stock adjustment,6,2024-01-29T10:00:00
+747,,,76,Georgette Fabric,in,156,purchase,131,Inventory count,3,2025-03-08T10:00:00
+748,,,32,Tag - Paper,out,392,sale,190,,5,2025-11-02T18:00:00
+749,37,Comfort Trousers,,,in,293,purchase,199,,2,2024-12-09T17:00:00
+750,,,55,Rivet,adjustment,238,,,Stock adjustment,1,2025-07-15T15:00:00
+751,,,27,Interfacing Fabric,in,-39,purchase,4,Inventory count,7,2025-04-18T05:00:00
+752,166,Sporty Night Suit,,,out,124,sale,304,Return,1,2024-03-12T20:00:00
+753,,,39,Thread - Embroidery,in,236,purchase,164,,9,2024-04-19T07:00:00
+754,,,69,Patch - Iron On,out,377,sale,419,,11,2025-04-28T04:00:00
+755,143,Casual Tie,22,Hook & Eye,out,295,sale,392,Inventory count,2,2025-05-01T15:00:00
+756,75,Ethnic Sherwani,,,in,-69,purchase,450,Quality check,4,2025-05-07T20:00:00
+757,3,Ethnic Anarkali Dress,11,Cotton Thread,in,-51,purchase,400,,5,2024-03-15T01:00:00
+758,,,,,in,21,purchase,100,Return,11,2025-11-25T01:00:00
+759,170,Elegant Blazer,61,Stopper,out,-104,sale,435,Quality check,2,2025-09-25T22:00:00
+760,162,Oversized Scarf,49,PVC Fabric,adjustment,173,,,Return,7,2025-09-16T13:00:00
+761,76,Trendy Bathrobe,,,out,424,sale,395,Stock adjustment,4,2025-11-28T12:00:00
+762,,,,,in,175,purchase,399,Damaged goods,3,2024-06-04T05:00:00
+763,,,26,Velcro Tape,adjustment,269,,,,3,2025-10-01T06:00:00
+764,,,,,in,438,purchase,297,,6,2024-01-14T14:00:00
+765,,,54,Grommet,adjustment,-149,,,Inventory count,11,2024-04-26T10:00:00
+766,,,5,Wool Fabric,out,-102,sale,59,Quality check,3,2024-02-14T02:00:00
+767,,,,,out,210,sale,5,Stock adjustment,11,2024-12-23T17:00:00
+768,87,Premium Bow Tie,72,Knit Fabric,in,8,purchase,433,Damaged goods,9,2024-08-13T10:00:00
+769,,,12,Polyester Thread,out,414,sale,366,Damaged goods,10,2024-07-10T03:00:00
+770,65,Ethnic Formal Shirt,,,out,317,sale,242,Quality check,5,2025-02-27T20:00:00
+771,40,Regular Fit Casual Shirt,,,adjustment,12,,,,11,2024-04-03T15:00:00
+772,,,19,Button - Metal,out,117,sale,217,Return,5,2025-02-06T17:00:00
+773,,,86,Zipper - Invisible,out,-69,sale,462,,1,2024-10-24T00:00:00
+774,173,Regular Fit Skirt,3,Linen Fabric,adjustment,359,,,,2,2025-02-04T21:00:00
+775,5,Slim Fit Stole,,,in,403,purchase,342,Return,5,2024-01-25T17:00:00
+776,,,52,Button - Coconut,in,467,purchase,422,,11,2024-07-26T23:00:00
+777,61,Oversized Rain Jacket,,,adjustment,230,,,Quality check,10,2025-11-02T06:00:00
+778,52,Comfort Tote Bag,12,Polyester Thread,adjustment,-141,,,,10,2024-02-28T23:00:00
+779,151,Traditional Chinos,,,in,366,purchase,270,,1,2025-03-30T16:00:00
+780,12,Classic Cap,,,in,459,purchase,438,Damaged goods,2,2024-08-24T10:00:00
+781,154,Essential Scarf,80,Tweed Fabric,in,499,purchase,279,Stock adjustment,1,2024-02-21T19:00:00
+782,,,55,Rivet,in,-110,purchase,362,Quality check,3,2024-09-05T13:00:00
+783,132,Modern Saree,11,Cotton Thread,out,-57,sale,470,Quality check,9,2024-05-20T21:00:00
+784,195,Slim Fit Blazer,100,Sewing Thread - White,in,269,purchase,179,,6,2024-09-19T14:00:00
+785,,,12,Polyester Thread,adjustment,-163,,,Stock adjustment,11,2024-12-23T21:00:00
+786,,,56,Snap Button,adjustment,309,,,Inventory count,10,2024-07-26T19:00:00
+787,25,Traditional Polo Shirt,16,Zipper - Metal,out,115,sale,149,Quality check,10,2024-05-23T21:00:00
+788,188,Trendy Lehenga,83,Buttons Pack - 12mm,in,-171,purchase,243,Inventory count,7,2024-04-16T12:00:00
+789,131,Modern Gloves,51,Button - Brass,out,-72,sale,354,Stock adjustment,7,2025-11-04T16:00:00
+790,171,Slim Fit Cotton T-Shirt,4,Silk Fabric,in,-111,purchase,222,,8,2025-11-01T12:00:00
+791,48,Trendy Sling Bag,56,Snap Button,out,254,sale,89,,10,2025-06-11T22:00:00
+792,115,Luxury Leather Jacket,11,Cotton Thread,adjustment,204,,,,9,2024-11-28T05:00:00
+793,183,Oversized Maxi Dress,78,Velvet Fabric,adjustment,-200,,,Stock adjustment,6,2025-04-19T09:00:00
+794,,,,,out,437,sale,275,Inventory count,3,2025-05-03T15:00:00
+795,127,Luxury Sling Bag,,,out,-175,sale,166,Return,9,2025-07-16T06:00:00
+796,,,,,in,97,purchase,163,,7,2024-05-07T14:00:00
+797,49,Casual Sling Bag,18,Button - Plastic,in,404,purchase,248,Return,2,2024-12-26T12:00:00
+798,166,Sporty Night Suit,,,out,115,sale,273,,1,2025-06-22T13:00:00
+799,,,,,adjustment,417,,,Damaged goods,10,2024-07-07T08:00:00
+800,134,Premium Stole,72,Knit Fabric,adjustment,303,,,Inventory count,1,2024-12-23T20:00:00
+801,,,,,adjustment,-56,,,,2,2025-08-26T06:00:00
+802,88,Essential Trousers,9,Nylon Fabric,in,459,purchase,375,,8,2025-06-03T12:00:00
+803,6,Oversized Jeans,83,Buttons Pack - 12mm,in,415,purchase,88,,3,2024-12-18T04:00:00
+804,,,16,Zipper - Metal,in,449,purchase,436,Quality check,3,2025-07-28T00:00:00
+805,128,Modern Maxi Dress,3,Linen Fabric,in,-61,purchase,7,Quality check,11,2024-09-24T05:00:00
+806,67,Basic Joggers,74,Satin Fabric,adjustment,262,,,Inventory count,11,2025-01-07T07:00:00
+807,84,Contemporary Top,89,Elastic Cord,in,-106,purchase,13,Damaged goods,7,2025-10-19T08:00:00
+808,95,Slim Fit Crop Top,87,Zipper - Open End,adjustment,307,,,Quality check,9,2024-09-18T01:00:00
+809,,,33,Tag - Plastic,out,181,sale,404,Return,2,2024-08-12T08:00:00
+810,141,Comfort Kaftan,85,Buttons Pack - 20mm,in,228,purchase,195,Stock adjustment,11,2024-12-28T16:00:00
+811,130,Comfort Vest,,,adjustment,103,,,Stock adjustment,11,2025-07-29T23:00:00
+812,110,Traditional Cardigan,54,Grommet,in,306,purchase,336,Quality check,5,2024-08-09T13:00:00
+813,,,,,out,478,sale,161,Return,9,2025-04-16T15:00:00
+814,156,Ethnic Skirt,,,out,-38,sale,3,Stock adjustment,11,2025-10-28T13:00:00
+815,,,,,adjustment,240,,,Return,9,2025-09-03T22:00:00
+816,,,40,Sequins,in,126,purchase,183,,10,2024-03-02T11:00:00
+817,,,94,Lace - Cotton,in,-192,purchase,273,Stock adjustment,5,2024-02-22T14:00:00
+818,155,Regular Fit Lehenga,73,Mesh Fabric,in,-154,purchase,470,Stock adjustment,8,2025-04-23T14:00:00
+819,81,Designer Waistcoat,,,in,153,purchase,433,,4,2025-11-13T20:00:00
+820,,,43,Lace Fabric,out,372,sale,474,Return,1,2024-12-25T03:00:00
+821,,,1,Cotton Fabric,adjustment,107,,,,9,2024-12-17T00:00:00
+822,,,,,in,-134,purchase,160,Damaged goods,11,2024-05-22T14:00:00
+823,60,Casual Waistcoat,97,Tulle Fabric,adjustment,303,,,Stock adjustment,2,2025-09-27T10:00:00
+824,26,Regular Fit Vest,,,adjustment,44,,,,5,2025-11-03T11:00:00
+825,,,34,Hanger - Plastic,in,-48,purchase,206,Quality check,3,2025-07-18T13:00:00
+826,,,68,Patch - Embroidered,adjustment,172,,,Stock adjustment,9,2025-05-22T07:00:00
+827,90,Oversized Night Suit,,,adjustment,-118,,,Quality check,1,2024-09-22T20:00:00
+828,21,Slim Fit Lehenga,42,Stone Studs,out,-104,sale,422,Damaged goods,6,2024-03-21T15:00:00
+829,57,Sporty Tote Bag,90,Drawstring - Cotton,in,-168,purchase,161,Inventory count,3,2025-03-03T04:00:00
+830,,,32,Tag - Paper,out,252,sale,433,,3,2024-09-13T12:00:00
+831,,,55,Rivet,in,-30,purchase,342,,3,2025-03-11T08:00:00
+832,135,Essential Blazer,,,out,470,sale,15,,1,2025-03-28T12:00:00
+833,109,Trendy Crop Top,11,Cotton Thread,out,417,sale,319,,4,2025-03-17T07:00:00
+834,,,,,out,305,sale,307,Return,1,2024-03-01T09:00:00
+835,,,76,Georgette Fabric,adjustment,352,,,Quality check,8,2024-05-26T04:00:00
+836,45,Casual Salwar Suit,28,Bias Tape,in,87,purchase,347,,5,2024-08-22T16:00:00
+837,24,Slim Fit Anarkali Dress,84,Buttons Pack - 16mm,out,-45,sale,177,Return,10,2024-02-28T04:00:00
+838,,,,,in,495,purchase,206,,4,2024-05-28T17:00:00
+839,,,99,Sewing Thread - Black,in,179,purchase,127,Inventory count,3,2025-03-28T12:00:00
+840,,,38,Carton Box,out,404,sale,313,Damaged goods,11,2024-01-25T23:00:00
+841,134,Premium Stole,26,Velcro Tape,in,462,purchase,100,Quality check,10,2024-11-02T07:00:00
+842,22,Luxury Sweater,88,Zipper - Closed End,in,468,purchase,116,Inventory count,8,2024-06-09T21:00:00
+843,83,Urban Hoodie,,,in,-50,purchase,348,,11,2025-11-30T18:00:00
+844,,,44,Net Fabric,out,-135,sale,310,,9,2025-04-07T06:00:00
+845,176,Trendy Duffle Bag,96,Netting,in,-146,purchase,432,Stock adjustment,10,2025-05-30T15:00:00
+846,,,51,Button - Brass,in,380,purchase,81,Inventory count,4,2024-03-18T10:00:00
+847,200,Sporty Joggers,99,Sewing Thread - Black,adjustment,-173,,,Inventory count,8,2025-01-02T04:00:00
+848,89,Luxury Windcheater,95,Lace - Polyester,in,433,purchase,227,Stock adjustment,1,2024-03-23T11:00:00
+849,,,,,in,-19,purchase,141,Quality check,9,2024-01-07T04:00:00
+850,157,Classic Anarkali Dress,,,in,18,purchase,287,Return,1,2024-11-13T20:00:00
+851,,,,,in,206,purchase,305,,5,2024-02-18T07:00:00
+852,53,Premium Blazer,,,in,270,purchase,310,Damaged goods,11,2025-11-26T11:00:00
+853,38,Trendy Night Suit,,,in,234,purchase,275,,1,2025-07-08T16:00:00
+854,,,17,Zipper - Plastic,in,257,purchase,455,,6,2024-06-25T02:00:00
+855,,,,,in,-98,purchase,125,,3,2025-07-12T09:00:00
+856,,,22,Hook & Eye,in,170,purchase,51,,9,2024-08-29T05:00:00
+857,,,97,Tulle Fabric,adjustment,488,,,,11,2025-01-31T16:00:00
+858,3,Ethnic Anarkali Dress,,,out,378,sale,114,,11,2025-11-23T21:00:00
+859,63,Basic Formal Shirt,77,Organza Fabric,adjustment,-188,,,Damaged goods,11,2025-04-22T23:00:00
+860,12,Classic Cap,,,out,162,sale,220,Damaged goods,2,2024-05-12T02:00:00
+861,3,Ethnic Anarkali Dress,56,Snap Button,in,47,purchase,495,Return,1,2024-10-02T17:00:00
+862,156,Ethnic Skirt,,,adjustment,-16,,,,9,2024-08-09T14:00:00
+863,200,Sporty Joggers,11,Cotton Thread,in,437,purchase,42,Damaged goods,6,2024-09-28T20:00:00
+864,,,19,Button - Metal,in,431,purchase,479,Return,7,2025-02-08T11:00:00
+865,,,11,Cotton Thread,in,41,purchase,308,,11,2025-03-25T14:00:00
+866,37,Comfort Trousers,31,Label - Printed,out,398,sale,257,,3,2024-12-28T12:00:00
+867,98,Classic Cotton T-Shirt,57,Magnetic Snap,adjustment,356,,,Return,6,2024-08-12T00:00:00
+868,51,Luxury Casual Shirt,68,Patch - Embroidered,out,289,sale,107,,3,2024-10-20T01:00:00
+869,184,Elegant Hat,37,Tissue Paper,in,483,purchase,352,Damaged goods,5,2025-01-24T02:00:00
+870,,,27,Interfacing Fabric,out,23,sale,454,,2,2024-01-01T09:00:00
+871,176,Trendy Duffle Bag,,,out,441,sale,214,Return,3,2025-11-18T03:00:00
+872,,,69,Patch - Iron On,in,231,purchase,262,Damaged goods,8,2024-07-31T13:00:00
+873,,,,,in,351,purchase,431,Inventory count,1,2025-08-01T12:00:00
+874,200,Sporty Joggers,1,Cotton Fabric,in,-172,purchase,194,Stock adjustment,8,2024-10-11T17:00:00
+875,165,Elegant Stole,,,adjustment,32,,,,3,2024-03-21T11:00:00
+876,153,Traditional Shorts,,,adjustment,459,,,,7,2024-06-20T15:00:00
+877,,,,,in,70,purchase,307,,10,2024-02-21T12:00:00
+878,44,Comfort Wallet,,,in,-40,purchase,42,,9,2024-10-14T15:00:00
+879,,,,,in,397,purchase,11,,8,2025-02-14T20:00:00
+880,157,Classic Anarkali Dress,94,Lace - Cotton,in,333,purchase,347,Inventory count,5,2025-11-02T08:00:00
+881,154,Essential Scarf,,,out,-35,sale,315,Inventory count,2,2024-05-18T03:00:00
+882,105,Urban Tote Bag,54,Grommet,in,164,purchase,143,,9,2025-06-13T23:00:00
+883,3,Ethnic Anarkali Dress,64,Chain - Plastic,out,16,sale,274,Return,7,2025-10-09T21:00:00
+884,52,Comfort Tote Bag,22,Hook & Eye,in,410,purchase,49,Return,8,2025-04-17T11:00:00
+885,107,Classic Night Suit,,,in,411,purchase,382,Quality check,4,2024-11-08T19:00:00
+886,19,Modern Cardigan,,,out,16,sale,468,,7,2025-06-22T22:00:00
+887,,,,,out,12,sale,486,Inventory count,2,2025-10-20T00:00:00
+888,,,90,Drawstring - Cotton,out,-25,sale,253,Stock adjustment,4,2024-04-27T12:00:00
+889,,,10,Spandex Fabric,out,281,sale,472,Return,5,2025-09-20T16:00:00
+890,12,Classic Cap,,,out,416,sale,19,Inventory count,11,2024-02-27T07:00:00
+891,,,,,in,328,purchase,308,Stock adjustment,6,2024-12-06T16:00:00
+892,61,Oversized Rain Jacket,76,Georgette Fabric,adjustment,361,,,Inventory count,5,2024-05-06T04:00:00
+893,,,19,Button - Metal,adjustment,129,,,Inventory count,5,2024-12-16T03:00:00
+894,190,Premium Salwar Suit,,,in,371,purchase,427,Damaged goods,8,2024-03-09T20:00:00
+895,,,91,Drawstring - Polyester,out,-14,sale,460,,2,2024-07-11T12:00:00
+896,60,Casual Waistcoat,34,Hanger - Plastic,adjustment,166,,,Stock adjustment,9,2024-09-21T03:00:00
+897,,,,,in,22,purchase,163,Stock adjustment,1,2024-02-23T19:00:00
+898,,,44,Net Fabric,out,436,sale,307,Quality check,11,2024-02-17T20:00:00
+899,149,Regular Fit Anarkali Dress,18,Button - Plastic,in,444,purchase,186,,9,2024-10-11T23:00:00
+900,46,Contemporary Formal Shirt,59,Buckle - Plastic,adjustment,295,,,Return,11,2025-10-13T06:00:00
+901,17,Sporty Windcheater,,,in,11,purchase,215,Inventory count,4,2024-08-08T19:00:00
+902,,,16,Zipper - Metal,out,290,sale,232,Damaged goods,1,2025-11-03T07:00:00
+903,79,Urban Crop Top,,,adjustment,-25,,,Damaged goods,2,2025-10-23T05:00:00
+904,185,Elegant Duffle Bag,,,adjustment,-138,,,Stock adjustment,3,2025-02-25T21:00:00
+905,,,,,adjustment,-186,,,,11,2024-04-06T17:00:00
+906,,,,,in,366,purchase,149,,3,2024-10-04T04:00:00
+907,,,97,Tulle Fabric,adjustment,176,,,Damaged goods,8,2024-01-08T22:00:00
+908,24,Slim Fit Anarkali Dress,,,out,327,sale,180,,6,2025-03-12T21:00:00
+909,,,37,Tissue Paper,out,-95,sale,141,Return,4,2024-11-12T15:00:00
+910,17,Sporty Windcheater,60,Slider,out,-161,sale,277,,5,2024-11-23T09:00:00
+911,160,Classic Backpack,,,in,-17,purchase,48,,1,2025-01-29T02:00:00
+912,,,,,adjustment,431,,,,1,2024-09-30T05:00:00
+913,62,Trendy Lehenga,92,Ribbon - Satin,adjustment,190,,,Quality check,10,2025-03-19T18:00:00
+914,,,,,in,37,purchase,397,,10,2025-07-04T12:00:00
+915,161,Elegant Anarkali Dress,97,Tulle Fabric,in,-4,purchase,48,,10,2025-09-15T21:00:00
+916,33,Basic Belt,,,in,446,purchase,402,,7,2024-06-01T09:00:00
+917,,,35,Hanger - Wooden,out,219,sale,345,Damaged goods,11,2024-07-14T06:00:00
+918,61,Oversized Rain Jacket,,,out,283,sale,276,Quality check,7,2025-01-14T03:00:00
+919,130,Comfort Vest,47,Terry Cloth,out,94,sale,131,Stock adjustment,9,2024-06-28T09:00:00
+920,35,Regular Fit Kurta,44,Net Fabric,in,-179,purchase,197,Stock adjustment,6,2025-04-05T08:00:00
+921,42,Modern Salwar Suit,72,Knit Fabric,in,448,purchase,296,Return,10,2025-06-19T19:00:00
+922,123,Traditional Shawl,2,Polyester Fabric,in,54,purchase,451,Quality check,5,2025-08-05T13:00:00
+923,,,,,in,281,purchase,108,,5,2025-02-18T10:00:00
+924,134,Premium Stole,,,out,-162,sale,64,Return,5,2025-08-29T18:00:00
+925,117,Luxury Leather Jacket,,,in,81,purchase,282,Quality check,11,2024-10-18T23:00:00
+926,111,Traditional Tank Top,69,Patch - Iron On,out,425,sale,265,Inventory count,1,2025-08-16T08:00:00
+927,,,83,Buttons Pack - 12mm,out,-178,sale,359,,2,2025-03-19T18:00:00
+928,22,Luxury Sweater,,,in,20,purchase,319,Inventory count,2,2025-06-20T08:00:00
+929,92,Comfort Bathrobe,94,Lace - Cotton,in,133,purchase,201,Return,2,2024-01-01T20:00:00
+930,6,Oversized Jeans,50,Leather - Synthetic,out,303,sale,373,Damaged goods,10,2025-11-09T09:00:00
+931,53,Premium Blazer,,,adjustment,12,,,Quality check,10,2025-01-11T19:00:00
+932,,,36,Polybag,out,131,sale,168,Return,7,2024-01-18T20:00:00
+933,59,Classic Tote Bag,40,Sequins,out,-154,sale,439,Damaged goods,3,2024-05-18T22:00:00
+934,,,69,Patch - Iron On,out,401,sale,223,Inventory count,2,2024-06-20T10:00:00
+935,,,,,in,-143,purchase,491,Return,8,2025-11-29T07:00:00
+936,,,,,out,108,sale,382,Quality check,4,2025-06-10T02:00:00
+937,,,,,out,216,sale,332,Quality check,4,2025-07-26T01:00:00
+938,,,,,in,-114,purchase,263,,8,2024-01-23T02:00:00
+939,,,,,out,425,sale,296,,5,2025-10-26T06:00:00
+940,95,Slim Fit Crop Top,,,adjustment,301,,,Quality check,8,2025-04-15T11:00:00
+941,,,,,in,-50,purchase,457,Quality check,4,2024-02-22T06:00:00
+942,55,Premium Stole,34,Hanger - Plastic,in,212,purchase,156,Quality check,4,2025-06-04T19:00:00
+943,173,Regular Fit Skirt,26,Velcro Tape,in,27,purchase,54,Quality check,2,2025-01-14T14:00:00
+944,13,Classic Top,29,Drawstring Cord,out,-73,sale,366,Damaged goods,6,2025-04-02T09:00:00
+945,45,Casual Salwar Suit,18,Button - Plastic,out,197,sale,237,Inventory count,9,2024-09-07T12:00:00
+946,,,71,Hook & Loop Tape,in,419,purchase,357,Damaged goods,8,2025-05-15T15:00:00
+947,,,,,in,45,purchase,314,Return,3,2024-10-19T16:00:00
+948,115,Luxury Leather Jacket,33,Tag - Plastic,out,-172,sale,182,Quality check,8,2024-09-02T15:00:00
+949,7,Comfort Sling Bag,,,out,-47,sale,286,Quality check,8,2024-01-24T15:00:00
+950,,,26,Velcro Tape,in,105,purchase,42,Return,8,2024-03-31T02:00:00
+951,16,Formal Tie,8,Rayon Fabric,in,-167,purchase,334,,10,2025-10-20T22:00:00
+952,,,51,Button - Brass,in,165,purchase,379,Stock adjustment,5,2025-06-02T04:00:00
+953,,,,,adjustment,141,,,Quality check,6,2025-11-01T21:00:00
+954,52,Comfort Tote Bag,17,Zipper - Plastic,in,221,purchase,176,,1,2025-03-16T01:00:00
+955,,,95,Lace - Polyester,in,-120,purchase,239,Stock adjustment,5,2024-03-12T01:00:00
+956,108,Premium Beanie,,,out,414,sale,386,Quality check,6,2025-09-04T16:00:00
+957,175,Sporty Tank Top,65,Tassel,in,20,purchase,45,Quality check,7,2025-04-03T08:00:00
+958,121,Designer Night Suit,12,Polyester Thread,in,322,purchase,160,Quality check,9,2025-10-20T20:00:00
+959,,,94,Lace - Cotton,out,397,sale,343,Quality check,9,2025-02-25T12:00:00
+960,190,Premium Salwar Suit,,,in,-64,purchase,363,Return,10,2025-01-12T12:00:00
+961,,,9,Nylon Fabric,out,82,sale,192,Stock adjustment,4,2024-06-17T22:00:00
+962,,,64,Chain - Plastic,in,232,purchase,374,Return,5,2024-10-19T00:00:00
+963,,,23,Elastic Band,out,-41,sale,349,,6,2024-03-09T08:00:00
+964,137,Basic Leather Jacket,,,in,-167,purchase,111,Damaged goods,8,2024-11-11T15:00:00
+965,24,Slim Fit Anarkali Dress,,,in,312,purchase,110,Damaged goods,8,2024-12-13T05:00:00
+966,,,,,in,-8,purchase,443,Damaged goods,5,2024-12-01T19:00:00
+967,192,Regular Fit Stole,22,Hook & Eye,in,31,purchase,9,Stock adjustment,6,2025-05-31T15:00:00
+968,175,Sporty Tank Top,53,Eyelet,in,223,purchase,276,Inventory count,5,2024-11-13T15:00:00
+969,,,,,in,175,purchase,105,Stock adjustment,1,2024-03-19T16:00:00
+970,51,Luxury Casual Shirt,,,in,228,purchase,182,,6,2024-11-21T17:00:00
+971,135,Essential Blazer,47,Terry Cloth,in,453,purchase,487,,8,2024-06-20T22:00:00
+972,,,80,Tweed Fabric,out,-141,sale,309,Damaged goods,11,2025-08-14T16:00:00
+973,,,49,PVC Fabric,in,138,purchase,470,,7,2025-01-04T16:00:00
+974,46,Contemporary Formal Shirt,,,out,10,sale,177,Stock adjustment,5,2024-04-09T18:00:00
+975,24,Slim Fit Anarkali Dress,92,Ribbon - Satin,out,-158,sale,391,,5,2024-02-26T06:00:00
+976,,,23,Elastic Band,out,119,sale,97,Return,10,2024-06-09T03:00:00
+977,196,Contemporary Casual Shirt,76,Georgette Fabric,out,-96,sale,382,Return,3,2024-06-26T02:00:00
+978,,,,,out,-111,sale,464,Quality check,2,2024-10-29T23:00:00
+979,,,46,Fleece Fabric,in,171,purchase,128,,6,2024-07-19T01:00:00
+980,,,38,Carton Box,in,-190,purchase,20,,11,2025-04-05T14:00:00
+981,,,,,adjustment,217,,,Damaged goods,11,2025-01-04T19:00:00
+982,190,Premium Salwar Suit,56,Snap Button,in,43,purchase,164,Damaged goods,2,2024-11-08T10:00:00
+983,153,Traditional Shorts,19,Button - Metal,out,216,sale,380,Damaged goods,6,2025-09-20T19:00:00
+984,176,Trendy Duffle Bag,,,in,432,purchase,29,Quality check,2,2024-04-15T00:00:00
+985,165,Elegant Stole,,,adjustment,430,,,,9,2024-04-05T00:00:00
+986,,,18,Button - Plastic,adjustment,-74,,,,7,2025-02-18T17:00:00
+987,,,82,Denim Thread,out,311,sale,474,Quality check,3,2024-12-30T20:00:00
+988,159,Traditional Waistcoat,49,PVC Fabric,adjustment,-51,,,Stock adjustment,11,2024-02-01T16:00:00
+989,182,Classic Saree,,,in,-197,purchase,255,Stock adjustment,3,2024-01-12T11:00:00
+990,163,Comfort Hat,82,Denim Thread,adjustment,160,,,,9,2025-05-19T04:00:00
+991,181,Essential Tie,,,adjustment,-51,,,Inventory count,5,2024-02-01T01:00:00
+992,189,Sporty Tie,,,out,-5,sale,174,,3,2025-07-23T14:00:00
+993,,,,,out,-155,sale,180,,3,2024-12-05T21:00:00
+994,103,Trendy Chinos,,,adjustment,189,,,,3,2024-02-14T09:00:00
+995,,,39,Thread - Embroidery,in,288,purchase,135,Quality check,10,2024-09-26T14:00:00
+996,6,Oversized Jeans,,,in,-115,purchase,22,Return,7,2025-10-11T16:00:00
+997,53,Premium Blazer,,,out,198,sale,494,Return,7,2024-12-03T20:00:00
+998,126,Designer Muffler,66,Fringe Trim,in,253,purchase,113,Quality check,10,2025-01-25T11:00:00
+999,,,,,out,474,sale,425,,3,2024-02-23T13:00:00
+1000,26,Regular Fit Vest,25,Ribbon,out,369,sale,12,Damaged goods,8,2025-01-26T00:00:00

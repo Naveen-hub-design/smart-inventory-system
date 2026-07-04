@@ -12,12 +12,12 @@ const typeIcons: Record<string, any> = {
   sale: ClipboardList,
 }
 
-const typeColors: Record<string, string> = {
-  product: 'bg-blue-100 text-blue-600',
-  material: 'bg-green-100 text-green-600',
-  supplier: 'bg-purple-100 text-purple-600',
-  purchase: 'bg-orange-100 text-orange-600',
-  sale: 'bg-cyan-100 text-cyan-600',
+const typeGradients: Record<string, string> = {
+  product: 'from-blue-500 to-blue-600 shadow-blue-500/20',
+  material: 'from-emerald-500 to-emerald-600 shadow-emerald-500/20',
+  supplier: 'from-purple-500 to-purple-600 shadow-purple-500/20',
+  purchase: 'from-orange-500 to-orange-600 shadow-orange-500/20',
+  sale: 'from-cyan-500 to-cyan-600 shadow-cyan-500/20',
 }
 
 export default function SearchPage() {
@@ -57,64 +57,73 @@ export default function SearchPage() {
   const allResults = results ? Object.values(results).flat() : []
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Global Search</h1>
-        <p className="text-gray-500 mt-1">Search across all modules</p>
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="animate-fade-in">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Global Search</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Search across all modules</p>
       </div>
 
-      <form onSubmit={handleSearch} className="flex gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+      <form onSubmit={handleSearch} className="flex gap-3 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+        <div className="relative flex-1 group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors z-10" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products, materials, suppliers..."
-            className="input-field pl-10 py-3 text-lg"
+            className="input-field pl-11 py-3 text-base lg:text-lg rounded-2xl border-gray-200 dark:border-gray-700 focus:ring-primary-500/30 peer"
           />
+          <div className="absolute inset-x-3 bottom-0 h-0.5 bg-primary-500 scale-x-0 peer-focus:scale-x-100 transition-transform duration-300 rounded-full" />
         </div>
-        <button type="submit" className="btn-primary px-6">Search</button>
+        <button type="submit" className="btn-primary px-8 rounded-2xl shadow-lg shadow-primary-500/20">Search</button>
       </form>
 
       {loading && (
-        <div className="flex justify-center py-12">
-          <div className="animate-spin w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full" />
+        <div className="flex justify-center py-16 animate-fade-in">
+          <div className="relative">
+            <div className="animate-spin w-10 h-10 border-[3px] border-primary-200 border-t-primary-600 rounded-full" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="w-3 h-3 bg-primary-600 rounded-full animate-pulse-soft" />
+            </div>
+          </div>
         </div>
       )}
 
       {results && !loading && (
-        <div className="space-y-4">
+        <div className="space-y-5 animate-fade-in" style={{ animationDelay: '100ms' }}>
           {allResults.length === 0 ? (
-            <div className="card text-center py-12">
-              <p className="text-gray-500">No results found for "{query}"</p>
+            <div className="card text-center py-16">
+              <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400">No results found for "<span className="font-medium text-gray-700 dark:text-gray-300">{query}</span>"</p>
             </div>
           ) : (
-            Object.entries(results).map(([type, items]) => {
+            Object.entries(results).map(([type, items], groupIndex) => {
               if (items.length === 0) return null
               const Icon = typeIcons[type] || Search
               return (
-                <div key={type} className="card">
-                  <h3 className="text-lg font-semibold mb-3 capitalize flex items-center gap-2">
-                    <Icon className="w-5 h-5" /> {type}
+                <div key={type} className="card animate-fade-in-up" style={{ animationDelay: `${groupIndex * 80}ms` }}>
+                  <h3 className="text-base font-semibold mb-3 capitalize flex items-center gap-2 text-gray-900 dark:text-white">
+                    <Icon className="w-4 h-4" /> {type}
+                    <span className="text-xs font-normal text-gray-400 ml-1">({items.length})</span>
                   </h3>
                   <div className="space-y-1">
-                    {items.map((item: any) => (
+                    {items.map((item: any, i: number) => (
                       <button
                         key={item.id}
                         onClick={() => navigate(item.url)}
-                        className="w-full flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg text-left"
+                        className="w-full flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl text-left transition-all duration-200 hover:pl-4 animate-fade-in"
+                        style={{ animationDelay: `${i * 30}ms` }}
                       >
                         <div className="flex items-center gap-3">
-                          <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium ${typeColors[item.type] || 'bg-gray-100'}`}>
-                            {item.name.charAt(0)}
+                          <span className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg bg-gradient-to-br ${typeGradients[item.type] || 'from-primary-500 to-primary-600 shadow-primary-500/20'}`}>
+                            {item.name.charAt(0).toUpperCase()}
                           </span>
                           <div>
-                            <p className="font-medium text-sm">{item.name}</p>
-                            <p className="text-xs text-gray-500">{item.detail}</p>
+                            <p className="font-medium text-sm text-gray-900 dark:text-white">{item.name}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">{item.detail}</p>
                           </div>
                         </div>
-                        <span className="text-xs text-gray-400 capitalize">{item.type}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400 capitalize bg-gray-100 dark:bg-gray-800/50 px-2.5 py-1 rounded-md border border-gray-200 dark:border-gray-700/50 font-medium">{item.type}</span>
                       </button>
                     ))}
                   </div>

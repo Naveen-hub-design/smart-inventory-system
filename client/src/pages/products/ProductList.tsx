@@ -67,22 +67,22 @@ export default function ProductList() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold">Products</h1>
-          <p className="text-gray-500 mt-1">Manage your product catalog</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Products</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your product catalog</p>
         </div>
-        <button onClick={openCreate} className="btn-primary flex items-center gap-2">
+        <button onClick={openCreate} className="btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/20">
           <Plus className="w-4 h-4" /> Add Product
         </button>
       </div>
 
       <div className="card">
-        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-5">
           <form onSubmit={handleSearch} className="flex-1 flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="relative flex-1 group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
               <input
                 type="text"
                 value={search}
@@ -118,42 +118,42 @@ export default function ProductList() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700 text-left">
-                  <th className="py-3 px-2">Product</th>
-                  <th className="py-3 px-2">Category</th>
-                  <th className="py-3 px-2">Size</th>
-                  <th className="py-3 px-2">Color</th>
-                  <th className="py-3 px-2 text-right">Price</th>
-                  <th className="py-3 px-2 text-right">Stock</th>
-                  <th className="py-3 px-2">Status</th>
-                  <th className="py-3 px-2 text-right">Actions</th>
+                <tr className="border-b border-gray-100 dark:border-gray-800">
+                  <th className="table-header">Product</th>
+                  <th className="table-header">Category</th>
+                  <th className="table-header">Size</th>
+                  <th className="table-header">Color</th>
+                  <th className="table-header text-right">Price</th>
+                  <th className="table-header text-right">Stock</th>
+                  <th className="table-header">Status</th>
+                  <th className="table-header text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {products.map((product) => (
-                  <tr key={product.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td className="py-3 px-2 font-medium">{product.product_name}</td>
-                    <td className="py-3 px-2">{product.category_name || 'N/A'}</td>
-                    <td className="py-3 px-2">{product.size || 'N/A'}</td>
-                    <td className="py-3 px-2">{product.color || 'N/A'}</td>
-                    <td className="py-3 px-2 text-right">₹{product.price.toLocaleString()}</td>
-                    <td className="py-3 px-2 text-right">
-                      <span className={product.quantity <= product.min_stock ? 'text-red-600 font-medium' : ''}>
+                {products.map((product, i) => (
+                  <tr key={product.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                    <td className="table-cell font-medium text-gray-900 dark:text-white">{product.product_name}</td>
+                    <td className="table-cell">{product.category_name || 'N/A'}</td>
+                    <td className="table-cell">{product.size || 'N/A'}</td>
+                    <td className="table-cell"><span className="flex items-center gap-2">{product.color && <span className="w-3 h-3 rounded-full border" style={{ backgroundColor: product.color.toLowerCase() }} />}{product.color || 'N/A'}</span></td>
+                    <td className="table-cell text-right font-medium tabular-nums">₹{product.price.toLocaleString()}</td>
+                    <td className="table-cell text-right">
+                      <span className={`tabular-nums font-medium ${product.quantity <= product.min_stock ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
                         {product.quantity}
                       </span>
                     </td>
-                    <td className="py-3 px-2">
+                    <td className="table-cell">
                       <span className={product.status === 'active' ? 'badge-success' : 'badge-warning'}>
                         {product.status}
                       </span>
                     </td>
-                    <td className="py-3 px-2 text-right">
+                    <td className="table-cell text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <button onClick={() => openEdit(product)} className="p-1.5 hover:bg-blue-50 rounded-lg">
-                          <Edit2 className="w-4 h-4 text-blue-600" />
+                        <button onClick={() => openEdit(product)} className="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="Edit">
+                          <Edit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         </button>
-                        <button onClick={() => handleDelete(product.id)} className="p-1.5 hover:bg-red-50 rounded-lg">
-                          <Trash2 className="w-4 h-4 text-red-600" />
+                        <button onClick={() => handleDelete(product.id)} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Delete">
+                          <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
                         </button>
                       </div>
                     </td>
