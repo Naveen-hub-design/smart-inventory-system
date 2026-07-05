@@ -14,11 +14,6 @@ export const authService = {
     return data
   },
 
-  register: async (userData: { username: string; email: string; password: string; full_name?: string; role?: string }) => {
-    const { data } = await api.post('/auth/register', userData)
-    return data
-  },
-
   getMe: async (): Promise<{ user: User }> => {
     const { data } = await api.get('/auth/me')
     return data

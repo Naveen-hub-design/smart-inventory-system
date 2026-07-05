@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.models.user import User
+from app.middleware.auth import admin_required
 from app import db
 from datetime import datetime
 
@@ -32,31 +33,6 @@ def login():
         'refresh_token': refresh_token,
         'user': user.to_dict()
     }), 200
-
-@auth_bp.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    if not data or not data.get('username') or not data.get('email') or not data.get('password'):
-        return jsonify({'error': 'Username, email and password required'}), 400
-
-    if User.query.filter_by(username=data['username']).first():
-        return jsonify({'error': 'Username already exists'}), 409
-
-    if User.query.filter_by(email=data['email']).first():
-        return jsonify({'error': 'Email already exists'}), 409
-
-    user = User(
-        username=data['username'],
-        email=data['email'],
-        password_hash=generate_password_hash(data['password']),
-        full_name=data.get('full_name', data['username']),
-        role=data.get('role', 'staff'),
-        phone=data.get('phone')
-    )
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify({'message': 'User created successfully', 'user': user.to_dict()}), 201
 
 @auth_bp.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
@@ -121,3 +97,30 @@ def change_password():
 def get_users():
     users = User.query.all()
     return jsonify({'users': [u.to_dict() for u in users]}), 200
+
+@auth_bp.route('/users', methods=['POST'])
+@jwt_required()
+@admin_required
+def create_user():
+    data = request.get_json()
+    if not data or not data.get('username') or not data.get('email') or not data.get('password'):
+        return jsonify({'error': 'Username, email and password required'}), 400
+
+    if User.query.filter_by(username=data['username']).first():
+        return jsonify({'error': 'Username already exists'}), 409
+
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify({'error': 'Email already exists'}), 409
+
+    user = User(
+        username=data['username'],
+        email=data['email'],
+        password_hash=generate_password_hash(data['password']),
+        full_name=data.get('full_name', data['username']),
+        role='staff',
+        phone=data.get('phone')
+    )
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully', 'user': user.to_dict()}), 201
