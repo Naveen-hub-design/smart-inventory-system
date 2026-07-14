@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from app.models.product import Product
+from app.models.category import Category
 from app.models.inventory_log import InventoryLog
-from app.middleware.auth import get_current_user
+from app.middleware.auth import staff_required, get_current_user
+from app.models.audit_log import create_audit_log
+from app.routes.settings import get_setting, is_ai_feature_enabled
 from app import db
 import os
 import uuid
@@ -15,8 +17,9 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @products_bp.route('/', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_products():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
@@ -51,22 +54,25 @@ def get_products():
         'per_page': per_page
     }), 200
 
+
 @products_bp.route('/all', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_all_products():
     products = Product.query.filter_by(status='active').all()
     return jsonify({'products': [p.to_dict() for p in products]}), 200
 
+
 @products_bp.route('/<int:id>', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_product(id):
     product = Product.query.get(id)
     if not product:
         return jsonify({'error': 'Product not found'}), 404
-    return jsonify({'product': product.to_dict()}), 200
+    return jsonify({'product': product.to_dict(include_variants=True)}), 200
+
 
 @products_bp.route('/', methods=['POST'])
-@jwt_required()
+@staff_required
 def create_product():
     data = request.form.to_dict() if request.form else request.get_json()
 
@@ -77,6 +83,16 @@ def create_product():
         return jsonify({'error': 'Price required'}), 400
 
     cat_id = data.get('category_id')
+    default_min = int(get_setting('inventory_low_stock_threshold', '10'))
+    auto_barcode = is_ai_feature_enabled('inventory_auto_barcode')
+
+    if not cat_id:
+        default_cat_name = get_setting('inventory_default_category', '')
+        if default_cat_name:
+            cat = Category.query.filter_by(name=default_cat_name).first()
+            if cat:
+                cat_id = cat.id
+
     product = Product(
         product_name=data['product_name'],
         category_id=int(cat_id) if cat_id else None,
@@ -84,8 +100,8 @@ def create_product():
         color=data.get('color'),
         price=float(data.get('price', 0)),
         quantity=int(data.get('quantity', 0)),
-        min_stock=int(data.get('min_stock', 10)),
-        barcode=data.get('barcode', f'SIMS{uuid.uuid4().hex[:8].upper()}'),
+        min_stock=int(data.get('min_stock', default_min)),
+        barcode=data.get('barcode', f'SIMS{uuid.uuid4().hex[:8].upper()}') if auto_barcode else data.get('barcode', ''),
         status=data.get('status', 'active'),
         description=data.get('description')
     )
@@ -100,12 +116,21 @@ def create_product():
             product.image = filename
 
     db.session.add(product)
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='create',
+        module='products',
+        description=f'User {user.username if user else "system"} created product {data["product_name"]}'
+    )
     db.session.commit()
 
     return jsonify({'message': 'Product created', 'product': product.to_dict()}), 201
 
+
 @products_bp.route('/<int:id>', methods=['PUT'])
-@jwt_required()
+@staff_required
 def update_product(id):
     product = Product.query.get(id)
     if not product:
@@ -143,21 +168,41 @@ def update_product(id):
             file.save(os.path.join(upload_dir, filename))
             product.image = filename
 
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='update',
+        module='products',
+        description=f'User {user.username if user else "system"} updated product {product.product_name}'
+    )
     db.session.commit()
     return jsonify({'message': 'Product updated', 'product': product.to_dict()}), 200
 
+
 @products_bp.route('/<int:id>', methods=['DELETE'])
-@jwt_required()
+@staff_required
 def delete_product(id):
     product = Product.query.get(id)
     if not product:
         return jsonify({'error': 'Product not found'}), 404
+
+    name = product.product_name
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='delete',
+        module='products',
+        description=f'User {user.username if user else "system"} deleted product {name}'
+    )
     db.session.delete(product)
     db.session.commit()
     return jsonify({'message': 'Product deleted'}), 200
 
+
 @products_bp.route('/<int:id>/adjust-stock', methods=['PUT'])
-@jwt_required()
+@staff_required
 def adjust_stock(id):
     product = Product.query.get(id)
     if not product:
@@ -181,12 +226,20 @@ def adjust_stock(id):
         user_id=user.id if user else None
     )
     db.session.add(log)
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='stock_adjustment',
+        module='inventory',
+        description=f'User {user.username if user else "system"} adjusted stock for product {product.product_name} (ID:{product.id})'
+    )
     db.session.commit()
 
     return jsonify({'message': 'Stock adjusted', 'product': product.to_dict()}), 200
 
+
 @products_bp.route('/low-stock', methods=['GET'])
-@jwt_required()
+@staff_required
 def low_stock_products():
     products = Product.query.filter(Product.quantity <= Product.min_stock, Product.status == 'active').all()
     return jsonify({'products': [p.to_dict() for p in products]}), 200

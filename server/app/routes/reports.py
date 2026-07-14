@@ -1,12 +1,13 @@
 from flask import Blueprint, request, jsonify, send_file
-from flask_jwt_extended import jwt_required
 from app.models.product import Product
+from app.middleware.auth import staff_required
 from app.models.sale import Sale
 from app.models.purchase import Purchase
 from app.models.supplier import Supplier
 from app.models.raw_material import RawMaterial
+from app.routes.settings import get_setting
 from app import db
-from datetime import datetime
+from datetime import datetime, timedelta
 import openpyxl
 import io
 
@@ -37,9 +38,10 @@ def generate_excel(filename, headers, rows):
     return wb
 
 @reports_bp.route('/inventory', methods=['GET'])
-@jwt_required()
+@staff_required
 def inventory_report():
-    format_type = request.args.get('format', 'json')
+    default_fmt = get_setting('report_default_format', 'json')
+    format_type = request.args.get('format', default_fmt)
 
     products = Product.query.filter_by(status='active').all()
     data = [{
@@ -67,15 +69,20 @@ def inventory_report():
     return jsonify({'data': data, 'count': len(data)}), 200
 
 @reports_bp.route('/sales', methods=['GET'])
-@jwt_required()
+@staff_required
 def sales_report():
-    format_type = request.args.get('format', 'json')
+    default_fmt = get_setting('report_default_format', 'json')
+    default_days = int(get_setting('report_default_date_range', '30'))
+    format_type = request.args.get('format', default_fmt)
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
 
     query = Sale.query.filter(Sale.status == 'completed')
     start_dt = parse_date(start_date, 'start_date')
     end_dt = parse_date(end_date, 'end_date')
+    if not start_dt and not end_date:
+        end_dt = datetime.utcnow()
+        start_dt = end_dt - timedelta(days=default_days)
     if start_dt:
         query = query.filter(Sale.sale_date >= start_dt)
     if end_dt:
@@ -109,15 +116,20 @@ def sales_report():
     return jsonify({'data': data, 'total_sales': total_sales, 'count': len(data)}), 200
 
 @reports_bp.route('/purchases', methods=['GET'])
-@jwt_required()
+@staff_required
 def purchase_report():
-    format_type = request.args.get('format', 'json')
+    default_fmt = get_setting('report_default_format', 'json')
+    default_days = int(get_setting('report_default_date_range', '30'))
+    format_type = request.args.get('format', default_fmt)
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
 
     query = Purchase.query
     start_dt = parse_date(start_date, 'start_date')
     end_dt = parse_date(end_date, 'end_date')
+    if not start_dt and not end_date:
+        end_dt = datetime.utcnow()
+        start_dt = end_dt - timedelta(days=default_days)
     if start_dt:
         query = query.filter(Purchase.purchase_date >= start_dt)
     if end_dt:
@@ -151,9 +163,10 @@ def purchase_report():
     return jsonify({'data': data, 'total_purchases': total_purchases, 'count': len(data)}), 200
 
 @reports_bp.route('/suppliers', methods=['GET'])
-@jwt_required()
+@staff_required
 def supplier_report():
-    format_type = request.args.get('format', 'json')
+    default_fmt = get_setting('report_default_format', 'json')
+    format_type = request.args.get('format', default_fmt)
 
     suppliers = Supplier.query.all()
     data = [{
@@ -180,9 +193,10 @@ def supplier_report():
     return jsonify({'data': data, 'count': len(data)}), 200
 
 @reports_bp.route('/low-stock', methods=['GET'])
-@jwt_required()
+@staff_required
 def low_stock_report():
-    format_type = request.args.get('format', 'json')
+    default_fmt = get_setting('report_default_format', 'json')
+    format_type = request.args.get('format', default_fmt)
 
     low_products = Product.query.filter(
         Product.quantity <= Product.min_stock,

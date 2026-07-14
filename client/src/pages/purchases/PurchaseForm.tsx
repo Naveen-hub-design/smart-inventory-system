@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Search } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { purchaseService, supplierService, materialService } from '../../services/dataService'
-import { Supplier, RawMaterial } from '../../types'
+import { purchaseService, supplierService, materialService, variantService } from '../../services/dataService'
+import { Supplier, RawMaterial, ProductVariant } from '../../types'
 
 interface PurchaseItemForm {
   material_id: string
+  variant_id?: string
   quantity: string
   unit_price: string
 }
@@ -24,11 +25,34 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
   const [notes, setNotes] = useState('')
   const [items, setItems] = useState<PurchaseItemForm[]>([{ material_id: '', quantity: '1', unit_price: '0' }])
   const [loading, setLoading] = useState(false)
+  const [skuSearch, setSkuSearch] = useState('')
+  const [skuResults, setSkuResults] = useState<ProductVariant[]>([])
+  const [searchingSku, setSearchingSku] = useState(false)
 
   useEffect(() => {
     supplierService.getAll({ per_page: 100 }).then(r => setSuppliers(r.data.suppliers)).catch(() => { })
     materialService.getAll({ per_page: 100 }).then(r => setMaterials(r.data.materials)).catch(() => { })
   }, [])
+
+  const doSkuSearch = async (q: string) => {
+    if (!q || q.length < 2) { setSkuResults([]); return }
+    setSearchingSku(true)
+    try {
+      const res = await variantService.getAll({ search: q, per_page: 10 })
+      setSkuResults(res.data.variants || [])
+    } catch { setSkuResults([]) } finally { setSearchingSku(false) }
+  }
+
+  const addFromSkuSearch = (v: ProductVariant) => {
+    setItems(prev => [...prev, {
+      material_id: '',
+      variant_id: v.id.toString(),
+      quantity: '1',
+      unit_price: v.selling_price.toString(),
+    }])
+    setSkuSearch('')
+    setSkuResults([])
+  }
 
   const addItem = () => setItems([...items, { material_id: '', quantity: '1', unit_price: '0' }])
   const removeItem = (i: number) => items.length > 1 && setItems(items.filter((_, idx) => idx !== i))
@@ -65,7 +89,8 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
         tax: Number(tax),
         notes,
         items: items.map(i => ({
-          material_id: Number(i.material_id),
+          material_id: i.material_id ? Number(i.material_id) : undefined,
+          variant_id: i.variant_id ? Number(i.variant_id) : undefined,
           quantity: Number(i.quantity),
           unit_price: Number(i.unit_price),
         }))
@@ -113,26 +138,52 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
       <div>
         <div className="flex items-center justify-between mb-3">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Items</label>
-          <button type="button" onClick={addItem} className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 flex items-center gap-1 font-medium transition-colors">
-            <Plus className="w-4 h-4" /> Add Item
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+              <input type="text" value={skuSearch} onChange={(e) => { setSkuSearch(e.target.value); doSkuSearch(e.target.value) }} placeholder="Search SKU or Barcode..." className="input-field text-xs pl-8 py-1.5 w-48" />
+              {searchingSku && <div className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />}
+            </div>
+            {skuResults.length > 0 && (
+              <div className="relative">
+                <div className="absolute right-0 top-full mt-1 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto">
+                  {skuResults.map(v => (
+                    <button key={v.id} type="button" onClick={() => addFromSkuSearch(v)} className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0 flex items-center gap-2">
+                      <span className="font-mono text-primary-600 dark:text-primary-400">{v.sku}</span>
+                      <span className="text-gray-500 truncate flex-1">{v.product_name} - {v.color} {v.size}</span>
+                      <span className="text-gray-400">₹{v.selling_price}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <button type="button" onClick={addItem} className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 flex items-center gap-1 font-medium transition-colors">
+              <Plus className="w-4 h-4" /> Add Item
+            </button>
+          </div>
         </div>
         <div className="space-y-2">
           {items.map((item, i) => (
             <div key={i} className="flex gap-2 items-start p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all duration-200 border border-transparent hover:border-gray-100 dark:hover:border-gray-700/30">
               <div className="relative group flex-1">
-                <select
-                  value={item.material_id}
-                  onChange={(e) => updateItem(i, 'material_id', e.target.value)}
-                  className="input-field w-full peer"
-                  required
-                >
-                  <option value="">Select Material</option>
-                  {materials.map(m => (
-                    <option key={m.id} value={m.id}>{m.material_name} ({m.unit})</option>
-                  ))}
-                </select>
-                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+                  {item.variant_id ? (
+                    <div className="input-field w-full text-sm text-primary-600 dark:text-primary-400 bg-primary-50/50 dark:bg-primary-900/20 font-mono">
+                      Variant ID: {item.variant_id}
+                    </div>
+                  ) : (
+                    <select
+                      value={item.material_id}
+                      onChange={(e) => updateItem(i, 'material_id', e.target.value)}
+                      className="input-field w-full peer"
+                      required
+                    >
+                      <option value="">Select Material</option>
+                      {materials.map(m => (
+                        <option key={m.id} value={m.id}>{m.material_name} ({m.unit})</option>
+                      ))}
+                    </select>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
               <div className="relative group w-24">
                 <input

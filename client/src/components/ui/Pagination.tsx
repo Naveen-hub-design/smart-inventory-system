@@ -13,13 +13,15 @@ export default function Pagination({ page, pages, total, onPageChange }: Paginat
   return (
     <div className="flex items-center justify-between pt-5 border-t border-gray-100 dark:border-gray-800/50 mt-4">
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        Showing page <span className="font-medium text-gray-700 dark:text-gray-300">{page}</span> of <span className="font-medium text-gray-700 dark:text-gray-300">{pages}</span> ({total} total)
+        Showing page <span className="font-medium text-gray-700 dark:text-gray-300">{page}</span> of <span className="font-medium text-gray-700 dark:text-gray-300">{pages}</span>
+        <span className="hidden sm:inline"> ({total} total)</span>
       </p>
       <div className="flex items-center gap-1">
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 hover:shadow-premium-sm"
+          aria-label="Previous page"
         >
           <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
         </button>
@@ -38,11 +40,13 @@ export default function Pagination({ page, pages, total, onPageChange }: Paginat
             <button
               key={pageNum}
               onClick={() => onPageChange(pageNum)}
-              className={`w-9 h-9 text-sm rounded-lg font-medium transition-all duration-200 active:scale-95 ${
+              className={`w-9 h-9 text-sm rounded-lg font-medium transition-all duration-200 active:scale-90 ${
                 pageNum === page
-                  ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-md shadow-primary-500/20'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
+                  ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/30'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 hover:shadow-premium-sm'
               }`}
+              aria-label={`Page ${pageNum}`}
+              aria-current={pageNum === page ? 'page' : undefined}
             >
               {pageNum}
             </button>
@@ -51,7 +55,8 @@ export default function Pagination({ page, pages, total, onPageChange }: Paginat
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= pages}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 hover:shadow-premium-sm"
+          aria-label="Next page"
         >
           <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
         </button>

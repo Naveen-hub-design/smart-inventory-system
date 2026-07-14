@@ -46,20 +46,28 @@ class SaleItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sale_id = db.Column(db.Integer, db.ForeignKey('sales.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+    variant_id = db.Column(db.Integer, db.ForeignKey('product_variants.id'), nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
     unit_price = db.Column(db.Numeric(10, 2), nullable=False)
     discount = db.Column(db.Numeric(10, 2), default=0)
     total_price = db.Column(db.Numeric(12, 2), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    variant = db.relationship('ProductVariant')
+
     def to_dict(self):
+        from app.models.product_variant import ProductVariant
+        v = None
+        if self.variant_id:
+            v = ProductVariant.query.get(self.variant_id)
         return {
             'id': self.id,
             'sale_id': self.sale_id,
             'product_id': self.product_id,
             'product_name': self.product.product_name if self.product else None,
-            'size': self.product.size if self.product else None,
-            'color': self.product.color if self.product else None,
+            'variant_id': self.variant_id,
+            'size': v.size if v else (self.product.size if self.product else None),
+            'color': v.color if v else (self.product.color if self.product else None),
             'quantity': self.quantity,
             'unit_price': float(self.unit_price),
             'discount': float(self.discount) if self.discount else 0,

@@ -31,7 +31,7 @@ const stats = [
 ]
 
 export default function Login() {
-  const { login } = useAuth()
+  const { login, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -50,6 +50,12 @@ export default function Login() {
     return () => clearInterval(timer)
   }, [])
 
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [user, authLoading, navigate])
+
   const usernameVal = watch('username')
   const passwordVal = watch('password')
 
@@ -67,11 +73,15 @@ export default function Login() {
   const onSubmit = async (data: LoginForm) => {
     setLoading(true)
     try {
-      await login(data.username, data.password)
+      const user = await login(data.username, data.password)
       setSuccess(true)
       setTimeout(() => {
         toast.success('Welcome back!')
-        navigate('/dashboard')
+        if (user?.password_reset_required) {
+          navigate('/profile?forceChange=1')
+        } else {
+          navigate('/dashboard')
+        }
       }, 600)
     } catch (err: any) {
       console.error('Login error:', err)
@@ -213,7 +223,7 @@ export default function Login() {
                       </div>
                       <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">Remember me</span>
                     </label>
-                    <button type="button" onClick={() => toast('Password reset coming soon', { icon: '🔒' })} className="text-xs text-primary-400/70 hover:text-primary-300 transition-colors">Forgot Password?</button>
+                    <button type="button" onClick={() => navigate('/forgot-password')} className="text-xs text-primary-400/70 hover:text-primary-300 transition-colors">Forgot Password?</button>
                   </div>
 
                   <div className="animate-fade-in" style={{ animationDelay: '300ms' }}>
@@ -237,7 +247,7 @@ export default function Login() {
                   <p className="text-xs text-white/50 leading-relaxed">
                     <span className="font-medium text-white/70">Demo Credentials</span><br />
                     <span className="opacity-60">Admin: admin / admin123</span><br />
-                    <span className="opacity-60">Staff: staff1 / admin123</span>
+                    <span className="opacity-60">Staff: staff1 / staff123</span>
                   </p>
                 </div>
               </div>

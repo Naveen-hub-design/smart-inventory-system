@@ -1,19 +1,19 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from app.models.category import Category
-from app.middleware.auth import admin_required
+from app.middleware.auth import staff_required, admin_required, get_current_user
+from app.models.audit_log import create_audit_log
 from app import db
 
 categories_bp = Blueprint('categories', __name__)
 
 @categories_bp.route('/', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_categories():
     categories = Category.query.all()
     return jsonify({'categories': [c.to_dict() for c in categories]}), 200
 
 @categories_bp.route('/<int:id>', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_category(id):
     category = Category.query.get(id)
     if not category:
@@ -21,7 +21,6 @@ def get_category(id):
     return jsonify({'category': category.to_dict()}), 200
 
 @categories_bp.route('/', methods=['POST'])
-@jwt_required()
 @admin_required
 def create_category():
     data = request.get_json()
@@ -36,11 +35,18 @@ def create_category():
         description=data.get('description', '')
     )
     db.session.add(category)
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='create',
+        module='categories',
+        description=f'User {user.username if user else "system"} created category {data["name"]}'
+    )
     db.session.commit()
     return jsonify({'message': 'Category created', 'category': category.to_dict()}), 201
 
 @categories_bp.route('/<int:id>', methods=['PUT'])
-@jwt_required()
 @admin_required
 def update_category(id):
     category = Category.query.get(id)
@@ -53,16 +59,32 @@ def update_category(id):
     if data.get('description') is not None:
         category.description = data['description']
 
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='update',
+        module='categories',
+        description=f'User {user.username if user else "system"} updated category {category.name}'
+    )
     db.session.commit()
     return jsonify({'message': 'Category updated', 'category': category.to_dict()}), 200
 
 @categories_bp.route('/<int:id>', methods=['DELETE'])
-@jwt_required()
 @admin_required
 def delete_category(id):
     category = Category.query.get(id)
     if not category:
         return jsonify({'error': 'Category not found'}), 404
+    name = category.name
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='delete',
+        module='categories',
+        description=f'User {user.username if user else "system"} deleted category {name}'
+    )
     db.session.delete(category)
     db.session.commit()
     return jsonify({'message': 'Category deleted'}), 200

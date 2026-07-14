@@ -44,19 +44,28 @@ class PurchaseItem(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     purchase_id = db.Column(db.Integer, db.ForeignKey('purchases.id'), nullable=False)
-    material_id = db.Column(db.Integer, db.ForeignKey('raw_materials.id'))
+    material_id = db.Column(db.Integer, db.ForeignKey('raw_materials.id'), nullable=True)
+    variant_id = db.Column(db.Integer, db.ForeignKey('product_variants.id'), nullable=True)
     quantity = db.Column(db.Numeric(10, 2), nullable=False)
     unit_price = db.Column(db.Numeric(10, 2), nullable=False)
     total_price = db.Column(db.Numeric(12, 2), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    variant = db.relationship('ProductVariant')
+
     def to_dict(self):
+        from app.models.product_variant import ProductVariant
+        v = None
+        if self.variant_id:
+            v = ProductVariant.query.get(self.variant_id)
         return {
             'id': self.id,
             'purchase_id': self.purchase_id,
             'material_id': self.material_id,
             'material_name': self.material.material_name if self.material else None,
             'unit': self.material.unit if self.material else None,
+            'variant_id': self.variant_id,
+            'variant_name': f'{v.product.product_name} - {v.color}/{v.size}' if v and v.product else None,
             'quantity': float(self.quantity),
             'unit_price': float(self.unit_price),
             'total_price': float(self.total_price)

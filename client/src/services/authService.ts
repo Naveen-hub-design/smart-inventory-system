@@ -1,5 +1,5 @@
 import api from './api'
-import { User } from '../types'
+import { User, UserResponse, PasswordResetRequestResponse } from '../types'
 
 export interface LoginResponse {
   message: string
@@ -29,8 +29,53 @@ export const authService = {
     return data
   },
 
-  getUsers: async (): Promise<{ users: User[] }> => {
-    const { data } = await api.get('/auth/users')
+  getUsers: async (params?: any): Promise<UserResponse> => {
+    const { data } = await api.get('/auth/users', { params })
+    return data
+  },
+
+  createUser: async (userData: { username: string; email: string; password: string; full_name?: string; phone?: string }): Promise<{ message: string; user: User }> => {
+    const { data } = await api.post('/auth/users', userData)
+    return data
+  },
+
+  updateUser: async (id: number, userData: { username?: string; email?: string; full_name?: string; phone?: string }): Promise<{ message: string; user: User }> => {
+    const { data } = await api.put(`/auth/users/${id}`, userData)
+    return data
+  },
+
+  toggleUserStatus: async (id: number, isActive: boolean): Promise<{ message: string; user: User }> => {
+    const { data } = await api.put(`/auth/users/${id}/status`, { is_active: isActive })
+    return data
+  },
+
+  resetUserPassword: async (id: number, newPassword: string): Promise<{ message: string }> => {
+    const { data } = await api.put(`/auth/users/${id}/reset-password`, { new_password: newPassword })
+    return data
+  },
+
+  deleteUser: async (id: number): Promise<{ message: string }> => {
+    const { data } = await api.delete(`/auth/users/${id}`)
+    return data
+  },
+
+  forgotPassword: async (username?: string, email?: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/auth/forgot-password', { username, email })
+    return data
+  },
+
+  getPasswordResetRequests: async (params?: any): Promise<PasswordResetRequestResponse> => {
+    const { data } = await api.get('/auth/password-reset-requests', { params })
+    return data
+  },
+
+  approvePasswordReset: async (id: number, newPassword: string): Promise<{ message: string }> => {
+    const { data } = await api.put(`/auth/password-reset-requests/${id}/approve`, { new_password: newPassword })
+    return data
+  },
+
+  rejectPasswordReset: async (id: number, notes?: string): Promise<{ message: string }> => {
+    const { data } = await api.put(`/auth/password-reset-requests/${id}/reject`, { notes })
     return data
   }
 }

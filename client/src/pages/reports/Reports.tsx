@@ -29,14 +29,15 @@ export default function Reports() {
       if (format === 'excel') {
         params.format = 'excel'
         const excelService: Record<string, any> = {
-          inventory: reportService.getInventory,
-          sales: reportService.getSales,
-          purchases: reportService.getPurchases,
-          suppliers: reportService.getSuppliers,
-          'low-stock': reportService.getLowStock,
+          inventory: () => reportService.getInventory('excel'),
+          sales: () => reportService.getSales({ ...params }),
+          purchases: () => reportService.getPurchases({ ...params }),
+          suppliers: () => reportService.getSuppliers('excel'),
+          'low-stock': () => reportService.getLowStock('excel'),
         }
-        res = await excelService[type](params.format)
-        const url = window.URL.createObjectURL(new Blob([res.data]))
+        res = await excelService[type]()
+        const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
         a.download = `${type}_report.xlsx`
@@ -45,18 +46,32 @@ export default function Reports() {
         toast.success('Report downloaded')
       } else {
         const serviceMap: Record<string, any> = {
-          inventory: reportService.getInventory,
+          inventory: () => reportService.getInventory(),
           sales: () => reportService.getSales(params),
           purchases: () => reportService.getPurchases(params),
-          suppliers: reportService.getSuppliers,
-          'low-stock': reportService.getLowStock,
+          suppliers: () => reportService.getSuppliers(),
+          'low-stock': () => reportService.getLowStock(),
         }
         res = await serviceMap[type]()
         setPreview(res.data)
         setSelectedReport(type)
       }
-    } catch {
-      toast.error('Failed to generate report')
+    } catch (err: any) {
+      let msg = 'Failed to generate report'
+      if (err?.response?.data) {
+        if (err.response.data instanceof Blob) {
+          try {
+            const text = await err.response.data.text()
+            const json = JSON.parse(text)
+            msg = json.error || msg
+          } catch {}
+        } else {
+          msg = err.response.data?.error || msg
+        }
+      } else if (err?.message) {
+        msg = err.message
+      }
+      toast.error(msg)
     } finally {
       setLoading(null)
     }
@@ -64,20 +79,41 @@ export default function Reports() {
 
   const renderPreview = () => {
     if (!preview || !selectedReport) return null
-    const data = preview.data || preview.products || preview.materials || []
-    if (!Array.isArray(data) && selectedReport === 'low-stock') {
-      const items = [...(preview.products || []), ...(preview.materials || [])]
+
+    if (selectedReport === 'low-stock') {
+      const products = preview.products || []
+      const materials = preview.materials || []
+      const items = [
+        ...products.map((p: any) => ({ Type: 'Product', Name: p.Product, Category: p.Category || 'N/A', Quantity: p.Quantity, 'Min Stock': p['Min Stock'], Status: p.Status })),
+        ...materials.map((m: any) => ({ Type: 'Material', Name: m.Material, Category: 'Raw Material', Quantity: m.Quantity, 'Min Stock': m['Min Stock'], Status: m.Status })),
+      ]
+      if (items.length === 0) return null
       return (
-        <div className="space-y-2">
-          {items.map((item: any, i: number) => (
-            <div key={i} className="flex justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <span>{item.Product || item.Material}</span>
-              <span className="font-medium">Qty: {item.Quantity || item.quantity}</span>
-            </div>
-          ))}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="table-header">
+                {Object.keys(items[0]).map((key) => (
+                  <th key={key} className="py-2.5 px-3 font-semibold text-xs uppercase tracking-wider">{key}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {items.slice(0, 20).map((row: any, i: number) => (
+                <tr key={i} className="table-row animate-fade-in" style={{ animationDelay: `${i * 20}ms` }}>
+                  {Object.values(row).map((val: any, j: number) => (
+                    <td key={j} className="table-cell py-2 px-3">{String(val) || 'N/A'}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {items.length > 20 && <p className="text-sm text-gray-500 mt-2">Showing first 20 of {items.length} records</p>}
         </div>
       )
     }
+
+    const data = preview.data || preview.products || preview.materials || []
     if (!Array.isArray(data)) return null
     return (
       <div className="overflow-x-auto">

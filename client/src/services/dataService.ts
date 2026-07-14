@@ -49,18 +49,82 @@ export const dashboardService = {
   getMonthlySales: () => api.get('/dashboard/monthly-sales'),
   getMonthlyPurchases: () => api.get('/dashboard/monthly-purchases'),
   getTopProducts: () => api.get('/dashboard/top-products'),
+  getRecentActivities: () => api.get('/dashboard/recent-activities'),
 }
 
 export const reportService = {
-  getInventory: (format?: string) => api.get('/reports/inventory', { params: { format } }),
-  getSales: (params?: any) => api.get('/reports/sales', { params }),
-  getPurchases: (params?: any) => api.get('/reports/purchases', { params }),
-  getSuppliers: (format?: string) => api.get('/reports/suppliers', { params: { format } }),
-  getLowStock: (format?: string) => api.get('/reports/low-stock', { params: { format } }),
+  getInventory: (format?: string) => api.get('/reports/inventory', {
+    params: { format },
+    ...(format === 'excel' ? { responseType: 'blob' as const } : {}),
+  }),
+  getSales: (params?: any) => api.get('/reports/sales', {
+    params,
+    ...(params?.format === 'excel' ? { responseType: 'blob' as const } : {}),
+  }),
+  getPurchases: (params?: any) => api.get('/reports/purchases', {
+    params,
+    ...(params?.format === 'excel' ? { responseType: 'blob' as const } : {}),
+  }),
+  getSuppliers: (format?: string) => api.get('/reports/suppliers', {
+    params: { format },
+    ...(format === 'excel' ? { responseType: 'blob' as const } : {}),
+  }),
+  getLowStock: (format?: string) => api.get('/reports/low-stock', {
+    params: { format },
+    ...(format === 'excel' ? { responseType: 'blob' as const } : {}),
+  }),
 }
 
 export const searchService = {
   search: (q: string) => api.get('/search/', { params: { q } }),
+}
+
+export const variantService = {
+  ...createService('product-variants'),
+  getByProduct: (productId: number, params?: any) => api.get('/product-variants/', { params: { ...params, product_id: productId } }),
+}
+
+export const aiService = {
+  getReorderRecommendations: () => api.get('/ai/reorder-recommendations'),
+  getReorderDetail: (variantId: number) => api.get(`/ai/reorder-detail/${variantId}`),
+  getForecast: (params?: any) => api.get('/ai/forecast', { params }),
+  getInsights: (params?: any) => api.get('/ai/insights', { params }),
+  getInventoryHealth: (params?: any) => api.get('/ai/health', { params }),
+  getSupplierIntel: (params?: any) => api.get('/ai/suppliers-intel', { params }),
+  copilotChat: (data: { message: string; session_id?: string }) => api.post('/ai/copilot/chat', data),
+  copilotHistory: (session_id?: string) => api.get('/ai/copilot/history', { params: { session_id } }),
+  copilotClear: (session_id?: string) => api.post('/ai/copilot/clear', { session_id }),
+  copilotExport: (session_id?: string) => api.post('/ai/copilot/export', { session_id }, { responseType: 'text' }),
+}
+
+export const settingsService = {
+  getAll: () => api.get('/settings/'),
+  getProfile: () => api.get('/auth/me'),
+  update: (data: Record<string, string>) => api.put('/settings/', data),
+  reset: () => api.post('/settings/reset'),
+  updateProfile: (data: Record<string, string>) => api.put('/settings/profile', data),
+  changePassword: (data: { current_password: string; new_password: string }) => api.put('/settings/password', data),
+  uploadAvatar: (file: File) => {
+    const fd = new FormData()
+    fd.append('file', file)
+    return api.post('/settings/avatar', fd)
+  },
+  uploadLogo: (file: File) => {
+    const fd = new FormData()
+    fd.append('file', file)
+    return api.post('/settings/logo', fd)
+  },
+  removeAvatar: () => api.delete('/settings/avatar'),
+  removeLogo: () => api.delete('/settings/logo'),
+  getAbout: () => api.get('/settings/about'),
+  exportBackup: () => api.post('/settings/backup/export', {}, { responseType: 'blob' }),
+  importBackup: (file: File) => {
+    const fd = new FormData()
+    fd.append('file', file)
+    return api.post('/settings/backup/import', fd)
+  },
+  getSessions: () => api.get('/settings/security/sessions'),
+  getLoginHistory: () => api.get('/settings/security/login-history'),
 }
 
 export const notificationService = {

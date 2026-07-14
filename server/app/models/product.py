@@ -22,8 +22,15 @@ class Product(db.Model):
     sale_items = db.relationship('SaleItem', backref='product', lazy=True)
     inventory_logs = db.relationship('InventoryLog', backref='product', lazy=True)
 
-    def to_dict(self):
-        return {
+    def sync_stock_from_variants(self):
+        from app.models.product_variant import ProductVariant
+        total = db.session.query(db.func.coalesce(db.func.sum(ProductVariant.stock), 0)).filter(
+            ProductVariant.product_id == self.id
+        ).scalar()
+        self.quantity = total
+
+    def to_dict(self, include_variants=False):
+        result = {
             'id': self.id,
             'product_name': self.product_name,
             'category_id': self.category_id,
@@ -40,3 +47,8 @@ class Product(db.Model):
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
+        if include_variants:
+            from app.models.product_variant import ProductVariant
+            result['variants'] = [v.to_dict() for v in self.variants.all()]
+            result['variant_count'] = self.variants.count()
+        return result

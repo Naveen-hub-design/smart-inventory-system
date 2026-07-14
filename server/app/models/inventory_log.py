@@ -7,6 +7,7 @@ class InventoryLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     material_id = db.Column(db.Integer, db.ForeignKey('raw_materials.id'))
+    variant_id = db.Column(db.Integer, db.ForeignKey('product_variants.id'), nullable=True)
     change_type = db.Column(db.Enum('in', 'out', 'adjustment'), nullable=False)
     quantity = db.Column(db.Numeric(10, 2), nullable=False)
     reference_type = db.Column(db.String(50))
@@ -15,6 +16,8 @@ class InventoryLog(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    variant = db.relationship('ProductVariant')
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -22,6 +25,8 @@ class InventoryLog(db.Model):
             'product_name': self.product.product_name if self.product else None,
             'material_id': self.material_id,
             'material_name': self.material.material_name if self.material else None,
+            'variant_id': self.variant_id,
+            'variant_name': f'{self.variant.product.product_name} - {self.variant.color}/{self.variant.size}' if self.variant and self.variant.product else None,
             'change_type': self.change_type,
             'quantity': float(self.quantity),
             'reference_type': self.reference_type,

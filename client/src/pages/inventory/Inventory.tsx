@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { BarChart3, AlertTriangle } from 'lucide-react'
 import { inventoryService } from '../../services/dataService'
 import { InventoryLog } from '../../types'
@@ -6,6 +7,7 @@ import Pagination from '../../components/ui/Pagination'
 import { CardSkeleton } from '../../components/ui/LoadingSkeleton'
 
 export default function Inventory() {
+  const location = useLocation()
   const [stock, setStock] = useState<{ products: any[]; materials: any[] }>({ products: [], materials: [] })
   const [movements, setMovements] = useState<InventoryLog[]>([])
   const [lowStock, setLowStock] = useState<any>(null)
@@ -14,6 +16,13 @@ export default function Inventory() {
   const [pages, setPages] = useState(1)
   const [total, setTotal] = useState(0)
   const [tab, setTab] = useState<'stock' | 'movements' | 'alerts'>('stock')
+
+  useEffect(() => {
+    if (location.state) {
+      const s = location.state as any
+      if (s.tab === 'alerts' || s.tab === 'stock' || s.tab === 'movements') setTab(s.tab)
+    }
+  }, [location.state])
 
   useEffect(() => {
     const fetchAll = async () => {

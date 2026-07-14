@@ -1,16 +1,16 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from app.models.product import Product
 from app.models.raw_material import RawMaterial
 from app.models.inventory_log import InventoryLog
-from app.middleware.auth import get_current_user
+from app.middleware.auth import staff_required, get_current_user
+from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime, timedelta
 
 inventory_bp = Blueprint('inventory', __name__)
 
 @inventory_bp.route('/stock', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_current_stock():
     products = Product.query.filter_by(status='active').all()
     materials = RawMaterial.query.all()
@@ -35,7 +35,7 @@ def get_current_stock():
     }), 200
 
 @inventory_bp.route('/movements', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_stock_movements():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
@@ -61,7 +61,7 @@ def get_stock_movements():
     }), 200
 
 @inventory_bp.route('/low-stock', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_low_stock():
     low_products = Product.query.filter(
         Product.quantity <= Product.min_stock,
@@ -91,7 +91,7 @@ def get_low_stock():
     }), 200
 
 @inventory_bp.route('/adjust', methods=['POST'])
-@jwt_required()
+@staff_required
 def adjust_inventory():
     data = request.get_json()
     if not data:
@@ -126,12 +126,19 @@ def adjust_inventory():
         user_id=user.id if user else None
     )
     db.session.add(log)
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='stock_adjustment',
+        module='inventory',
+        description=f'User {user.username if user else "system"} adjusted {item_type} #{item_id} stock to {quantity}'
+    )
     db.session.commit()
 
     return jsonify({'message': 'Inventory adjusted'}), 200
 
 @inventory_bp.route('/timeline', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_timeline():
     days = request.args.get('days', 7, type=int)
     cutoff = datetime.utcnow() - timedelta(days=days)

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Search } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { saleService, productService } from '../../services/dataService'
-import { Product } from '../../types'
+import { saleService, productService, variantService } from '../../services/dataService'
+import { Product, ProductVariant } from '../../types'
 
 interface SaleItemForm {
   product_id: string
+  variant_id: string
   quantity: string
   unit_price: string
   discount: string
@@ -18,19 +19,55 @@ interface Props {
 
 export default function SaleForm({ onSuccess, onCancel }: Props) {
   const [products, setProducts] = useState<Product[]>([])
+  const [productVariants, setProductVariants] = useState<Record<number, ProductVariant[]>>({})
   const [customerName, setCustomerName] = useState('Walk-in Customer')
   const [paymentMethod, setPaymentMethod] = useState('cash')
   const [discount, setDiscount] = useState('0')
   const [tax, setTax] = useState('0')
   const [notes, setNotes] = useState('')
-  const [items, setItems] = useState<SaleItemForm[]>([{ product_id: '', quantity: '1', unit_price: '0', discount: '0' }])
+  const [items, setItems] = useState<SaleItemForm[]>([{ product_id: '', variant_id: '', quantity: '1', unit_price: '0', discount: '0' }])
   const [loading, setLoading] = useState(false)
+  const [skuSearch, setSkuSearch] = useState('')
+  const [skuResults, setSkuResults] = useState<ProductVariant[]>([])
+  const [searchingSku, setSearchingSku] = useState(false)
 
   useEffect(() => {
     productService.getAll({ per_page: 100, status: 'active' }).then(r => setProducts(r.data.products)).catch(() => { })
   }, [])
 
-  const addItem = () => setItems([...items, { product_id: '', quantity: '1', unit_price: '0', discount: '0' }])
+  const loadVariants = async (productId: number) => {
+    if (productVariants[productId]) return
+    try {
+      const res = await variantService.getByProduct(productId)
+      setProductVariants(prev => ({ ...prev, [productId]: res.data.variants }))
+    } catch { }
+  }
+
+  const doSkuSearch = async (q: string) => {
+    if (!q || q.length < 2) { setSkuResults([]); return }
+    setSearchingSku(true)
+    try {
+      const res = await variantService.getAll({ search: q, per_page: 10 })
+      setSkuResults(res.data.variants || [])
+    } catch { setSkuResults([]) } finally { setSearchingSku(false) }
+  }
+
+  const addFromSkuSearch = (v: ProductVariant) => {
+    setItems(prev => [...prev, {
+      product_id: v.product_id.toString(),
+      variant_id: v.id.toString(),
+      quantity: '1',
+      unit_price: v.selling_price.toString(),
+      discount: '0',
+    }])
+    if (!productVariants[v.product_id]) {
+      loadVariants(v.product_id)
+    }
+    setSkuSearch('')
+    setSkuResults([])
+  }
+
+  const addItem = () => setItems([...items, { product_id: '', variant_id: '', quantity: '1', unit_price: '0', discount: '0' }])
   const removeItem = (i: number) => items.length > 1 && setItems(items.filter((_, idx) => idx !== i))
 
   const updateItem = (i: number, field: keyof SaleItemForm, value: string) => {
@@ -38,10 +75,18 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
     newItems[i] = { ...newItems[i], [field]: value }
 
     if (field === 'product_id') {
+      newItems[i].variant_id = ''
       const prod = products.find(p => p.id === Number(value))
       if (prod) {
         newItems[i].unit_price = prod.price.toString()
       }
+      if (value) loadVariants(Number(value))
+    }
+    if (field === 'variant_id' && value) {
+      const pid = Number(newItems[i].product_id)
+      const variants = productVariants[pid] || []
+      const v = variants.find(x => x.id === Number(value))
+      if (v) newItems[i].unit_price = v.selling_price.toString()
     }
     setItems(newItems)
   }
@@ -66,6 +111,7 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
         notes,
         items: items.map(i => ({
           product_id: Number(i.product_id),
+          variant_id: i.variant_id ? Number(i.variant_id) : undefined,
           quantity: Number(i.quantity),
           unit_price: Number(i.unit_price),
           discount: Number(i.discount),
@@ -124,14 +170,34 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
       <div>
         <div className="flex items-center justify-between mb-3">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Sale Items</label>
-          <button type="button" onClick={addItem} className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 flex items-center gap-1 font-medium transition-colors">
-            <Plus className="w-4 h-4" /> Add Item
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+              <input type="text" value={skuSearch} onChange={(e) => { setSkuSearch(e.target.value); doSkuSearch(e.target.value) }} placeholder="Search SKU or Barcode..." className="input-field text-xs pl-8 py-1.5 w-48" />
+              {searchingSku && <div className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />}
+            </div>
+            {skuResults.length > 0 && (
+              <div className="relative">
+                <div className="absolute right-0 top-full mt-1 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto">
+                  {skuResults.map(v => (
+                    <button key={v.id} type="button" onClick={() => addFromSkuSearch(v)} className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0 flex items-center gap-2">
+                      <span className="font-mono text-primary-600 dark:text-primary-400">{v.sku}</span>
+                      <span className="text-gray-500 truncate flex-1">{v.product_name} - {v.color} {v.size}</span>
+                      <span className="text-gray-400">₹{v.selling_price}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <button type="button" onClick={addItem} className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 flex items-center gap-1 font-medium transition-colors">
+              <Plus className="w-4 h-4" /> Add Item
+            </button>
+          </div>
         </div>
         <div className="space-y-2">
           {items.map((item, i) => (
             <div key={i} className="flex gap-2 items-start p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all duration-200 border border-transparent hover:border-gray-100 dark:hover:border-gray-700/30">
-              <div className="relative group flex-1">
+              <div className="flex-1 space-y-1.5">
                 <select
                   value={item.product_id}
                   onChange={(e) => updateItem(i, 'product_id', e.target.value)}
@@ -143,7 +209,18 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
                     <option key={p.id} value={p.id}>{p.product_name} <span className="text-gray-400">(Stock: {p.quantity})</span></option>
                   ))}
                 </select>
-                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+                {item.product_id && (productVariants[Number(item.product_id)]?.length > 0) && (
+                  <select
+                    value={item.variant_id}
+                    onChange={(e) => updateItem(i, 'variant_id', e.target.value)}
+                    className="input-field w-full text-xs"
+                  >
+                    <option value="">Select Variant</option>
+                    {productVariants[Number(item.product_id)].map(v => (
+                      <option key={v.id} value={v.id}>{v.color} / {v.size} <span className="text-gray-400">(Stock: {v.stock})</span></option>
+                    ))}
+                  </select>
+                )}
               </div>
               <div className="relative group w-20">
                 <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', e.target.value)} className="input-field w-full peer" placeholder="Qty" required />

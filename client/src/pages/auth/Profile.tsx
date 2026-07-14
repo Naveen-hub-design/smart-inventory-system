@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { User, Save, Lock } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { User, Save, Lock, AlertTriangle } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -24,8 +25,19 @@ type PasswordForm = z.infer<typeof passwordSchema>
 
 export default function Profile() {
   const { user, login } = useAuth()
+  const [searchParams] = useSearchParams()
+  const forceChange = searchParams.get('forceChange') === '1'
   const [saving, setSaving] = useState(false)
   const [changingPwd, setChangingPwd] = useState(false)
+
+  useEffect(() => {
+    if (forceChange) {
+      setTimeout(() => {
+        document.getElementById('change-password-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.getElementById('current_password')?.focus()
+      }, 500)
+    }
+  }, [forceChange])
 
   const profileForm = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
@@ -99,13 +111,30 @@ export default function Profile() {
         </form>
       </div>
 
-      <div className="card animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+      {forceChange && (
+        <div className="card animate-fade-in-up border-2 border-amber-400/50 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-900/10" style={{ animationDelay: '75ms' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-amber-800 dark:text-amber-300 text-sm">Password Reset Required</h3>
+              <p className="text-amber-600 dark:text-amber-400 text-xs mt-0.5">Your password was reset by an administrator. Please set a new password to continue.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className={`card animate-fade-in-up ${forceChange ? 'ring-2 ring-primary-500/50 shadow-lg shadow-primary-500/10' : ''}`} style={{ animationDelay: '100ms' }} id="change-password-section">
         <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-5">
-          <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm"><Lock className="w-4 h-4 text-primary-500" /> Change Password</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm">
+            <Lock className="w-4 h-4 text-primary-500" /> Change Password
+            {forceChange && <span className="badge-warning text-[10px] px-2 py-0.5">Required</span>}
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Current Password</label>
-              <input {...passwordForm.register('current_password')} type="password" className="input-field" />
+              <input {...passwordForm.register('current_password')} id="current_password" type="password" className="input-field" />
               {passwordForm.formState.errors.current_password && <p className="text-red-500 text-xs mt-1">{passwordForm.formState.errors.current_password.message}</p>}
             </div>
             <div>

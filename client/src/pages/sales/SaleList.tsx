@@ -51,7 +51,7 @@ export default function SaleList() {
           <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchData() }} className="flex-1 flex gap-2">
             <div className="relative flex-1 group">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
-              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by invoice or customer..." className="input-field pl-9" />
+              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by invoice, customer, product, SKU or barcode..." className="input-field pl-9" />
             </div>
             <button type="submit" className="btn-primary">Search</button>
           </form>

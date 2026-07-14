@@ -1,14 +1,19 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from app.models.purchase import Purchase, PurchaseItem
+from app.models.product import Product
+from app.models.product_variant import ProductVariant
 from app.models.raw_material import RawMaterial
+from app.models.supplier import Supplier
 from app.models.inventory_log import InventoryLog
-from app.middleware.auth import get_current_user
+from app.middleware.auth import staff_required, get_current_user
+from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime
 import uuid
+from sqlalchemy import exists
 
 purchases_bp = Blueprint('purchases', __name__)
+
 
 def parse_date(date_str):
     if not date_str:
@@ -18,11 +23,13 @@ def parse_date(date_str):
     except (ValueError, TypeError):
         return None
 
+
 def generate_invoice():
     return f"PUR-{datetime.utcnow().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
 
+
 @purchases_bp.route('/', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_purchases():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
@@ -37,10 +44,25 @@ def get_purchases():
     query = Purchase.query
 
     if search:
+        variant_match = exists().select_from(
+            PurchaseItem.__table__.join(
+                ProductVariant.__table__,
+                PurchaseItem.variant_id == ProductVariant.id
+            )
+        ).where(
+            PurchaseItem.purchase_id == Purchase.id,
+            db.or_(
+                ProductVariant.sku.like(f'%{search}%'),
+                ProductVariant.barcode.like(f'%{search}%')
+            )
+        )
         query = query.filter(
             db.or_(
                 Purchase.invoice_number.like(f'%{search}%'),
-                Purchase.supplier.has(supplier_name=search)
+                Purchase.supplier.has(db.or_(
+                    Supplier.supplier_name.like(f'%{search}%')
+                )),
+                variant_match
             )
         )
     if supplier_id:
@@ -70,16 +92,18 @@ def get_purchases():
         'per_page': per_page
     }), 200
 
+
 @purchases_bp.route('/<int:id>', methods=['GET'])
-@jwt_required()
+@staff_required
 def get_purchase(id):
     purchase = Purchase.query.get(id)
     if not purchase:
         return jsonify({'error': 'Purchase not found'}), 404
     return jsonify({'purchase': purchase.to_dict()}), 200
 
+
 @purchases_bp.route('/', methods=['POST'])
-@jwt_required()
+@staff_required
 def create_purchase():
     data = request.get_json()
     if not data or not data.get('items'):
@@ -103,6 +127,7 @@ def create_purchase():
     total_amount = 0
     for item_data in data['items']:
         material_id = item_data.get('material_id')
+        variant_id = item_data.get('variant_id')
         quantity = float(item_data.get('quantity', 0))
         unit_price = float(item_data.get('unit_price', 0))
         total_price = quantity * unit_price
@@ -111,13 +136,29 @@ def create_purchase():
         item = PurchaseItem(
             purchase=purchase,
             material_id=material_id,
+            variant_id=variant_id,
             quantity=quantity,
             unit_price=unit_price,
             total_price=total_price
         )
         db.session.add(item)
 
-        if material_id:
+        if variant_id:
+            variant = ProductVariant.query.get(variant_id)
+            if variant:
+                variant.stock += int(quantity)
+                Product.query.get(variant.product_id).sync_stock_from_variants()
+                log = InventoryLog(
+                    product_id=variant.product_id,
+                    variant_id=variant_id,
+                    change_type='in',
+                    quantity=quantity,
+                    reference_type='purchase',
+                    notes=f'Purchase {invoice}',
+                    user_id=user.id if user else None
+                )
+                db.session.add(log)
+        elif material_id:
             material = RawMaterial.query.get(material_id)
             if material:
                 material.quantity += quantity
@@ -134,12 +175,27 @@ def create_purchase():
     purchase.total_amount = total_amount
     purchase.grand_total = total_amount + float(data.get('tax', 0)) - float(data.get('discount', 0))
     db.session.add(purchase)
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='create',
+        module='purchases',
+        description=f'User {user.username if user else "system"} created purchase {invoice}'
+    )
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='stock_increase',
+        module='inventory',
+        description=f'Purchase {invoice} increased inventory by {sum(float(i.get("quantity", 0)) for i in data["items"])} units'
+    )
     db.session.commit()
 
     return jsonify({'message': 'Purchase created', 'purchase': purchase.to_dict()}), 201
 
+
 @purchases_bp.route('/<int:id>/status', methods=['PUT'])
-@jwt_required()
+@staff_required
 def update_purchase_status(id):
     purchase = Purchase.query.get(id)
     if not purchase:
@@ -150,15 +206,34 @@ def update_purchase_status(id):
         return jsonify({'error': 'Status required'}), 400
 
     purchase.status = data['status']
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='update',
+        module='purchases',
+        description=f'User {user.username if user else "system"} updated purchase {purchase.invoice_number} status to {data["status"]}'
+    )
     db.session.commit()
     return jsonify({'message': 'Purchase status updated', 'purchase': purchase.to_dict()}), 200
 
+
 @purchases_bp.route('/<int:id>', methods=['DELETE'])
-@jwt_required()
+@staff_required
 def delete_purchase(id):
     purchase = Purchase.query.get(id)
     if not purchase:
         return jsonify({'error': 'Purchase not found'}), 404
+
+    invoice = purchase.invoice_number
+    user = get_current_user()
+    create_audit_log(
+        username=user.username if user else 'system',
+        role=user.role if user else 'system',
+        action='delete',
+        module='purchases',
+        description=f'User {user.username if user else "system"} deleted purchase {invoice}'
+    )
     db.session.delete(purchase)
     db.session.commit()
     return jsonify({'message': 'Purchase deleted'}), 200

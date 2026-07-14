@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from app.models.product import Product
+from app.models.product_variant import ProductVariant
+from app.middleware.auth import staff_required
 from app.models.raw_material import RawMaterial
 from app.models.supplier import Supplier
 from app.models.purchase import Purchase
@@ -10,7 +11,7 @@ from app import db
 search_bp = Blueprint('search', __name__)
 
 @search_bp.route('/', methods=['GET'])
-@jwt_required()
+@staff_required
 def global_search():
     query = request.args.get('q', '').strip()
     if not query or len(query) < 2:
@@ -33,6 +34,20 @@ def global_search():
         'detail': f"{p.color or ''} {p.size or ''} - ₹{float(p.price)}",
         'url': f'/products/{p.id}'
     } for p in products]
+
+    variants = ProductVariant.query.filter(
+        db.or_(
+            ProductVariant.sku.like(f'%{query}%'),
+            ProductVariant.barcode.like(f'%{query}%')
+        )
+    ).limit(5).all()
+    results['variants'] = [{
+        'id': v.id,
+        'name': v.sku,
+        'type': 'variant',
+        'detail': f"{v.product.product_name if v.product else ''} - {v.color or ''} {v.size or ''} - ₹{float(v.selling_price)}",
+        'url': f'/variants/{v.id}'
+    } for v in variants]
 
     materials = RawMaterial.query.filter(
         RawMaterial.material_name.like(f'%{query}%')
