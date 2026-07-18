@@ -282,7 +282,8 @@ export default function AuditLogs() {
         <p className="text-gray-500 dark:text-gray-400 mt-1">System activity and change history</p>
       </div>
 
-      <div className="card">
+      <div className="card relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
         <div className="flex flex-col gap-3 mb-5">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1 group">
@@ -293,13 +294,22 @@ export default function AuditLogs() {
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Search by user, description, module..."
-                className="input-field pl-9"
+                className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 pl-9"
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => { setSearch(''); setPage(1) }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
             <select
               value={actionFilter}
               onChange={(e) => { setActionFilter(e.target.value); setPage(1) }}
-              className="input-field w-full sm:w-40"
+              className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-full sm:w-40"
             >
               {ACTION_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -308,7 +318,7 @@ export default function AuditLogs() {
             <select
               value={moduleFilter}
               onChange={(e) => { setModuleFilter(e.target.value); setPage(1) }}
-              className="input-field w-full sm:w-40"
+              className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-full sm:w-40"
             >
               {MODULE_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -317,7 +327,7 @@ export default function AuditLogs() {
             <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }}
-              className="input-field w-full sm:w-32"
+              className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-full sm:w-32"
             >
               {STATUS_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -331,7 +341,7 @@ export default function AuditLogs() {
                 type="date"
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setPage(1) }}
-                className="input-field pl-9"
+                className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 pl-9"
                 title="Start date"
               />
             </div>
@@ -341,15 +351,15 @@ export default function AuditLogs() {
                 type="date"
                 value={endDate}
                 onChange={(e) => { setEndDate(e.target.value); setPage(1) }}
-                className="input-field pl-9"
+                className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 pl-9"
                 title="End date"
               />
             </div>
-            <button onClick={handleSearch} className="btn-primary px-6">
+            <button onClick={handleSearch} className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
               Search
             </button>
             {hasFilters && (
-              <button onClick={clearFilters} className="btn-secondary px-6">
+              <button onClick={clearFilters} className="inline-flex items-center gap-2 px-6 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
                 Clear
               </button>
             )}
@@ -366,7 +376,7 @@ export default function AuditLogs() {
           />
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto -mx-5">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100 dark:border-gray-800">
@@ -385,33 +395,33 @@ export default function AuditLogs() {
                     <tr
                       key={log.id}
                       onClick={() => setSelectedLog(log)}
-                      className="table-row cursor-pointer animate-fade-in hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                      className="group border-b border-gray-50 dark:border-gray-800/20 hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-all duration-200 cursor-pointer animate-fade-in"
                       style={{ animationDelay: `${i * 20}ms` }}
                     >
-                      <td className="table-cell text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                      <td className="px-5 py-4 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                         {log.timestamp ? new Date(log.timestamp).toLocaleString() : '-'}
                       </td>
-                      <td className="table-cell">
+                      <td className="px-5 py-4">
                         <span className="font-medium text-gray-900 dark:text-white">{log.username}</span>
                       </td>
-                      <td className="table-cell">
+                      <td className="px-5 py-4">
                         <span className={log.role === 'admin' ? 'badge-info' : 'badge-success'}>
                           {log.role}
                         </span>
                       </td>
-                      <td className="table-cell">
+                      <td className="px-5 py-4">
                         <ActionBadge action={log.action} />
                       </td>
-                      <td className="table-cell">
+                      <td className="px-5 py-4">
                         <ModuleBadge module={log.module} />
                       </td>
-                      <td className="table-cell max-w-xs truncate text-gray-600 dark:text-gray-400">
+                      <td className="px-5 py-4 max-w-xs truncate text-gray-700 dark:text-gray-300">
                         {log.description}
                       </td>
-                      <td className="table-cell">
+                      <td className="px-5 py-4">
                         <StatusBadge status={log.status} />
                       </td>
-                      <td className="table-cell font-mono text-xs text-gray-400 dark:text-gray-500">
+                      <td className="px-5 py-4 font-mono text-xs text-gray-400 dark:text-gray-500">
                         {log.ip_address || '-'}
                       </td>
                     </tr>
@@ -420,7 +430,7 @@ export default function AuditLogs() {
               </table>
             </div>
 
-            <Pagination page={page} pages={pages} total={total} onPageChange={setPage} />
+            <div className="px-5"><Pagination page={page} pages={pages} total={total} onPageChange={setPage} /></div>
           </>
         )}
       </div>

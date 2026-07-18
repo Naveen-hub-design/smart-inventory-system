@@ -416,10 +416,10 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {topProducts.map((p, i) => (
-                  <tr key={i} className="table-row cursor-pointer" onClick={() => navigate('/products')}>
-                    <td className="table-cell font-medium">{p.name}</td>
-                    <td className="table-cell text-right tabular-nums">{p.quantity}</td>
-                    <td className="table-cell text-right font-medium tabular-nums">₹{p.revenue.toLocaleString()}</td>
+                  <tr key={i} className="group border-b border-gray-50 dark:border-gray-800/20 hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-all duration-200 cursor-pointer" onClick={() => navigate('/products')}>
+                    <td className="px-5 py-4 font-medium">{p.name}</td>
+                    <td className="px-5 py-4 text-right tabular-nums">{p.quantity}</td>
+                    <td className="px-5 py-4 text-right font-medium tabular-nums">₹{p.revenue.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>

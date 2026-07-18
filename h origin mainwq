@@ -1,0 +1,5 @@
+[33m03e37e3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Stable ERP version before UI enhancements and Gemini AI integration
+[33mcfadecc[m Backup current work before RBAC implementation
+[33me851bca[m UI improvements before implementing RBAC
+[33m90ae3ae[m Remove SQLite database from repository
+[33m186e0a1[m Initial commit

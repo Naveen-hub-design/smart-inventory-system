@@ -254,28 +254,28 @@ export default function SupplierIntelligence() {
       <div className="card p-4">
         <div className="flex items-center gap-3 flex-wrap">
           <Filter className="w-4 h-4 text-gray-400 shrink-0" />
-          <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="input-field w-40 text-sm" />
-          <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="input-field w-40 text-sm" />
-          <select value={filterSupplier} onChange={e => setFilterSupplier(e.target.value)} className="input-field w-44 text-sm">
+          <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-40" />
+          <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-40" />
+          <select value={filterSupplier} onChange={e => setFilterSupplier(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-44">
             <option value="">All Suppliers</option>
             {suppliers.map(s => <option key={s.id} value={s.id}>{s.supplier_name}</option>)}
           </select>
-          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="input-field w-44 text-sm">
+          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-44">
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <select value={filterProduct} onChange={e => setFilterProduct(e.target.value)} className="input-field w-48 text-sm">
+          <select value={filterProduct} onChange={e => setFilterProduct(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-48">
             <option value="">All Products</option>
             {products.map(p => <option key={p.id} value={p.id}>{p.product_name}</option>)}
           </select>
-          <select value={filterPerformance} onChange={e => setFilterPerformance(e.target.value)} className="input-field w-36 text-sm">
+          <select value={filterPerformance} onChange={e => setFilterPerformance(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-36">
             <option value="">All Tiers</option>
             <option value="gold">Gold</option>
             <option value="silver">Silver</option>
             <option value="bronze">Bronze</option>
             <option value="needs improvement">Needs Improvement</option>
           </select>
-          <button onClick={fetchData} className="btn-primary text-sm flex items-center gap-1.5 px-4">
+          <button onClick={fetchData} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 px-4">
             <Search className="w-3.5 h-3.5" /> Apply
           </button>
         </div>
@@ -283,11 +283,11 @@ export default function SupplierIntelligence() {
 
       <div className="flex items-center gap-2">
         <button onClick={handleExportPDF} disabled={exporting === 'pdf' || loading}
-          className="btn-secondary text-sm flex items-center gap-1.5">
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
           {exporting === 'pdf' ? <div className="animate-spin w-3.5 h-3.5 border-2 border-gray-500 border-t-transparent rounded-full" /> : <FileText className="w-3.5 h-3.5" />} PDF
         </button>
         <button onClick={handleExportExcel} disabled={exporting === 'excel' || loading}
-          className="btn-secondary text-sm flex items-center gap-1.5">
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
           {exporting === 'excel' ? <div className="animate-spin w-3.5 h-3.5 border-2 border-gray-500 border-t-transparent rounded-full" /> : <Download className="w-3.5 h-3.5" />} Excel
         </button>
         {data?.filtered && <span className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1 ml-2"><Filter className="w-3 h-3" /> Filtered</span>}
@@ -369,7 +369,7 @@ export default function SupplierIntelligence() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="table-header">
+                    <tr className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-left">Metric</th>
                       {compareIds.map(id => (
                         <th key={id} className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-center">
@@ -388,8 +388,8 @@ export default function SupplierIntelligence() {
                       { label: 'Return Rate', key: 'return_rate' },
                       { label: 'Consistency', key: 'delivery_consistency' },
                     ].map((metric, j) => (
-                      <tr key={j} className="table-row">
-                        <td className="table-cell py-2 px-3 font-medium text-gray-700 dark:text-gray-300">{metric.label}</td>
+                      <tr key={j} className="group border-b border-gray-50 dark:border-gray-800/20 hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-all duration-200">
+                        <td className="py-2 px-3 font-medium text-gray-700 dark:text-gray-300">{metric.label}</td>
                         {compareIds.map(id => {
                           const val = (data.supplier_scores[id] as any)?.[metric.key] ?? 0
                           const isBest = compareIds.every(otherId => {
@@ -397,7 +397,7 @@ export default function SupplierIntelligence() {
                             return val >= otherVal
                           })
                           return (
-                            <td key={id} className={`table-cell py-2 px-3 text-center font-semibold tabular-nums ${isBest ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-900 dark:text-white'}`}>
+                            <td key={id} className={`py-2 px-3 text-center font-semibold tabular-nums ${isBest ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-900 dark:text-white'}`}>
                               {typeof val === 'number' ? Math.round(val) : val}
                               {isBest && j === 0 && ' *'}
                             </td>
@@ -421,7 +421,7 @@ export default function SupplierIntelligence() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="table-header">
+                    <tr className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-left">Supplier</th>
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-left">Code</th>
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-right">Products</th>
@@ -439,22 +439,22 @@ export default function SupplierIntelligence() {
                   </thead>
                   <tbody>
                     {data.performance_table.map((r: SupplierPerformanceRow, i: number) => (
-                      <tr key={i} className="table-row animate-fade-in" style={{ animationDelay: `${i * 20}ms` }}>
-                        <td className="table-cell py-2 px-3 font-medium text-gray-900 dark:text-white">{r.supplier_name}</td>
-                        <td className="table-cell py-2 px-3 text-left font-mono text-[11px] text-gray-500">{r.supplier_code}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">{r.products_supplied}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">{r.total_orders}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums text-emerald-600">{r.completed_orders}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums text-red-500">{r.cancelled_orders}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">Rs.{r.total_value.toFixed(0)}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">Rs.{r.avg_unit_price.toFixed(2)}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums font-mono text-[11px] text-gray-500">{r.avg_product_cost ? `Rs.${r.avg_product_cost.toFixed(2)}` : 'N/A'}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">{r.on_time_delivery}%</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums font-bold">{r.overall_rating.toFixed(0)}</td>
-                        <td className="table-cell py-2 px-3 text-center">
+                      <tr key={i} className="group border-b border-gray-50 dark:border-gray-800/20 hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-all duration-200 animate-fade-in" style={{ animationDelay: `${i * 20}ms` }}>
+                        <td className="py-2 px-3 font-medium text-gray-900 dark:text-white">{r.supplier_name}</td>
+                        <td className="py-2 px-3 text-left font-mono text-[11px] text-gray-500">{r.supplier_code}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">{r.products_supplied}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">{r.total_orders}</td>
+                        <td className="py-2 px-3 text-right tabular-nums text-emerald-600">{r.completed_orders}</td>
+                        <td className="py-2 px-3 text-right tabular-nums text-red-500">{r.cancelled_orders}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">Rs.{r.total_value.toFixed(0)}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">Rs.{r.avg_unit_price.toFixed(2)}</td>
+                        <td className="py-2 px-3 text-right tabular-nums font-mono text-[11px] text-gray-500">{r.avg_product_cost ? `Rs.${r.avg_product_cost.toFixed(2)}` : 'N/A'}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">{r.on_time_delivery}%</td>
+                        <td className="py-2 px-3 text-right tabular-nums font-bold">{r.overall_rating.toFixed(0)}</td>
+                        <td className="py-2 px-3 text-center">
                           <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${rankingTierColors[r.ranking_tier] || ''}`}>{r.ranking_tier}</span>
                         </td>
-                        <td className="table-cell py-2 px-3 text-center">
+                        <td className="py-2 px-3 text-center">
                           <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${riskColors[r.risk_level] || ''}`}>{r.risk_level}</span>
                         </td>
                       </tr>
@@ -520,7 +520,7 @@ export default function SupplierIntelligence() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="table-header">
+                    <tr className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-left">Product</th>
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-left">Supplier</th>
                       <th className="py-2 px-3 font-semibold text-xs uppercase tracking-wider text-right">Stock</th>
@@ -533,23 +533,23 @@ export default function SupplierIntelligence() {
                   </thead>
                   <tbody>
                     {data.purchase_recommendations.slice(0, 15).map((pr: PurchaseRecommendation, i: number) => (
-                      <tr key={i} className="table-row animate-fade-in" style={{ animationDelay: `${i * 20}ms` }}>
-                        <td className="table-cell py-2 px-3">
+                      <tr key={i} className="group border-b border-gray-50 dark:border-gray-800/20 hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-all duration-200 animate-fade-in" style={{ animationDelay: `${i * 20}ms` }}>
+                        <td className="py-2 px-3">
                           <div className="text-sm font-medium text-gray-900 dark:text-white">{pr.product_name}</div>
                           <div className="text-[10px] font-mono text-gray-400">{pr.sku}</div>
                         </td>
-                        <td className="table-cell py-2 px-3 text-sm text-emerald-700 dark:text-emerald-400 font-medium">{pr.suggested_supplier}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">{pr.current_stock}<span className="text-[10px] text-gray-400">/{pr.min_stock}</span></td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums font-semibold text-primary-600">+{pr.suggested_quantity}</td>
-                        <td className="table-cell py-2 px-3 text-right tabular-nums">Rs.{pr.estimated_cost.toFixed(0)}</td>
-                        <td className="table-cell py-2 px-3 text-center text-xs">{pr.estimated_delivery}</td>
-                        <td className="table-cell py-2 px-3 text-center">
+                        <td className="py-2 px-3 text-sm text-emerald-700 dark:text-emerald-400 font-medium">{pr.suggested_supplier}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">{pr.current_stock}<span className="text-[10px] text-gray-400">/{pr.min_stock}</span></td>
+                        <td className="py-2 px-3 text-right tabular-nums font-semibold text-primary-600">+{pr.suggested_quantity}</td>
+                        <td className="py-2 px-3 text-right tabular-nums">Rs.{pr.estimated_cost.toFixed(0)}</td>
+                        <td className="py-2 px-3 text-center text-xs">{pr.estimated_delivery}</td>
+                        <td className="py-2 px-3 text-center">
                           <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${
                             pr.priority === 'High' ? 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800/30' :
                             'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800/30'
                           }`}>{pr.priority}</span>
                         </td>
-                        <td className="table-cell py-2 px-3 text-center font-semibold tabular-nums text-primary-600">{pr.confidence}%</td>
+                        <td className="py-2 px-3 text-center font-semibold tabular-nums text-primary-600">{pr.confidence}%</td>
                       </tr>
                     ))}
                   </tbody>

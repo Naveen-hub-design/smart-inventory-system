@@ -57,3 +57,34 @@ export function ChartSkeleton() {
     </div>
   )
 }
+
+export function InventorySkeleton() {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {[0, 1].map((idx) => (
+        <div key={idx} className="card animate-fade-in" style={{ animationDelay: `${idx * 80}ms` }}>
+          <div className="flex items-center gap-2 mb-5">
+            <Shimmer className="w-2 h-2 rounded-full" />
+            <Shimmer className="h-4 w-28" />
+          </div>
+          <div className="space-y-0">
+            <div className="flex items-center gap-4 px-3 py-3 border-b border-gray-100 dark:border-gray-800/50">
+              <Shimmer className="h-3 flex-[2]" />
+              <Shimmer className="h-3 flex-1" />
+              <Shimmer className="h-3 flex-1" />
+              <Shimmer className="h-3 w-20" />
+            </div>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-3 py-3.5 border-b border-gray-50 dark:border-gray-800/20" style={{ animationDelay: `${i * 30}ms` }}>
+                <Shimmer className="h-4 flex-[2]" />
+                <Shimmer className="h-4 flex-1" />
+                <Shimmer className="h-4 flex-1" />
+                <Shimmer className="h-5 w-20 rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}

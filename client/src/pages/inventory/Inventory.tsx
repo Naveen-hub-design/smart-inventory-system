@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { BarChart3, AlertTriangle } from 'lucide-react'
+import { Package, Box, AlertTriangle, ClipboardList } from 'lucide-react'
 import { inventoryService } from '../../services/dataService'
 import { InventoryLog } from '../../types'
 import Pagination from '../../components/ui/Pagination'
-import { CardSkeleton } from '../../components/ui/LoadingSkeleton'
+import EmptyState from '../../components/ui/EmptyState'
+import { InventorySkeleton } from '../../components/ui/LoadingSkeleton'
 
 export default function Inventory() {
   const location = useLocation()
@@ -58,115 +59,172 @@ export default function Inventory() {
         <p className="text-gray-500 dark:text-gray-400 mt-1">Monitor stock levels and movements</p>
       </div>
 
-      <div className="flex gap-1 border-b border-gray-100 dark:border-gray-800 pb-0.5">
+      <div className="flex gap-1 border-b border-gray-100 dark:border-gray-800 pb-0.5 bg-gray-50/30 dark:bg-gray-800/10 rounded-t-lg px-1">
         {(['stock', 'movements', 'alerts'] as const).map((t) => (
           <button
             key={t}
             onClick={() => { setTab(t); setPage(1) }}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-all duration-200 ${
+            className={`relative px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
               tab === t
-                ? 'border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400'
-                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                ? 'text-primary-600 dark:text-primary-400'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
             }`}
           >
-            {t === 'stock' ? 'Current Stock' : t === 'movements' ? 'Stock Movements' : 'Low Stock Alerts'}
+            <span className="relative z-10 flex items-center gap-2">
+              {t === 'stock' && <Package className="w-3.5 h-3.5" />}
+              {t === 'movements' && <ClipboardList className="w-3.5 h-3.5" />}
+              {t === 'alerts' && <AlertTriangle className="w-3.5 h-3.5" />}
+              {t === 'stock' ? 'Current Stock' : t === 'movements' ? 'Stock Movements' : 'Low Stock Alerts'}
+            </span>
+            {tab === t && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full" />
+            )}
           </button>
         ))}
       </div>
 
-      {loading ? <CardSkeleton /> : (
+      {loading ? <InventorySkeleton /> : (
         <>
           {tab === 'stock' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
-              <div className="card">
-                <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-                  <span className="w-2 h-2 bg-blue-500 rounded-full" /> Products
+              <div className="card relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-400" />
+                <h3 className="text-base font-semibold mb-5 text-gray-900 dark:text-white flex items-center gap-2">
+                  <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <Package className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  </span>
+                  Products
+                  <span className="text-xs font-normal text-gray-400 dark:text-gray-500 ml-auto">{stock.products.length} items</span>
                 </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-100 dark:border-gray-800">
-                        <th className="table-header">Product</th>
-                        <th className="table-header text-right">Quantity</th>
-                        <th className="table-header text-right">Min Stock</th>
-                        <th className="table-header">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {stock.products.map((p: any, i: number) => (
-                        <tr key={p.id} className="table-row" style={{ animationDelay: `${i * 30}ms` }}>
-                          <td className="table-cell font-medium text-gray-900 dark:text-white">{p.name}</td>
-                          <td className="table-cell text-right tabular-nums">{p.quantity}</td>
-                          <td className="table-cell text-right tabular-nums">{p.min_stock}</td>
-                          <td className="table-cell">{statusBadge(p.status)}</td>
+                <div className="overflow-x-auto -mx-6">
+                  <div className="inline-block min-w-full align-middle px-6">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <th className="table-header">Product</th>
+                          <th className="table-header text-right">Quantity</th>
+                          <th className="table-header text-right">Min Stock</th>
+                          <th className="table-header">Status</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {stock.products.length === 0 ? (
+                          <tr>
+                            <td colSpan={4}>
+                              <EmptyState title="No products" description="No products have been added yet." icon={<Package className="w-10 h-10" />} />
+                            </td>
+                          </tr>
+                        ) : (
+                          stock.products.map((p: any, i: number) => (
+                            <tr key={p.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                              <td className="table-cell font-medium text-gray-900 dark:text-white">{p.name}</td>
+                              <td className="table-cell text-right tabular-nums font-medium">{p.quantity}</td>
+                              <td className="table-cell text-right tabular-nums text-gray-600 dark:text-gray-400">{p.min_stock}</td>
+                              <td className="table-cell">{statusBadge(p.status)}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-              <div className="card">
-                <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full" /> Raw Materials
+              <div className="card relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-400" />
+                <h3 className="text-base font-semibold mb-5 text-gray-900 dark:text-white flex items-center gap-2">
+                  <span className="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                    <Box className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  </span>
+                  Raw Materials
+                  <span className="text-xs font-normal text-gray-400 dark:text-gray-500 ml-auto">{stock.materials.length} items</span>
                 </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-100 dark:border-gray-800">
-                        <th className="table-header">Material</th>
-                        <th className="table-header text-right">Quantity</th>
-                        <th className="table-header text-right">Min Stock</th>
-                        <th className="table-header">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {stock.materials.map((m: any, i: number) => (
-                        <tr key={m.id} className="table-row" style={{ animationDelay: `${i * 30}ms` }}>
-                          <td className="table-cell font-medium text-gray-900 dark:text-white">{m.name}</td>
-                          <td className="table-cell text-right tabular-nums">{m.quantity} <span className="text-gray-400 text-xs">{m.unit}</span></td>
-                          <td className="table-cell text-right tabular-nums">{m.min_stock}</td>
-                          <td className="table-cell">{statusBadge(m.status)}</td>
+                <div className="overflow-x-auto -mx-6">
+                  <div className="inline-block min-w-full align-middle px-6">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <th className="table-header">Material</th>
+                          <th className="table-header text-right">Quantity</th>
+                          <th className="table-header text-right">Min Stock</th>
+                          <th className="table-header">Status</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {stock.materials.length === 0 ? (
+                          <tr>
+                            <td colSpan={4}>
+                              <EmptyState title="No materials" description="No raw materials have been added yet." icon={<Box className="w-10 h-10" />} />
+                            </td>
+                          </tr>
+                        ) : (
+                          stock.materials.map((m: any, i: number) => (
+                            <tr key={m.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                              <td className="table-cell font-medium text-gray-900 dark:text-white">{m.name}</td>
+                              <td className="table-cell text-right tabular-nums font-medium">
+                                {m.quantity} <span className="text-gray-400 text-xs font-normal">{m.unit}</span>
+                              </td>
+                              <td className="table-cell text-right tabular-nums text-gray-600 dark:text-gray-400">{m.min_stock}</td>
+                              <td className="table-cell">{statusBadge(m.status)}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
           {tab === 'movements' && (
-            <div className="card animate-fade-in">
-              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Recent Stock Movements</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-gray-100 dark:border-gray-800">
-                      <th className="table-header">Date</th>
-                      <th className="table-header">Item</th>
-                      <th className="table-header">Type</th>
-                      <th className="table-header text-right">Quantity</th>
-                      <th className="table-header">Reference</th>
-                      <th className="table-header">User</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {movements.map((m, i) => (
-                      <tr key={m.id} className="table-row" style={{ animationDelay: `${i * 30}ms` }}>
-                        <td className="table-cell text-gray-500 dark:text-gray-400 text-xs">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</td>
-                        <td className="table-cell font-medium text-gray-900 dark:text-white">{m.product_name || m.material_name || 'N/A'}</td>
-                        <td className="table-cell">
-                          <span className={`badge-${m.change_type === 'in' ? 'success' : m.change_type === 'out' ? 'danger' : 'warning'}`}>
-                            {m.change_type}
-                          </span>
-                        </td>
-                        <td className="table-cell text-right tabular-nums font-medium">{Math.abs(m.quantity)}</td>
-                        <td className="table-cell">{m.reference_type || 'Manual'}</td>
-                        <td className="table-cell">{m.user_name || 'N/A'}</td>
+            <div className="card animate-fade-in relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
+              <h3 className="text-base font-semibold mb-5 text-gray-900 dark:text-white flex items-center gap-2">
+                <span className="w-6 h-6 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                  <ClipboardList className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400" />
+                </span>
+                Recent Stock Movements
+                {total > 0 && <span className="text-xs font-normal text-gray-400 dark:text-gray-500 ml-auto">{total} total</span>}
+              </h3>
+              <div className="overflow-x-auto -mx-6">
+                <div className="inline-block min-w-full align-middle px-6">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100 dark:border-gray-800">
+                        <th className="table-header">Date</th>
+                        <th className="table-header">Item</th>
+                        <th className="table-header">Type</th>
+                        <th className="table-header text-right">Quantity</th>
+                        <th className="table-header">Reference</th>
+                        <th className="table-header">User</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {movements.length === 0 ? (
+                        <tr>
+                          <td colSpan={6}>
+                            <EmptyState title="No movements" description="No stock movements recorded yet." icon={<ClipboardList className="w-10 h-10" />} />
+                          </td>
+                        </tr>
+                      ) : (
+                        movements.map((m, i) => (
+                          <tr key={m.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                            <td className="table-cell text-gray-400 dark:text-gray-500 text-xs font-mono tabular-nums whitespace-nowrap">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</td>
+                            <td className="table-cell font-medium text-gray-900 dark:text-white">{m.product_name || m.material_name || 'N/A'}</td>
+                            <td className="table-cell">
+                              <span className={`badge-${m.change_type === 'in' ? 'success' : m.change_type === 'out' ? 'danger' : 'warning'}`}>
+                                {m.change_type}
+                              </span>
+                            </td>
+                            <td className="table-cell text-right tabular-nums font-medium text-gray-900 dark:text-white">{Math.abs(m.quantity)}</td>
+                            <td className="table-cell text-gray-600 dark:text-gray-400">{m.reference_type || 'Manual'}</td>
+                            <td className="table-cell text-gray-600 dark:text-gray-400">{m.user_name || 'N/A'}</td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <Pagination page={page} pages={pages} total={total} onPageChange={setPage} />
             </div>
@@ -176,69 +234,103 @@ export default function Inventory() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-500" />
-                <h3 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
-                  <AlertTriangle className="w-4 h-4 text-yellow-500" /> Low Stock Products
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-yellow-400 to-amber-400" />
+                <h3 className="text-base font-semibold mb-5 flex items-center gap-2 text-gray-900 dark:text-white">
+                  <span className="w-6 h-6 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                    <AlertTriangle className="w-3.5 h-3.5 text-yellow-600 dark:text-yellow-400" />
+                  </span>
+                  Low Stock Products
                 </h3>
                 {lowStock.low_stock_products?.length === 0 ? (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No low stock products</p>
+                  <div className="mb-5">
+                    <EmptyState title="All clear" description="No products are running low on stock." icon={<Package className="w-10 h-10" />} />
+                  </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-2 mb-6">
                     {lowStock.low_stock_products?.map((p: any, i: number) => (
-                      <div key={p.id} className="flex justify-between items-center p-3 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
-                        <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
-                        <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">{p.quantity} / {p.min_stock}</span>
+                      <div key={p.id} className="flex justify-between items-center p-3.5 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                        <div className="flex items-center gap-3">
+                          <span className="w-2 h-2 rounded-full bg-amber-400 ring-2 ring-amber-100 dark:ring-amber-900/30" />
+                          <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
+                        </div>
+                        <span className="text-sm font-semibold text-amber-700 dark:text-amber-400 tabular-nums">{p.quantity} / {p.min_stock}</span>
                       </div>
                     ))}
                   </div>
                 )}
-                <h4 className="font-semibold mt-5 mb-3 flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertTriangle className="w-4 h-4" /> Out of Stock Products
-                </h4>
-                {lowStock.out_of_stock_products?.length === 0 ? (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No out of stock products</p>
-                ) : (
-                  <div className="space-y-2">
-                    {lowStock.out_of_stock_products?.map((p: any, i: number) => (
-                      <div key={p.id} className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
-                        <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
-                        <span className="text-sm font-semibold text-red-600 dark:text-red-400">Out of Stock</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="border-t border-gray-100 dark:border-gray-800 pt-5">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
+                    <span className="w-5 h-5 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                      <AlertTriangle className="w-3 h-3 text-red-600 dark:text-red-400" />
+                    </span>
+                    Out of Stock Products
+                  </h4>
+                  {lowStock.out_of_stock_products?.length === 0 ? (
+                    <EmptyState title="All in stock" description="No products are out of stock." icon={<Package className="w-10 h-10" />} />
+                  ) : (
+                    <div className="space-y-2">
+                      {lowStock.out_of_stock_products?.map((p: any, i: number) => (
+                        <div key={p.id} className="flex justify-between items-center p-3.5 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-red-100/50 dark:hover:bg-red-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                          <div className="flex items-center gap-3">
+                            <span className="w-2 h-2 rounded-full bg-red-400 ring-2 ring-red-100 dark:ring-red-900/30" />
+                            <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
+                          </div>
+                          <span className="text-sm font-semibold text-red-600 dark:text-red-400">Out of Stock</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-500" />
-                <h3 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
-                  <AlertTriangle className="w-4 h-4 text-yellow-500" /> Low Stock Materials
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-yellow-400 to-amber-400" />
+                <h3 className="text-base font-semibold mb-5 flex items-center gap-2 text-gray-900 dark:text-white">
+                  <span className="w-6 h-6 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                    <AlertTriangle className="w-3.5 h-3.5 text-yellow-600 dark:text-yellow-400" />
+                  </span>
+                  Low Stock Materials
                 </h3>
                 {lowStock.low_stock_materials?.length === 0 ? (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No low stock materials</p>
+                  <div className="mb-5">
+                    <EmptyState title="All clear" description="No materials are running low on stock." icon={<Box className="w-10 h-10" />} />
+                  </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-2 mb-6">
                     {lowStock.low_stock_materials?.map((m: any, i: number) => (
-                      <div key={m.id} className="flex justify-between items-center p-3 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
-                        <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
-                        <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">{m.quantity} / {m.min_stock} {m.unit}</span>
+                      <div key={m.id} className="flex justify-between items-center p-3.5 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                        <div className="flex items-center gap-3">
+                          <span className="w-2 h-2 rounded-full bg-amber-400 ring-2 ring-amber-100 dark:ring-amber-900/30" />
+                          <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
+                        </div>
+                        <span className="text-sm font-semibold text-amber-700 dark:text-amber-400 tabular-nums">{m.quantity} / {m.min_stock} <span className="text-amber-500 text-xs font-normal">{m.unit}</span></span>
                       </div>
                     ))}
                   </div>
                 )}
-                <h4 className="font-semibold mt-5 mb-3 flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
-                  <AlertTriangle className="w-4 h-4" /> Out of Stock Materials
-                </h4>
-                {lowStock.out_of_stock_materials?.length === 0 ? (
-                  <p className="text-gray-500 dark:text-gray-400 text-sm py-4 text-center">No out of stock materials</p>
-                ) : (
-                  <div className="space-y-2">
-                    {lowStock.out_of_stock_materials?.map((m: any, i: number) => (
-                      <div key={m.id} className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
-                        <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
-                        <span className="text-sm font-semibold text-red-600 dark:text-red-400">Out of Stock</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="border-t border-gray-100 dark:border-gray-800 pt-5">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
+                    <span className="w-5 h-5 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                      <AlertTriangle className="w-3 h-3 text-red-600 dark:text-red-400" />
+                    </span>
+                    Out of Stock Materials
+                  </h4>
+                  {lowStock.out_of_stock_materials?.length === 0 ? (
+                    <EmptyState title="All in stock" description="No materials are out of stock." icon={<Box className="w-10 h-10" />} />
+                  ) : (
+                    <div className="space-y-2">
+                      {lowStock.out_of_stock_materials?.map((m: any, i: number) => (
+                        <div key={m.id} className="flex justify-between items-center p-3.5 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-red-100/50 dark:hover:bg-red-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                          <div className="flex items-center gap-3">
+                            <span className="w-2 h-2 rounded-full bg-red-400 ring-2 ring-red-100 dark:ring-red-900/30" />
+                            <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
+                          </div>
+                          <span className="text-sm font-semibold text-red-600 dark:text-red-400">Out of Stock</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}

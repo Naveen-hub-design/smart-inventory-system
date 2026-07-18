@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { Search, Package, Droplets, Truck, ShoppingCart, ClipboardList } from 'lucide-react'
+import { Search, Package, Droplets, Truck, ShoppingCart, ClipboardList, X } from 'lucide-react'
 import { searchService } from '../../services/dataService'
 import { SearchResults } from '../../types'
 
@@ -71,11 +71,20 @@ export default function SearchPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products, materials, suppliers..."
-            className="input-field pl-11 py-3 text-base lg:text-lg rounded-2xl border-gray-200 dark:border-gray-700 focus:ring-primary-500/30 peer"
+            className="w-full px-3.5 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400/50 transition-all duration-300 pl-11 text-base lg:text-lg peer"
           />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors z-10"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
           <div className="absolute inset-x-3 bottom-0 h-0.5 bg-primary-500 scale-x-0 peer-focus:scale-x-100 transition-transform duration-300 rounded-full" />
         </div>
-        <button type="submit" className="btn-primary px-8 rounded-2xl shadow-lg shadow-primary-500/20">Search</button>
+        <button type="submit" className="inline-flex items-center gap-2 px-8 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-2xl shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">Search</button>
       </form>
 
       {loading && (
@@ -92,7 +101,8 @@ export default function SearchPage() {
       {results && !loading && (
         <div className="space-y-5 animate-fade-in" style={{ animationDelay: '100ms' }}>
           {allResults.length === 0 ? (
-            <div className="card text-center py-16">
+            <div className="card relative overflow-hidden text-center py-16">
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
               <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">No results found for "<span className="font-medium text-gray-700 dark:text-gray-300">{query}</span>"</p>
             </div>
@@ -101,7 +111,8 @@ export default function SearchPage() {
               if (items.length === 0) return null
               const Icon = typeIcons[type] || Search
               return (
-                <div key={type} className="card animate-fade-in-up" style={{ animationDelay: `${groupIndex * 80}ms` }}>
+                <div key={type} className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: `${groupIndex * 80}ms` }}>
+                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
                   <h3 className="text-base font-semibold mb-3 capitalize flex items-center gap-2 text-gray-900 dark:text-white">
                     <Icon className="w-4 h-4" /> {type}
                     <span className="text-xs font-normal text-gray-400 ml-1">({items.length})</span>

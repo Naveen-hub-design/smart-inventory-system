@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, Search } from 'lucide-react'
+import { Plus, Trash2, Search, Tag, Percent } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { purchaseService, supplierService, materialService, variantService } from '../../services/dataService'
 import { Supplier, RawMaterial, ProductVariant } from '../../types'
@@ -105,76 +105,85 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Supplier *</label>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="space-y-1.5">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Supplier *</label>
           <div className="relative group">
-            <select value={supplierId} onChange={(e) => setSupplierId(e.target.value)} className="input-field peer" required>
+            <select value={supplierId} onChange={(e) => setSupplierId(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 appearance-none cursor-pointer" required>
               <option value="">Select Supplier</option>
               {suppliers.map(s => <option key={s.id} value={s.id}>{s.supplier_name}</option>)}
             </select>
-            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Discount</label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Discount</label>
             <div className="relative group">
-              <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)} className="input-field peer" placeholder="0" />
-              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                <Percent className="w-3.5 h-3.5" />
+              </div>
+              <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)} className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="0" />
+              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tax</label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tax</label>
             <div className="relative group">
-              <input type="number" value={tax} onChange={(e) => setTax(e.target.value)} className="input-field peer" placeholder="0" />
-              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                <Tag className="w-3.5 h-3.5" />
+              </div>
+              <input type="number" value={tax} onChange={(e) => setTax(e.target.value)} className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="0" />
+              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
             </div>
           </div>
         </div>
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Items</label>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Purchase Items</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Add materials or search by SKU/barcode</p>
+          </div>
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-              <input type="text" value={skuSearch} onChange={(e) => { setSkuSearch(e.target.value); doSkuSearch(e.target.value) }} placeholder="Search SKU or Barcode..." className="input-field text-xs pl-8 py-1.5 w-48" />
+              <input type="text" value={skuSearch} onChange={(e) => { setSkuSearch(e.target.value); doSkuSearch(e.target.value) }} placeholder="Search SKU or Barcode..." className="w-48 pl-8 pr-3 py-1.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" />
               {searchingSku && <div className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />}
             </div>
             {skuResults.length > 0 && (
               <div className="relative">
-                <div className="absolute right-0 top-full mt-1 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto">
+                <div className="absolute right-0 top-full mt-1 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl shadow-black/5 dark:shadow-black/20 z-50 max-h-48 overflow-y-auto animate-fade-in">
                   {skuResults.map(v => (
-                    <button key={v.id} type="button" onClick={() => addFromSkuSearch(v)} className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0 flex items-center gap-2">
-                      <span className="font-mono text-primary-600 dark:text-primary-400">{v.sku}</span>
-                      <span className="text-gray-500 truncate flex-1">{v.product_name} - {v.color} {v.size}</span>
-                      <span className="text-gray-400">₹{v.selling_price}</span>
+                    <button key={v.id} type="button" onClick={() => addFromSkuSearch(v)} className="w-full text-left px-3.5 py-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0 flex items-center gap-2.5 transition-colors">
+                      <span className="font-mono text-primary-600 dark:text-primary-400 font-medium">{v.sku}</span>
+                      <span className="text-gray-500 dark:text-gray-400 truncate flex-1">{v.product_name} - {v.color} {v.size}</span>
+                      <span className="text-gray-400 font-medium">₹{v.selling_price}</span>
                     </button>
                   ))}
                 </div>
               </div>
             )}
-            <button type="button" onClick={addItem} className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 flex items-center gap-1 font-medium transition-colors">
-              <Plus className="w-4 h-4" /> Add Item
+            <button type="button" onClick={addItem} className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-xs font-medium rounded-lg shadow-sm shadow-primary-500/20 hover:shadow-md hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+              <Plus className="w-3 h-3" /> Add Item
             </button>
           </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {items.map((item, i) => (
-            <div key={i} className="flex gap-2 items-start p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all duration-200 border border-transparent hover:border-gray-100 dark:hover:border-gray-700/30">
+            <div key={i} className="flex gap-2.5 items-start p-3.5 rounded-xl bg-gray-50/50 dark:bg-gray-800/20 border border-gray-100 dark:border-gray-700/30 hover:border-gray-200 dark:hover:border-gray-600/50 hover:shadow-premium-sm transition-all duration-200 animate-fade-in">
               <div className="relative group flex-1">
                   {item.variant_id ? (
-                    <div className="input-field w-full text-sm text-primary-600 dark:text-primary-400 bg-primary-50/50 dark:bg-primary-900/20 font-mono">
+                    <div className="w-full px-3.5 py-2.5 bg-primary-50/50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/30 rounded-xl text-sm text-primary-600 dark:text-primary-400 font-mono">
                       Variant ID: {item.variant_id}
                     </div>
                   ) : (
                     <select
                       value={item.material_id}
                       onChange={(e) => updateItem(i, 'material_id', e.target.value)}
-                      className="input-field w-full peer"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 appearance-none cursor-pointer"
                       required
                     >
                       <option value="">Select Material</option>
@@ -183,18 +192,18 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
                       ))}
                     </select>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+                  <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
               <div className="relative group w-24">
                 <input
                   type="number"
                   value={item.quantity}
                   onChange={(e) => updateItem(i, 'quantity', e.target.value)}
-                  className="input-field w-full peer"
+                  className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300"
                   placeholder="Qty"
                   required
                 />
-                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
               <div className="relative group w-32">
                 <input
@@ -202,13 +211,13 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
                   step="0.01"
                   value={item.unit_price}
                   onChange={(e) => updateItem(i, 'unit_price', e.target.value)}
-                  className="input-field w-full peer"
+                  className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300"
                   placeholder="Price"
                   required
                 />
-                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
-              <button type="button" onClick={() => removeItem(i)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors hover:scale-110 active:scale-95 self-start mt-1">
+              <button type="button" onClick={() => removeItem(i)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 hover:scale-110 active:scale-90 self-start mt-1">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
@@ -216,24 +225,24 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/30 p-5 rounded-xl space-y-1.5 text-sm border border-gray-100 dark:border-gray-700/30">
-        <div className="flex justify-between text-gray-600 dark:text-gray-400"><span>Subtotal:</span><span className="font-medium text-gray-900 dark:text-white">₹{totalAmount.toLocaleString()}</span></div>
-        <div className="flex justify-between text-gray-600 dark:text-gray-400"><span>Discount:</span><span className="font-medium text-red-600">-₹{Number(discount).toLocaleString()}</span></div>
-        <div className="flex justify-between text-gray-600 dark:text-gray-400"><span>Tax:</span><span className="font-medium text-gray-900 dark:text-white">₹{Number(tax).toLocaleString()}</span></div>
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-1.5 mt-1.5 flex justify-between font-bold text-base"><span className="text-gray-900 dark:text-white">Grand Total:</span><span className="text-primary-600 dark:text-primary-400">₹{grandTotal.toLocaleString()}</span></div>
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/30 dark:to-gray-800/10 p-5 rounded-xl space-y-1.5 text-sm border border-gray-100 dark:border-gray-700/30">
+        <div className="flex justify-between text-gray-600 dark:text-gray-400"><span>Subtotal:</span><span className="font-medium text-gray-900 dark:text-white tabular-nums">₹{totalAmount.toLocaleString()}</span></div>
+        <div className="flex justify-between text-gray-600 dark:text-gray-400"><span>Discount:</span><span className="font-medium text-red-600 tabular-nums">-₹{Number(discount).toLocaleString()}</span></div>
+        <div className="flex justify-between text-gray-600 dark:text-gray-400"><span>Tax:</span><span className="font-medium text-gray-900 dark:text-white tabular-nums">₹{Number(tax).toLocaleString()}</span></div>
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-1.5 mt-1.5 flex justify-between font-bold text-base"><span className="text-gray-900 dark:text-white">Grand Total:</span><span className="text-primary-600 dark:text-primary-400 tabular-nums">₹{grandTotal.toLocaleString()}</span></div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notes</label>
+      <div className="space-y-1.5">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
         <div className="relative group">
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="input-field peer" placeholder="Additional notes..." />
-          <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 resize-none" placeholder="Additional notes..." />
+          <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
-        <button type="button" onClick={onCancel} className="btn-secondary">Cancel</button>
-        <button type="submit" disabled={loading} className="btn-primary shadow-lg shadow-primary-500/20">
+      <div className="flex justify-end gap-3 pt-5 border-t border-gray-100 dark:border-gray-800">
+        <button type="button" onClick={onCancel} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">Cancel</button>
+        <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 disabled:from-primary-500/50 disabled:to-primary-600/50 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 disabled:cursor-not-allowed">
           {loading ? (
             <span className="flex items-center gap-2">
               <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />

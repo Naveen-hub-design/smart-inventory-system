@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import { TrendingUp, Package, AlertTriangle, PlusCircle, ShoppingCart, ClipboardList, FileText, ArrowUpRight, ArrowDownRight, DollarSign, Activity as ActivityIcon } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { TrendingUp, Package, AlertTriangle, PlusCircle, ShoppingCart, ClipboardList, FileText, ArrowUpRight, ArrowDownRight, DollarSign, Activity as ActivityIcon, Users, UserCheck, ShieldCheck, UserCog } from 'lucide-react'
 import { dashboardService } from '../../services/dataService'
-import { DashboardStats, Activity } from '../../types'
+import { authService } from '../../services/authService'
+import { DashboardStats, Activity, User } from '../../types'
 import { CardSkeleton, ChartSkeleton } from '../../components/ui/LoadingSkeleton'
 import AnimatedCounter from '../../components/ui/AnimatedCounter'
 import { useNavigate } from 'react-router-dom'
@@ -10,17 +11,20 @@ export default function StaffDashboard() {
   const navigate = useNavigate()
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [activities, setActivities] = useState<Activity[]>([])
+  const [employees, setEmployees] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statsRes, actRes] = await Promise.all([
+        const [statsRes, actRes, empRes] = await Promise.all([
           dashboardService.getStats(),
           dashboardService.getRecentActivities(),
+          authService.getUsers({ per_page: 100 }).catch(() => ({ users: [] })),
         ])
         setStats(statsRes.data)
         setActivities(actRes.data.activities || [])
+        setEmployees(empRes.users || [])
       } catch (err) {
         console.error('Staff dashboard fetch error:', err)
       } finally {
@@ -29,6 +33,20 @@ export default function StaffDashboard() {
     }
     fetchData()
   }, [])
+
+  const employeeStats = useMemo(() => {
+    const total = employees.length
+    const active = employees.filter(u => u.is_active).length
+    const admins = employees.filter(u => u.role === 'admin').length
+    const staff = total - admins
+    const newThisMonth = employees.filter(u => {
+      if (!u.created_at) return false
+      const created = new Date(u.created_at)
+      const now = new Date()
+      return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear()
+    }).length
+    return { total, active, admins, staff, newThisMonth }
+  }, [employees])
 
   if (loading) {
     return (
@@ -128,10 +146,59 @@ export default function StaffDashboard() {
         </div>
       </div>
 
+      <div className="card relative overflow-hidden animate-fade-in-up">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-primary-500" />
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="w-7 h-7 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+            <Users className="w-4 h-4 text-primary-600 dark:text-primary-400" />
+          </div>
+          <h3 className="text-base font-semibold text-gray-900 dark:text-white">Employee Summary</h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md shadow-primary-500/20">
+              <Users className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Total</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-white tabular-nums leading-tight">{employeeStats.total}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200/50 dark:border-emerald-800/30 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
+            <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20">
+              <UserCheck className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Active</p>
+              <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300 tabular-nums leading-tight">{employeeStats.active}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-200/50 dark:border-indigo-800/30 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
+            <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-md shadow-indigo-500/20">
+              <ShieldCheck className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">Admins</p>
+              <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 tabular-nums leading-tight">{employeeStats.admins}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-200/50 dark:border-blue-800/30 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
+              <UserCog className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-blue-600 dark:text-blue-400">Staff</p>
+              <p className="text-lg font-bold text-blue-700 dark:text-blue-300 tabular-nums leading-tight">{employeeStats.staff}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         <div className="lg:col-span-2 grid grid-cols-1 gap-5">
-          <div className="card animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-indigo-500" />
             <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <ActivityIcon className="w-4 h-4 text-indigo-500" />
               Recent Activities
@@ -156,7 +223,8 @@ export default function StaffDashboard() {
         </div>
 
         <div className="space-y-5">
-          <div className="card animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 to-violet-500" />
             <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-3">
               {quickActions.map((action) => (
@@ -174,7 +242,8 @@ export default function StaffDashboard() {
             </div>
           </div>
 
-          <div className="card animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500" />
             <h3 className="text-base font-semibold mb-3 text-gray-900 dark:text-white flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               Low Stock Summary

@@ -302,18 +302,18 @@ export default function InventoryHealth() {
         <div className="flex items-center gap-3 flex-wrap">
           <Filter className="w-4 h-4 text-gray-400 shrink-0" />
           <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)}
-            className="input-field w-40 text-sm" placeholder="From" />
+            className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-40" placeholder="From" />
           <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)}
-            className="input-field w-40 text-sm" placeholder="To" />
-          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="input-field w-44 text-sm">
+            className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-40" placeholder="To" />
+          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-44">
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <select value={filterSupplier} onChange={e => setFilterSupplier(e.target.value)} className="input-field w-44 text-sm">
+          <select value={filterSupplier} onChange={e => setFilterSupplier(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-44">
             <option value="">All Suppliers</option>
             {suppliers.map(s => <option key={s.id} value={s.id}>{s.supplier_name}</option>)}
           </select>
-          <button onClick={fetchData} className="btn-primary text-sm flex items-center gap-1.5 px-4">
+          <button onClick={fetchData} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 px-4">
             <Search className="w-3.5 h-3.5" /> Apply
           </button>
         </div>
@@ -322,12 +322,12 @@ export default function InventoryHealth() {
       {/* Export */}
       <div className="flex items-center gap-2">
         <button onClick={handleExportPDF} disabled={exporting === 'pdf' || loading}
-          className="btn-secondary text-sm flex items-center gap-1.5">
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
           {exporting === 'pdf' ? <div className="animate-spin w-3.5 h-3.5 border-2 border-gray-500 border-t-transparent rounded-full" /> : <FileText className="w-3.5 h-3.5" />}
           PDF
         </button>
         <button onClick={handleExportExcel} disabled={exporting === 'excel' || loading}
-          className="btn-secondary text-sm flex items-center gap-1.5">
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
           {exporting === 'excel' ? <div className="animate-spin w-3.5 h-3.5 border-2 border-gray-500 border-t-transparent rounded-full" /> : <Download className="w-3.5 h-3.5" />}
           Excel
         </button>
