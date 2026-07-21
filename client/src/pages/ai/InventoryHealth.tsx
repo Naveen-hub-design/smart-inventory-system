@@ -97,7 +97,7 @@ function FactorBar({ label, score, weight, color }: { label: string; score: numb
 
 function MetricCard({ icon: Icon, label, value, sub, color }: { icon: any; label: string; value: string | number; sub?: string; color: string }) {
   return (
-    <div className="card p-4 animate-fade-in-up flex items-center gap-3">
+    <div className="card animate-fade-in-up flex items-center gap-3">
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md shrink-0`} style={{ background: color }}>
         <Icon className="w-5 h-5 text-white" />
       </div>
@@ -296,24 +296,24 @@ export default function InventoryHealth() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Filters */}
-      <div className="card p-4">
+      <div className="card">
         <div className="flex items-center gap-3 flex-wrap">
           <Filter className="w-4 h-4 text-gray-400 shrink-0" />
           <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)}
-            className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-40" placeholder="From" />
+            className="input-field w-40" placeholder="From" />
           <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)}
-            className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-40" placeholder="To" />
-          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-44">
+            className="input-field w-40" placeholder="To" />
+          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="select-field w-44">
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <select value={filterSupplier} onChange={e => setFilterSupplier(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-44">
+          <select value={filterSupplier} onChange={e => setFilterSupplier(e.target.value)} className="select-field w-44">
             <option value="">All Suppliers</option>
             {suppliers.map(s => <option key={s.id} value={s.id}>{s.supplier_name}</option>)}
           </select>
-          <button onClick={fetchData} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 px-4">
+          <button onClick={fetchData} className="btn-primary">
             <Search className="w-3.5 h-3.5" /> Apply
           </button>
         </div>
@@ -322,12 +322,12 @@ export default function InventoryHealth() {
       {/* Export */}
       <div className="flex items-center gap-2">
         <button onClick={handleExportPDF} disabled={exporting === 'pdf' || loading}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
+          className="btn-secondary">
           {exporting === 'pdf' ? <div className="animate-spin w-3.5 h-3.5 border-2 border-gray-500 border-t-transparent rounded-full" /> : <FileText className="w-3.5 h-3.5" />}
           PDF
         </button>
         <button onClick={handleExportExcel} disabled={exporting === 'excel' || loading}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
+          className="btn-secondary">
           {exporting === 'excel' ? <div className="animate-spin w-3.5 h-3.5 border-2 border-gray-500 border-t-transparent rounded-full" /> : <Download className="w-3.5 h-3.5" />}
           Excel
         </button>
@@ -354,7 +354,7 @@ export default function InventoryHealth() {
           {/* Hero Section: Circular Score + Summary + Status */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {/* Circular Score */}
-            <div className="card p-6 flex flex-col items-center justify-center animate-fade-in-up">
+            <div className="card flex flex-col items-center justify-center animate-fade-in-up">
               <CircularScore score={data.overall_score} size={160} />
               <span className={`mt-3 px-3 py-1 text-xs font-bold rounded-full border ${statusColors[data.health_status] || statusColors.Poor}`}>
                 {data.health_status}
@@ -362,7 +362,7 @@ export default function InventoryHealth() {
             </div>
 
             {/* AI Summary */}
-            <div className="card p-5 lg:col-span-2 animate-fade-in-up flex flex-col justify-center">
+            <div className="card lg:col-span-2 animate-fade-in-up flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-2">
                 <Brain className="w-4 h-4 text-primary-600 dark:text-primary-400" />
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">AI Summary</h3>
@@ -386,7 +386,7 @@ export default function InventoryHealth() {
           </div>
 
           {/* Health Factors */}
-          <div className="card p-5 animate-fade-in-up">
+          <div className="card animate-fade-in-up">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Activity className="w-4 h-4 text-primary-600" /> Health Factors
             </h3>
@@ -419,12 +419,12 @@ export default function InventoryHealth() {
           {/* Strengths + Issues + Recommendations */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Strengths */}
-            <div className="card p-4 animate-fade-in-up">
+            <div className="card animate-fade-in-up">
               <h3 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mb-3 flex items-center gap-2">
                 <CheckCircle className="w-4 h-4" /> AI Strengths
               </h3>
               {data.strengths.length === 0 ? (
-                <p className="text-xs text-gray-400 dark:text-gray-500">No significant strengths identified.</p>
+                <p className="text-hint">No significant strengths identified.</p>
               ) : (
                 <div className="space-y-2">
                   {data.strengths.map((s, i) => (
@@ -438,12 +438,12 @@ export default function InventoryHealth() {
             </div>
 
             {/* Issues */}
-            <div className="card p-4 animate-fade-in-up">
+            <div className="card animate-fade-in-up">
               <h3 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-3 flex items-center gap-2">
                 <XCircle className="w-4 h-4" /> AI Issues
               </h3>
               {data.issues.length === 0 ? (
-                <p className="text-xs text-gray-400 dark:text-gray-500">No issues detected.</p>
+                <p className="text-hint">No issues detected.</p>
               ) : (
                 <div className="space-y-2">
                   {data.issues.map((s, i) => (
@@ -457,12 +457,12 @@ export default function InventoryHealth() {
             </div>
 
             {/* Recommendations */}
-            <div className="card p-4 animate-fade-in-up">
+            <div className="card animate-fade-in-up">
               <h3 className="text-sm font-semibold text-blue-700 dark:text-blue-400 mb-3 flex items-center gap-2">
                 <Brain className="w-4 h-4" /> AI Recommendations
               </h3>
               {data.recommendations.length === 0 ? (
-                <p className="text-xs text-gray-400 dark:text-gray-500">No recommendations at this time.</p>
+                <p className="text-hint">No recommendations at this time.</p>
               ) : (
                 <div className="space-y-2">
                   {data.recommendations.map((s, i) => (
@@ -478,7 +478,7 @@ export default function InventoryHealth() {
 
           {/* Health Trend Chart */}
           {data.health_trend.labels.length > 0 && (
-            <div className="card p-5 animate-fade-in-up">
+            <div className="card animate-fade-in-up">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-primary-600" /> Health Score Trend
               </h3>
@@ -499,7 +499,7 @@ export default function InventoryHealth() {
 
           {/* Category Health */}
           {data.category_health.length > 0 && (
-            <div className="card p-5 animate-fade-in-up">
+            <div className="card animate-fade-in-up">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Layers className="w-4 h-4 text-purple-500" /> Category Health
               </h3>

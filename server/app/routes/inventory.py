@@ -22,7 +22,7 @@ def get_current_stock():
             'category': p.category.name if p.category else None,
             'quantity': p.quantity,
             'min_stock': p.min_stock,
-            'status': 'low' if p.quantity <= p.min_stock else 'out' if p.quantity == 0 else 'in_stock'
+            'status': 'out' if p.quantity == 0 else 'low' if p.quantity <= p.min_stock else 'in_stock'
         } for p in products],
         'materials': [{
             'id': m.id,

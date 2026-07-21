@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Package, Box, AlertTriangle, ClipboardList } from 'lucide-react'
 import { inventoryService } from '../../services/dataService'
 import { InventoryLog } from '../../types'
@@ -9,6 +9,7 @@ import { InventorySkeleton } from '../../components/ui/LoadingSkeleton'
 
 export default function Inventory() {
   const location = useLocation()
+  const navigate = useNavigate()
   const [stock, setStock] = useState<{ products: any[]; materials: any[] }>({ products: [], materials: [] })
   const [movements, setMovements] = useState<InventoryLog[]>([])
   const [lowStock, setLowStock] = useState<any>(null)
@@ -55,7 +56,7 @@ export default function Inventory() {
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Inventory</h1>
+        <h1 className="page-title">Inventory</h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">Monitor stock levels and movements</p>
       </div>
 
@@ -89,7 +90,7 @@ export default function Inventory() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-400" />
-                <h3 className="text-base font-semibold mb-5 text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="card-title mb-5 flex items-center gap-2">
                   <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
                     <Package className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   </span>
@@ -131,7 +132,7 @@ export default function Inventory() {
               </div>
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-400" />
-                <h3 className="text-base font-semibold mb-5 text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="card-title mb-5 flex items-center gap-2">
                   <span className="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
                     <Box className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                   </span>
@@ -179,7 +180,7 @@ export default function Inventory() {
           {tab === 'movements' && (
             <div className="card animate-fade-in relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
-              <h3 className="text-base font-semibold mb-5 text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="card-title mb-5 flex items-center gap-2">
                 <span className="w-6 h-6 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                   <ClipboardList className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400" />
                 </span>
@@ -235,7 +236,7 @@ export default function Inventory() {
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-500" />
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-yellow-400 to-amber-400" />
-                <h3 className="text-base font-semibold mb-5 flex items-center gap-2 text-gray-900 dark:text-white">
+                <h3 className="card-title mb-5 flex items-center gap-2">
                   <span className="w-6 h-6 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
                     <AlertTriangle className="w-3.5 h-3.5 text-yellow-600 dark:text-yellow-400" />
                   </span>
@@ -248,7 +249,7 @@ export default function Inventory() {
                 ) : (
                   <div className="space-y-2 mb-6">
                     {lowStock.low_stock_products?.map((p: any, i: number) => (
-                      <div key={p.id} className="flex justify-between items-center p-3.5 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                      <div key={p.id} onClick={() => navigate('/products')} className="flex justify-between items-center p-3.5 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-all duration-200 cursor-pointer" style={{ animationDelay: `${i * 50}ms` }}>
                         <div className="flex items-center gap-3">
                           <span className="w-2 h-2 rounded-full bg-amber-400 ring-2 ring-amber-100 dark:ring-amber-900/30" />
                           <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
@@ -270,7 +271,7 @@ export default function Inventory() {
                   ) : (
                     <div className="space-y-2">
                       {lowStock.out_of_stock_products?.map((p: any, i: number) => (
-                        <div key={p.id} className="flex justify-between items-center p-3.5 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-red-100/50 dark:hover:bg-red-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                        <div key={p.id} onClick={() => navigate('/products')} className="flex justify-between items-center p-3.5 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-red-100/50 dark:hover:bg-red-900/20 transition-all duration-200 cursor-pointer" style={{ animationDelay: `${i * 50}ms` }}>
                           <div className="flex items-center gap-3">
                             <span className="w-2 h-2 rounded-full bg-red-400 ring-2 ring-red-100 dark:ring-red-900/30" />
                             <span className="font-medium text-sm text-gray-900 dark:text-white">{p.product_name}</span>
@@ -285,7 +286,7 @@ export default function Inventory() {
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-500" />
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-yellow-400 to-amber-400" />
-                <h3 className="text-base font-semibold mb-5 flex items-center gap-2 text-gray-900 dark:text-white">
+                <h3 className="card-title mb-5 flex items-center gap-2">
                   <span className="w-6 h-6 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
                     <AlertTriangle className="w-3.5 h-3.5 text-yellow-600 dark:text-yellow-400" />
                   </span>
@@ -298,7 +299,7 @@ export default function Inventory() {
                 ) : (
                   <div className="space-y-2 mb-6">
                     {lowStock.low_stock_materials?.map((m: any, i: number) => (
-                      <div key={m.id} className="flex justify-between items-center p-3.5 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                      <div key={m.id} onClick={() => navigate('/materials')} className="flex justify-between items-center p-3.5 bg-amber-50 dark:bg-amber-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-all duration-200 cursor-pointer" style={{ animationDelay: `${i * 50}ms` }}>
                         <div className="flex items-center gap-3">
                           <span className="w-2 h-2 rounded-full bg-amber-400 ring-2 ring-amber-100 dark:ring-amber-900/30" />
                           <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>
@@ -320,7 +321,7 @@ export default function Inventory() {
                   ) : (
                     <div className="space-y-2">
                       {lowStock.out_of_stock_materials?.map((m: any, i: number) => (
-                        <div key={m.id} className="flex justify-between items-center p-3.5 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-red-100/50 dark:hover:bg-red-900/20 transition-all duration-200" style={{ animationDelay: `${i * 50}ms` }}>
+                        <div key={m.id} onClick={() => navigate('/materials')} className="flex justify-between items-center p-3.5 bg-red-50 dark:bg-red-900/10 rounded-xl animate-fade-in hover:shadow-premium-sm hover:bg-red-100/50 dark:hover:bg-red-900/20 transition-all duration-200 cursor-pointer" style={{ animationDelay: `${i * 50}ms` }}>
                           <div className="flex items-center gap-3">
                             <span className="w-2 h-2 rounded-full bg-red-400 ring-2 ring-red-100 dark:ring-red-900/30" />
                             <span className="font-medium text-sm text-gray-900 dark:text-white">{m.material_name}</span>

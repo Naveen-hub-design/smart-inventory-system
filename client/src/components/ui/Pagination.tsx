@@ -12,7 +12,7 @@ export default function Pagination({ page, pages, total, onPageChange }: Paginat
 
   return (
     <div className="flex items-center justify-between pt-5 border-t border-gray-100 dark:border-gray-800/50 mt-4">
-      <p className="text-sm text-gray-500 dark:text-gray-400">
+      <p className="text-secondary">
         Showing page <span className="font-medium text-gray-700 dark:text-gray-300">{page}</span> of <span className="font-medium text-gray-700 dark:text-gray-300">{pages}</span>
         <span className="hidden sm:inline"> ({total} total)</span>
       </p>

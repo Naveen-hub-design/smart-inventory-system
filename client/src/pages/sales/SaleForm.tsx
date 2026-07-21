@@ -131,16 +131,16 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer Name</label>
+          <label className="form-label">Customer Name</label>
           <div className="relative group">
-            <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Customer name" />
+            <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="input-field" placeholder="Customer name" />
             <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Payment Method</label>
+          <label className="form-label">Payment Method</label>
           <div className="relative group">
-            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 appearance-none cursor-pointer">
+            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="select-field">
             <option value="cash">Cash</option>
             <option value="card">Card</option>
             <option value="bank">Bank Transfer</option>
@@ -151,22 +151,22 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Discount</label>
+            <label className="form-label">Discount</label>
             <div className="relative group">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                 <Percent className="w-3.5 h-3.5" />
               </div>
-              <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)} className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="0" />
+              <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)} className="input-field pl-9 pr-3.5" placeholder="0" />
               <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
             </div>
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tax</label>
+            <label className="form-label">Tax</label>
             <div className="relative group">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                 <Tag className="w-3.5 h-3.5" />
               </div>
-              <input type="number" value={tax} onChange={(e) => setTax(e.target.value)} className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="0" />
+              <input type="number" value={tax} onChange={(e) => setTax(e.target.value)} className="input-field pl-9 pr-3.5" placeholder="0" />
               <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Sale Items</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Add products or search by SKU/barcode</p>
+            <p className="text-muted mt-0.5">Add products or search by SKU/barcode</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -210,7 +210,7 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
                 <select
                   value={item.product_id}
                   onChange={(e) => updateItem(i, 'product_id', e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 appearance-none cursor-pointer"
+                  className="select-field"
                   required
                 >
                   <option value="">Select Product</option>
@@ -232,15 +232,15 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
                 )}
               </div>
               <div className="relative group w-20">
-                <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Qty" required />
+                <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', e.target.value)} className="input-field" placeholder="Qty" required />
                 <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
               <div className="relative group w-28">
-                <input type="number" step="0.01" value={item.unit_price} onChange={(e) => updateItem(i, 'unit_price', e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Price" required />
+                <input type="number" step="0.01" value={item.unit_price} onChange={(e) => updateItem(i, 'unit_price', e.target.value)} className="input-field" placeholder="Price" required />
                 <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
               <div className="relative group w-24">
-                <input type="number" step="0.01" value={item.discount} onChange={(e) => updateItem(i, 'discount', e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Disc" />
+                <input type="number" step="0.01" value={item.discount} onChange={(e) => updateItem(i, 'discount', e.target.value)} className="input-field" placeholder="Disc" />
                 <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
               <button type="button" onClick={() => removeItem(i)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 hover:scale-110 active:scale-90 self-start mt-1">
@@ -259,16 +259,16 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+        <label className="form-label">Notes</label>
         <div className="relative group">
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 resize-none" placeholder="Additional notes..." />
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="input-field resize-none" placeholder="Additional notes..." />
           <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
         </div>
       </div>
 
       <div className="flex justify-end gap-3 pt-5 border-t border-gray-100 dark:border-gray-800">
-        <button type="button" onClick={onCancel} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">Cancel</button>
-        <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 disabled:from-primary-500/50 disabled:to-primary-600/50 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 disabled:cursor-not-allowed">
+        <button type="button" onClick={onCancel} className="btn-secondary">Cancel</button>
+        <button type="submit" disabled={loading} className="btn-primary">
           {loading ? (
             <span className="flex items-center gap-2">
               <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />

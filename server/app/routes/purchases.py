@@ -10,6 +10,7 @@ from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime
 import uuid
+from decimal import Decimal
 from sqlalchemy import exists
 
 purchases_bp = Blueprint('purchases', __name__)
@@ -124,20 +125,22 @@ def create_purchase():
         purchase_date=datetime.utcnow()
     )
 
-    total_amount = 0
+    total_amount = Decimal('0')
     for item_data in data['items']:
         material_id = item_data.get('material_id')
         variant_id = item_data.get('variant_id')
-        quantity = float(item_data.get('quantity', 0))
-        unit_price = float(item_data.get('unit_price', 0))
-        total_price = quantity * unit_price
+        qty_val = item_data.get('quantity', 0)
+        unit_price = Decimal(str(item_data.get('unit_price', 0)))
+        qty_decimal = Decimal(str(qty_val))
+        qty_int = int(qty_val)
+        total_price = qty_decimal * unit_price
         total_amount += total_price
 
         item = PurchaseItem(
             purchase=purchase,
             material_id=material_id,
             variant_id=variant_id,
-            quantity=quantity,
+            quantity=qty_decimal,
             unit_price=unit_price,
             total_price=total_price
         )
@@ -146,13 +149,13 @@ def create_purchase():
         if variant_id:
             variant = ProductVariant.query.get(variant_id)
             if variant:
-                variant.stock += int(quantity)
+                variant.stock += qty_int
                 Product.query.get(variant.product_id).sync_stock_from_variants()
                 log = InventoryLog(
                     product_id=variant.product_id,
                     variant_id=variant_id,
                     change_type='in',
-                    quantity=quantity,
+                    quantity=qty_decimal,
                     reference_type='purchase',
                     notes=f'Purchase {invoice}',
                     user_id=user.id if user else None
@@ -161,19 +164,19 @@ def create_purchase():
         elif material_id:
             material = RawMaterial.query.get(material_id)
             if material:
-                material.quantity += quantity
+                material.quantity += qty_decimal
                 log = InventoryLog(
                     material_id=material_id,
                     change_type='in',
-                    quantity=quantity,
+                    quantity=qty_decimal,
                     reference_type='purchase',
                     notes=f'Purchase {invoice}',
                     user_id=user.id if user else None
                 )
                 db.session.add(log)
 
-    purchase.total_amount = total_amount
-    purchase.grand_total = total_amount + float(data.get('tax', 0)) - float(data.get('discount', 0))
+    purchase.total_amount = float(total_amount)
+    purchase.grand_total = float(total_amount) + float(data.get('tax', 0)) - float(data.get('discount', 0))
     db.session.add(purchase)
     create_audit_log(
         username=user.username if user else 'system',

@@ -167,13 +167,13 @@ export default function AdminDashboard() {
   const adminStatCards = [
     { label: 'Total Products', value: stats?.total_products || 0, icon: Package, gradient: 'from-blue-500 to-blue-600', route: '/products' },
     { label: 'Total Variants', value: stats?.total_variants || 0, icon: Layers, gradient: 'from-violet-500 to-violet-600', route: '/inventory', state: { tab: 'stock' } },
-    { label: 'Categories', value: stats?.total_categories || 0, icon: ShoppingBag, gradient: 'from-teal-500 to-teal-600' },
+    { label: 'Categories', value: stats?.total_categories || 0, icon: ShoppingBag, gradient: 'from-teal-500 to-teal-600', route: '/products' },
     { label: 'Suppliers', value: stats?.total_suppliers || 0, icon: Truck, gradient: 'from-purple-500 to-purple-600', route: '/suppliers' },
-    { label: 'Customers', value: stats?.total_customers || 0, icon: Users, gradient: 'from-pink-500 to-pink-600' },
+    { label: 'Customers', value: stats?.total_customers || 0, icon: Users, gradient: 'from-pink-500 to-pink-600', route: '/sales' },
     { label: 'Total Sales', value: stats?.total_sales || 0, icon: ShoppingCart, gradient: 'from-orange-500 to-orange-600', prefix: true, route: '/sales' },
     { label: 'Total Purchases', value: stats?.total_purchases || 0, icon: TrendingUp, gradient: 'from-amber-500 to-amber-600', prefix: true, route: '/purchases' },
     { label: 'Revenue', value: stats?.revenue || 0, icon: DollarSign, gradient: 'from-emerald-500 to-emerald-600', prefix: true, route: '/sales' },
-    { label: 'Profit', value: stats?.profit || 0, icon: BarChart3, gradient: 'from-cyan-500 to-cyan-600', prefix: true },
+    { label: 'Profit', value: stats?.profit || 0, icon: BarChart3, gradient: 'from-cyan-500 to-cyan-600', prefix: true, route: '/reports' },
     { label: 'Low Stock', value: stats?.low_stock_variants || 0, icon: AlertTriangle, gradient: 'from-amber-500 to-amber-600', highlight: (stats?.low_stock_variants || 0) > 0, route: '/inventory', state: { tab: 'alerts' } },
     { label: 'Out of Stock', value: stats?.out_of_stock_count || 0, icon: AlertTriangle, gradient: 'from-red-500 to-red-600', highlight: (stats?.out_of_stock_count || 0) > 0, route: '/inventory', state: { tab: 'alerts' } },
     { label: 'AI Reorder Alerts', value: aiHighCount, icon: Brain, gradient: 'from-indigo-500 to-purple-600', highlight: aiHighCount > 0, route: '/ai-intelligence' },
@@ -201,10 +201,10 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Admin Dashboard</h1>
+          <h1 className="page-title">Admin Dashboard</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Full oversight of the inventory system</p>
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-400">
+        <div className="flex items-center gap-2 text-hint">
           <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse-soft" />
           Live
         </div>
@@ -215,10 +215,10 @@ export default function AdminDashboard() {
           <div
             key={card.label}
             onClick={() => card.route && navigate(card.route, { state: card.state })}
-            className={`relative overflow-hidden group rounded-2xl bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 ${card.route ? 'cursor-pointer' : ''} ${card.highlight ? 'ring-2 ring-red-300 dark:ring-red-700/50' : ''} animate-fade-in-up`}
+            className={`relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 ${card.route ? 'cursor-pointer' : ''} ${card.highlight ? 'ring-2 ring-red-300 dark:ring-red-700/50' : ''} animate-fade-in-up`}
             style={{ animationDelay: `${i * 40}ms` }}
           >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${card.gradient} opacity-[0.03] dark:opacity-[0.05] rounded-bl-full" />
+            <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${card.gradient} opacity-[0.03] dark:opacity-[0.05] rounded-bl-full`} />
             <div className="flex items-start justify-between mb-3">
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{card.label}</span>
               <div className={`w-10 h-10 bg-gradient-to-br ${card.gradient} rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
@@ -242,9 +242,10 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="card animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-blue-500" />
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Monthly Sales</h3>
+              <h3 className="card-title">Monthly Sales</h3>
               <ArrowUpRight className="w-4 h-4 text-green-500" />
             </div>
             <div className={`transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
@@ -260,9 +261,10 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="card animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 to-emerald-500" />
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Monthly Purchases</h3>
+              <h3 className="card-title">Monthly Purchases</h3>
               <ArrowDownRight className="w-4 h-4 text-emerald-500" />
             </div>
             <div className={`transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
@@ -278,8 +280,9 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="card animate-fade-in-up flex flex-col transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5" style={{ animationDelay: '200ms' }}>
-            <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Stock by Category</h3>
+          <div className="card relative overflow-hidden animate-fade-in-up flex flex-col" style={{ animationDelay: '200ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-500" />
+            <h3 className="card-title mb-4">Stock by Category</h3>
             <div className={`flex-1 flex flex-col items-center justify-center transition-all duration-700 ease-out ${chartLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
               {stockByCategory.filter(d => d.quantity > 0).length === 0 ? (
                 <p className="text-gray-400 dark:text-gray-500 text-sm">No stock data available</p>
@@ -303,8 +306,9 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="card animate-fade-in-up" style={{ animationDelay: '250ms' }}>
-            <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Recent Transactions</h3>
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-teal-400 to-teal-500" />
+            <h3 className="card-title mb-4">Recent Transactions</h3>
             <div className="space-y-1">
               {transactions.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">No recent transactions</p>}
               {transactions.slice(0, 5).map((t, i) => (
@@ -315,7 +319,7 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{t.invoice}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{t.customer || t.supplier || ''}</p>
+                      <p className="text-muted">{t.customer || t.supplier || ''}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -331,8 +335,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="space-y-5">
-          <div className="card animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-            <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-indigo-500" />
+            <h3 className="card-title mb-4 flex items-center gap-2">
               <ActivityIcon className="w-4 h-4 text-indigo-500" />
               Recent Activities
             </h3>
@@ -345,7 +350,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm text-gray-900 dark:text-white leading-snug">{a.description}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-hint mt-0.5">
                       {a.user && `${a.user} · `}
                       {a.timestamp ? new Date(a.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
                     </p>
@@ -355,8 +360,9 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="card animate-fade-in-up" style={{ animationDelay: '350ms' }}>
-            <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '350ms' }}>
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500" />
+            <h3 className="card-title mb-4 flex items-center gap-2">
               <Brain className="w-4 h-4 text-indigo-500" />
               AI Insights Summary
             </h3>
@@ -403,8 +409,9 @@ export default function AdminDashboard() {
       </div>
 
       {topProducts.length > 0 && (
-        <div className="card animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-          <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Top Selling Products</h3>
+        <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500" />
+          <h3 className="card-title mb-4">Top Selling Products</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -416,10 +423,10 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {topProducts.map((p, i) => (
-                  <tr key={i} className="group border-b border-gray-50 dark:border-gray-800/20 hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-all duration-200 cursor-pointer" onClick={() => navigate('/products')}>
-                    <td className="px-5 py-4 font-medium">{p.name}</td>
-                    <td className="px-5 py-4 text-right tabular-nums">{p.quantity}</td>
-                    <td className="px-5 py-4 text-right font-medium tabular-nums">₹{p.revenue.toLocaleString()}</td>
+                  <tr key={i} className="table-row cursor-pointer" onClick={() => navigate('/products')}>
+                    <td className="table-cell font-medium">{p.name}</td>
+                    <td className="table-cell text-right tabular-nums">{p.quantity}</td>
+                    <td className="table-cell text-right font-medium tabular-nums">₹{p.revenue.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>

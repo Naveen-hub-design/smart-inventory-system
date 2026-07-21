@@ -120,7 +120,7 @@ function FormattedMessage({ content }: { content: string }) {
       )
       inList = true
       listItems.push(
-        <li key={idx} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+        <li key={idx} className="flex items-start gap-2 text-body">
           <span className="text-primary-500 mt-1.5 shrink-0">•</span>
           <span>{formatted}</span>
         </li>
@@ -156,7 +156,7 @@ function FormattedMessage({ content }: { content: string }) {
           : <span key={i}>{p}</span>
       )
       elements.push(
-        <p key={idx} className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+        <p key={idx} className="text-body leading-relaxed">
           {formatted}
         </p>
       )
@@ -417,7 +417,7 @@ export default function AiCopilot() {
           </tbody>
         </table>
         {(Array.isArray(data.data) && data.data.length > 20) && (
-          <p className="text-xs text-gray-400 mt-1">Showing first 20 of {data.data.length} records</p>
+          <p className="text-hint mt-1">Showing first 20 of {data.data.length} records</p>
         )}
       </div>
     )
@@ -429,11 +429,11 @@ export default function AiCopilot() {
         <Bot className="w-8 h-8 text-white" />
       </div>
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Hello!</h2>
-      <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-md mb-2">
+      <p className="text-secondary text-center max-w-md mb-2">
         I'm your <span className="font-semibold text-primary-600 dark:text-primary-400">AI ERP Copilot</span>.
         I can help you understand your inventory, suppliers, sales, purchases and AI insights.
       </p>
-      <p className="text-xs text-gray-400 dark:text-gray-500 mb-6">Try asking me something:</p>
+      <p className="text-hint mb-6">Try asking me something:</p>
       <div className="flex flex-wrap justify-center gap-2 max-w-xl">
         {WELCOME_SUGGESTIONS.map((s, i) => (
           <button
@@ -463,7 +463,7 @@ export default function AiCopilot() {
           </div>
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-white">AI ERP Copilot</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Enterprise Intelligence Assistant</p>
+            <p className="text-muted">Enterprise Intelligence Assistant</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -537,7 +537,7 @@ export default function AiCopilot() {
 
             {reportType && reportId && !loading && (
               <div className="flex items-center gap-2 pl-12 animate-fade-in-up">
-                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{reportType}:</span>
+                <span className="text-muted font-medium">{reportType}:</span>
                 <button
                   onClick={handleReportPreview}
                   disabled={previewLoading === 'preview'}
@@ -574,7 +574,7 @@ export default function AiCopilot() {
               <div className="ml-12 mt-2 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 animate-fade-in-up">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Report Preview</span>
-                  <button onClick={() => setPreviewData(null)} className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">Close</button>
+                  <button onClick={() => setPreviewData(null)} className="text-hint hover:text-gray-600 dark:hover:text-gray-300">Close</button>
                 </div>
                 {previewData.error ? (
                   <p className="text-sm text-red-500">⚠️ {previewData.error}</p>

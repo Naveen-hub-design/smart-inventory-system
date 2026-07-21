@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function SupplierForm({ supplier, onSuccess, onCancel }: Props) {
+  const [loading, setLoading] = useState(false)
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: supplier ? {
@@ -38,6 +40,7 @@ export default function SupplierForm({ supplier, onSuccess, onCancel }: Props) {
   })
 
   const onSubmit = async (data: FormData) => {
+    setLoading(true)
     try {
       if (supplier) {
         await supplierService.update(supplier.id, data)
@@ -47,63 +50,70 @@ export default function SupplierForm({ supplier, onSuccess, onCancel }: Props) {
         toast.success('Supplier created')
       }
       onSuccess()
-    } catch { toast.error('Operation failed') }
+    } catch { toast.error('Operation failed') } finally { setLoading(false) }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="md:col-span-2 space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Supplier Name *</label>
+          <label className="form-label">Supplier Name *</label>
           <div className="relative group">
-            <input {...register('supplier_name')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Enter supplier name" />
+            <input {...register('supplier_name')} className="input-field" placeholder="Enter supplier name" />
             <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
           {errors.supplier_name && <p className="text-red-500 text-xs mt-1 animate-fade-in">{errors.supplier_name.message}</p>}
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person</label>
+          <label className="form-label">Contact Person</label>
           <div className="relative group">
-            <input {...register('contact_person')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Contact person name" />
+            <input {...register('contact_person')} className="input-field" placeholder="Contact person name" />
             <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
+          <label className="form-label">Phone</label>
           <div className="relative group">
-            <input {...register('phone')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Phone number" />
+            <input {...register('phone')} className="input-field" placeholder="Phone number" />
             <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+          <label className="form-label">Email</label>
           <div className="relative group">
-            <input {...register('email')} type="email" className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="email@example.com" />
+            <input {...register('email')} type="email" className="input-field" placeholder="email@example.com" />
             <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">GST Number</label>
+          <label className="form-label">GST Number</label>
           <div className="relative group">
-            <input {...register('gst_number')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="GSTIN" />
+            <input {...register('gst_number')} className="input-field" placeholder="GSTIN" />
             <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 rounded-full" />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-          <select {...register('status')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 cursor-pointer">
+          <label className="form-label">Status</label>
+          <select {...register('status')} className="select-field">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
         <div className="md:col-span-2 space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
-          <textarea {...register('address')} rows={3} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 resize-none" placeholder="Full address..." />
+          <label className="form-label">Address</label>
+          <textarea {...register('address')} rows={3} className="input-field resize-none" placeholder="Full address..." />
         </div>
       </div>
       <div className="flex justify-end gap-3 pt-5 border-t border-gray-100 dark:border-gray-800">
-        <button type="button" onClick={onCancel} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">Cancel</button>
-        <button type="submit" className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">{supplier ? 'Update Supplier' : 'Create Supplier'}</button>
+        <button type="button" onClick={onCancel} className="btn-secondary">Cancel</button>
+        <button type="submit" disabled={loading} className="btn-primary">
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+              Saving...
+            </span>
+          ) : supplier ? 'Update Supplier' : 'Create Supplier'}
+        </button>
       </div>
     </form>
   )

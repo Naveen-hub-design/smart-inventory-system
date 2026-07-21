@@ -16,10 +16,10 @@ export default function AccessDenied() {
           You do not have permission to access this page. Please contact your administrator if you believe this is an error.
         </p>
         <div className="flex items-center justify-center gap-3">
-          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
+          <button onClick={() => navigate(-1)} className="btn-secondary">
             Go Back
           </button>
-          <button onClick={() => navigate('/dashboard')} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+          <button onClick={() => navigate('/dashboard')} className="btn-primary">
             Go to Dashboard
           </button>
         </div>

@@ -30,10 +30,10 @@ export default function SupplierList() {
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Supplier | null>(null)
 
-  const fetchData = async () => {
+  const fetchData = async (searchVal = search, pageVal = page) => {
     setLoading(true)
     try {
-      const params: any = { page, per_page: 10, search, sort_by: 'created_at', sort_order: 'desc' }
+      const params: any = { page: pageVal, per_page: 10, search: searchVal, sort_by: 'created_at', sort_order: 'desc' }
       if (statusFilter) params.status = statusFilter
       const res = await supplierService.getAll(params)
       setSuppliers(res.data.suppliers)
@@ -53,10 +53,10 @@ export default function SupplierList() {
     <div className="space-y-6 animate-fade-in-up">
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Suppliers</h1>
+          <h1 className="page-title">Suppliers</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your suppliers</p>
         </div>
-        <button onClick={() => { setEditing(null); setModalOpen(true) }} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+        <button onClick={() => { setEditing(null); setModalOpen(true) }} className="btn-primary">
           <Plus className="w-4 h-4" /> Add Supplier
         </button>
       </div>
@@ -70,17 +70,17 @@ export default function SupplierList() {
               <input
                 type="text" value={search} onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search suppliers..."
-                className="w-full pl-10 pr-9 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300"
+                className="input-field pl-10 pr-9"
               />
               {search && (
-                <button type="button" onClick={() => { setSearch(''); setPage(1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <button type="button" onClick={() => { setSearch(''); setPage(1); fetchData('', 1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
-            <button type="submit" className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">Search</button>
+            <button type="submit" className="btn-primary">Search</button>
           </form>
-          <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }} className="w-full sm:w-44 px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 appearance-none cursor-pointer">
+          <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }} className="select-field w-full sm:w-44">
             <option value="">All Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>

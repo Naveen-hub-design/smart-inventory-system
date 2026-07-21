@@ -57,7 +57,7 @@ def get_sales():
             db.or_(
                 Sale.invoice_number.like(f'%{search}%'),
                 Sale.customer_name.like(f'%{search}%'),
-                Sale.items.any(SaleItem.product_name.like(f'%{search}%')),
+                db.session.query(SaleItem.id).filter(SaleItem.sale_id == Sale.id, SaleItem.product.has(Product.product_name.like(f'%{search}%'))).exists(),
                 variant_match
             )
         )

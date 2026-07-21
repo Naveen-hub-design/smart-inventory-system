@@ -139,7 +139,7 @@ export default function AiPage() {
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight flex items-center gap-3">
+        <h1 className="page-title flex items-center gap-3">
           <Brain className="w-7 h-7 text-primary-600 dark:text-primary-400" />
           AI Intelligence Center
         </h1>
@@ -168,7 +168,7 @@ export default function AiPage() {
           {tab === 'overview' && data && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="card p-5 animate-fade-in-up">
+                <div className="card animate-fade-in-up">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Inventory Health Score</p>
@@ -187,7 +187,7 @@ export default function AiPage() {
                     />
                   </div>
                 </div>
-                <div className="card p-5 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+                <div className="card animate-fade-in-up" style={{ animationDelay: '50ms' }}>
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Products Requiring Reorder</p>
@@ -197,11 +197,11 @@ export default function AiPage() {
                       <AlertTriangle className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                  <p className="text-hint">
                     {data.high_priority?.length || 0} high · {data.medium_priority?.length || 0} medium priority
                   </p>
                 </div>
-                <div className="card p-5 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+                <div className="card animate-fade-in-up" style={{ animationDelay: '100ms' }}>
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Average AI Confidence</p>
@@ -213,7 +213,7 @@ export default function AiPage() {
                   </div>
                   {confidenceBar(avgConfidence())}
                 </div>
-                <div className="card p-5 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+                <div className="card animate-fade-in-up" style={{ animationDelay: '150ms' }}>
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">High Priority</p>
@@ -223,9 +223,9 @@ export default function AiPage() {
                       <AlertTriangle className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Immediate attention required</p>
+                  <p className="text-hint">Immediate attention required</p>
                 </div>
-                <div className="card p-5 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+                <div className="card animate-fade-in-up" style={{ animationDelay: '200ms' }}>
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Medium Priority</p>
@@ -235,9 +235,9 @@ export default function AiPage() {
                       <Clock className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Should be monitored</p>
+                  <p className="text-hint">Should be monitored</p>
                 </div>
-                <div className="card p-5 animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+                <div className="card animate-fade-in-up" style={{ animationDelay: '250ms' }}>
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Last AI Analysis</p>
@@ -254,14 +254,14 @@ export default function AiPage() {
                       <CalendarDays className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">{data.total_analyzed} variants analyzed</p>
+                  <p className="text-hint">{data.total_analyzed} variants analyzed</p>
                 </div>
               </div>
             </div>
           )}
 
           {tab === 'reorder' && data && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               {data.recommendations.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
                   <ShoppingCart className="w-12 h-12 mb-3 opacity-30" />
@@ -273,16 +273,16 @@ export default function AiPage() {
                 <div
                   key={r.variant_id}
                   onClick={() => setSelectedVariant(r.variant_id)}
-                  className="card p-5 hover:shadow-premium-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer animate-fade-in-up"
+                  className="card hover:shadow-premium-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer animate-fade-in-up"
                   style={{ animationDelay: `${i * 40}ms` }}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-base font-semibold text-gray-900 dark:text-white truncate">{r.product_name}</h3>
+                        <h3 className="card-title truncate">{r.product_name}</h3>
                         {priorityBadge(r.priority)}
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-3 text-muted">
                         <span className="font-mono">{r.sku}</span>
                         {r.color && <span>· {r.color}</span>}
                         {r.size && <span>· {r.size}</span>}
@@ -290,39 +290,39 @@ export default function AiPage() {
                       </div>
                     </div>
                     <div className="text-right shrink-0 ml-4">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Recommended Order</p>
+                      <p className="text-muted mb-0.5">Recommended Order</p>
                       <p className="text-xl font-bold text-primary-600 dark:text-primary-400 tabular-nums">+{r.suggested_reorder_qty}</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
                     <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Current Stock</p>
+                      <p className="text-muted">Current Stock</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">{r.current_stock}</p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Min Stock</p>
+                      <p className="text-muted">Min Stock</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">{r.min_stock}</p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Est. Days Remaining</p>
+                      <p className="text-muted">Est. Days Remaining</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">
                         {r.days_remaining !== null && r.days_remaining < 999 ? `${r.days_remaining} days` : 'N/A'}
                       </p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Avg Daily Sales</p>
+                      <p className="text-muted">Avg Daily Sales</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">{r.avg_daily_sales}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-4">
                     <div className="flex-1">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Confidence Score</p>
+                      <p className="text-muted mb-1">Confidence Score</p>
                       {confidenceBar(r.confidence_score || 0)}
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Sales Trend</p>
+                      <p className="text-muted">Sales Trend</p>
                       <span className={`text-xs font-semibold ${
                         r.sales_trend === 'Increasing' ? 'text-green-600 dark:text-green-400' :
                         r.sales_trend === 'Decreasing' ? 'text-red-600 dark:text-red-400' :
@@ -331,7 +331,7 @@ export default function AiPage() {
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 leading-relaxed line-clamp-2">{r.explanation}</p>
+                  <p className="text-muted mt-3 leading-relaxed line-clamp-2">{r.explanation}</p>
                 </div>
               ))}
             </div>
@@ -339,14 +339,14 @@ export default function AiPage() {
 
           {tab === 'forecasting' && (
             <div className="space-y-5">
-              <div className="card p-4">
+              <div className="card">
                 <div className="flex items-center gap-3 flex-wrap">
                   <Filter className="w-4 h-4 text-gray-400" />
-                  <select value={filterCategory} onChange={(e) => { setFilterCategory(e.target.value); setFilterProduct('') }} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-48">
+                  <select value={filterCategory} onChange={(e) => { setFilterCategory(e.target.value); setFilterProduct('') }} className="select-field w-48">
                     <option value="">All Categories</option>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
-                  <select value={filterProduct} onChange={(e) => setFilterProduct(e.target.value)} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 w-56">
+                  <select value={filterProduct} onChange={(e) => setFilterProduct(e.target.value)} className="select-field w-56">
                     <option value="">All Products</option>
                     {products.map(p => <option key={p.id} value={p.id}>{p.product_name}</option>)}
                   </select>
@@ -366,13 +366,13 @@ export default function AiPage() {
                     <div
                       key={f.variant_id}
                       onClick={() => setSelectedForecast(f)}
-                      className="card p-5 hover:shadow-premium-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer animate-fade-in-up"
+                      className="card hover:shadow-premium-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer animate-fade-in-up"
                       style={{ animationDelay: `${i * 40}ms` }}
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-base font-semibold text-gray-900 dark:text-white truncate">{f.product_name}</h3>
+                            <h3 className="card-title truncate">{f.product_name}</h3>
                             {f.insufficient_data ? (
                               <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700">No History</span>
                             ) : (
@@ -383,7 +383,7 @@ export default function AiPage() {
                               }`}>{f.risk_level}</span>
                             )}
                           </div>
-                          <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center gap-3 text-muted">
                             <span className="font-mono">{f.sku}</span>
                             {f.color && <span>· {f.color}</span>}
                             {f.size && <span>· {f.size}</span>}
@@ -392,7 +392,7 @@ export default function AiPage() {
                         </div>
                         {!f.insufficient_data && (
                           <div className="text-right shrink-0 ml-4">
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Predicted (30d)</p>
+                            <p className="text-muted mb-0.5">Predicted (30d)</p>
                             <p className="text-xl font-bold text-indigo-600 dark:text-indigo-400 tabular-nums">{f.demand_30_days}</p>
                           </div>
                         )}
@@ -400,32 +400,32 @@ export default function AiPage() {
 
                       {f.insufficient_data ? (
                         <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{f.explanation}</p>
+                          <p className="text-secondary">{f.explanation}</p>
                         </div>
                       ) : (
                         <>
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
                             <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Current Stock</p>
+                              <p className="text-muted">Current Stock</p>
                               <p className="text-sm font-semibold text-gray-900 dark:text-white">{f.current_stock}</p>
                             </div>
                             <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Avg Daily</p>
+                              <p className="text-muted">Avg Daily</p>
                               <p className="text-sm font-semibold text-gray-900 dark:text-white">{f.avg_daily_sales}</p>
                             </div>
                             <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Demand (7d)</p>
+                              <p className="text-muted">Demand (7d)</p>
                               <p className="text-sm font-semibold text-gray-900 dark:text-white">{f.demand_7_days}</p>
                             </div>
                             <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Suggested Reorder</p>
+                              <p className="text-muted">Suggested Reorder</p>
                               <p className="text-sm font-semibold text-primary-600 dark:text-primary-400">+{f.suggested_reorder_qty}</p>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-4 mb-3">
                             <div className="flex-1">
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Confidence Score</p>
+                              <p className="text-muted mb-1">Confidence Score</p>
                               <div className="flex items-center gap-2">
                                 <div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                   <div className={`h-full rounded-full ${
@@ -464,7 +464,7 @@ export default function AiPage() {
                             </ResponsiveContainer>
                           </div>
 
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 leading-relaxed line-clamp-2">{f.explanation}</p>
+                          <p className="text-muted mt-3 leading-relaxed line-clamp-2">{f.explanation}</p>
                         </>
                       )}
                     </div>

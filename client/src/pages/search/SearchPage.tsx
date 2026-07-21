@@ -59,7 +59,7 @@ export default function SearchPage() {
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Global Search</h1>
+        <h1 className="page-title">Global Search</h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">Search across all modules</p>
       </div>
 
@@ -71,7 +71,7 @@ export default function SearchPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products, materials, suppliers..."
-            className="w-full px-3.5 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400/50 transition-all duration-300 pl-11 text-base lg:text-lg peer"
+            className="input-field pl-11 text-base lg:text-lg peer"
           />
           {query && (
             <button
@@ -84,7 +84,7 @@ export default function SearchPage() {
           )}
           <div className="absolute inset-x-3 bottom-0 h-0.5 bg-primary-500 scale-x-0 peer-focus:scale-x-100 transition-transform duration-300 rounded-full" />
         </div>
-        <button type="submit" className="inline-flex items-center gap-2 px-8 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-2xl shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">Search</button>
+        <button type="submit" className="btn-primary px-8">Search</button>
       </form>
 
       {loading && (
@@ -113,7 +113,7 @@ export default function SearchPage() {
               return (
                 <div key={type} className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: `${groupIndex * 80}ms` }}>
                     <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
-                  <h3 className="text-base font-semibold mb-3 capitalize flex items-center gap-2 text-gray-900 dark:text-white">
+                  <h3 className="card-title mb-3 capitalize flex items-center gap-2">
                     <Icon className="w-4 h-4" /> {type}
                     <span className="text-xs font-normal text-gray-400 ml-1">({items.length})</span>
                   </h3>
@@ -131,10 +131,10 @@ export default function SearchPage() {
                           </span>
                           <div>
                             <p className="font-medium text-sm text-gray-900 dark:text-white">{item.name}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{item.detail}</p>
+                            <p className="text-muted">{item.detail}</p>
                           </div>
                         </div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 capitalize bg-gray-100 dark:bg-gray-800/50 px-2.5 py-1 rounded-md border border-gray-200 dark:border-gray-700/50 font-medium">{item.type}</span>
+                        <span className="text-muted capitalize bg-gray-100 dark:bg-gray-800/50 px-2.5 py-1 rounded-md border border-gray-200 dark:border-gray-700/50 font-medium">{item.type}</span>
                       </button>
                     ))}
                   </div>

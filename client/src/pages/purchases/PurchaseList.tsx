@@ -20,10 +20,10 @@ export default function PurchaseList() {
   const [modalOpen, setModalOpen] = useState(false)
   const [viewPurchase, setViewPurchase] = useState<Purchase | null>(null)
 
-  const fetchData = async () => {
+  const fetchData = async (searchVal = search, pageVal = page) => {
     setLoading(true)
     try {
-      const params: any = { page, per_page: 10, search, sort_by: 'created_at', sort_order: 'desc' }
+      const params: any = { page: pageVal, per_page: 10, search: searchVal, sort_by: 'created_at', sort_order: 'desc' }
       if (statusFilter) params.status = statusFilter
       const res = await purchaseService.getAll(params)
       setPurchases(res.data.purchases)
@@ -38,10 +38,10 @@ export default function PurchaseList() {
     <div className="space-y-6 animate-fade-in-up">
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Purchases</h1>
+          <h1 className="page-title">Purchases</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Manage purchase orders</p>
         </div>
-        <button onClick={() => setModalOpen(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+        <button onClick={() => setModalOpen(true)} className="btn-primary">
           <Plus className="w-4 h-4" /> New Purchase
         </button>
       </div>
@@ -55,17 +55,17 @@ export default function PurchaseList() {
               <input
                 type="text" value={search} onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by invoice, SKU or barcode..."
-                className="w-full pl-10 pr-9 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300"
+                className="input-field pl-10 pr-9"
               />
               {search && (
-                <button type="button" onClick={() => { setSearch(''); setPage(1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <button type="button" onClick={() => { setSearch(''); setPage(1); fetchData('', 1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
-            <button type="submit" className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">Search</button>
+            <button type="submit" className="btn-primary">Search</button>
           </form>
-          <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }} className="w-full sm:w-44 px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 appearance-none cursor-pointer">
+          <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }} className="select-field w-full sm:w-44">
             <option value="">All Status</option>
             <option value="completed">Completed</option>
             <option value="pending">Pending</option>
@@ -150,7 +150,7 @@ export default function PurchaseList() {
                   <Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 </span>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Supplier</p>
+                  <p className="text-muted mb-0.5">Supplier</p>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{viewPurchase.supplier_name || 'N/A'}</p>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function PurchaseList() {
                   <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 </span>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Date</p>
+                  <p className="text-muted mb-0.5">Date</p>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{viewPurchase.purchase_date ? new Date(viewPurchase.purchase_date).toLocaleDateString() : 'N/A'}</p>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function PurchaseList() {
                   <Tag className="w-4 h-4 text-primary-600 dark:text-primary-400" />
                 </span>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Status</p>
+                  <p className="text-muted mb-0.5">Status</p>
                   <span className={`badge-${viewPurchase.status === 'completed' ? 'success' : viewPurchase.status === 'cancelled' ? 'danger' : 'warning'}`}>{viewPurchase.status}</span>
                 </div>
               </div>
@@ -177,7 +177,7 @@ export default function PurchaseList() {
                   <FileText className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 </span>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Notes</p>
+                  <p className="text-muted mb-0.5">Notes</p>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{viewPurchase.notes || 'N/A'}</p>
                 </div>
               </div>

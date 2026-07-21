@@ -64,9 +64,9 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 
 function SectionCard({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
   return (
-    <div className="card p-5 animate-fade-in-up">
-      {title && <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">{title}</h3>}
-      {desc && <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{desc}</p>}
+    <div className="card animate-fade-in-up">
+      {title && <h3 className="card-title mb-1">{title}</h3>}
+      {desc && <p className="text-muted mb-4">{desc}</p>}
       {children}
     </div>
   )
@@ -75,7 +75,7 @@ function SectionCard({ title, desc, children }: { title: string; desc?: string; 
 function FormField({ label, id, children }: { label: string; id?: string; children: React.ReactNode }) {
   return (
     <div className="mb-3.5 last:mb-0">
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+      <label htmlFor={id} className="form-label mb-1">{label}</label>
       {children}
     </div>
   )
@@ -87,7 +87,7 @@ function Select({ value, onChange, options, id }: { value: string; onChange: (v:
       id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300"
+      className="input-field cursor-pointer"
     >
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
@@ -134,7 +134,7 @@ function SecurityInfo() {
     <SectionCard title="Session Information">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-          <p className="text-xs text-gray-500 dark:text-gray-400">Active Sessions (24h)</p>
+          <p className="text-muted">Active Sessions (24h)</p>
           <p className="text-lg font-bold text-gray-900 dark:text-white">{sessions ?? '—'}</p>
         </div>
       </div>
@@ -451,9 +451,9 @@ export default function SettingsPage() {
 
   return (
     <>
-    <div className="space-y-5 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Settings</h1>
+        <h1 className="page-title">Settings</h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">System configuration and preferences</p>
       </div>
 
@@ -509,25 +509,25 @@ export default function SettingsPage() {
                         </button>
                       )}
                     </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-secondary">
                     <p className="font-medium text-gray-900 dark:text-white">{profile.full_name || 'Your Name'}</p>
                     <p>Click the upload button to change your avatar</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField label="Full Name">
-                    <input id="full_name" type="text" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={profile.full_name} onChange={(e) => updateProfileField('full_name', e.target.value)} placeholder="John Doe" />
+                    <input id="full_name" type="text" className="input-field" value={profile.full_name} onChange={(e) => updateProfileField('full_name', e.target.value)} placeholder="John Doe" />
                   </FormField>
                   <FormField label="Email">
-                    <input id="email" type="email" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={profile.email} onChange={(e) => updateProfileField('email', e.target.value)} placeholder="john@example.com" />
+                    <input id="email" type="email" className="input-field" value={profile.email} onChange={(e) => updateProfileField('email', e.target.value)} placeholder="john@example.com" />
                   </FormField>
                   <FormField label="Phone">
-                    <input id="phone" type="tel" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={profile.phone} onChange={(e) => updateProfileField('phone', e.target.value)} placeholder="+91 9876543210" />
+                    <input id="phone" type="tel" className="input-field" value={profile.phone} onChange={(e) => updateProfileField('phone', e.target.value)} placeholder="+91 9876543210" />
                   </FormField>
                 </div>
                 <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
-                  <button onClick={() => loadAll()} className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">Cancel</button>
-                  <button onClick={saveProfile} disabled={saving} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+                  <button onClick={() => loadAll()} className="btn-secondary">Cancel</button>
+                  <button onClick={saveProfile} disabled={saving} className="btn-primary">
                     {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                     Save Profile
                   </button>
@@ -538,21 +538,21 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField label="Current Password">
                     <div className="relative">
-                      <input id="current_password" type={showPassword ? 'text' : 'password'} className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 pr-9" value={passwordForm.current_password} onChange={(e) => setPasswordForm((p) => ({ ...p, current_password: e.target.value }))} />
+                      <input id="current_password" type={showPassword ? 'text' : 'password'} className="input-field pr-9" value={passwordForm.current_password} onChange={(e) => setPasswordForm((p) => ({ ...p, current_password: e.target.value }))} />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                         {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </button>
                     </div>
                   </FormField>
                   <FormField label="New Password">
-                    <input id="new_password" type="password" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={passwordForm.new_password} onChange={(e) => setPasswordForm((p) => ({ ...p, new_password: e.target.value }))} />
+                    <input id="new_password" type="password" className="input-field" value={passwordForm.new_password} onChange={(e) => setPasswordForm((p) => ({ ...p, new_password: e.target.value }))} />
                   </FormField>
                   <FormField label="Confirm Password">
-                    <input id="confirm_password" type="password" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={passwordForm.confirm} onChange={(e) => setPasswordForm((p) => ({ ...p, confirm: e.target.value }))} />
+                    <input id="confirm_password" type="password" className="input-field" value={passwordForm.confirm} onChange={(e) => setPasswordForm((p) => ({ ...p, confirm: e.target.value }))} />
                   </FormField>
                 </div>
                 <div className="flex justify-end mt-3">
-                  <button onClick={changePassword} disabled={saving} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+                  <button onClick={changePassword} disabled={saving} className="btn-primary">
                     {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Key className="w-3.5 h-3.5" />}
                     Change Password
                   </button>
@@ -582,27 +582,27 @@ export default function SettingsPage() {
                       <X className="w-3 h-3" /> Remove
                     </button>
                   )}
-                  <p className="text-xs text-gray-400 ml-1">PNG, JPG or SVG. 1MB max.</p>
+                  <p className="text-hint ml-1">PNG, JPG or SVG. 1MB max.</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Company Name">
-                  <input type="text" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.company.company_name || ''} onChange={(e) => updateSetting('company', 'company_name', e.target.value)} placeholder="My Company" />
+                  <input type="text" className="input-field" value={settings.company.company_name || ''} onChange={(e) => updateSetting('company', 'company_name', e.target.value)} placeholder="My Company" />
                 </FormField>
                 <FormField label="GST / Tax Number">
-                  <input type="text" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.company.company_gst || ''} onChange={(e) => updateSetting('company', 'company_gst', e.target.value)} placeholder="GSTIN" />
+                  <input type="text" className="input-field" value={settings.company.company_gst || ''} onChange={(e) => updateSetting('company', 'company_gst', e.target.value)} placeholder="GSTIN" />
                 </FormField>
                 <FormField label="Email">
-                  <input type="email" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.company.company_email || ''} onChange={(e) => updateSetting('company', 'company_email', e.target.value)} placeholder="company@example.com" />
+                  <input type="email" className="input-field" value={settings.company.company_email || ''} onChange={(e) => updateSetting('company', 'company_email', e.target.value)} placeholder="company@example.com" />
                 </FormField>
                 <FormField label="Phone">
-                  <input type="tel" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.company.company_phone || ''} onChange={(e) => updateSetting('company', 'company_phone', e.target.value)} placeholder="+91 9876543210" />
+                  <input type="tel" className="input-field" value={settings.company.company_phone || ''} onChange={(e) => updateSetting('company', 'company_phone', e.target.value)} placeholder="+91 9876543210" />
                 </FormField>
                 <FormField label="Website">
-                  <input type="url" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.company.company_website || ''} onChange={(e) => updateSetting('company', 'company_website', e.target.value)} placeholder="https://example.com" />
+                  <input type="url" className="input-field" value={settings.company.company_website || ''} onChange={(e) => updateSetting('company', 'company_website', e.target.value)} placeholder="https://example.com" />
                 </FormField>
                 <FormField label="Address">
-                  <textarea className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 resize-none" rows={2} value={settings.company.company_address || ''} onChange={(e) => updateSetting('company', 'company_address', e.target.value)} placeholder="123 Business St, City" />
+                  <textarea className="input-field resize-none" rows={2} value={settings.company.company_address || ''} onChange={(e) => updateSetting('company', 'company_address', e.target.value)} placeholder="123 Business St, City" />
                 </FormField>
                 <FormField label="Currency">
                   <Select value={settings.company.company_currency || 'INR'} onChange={(v) => updateSetting('company', 'company_currency', v)} options={CURRENCIES} />
@@ -619,10 +619,10 @@ export default function SettingsPage() {
             <SectionCard title="Inventory Defaults" desc="Configure inventory management preferences">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Default Low Stock Threshold">
-                  <input type="number" min="0" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.inventory.inventory_low_stock_threshold || '10'} onChange={(e) => updateSetting('inventory', 'inventory_low_stock_threshold', e.target.value)} />
+                  <input type="number" min="0" className="input-field" value={settings.inventory.inventory_low_stock_threshold || '10'} onChange={(e) => updateSetting('inventory', 'inventory_low_stock_threshold', e.target.value)} />
                 </FormField>
                 <FormField label="Default Product Category">
-                  <input type="text" className="w-full px-3.5 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" value={settings.inventory.inventory_default_category || ''} onChange={(e) => updateSetting('inventory', 'inventory_default_category', e.target.value)} placeholder="General" />
+                  <input type="text" className="input-field" value={settings.inventory.inventory_default_category || ''} onChange={(e) => updateSetting('inventory', 'inventory_default_category', e.target.value)} placeholder="General" />
                 </FormField>
               </div>
               <div className="mt-4 space-y-3">
@@ -744,7 +744,7 @@ export default function SettingsPage() {
                 </div>
                 <div className="flex items-center justify-between py-2 border-t border-gray-100 dark:border-gray-700">
                   <div><p className="text-sm font-medium text-gray-900 dark:text-white">Compact Sidebar</p><p className="text-xs text-gray-500">Use a narrower sidebar layout</p></div>
-                  <Toggle checked={settings.appearance.appearance_compact_sidebar === 'true'} onChange={(v) => { updateSetting('appearance', 'appearance_compact_sidebar', v ? 'true' : 'false'); document.documentElement.classList.toggle('compact-sidebar', v); localStorage.setItem('sidebarCompact', JSON.stringify(v)) }} />
+                  <Toggle checked={settings.appearance.appearance_compact_sidebar === 'true'} onChange={(v) => { updateSetting('appearance', 'appearance_compact_sidebar', v ? 'true' : 'false'); document.documentElement.classList.toggle('compact-sidebar', v); localStorage.setItem('sidebarCompact', JSON.stringify(v)); localStorage.setItem('sidebarCollapsed', String(v)); window.dispatchEvent(new CustomEvent('sidebarCollapsedChange', { detail: v })) }} />
                 </div>
               </div>
             </SectionCard>
@@ -771,7 +771,7 @@ export default function SettingsPage() {
                   <Database className="w-8 h-8 text-primary-500 mb-2" />
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Export Settings</h4>
                   <p className="text-xs text-gray-500 mb-3">Download all system settings as a JSON backup file.</p>
-                  <button onClick={handleExportBackup} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 w-fit">
+                  <button onClick={handleExportBackup} className="btn-primary w-fit">
                     <Download className="w-3.5 h-3.5" /> Export
                   </button>
                 </div>
@@ -794,31 +794,31 @@ export default function SettingsPage() {
               {about ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Project Name</p>
+                    <p className="text-muted mb-1">Project Name</p>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.project_name}</p>
                   </div>
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Version</p>
+                    <p className="text-muted mb-1">Version</p>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.version}</p>
                   </div>
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-3">
                     <div className={`w-2.5 h-2.5 rounded-full ${about.backend_status === 'healthy' ? 'bg-emerald-500' : 'bg-red-500'}`} />
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Backend Status</p>
+                      <p className="text-muted">Backend Status</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white capitalize">{about.backend_status}</p>
                     </div>
                   </div>
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-3">
                     <div className={`w-2.5 h-2.5 rounded-full ${about.database_status === 'connected' ? 'bg-emerald-500' : 'bg-red-500'}`} />
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Database Status</p>
+                      <p className="text-muted">Database Status</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white capitalize">{about.database_status}</p>
                     </div>
                   </div>
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-3">
                     <div className={`w-2.5 h-2.5 rounded-full ${about.ai_status === 'available' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">AI Status</p>
+                      <p className="text-muted">AI Status</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white capitalize">{about.ai_status}</p>
                     </div>
                   </div>
@@ -838,10 +838,10 @@ export default function SettingsPage() {
                 <RotateCcw className="w-3.5 h-3.5" /> Reset to Defaults
               </button>
               <div className="flex gap-2">
-                <button onClick={() => loadAll()} className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">
+                <button onClick={() => loadAll()} className="btn-secondary">
                   <X className="w-3.5 h-3.5" /> Cancel
                 </button>
-                <button onClick={handleSave} disabled={saving || !isDirty()} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+                <button onClick={handleSave} disabled={saving || !isDirty()} className="btn-primary">
                   {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                   Save Changes
                 </button>

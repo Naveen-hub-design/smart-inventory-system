@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom'
 import { notificationService } from '../../services/dataService'
 
 interface NavbarProps {
-  onMenuClick: () => void
+  onToggle: () => void
 }
 
-export default function Navbar({ onMenuClick }: NavbarProps) {
+export default function Navbar({ onToggle }: NavbarProps) {
   const { user, logout, isAdmin } = useAuth()
   const { darkMode, toggleDarkMode } = useTheme()
   const [profileOpen, setProfileOpen] = useState(false)
@@ -52,7 +52,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
     <header className="sticky top-0 z-30 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50">
       <div className="flex items-center justify-between px-4 py-2.5">
         <div className="flex items-center gap-3">
-          <button onClick={onMenuClick} className="lg:hidden p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+          <button onClick={onToggle} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
             <Menu className="w-5 h-5" />
           </button>
           <form onSubmit={handleSearch} className="hidden sm:flex items-center">
@@ -107,12 +107,12 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
               <div className="absolute right-0 mt-2 w-56 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-premium-xl border border-gray-200/80 dark:border-gray-700/50 py-1 animate-scale-in origin-top-right">
                 <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.full_name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{user?.email}</p>
+                  <p className="text-muted mt-0.5">{user?.email}</p>
                   <span className="inline-block mt-2 badge-info">{isAdmin ? 'Admin' : 'Staff'}</span>
                 </div>
                 <button
                   onClick={() => { navigate('/profile'); setProfileOpen(false) }}
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-body hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <User className="w-4 h-4 text-gray-400" /> Profile
                 </button>

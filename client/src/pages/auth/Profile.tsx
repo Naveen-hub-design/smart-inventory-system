@@ -68,7 +68,7 @@ export default function Profile() {
   return (
     <div className="max-w-2xl space-y-6 animate-fade-in-up">
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Profile</h1>
+        <h1 className="page-title">Profile</h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your account settings</p>
       </div>
 
@@ -82,7 +82,7 @@ export default function Profile() {
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">{user?.full_name}</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
+            <p className="text-secondary">{user?.email}</p>
             <span className="badge-info mt-2 inline-block">{user?.role}</span>
           </div>
         </div>
@@ -91,21 +91,21 @@ export default function Profile() {
           <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 text-sm"><User className="w-4 h-4 text-primary-500" /> Edit Profile</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Full Name</label>
+              <label className="form-label">Full Name</label>
               <input {...profileForm.register('full_name')} className="input-field" />
-              {profileForm.formState.errors.full_name && <p className="text-red-500 text-xs mt-1">{profileForm.formState.errors.full_name.message}</p>}
+              {profileForm.formState.errors.full_name && <p className="text-red-500 text-xs mt-1 animate-fade-in">{profileForm.formState.errors.full_name.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+              <label className="form-label">Email</label>
               <input {...profileForm.register('email')} className="input-field" />
-              {profileForm.formState.errors.email && <p className="text-red-500 text-xs mt-1">{profileForm.formState.errors.email.message}</p>}
+              {profileForm.formState.errors.email && <p className="text-red-500 text-xs mt-1 animate-fade-in">{profileForm.formState.errors.email.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Phone</label>
+              <label className="form-label">Phone</label>
               <input {...profileForm.register('phone')} className="input-field" />
             </div>
           </div>
-          <button type="submit" disabled={saving} className="btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/20">
+          <button type="submit" disabled={saving} className="btn-primary">
             <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </form>
@@ -133,22 +133,22 @@ export default function Profile() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Current Password</label>
+              <label className="form-label">Current Password</label>
               <input {...passwordForm.register('current_password')} id="current_password" type="password" className="input-field" />
-              {passwordForm.formState.errors.current_password && <p className="text-red-500 text-xs mt-1">{passwordForm.formState.errors.current_password.message}</p>}
+              {passwordForm.formState.errors.current_password && <p className="text-red-500 text-xs mt-1 animate-fade-in">{passwordForm.formState.errors.current_password.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">New Password</label>
+              <label className="form-label">New Password</label>
               <input {...passwordForm.register('new_password')} type="password" className="input-field" />
-              {passwordForm.formState.errors.new_password && <p className="text-red-500 text-xs mt-1">{passwordForm.formState.errors.new_password.message}</p>}
+              {passwordForm.formState.errors.new_password && <p className="text-red-500 text-xs mt-1 animate-fade-in">{passwordForm.formState.errors.new_password.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Confirm Password</label>
+              <label className="form-label">Confirm Password</label>
               <input {...passwordForm.register('confirm_password')} type="password" className="input-field" />
-              {passwordForm.formState.errors.confirm_password && <p className="text-red-500 text-xs mt-1">{passwordForm.formState.errors.confirm_password.message}</p>}
+              {passwordForm.formState.errors.confirm_password && <p className="text-red-500 text-xs mt-1 animate-fade-in">{passwordForm.formState.errors.confirm_password.message}</p>}
             </div>
           </div>
-          <button type="submit" disabled={changingPwd} className="btn-primary flex items-center gap-2 shadow-lg shadow-primary-500/20">
+          <button type="submit" disabled={changingPwd} className="btn-primary">
             <Lock className="w-4 h-4" /> {changingPwd ? 'Changing...' : 'Change Password'}
           </button>
         </form>

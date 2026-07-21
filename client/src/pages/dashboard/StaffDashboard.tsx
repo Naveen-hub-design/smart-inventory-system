@@ -88,13 +88,13 @@ export default function StaffDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Staff Dashboard</h1>
+          <h1 className="page-title">Staff Dashboard</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Daily operations at a glance</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div onClick={() => navigate('/sales')} className="relative overflow-hidden group rounded-2xl bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer">
+        <div onClick={() => navigate('/sales')} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer">
           <div className="flex items-start justify-between mb-3">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Today's Sales</span>
             <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -106,7 +106,7 @@ export default function StaffDashboard() {
           </p>
         </div>
 
-        <div onClick={() => navigate('/products')} className="relative overflow-hidden group rounded-2xl bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '50ms' }}>
+        <div onClick={() => navigate('/products')} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '50ms' }}>
           <div className="flex items-start justify-between mb-3">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Available Products</span>
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -118,7 +118,7 @@ export default function StaffDashboard() {
           </p>
         </div>
 
-        <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="relative overflow-hidden group rounded-2xl bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '100ms' }}>
+        <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '100ms' }}>
           <div className="flex items-start justify-between mb-3">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Low Stock Alerts</span>
             <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -133,7 +133,7 @@ export default function StaffDashboard() {
           )}
         </div>
 
-        <div onClick={() => navigate('/sales')} className="relative overflow-hidden group rounded-2xl bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '150ms' }}>
+        <div onClick={() => navigate('/sales')} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '150ms' }}>
           <div className="flex items-start justify-between mb-3">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Sales</span>
             <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -152,7 +152,7 @@ export default function StaffDashboard() {
           <div className="w-7 h-7 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
             <Users className="w-4 h-4 text-primary-600 dark:text-primary-400" />
           </div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white">Employee Summary</h3>
+          <h3 className="card-title">Employee Summary</h3>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="flex items-center gap-2.5 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
@@ -199,7 +199,7 @@ export default function StaffDashboard() {
         <div className="lg:col-span-2 grid grid-cols-1 gap-5">
           <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-indigo-500" />
-            <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="card-title mb-4 flex items-center gap-2">
               <ActivityIcon className="w-4 h-4 text-indigo-500" />
               Recent Activities
             </h3>
@@ -212,7 +212,7 @@ export default function StaffDashboard() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-900 dark:text-white leading-snug">{a.description}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-hint mt-0.5">
                       {a.timestamp ? new Date(a.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
                     </p>
                   </div>
@@ -225,7 +225,7 @@ export default function StaffDashboard() {
         <div className="space-y-5">
           <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 to-violet-500" />
-            <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Quick Actions</h3>
+            <h3 className="card-title mb-4">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-3">
               {quickActions.map((action) => (
                 <button
@@ -244,21 +244,21 @@ export default function StaffDashboard() {
 
           <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500" />
-            <h3 className="text-base font-semibold mb-3 text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="card-title mb-3 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               Low Stock Summary
             </h3>
             <div className="space-y-2">
               <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="flex items-center justify-between p-3 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 cursor-pointer transition-all duration-200 hover:shadow-premium-sm">
-                <span className="text-sm text-gray-700 dark:text-gray-300">Product Variants</span>
+                <span className="text-body">Product Variants</span>
                 <span className="text-sm font-bold text-amber-600 tabular-nums">{stats?.low_stock_variants || 0}</span>
               </div>
               <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="flex items-center justify-between p-3 rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 cursor-pointer transition-all duration-200 hover:shadow-premium-sm">
-                <span className="text-sm text-gray-700 dark:text-gray-300">Out of Stock</span>
+                <span className="text-body">Out of Stock</span>
                 <span className="text-sm font-bold text-red-600 tabular-nums">{stats?.out_of_stock_count || 0}</span>
               </div>
               <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 cursor-pointer transition-all duration-200 hover:shadow-premium-sm">
-                <span className="text-sm text-gray-700 dark:text-gray-300">Legacy Low Stock</span>
+                <span className="text-body">Legacy Low Stock</span>
                 <span className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{stats?.low_stock_count || 0}</span>
               </div>
             </div>

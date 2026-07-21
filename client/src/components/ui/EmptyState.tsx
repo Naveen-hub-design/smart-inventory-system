@@ -20,8 +20,8 @@ export default function EmptyState({
           {icon || <Inbox className="w-10 h-10" />}
         </div>
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 tracking-tight">{title}</h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-sm leading-relaxed">{description}</p>
+      <h3 className="section-title mb-2 tracking-tight">{title}</h3>
+      <p className="text-secondary mb-6 max-w-sm leading-relaxed">{description}</p>
       {action && <div className="animate-fade-in">{action}</div>}
     </div>
   )

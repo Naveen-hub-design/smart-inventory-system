@@ -177,17 +177,17 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Name *</label>
-          <input {...register('product_name')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="Enter product name" />
-          {errors.product_name && <p className="text-red-500 text-xs mt-1">{errors.product_name.message}</p>}
+          <label className="form-label">Product Name *</label>
+          <input {...register('product_name')} className="input-field" placeholder="Enter product name" />
+          {errors.product_name && <p className="text-red-500 text-xs mt-1 animate-fade-in">{errors.product_name.message}</p>}
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-          <select {...register('category_id')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300">
+          <label className="form-label">Category</label>
+          <select {...register('category_id')} className="select-field">
             <option value="">Select Category</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
@@ -196,44 +196,44 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Price *</label>
+          <label className="form-label">Price *</label>
           <div className="relative">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">₹</span>
-            <input {...register('price')} type="number" step="0.01" className="w-full pl-8 pr-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="0.00" />
+            <input {...register('price')} type="number" step="0.01" className="input-field pl-8" placeholder="0.00" />
           </div>
-          {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price.message}</p>}
+          {errors.price && <p className="text-red-500 text-xs mt-1 animate-fade-in">{errors.price.message}</p>}
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Stock Alert</label>
-          <input {...register('min_stock')} type="number" className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="10" />
+          <label className="form-label">Min Stock Alert</label>
+          <input {...register('min_stock')} type="number" className="input-field" placeholder="10" />
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+          <label className="form-label">Quantity</label>
           {hasExistingVariants || hasNewVariants ? (
-            <div className="w-full px-3.5 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-500 dark:text-gray-400 cursor-not-allowed flex items-center gap-2">
+            <div className="w-full px-3.5 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-secondary cursor-not-allowed flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-primary-400 animate-pulse" />
               Auto-calculated from variants: {totalStock}
             </div>
           ) : (
-            <input {...register('quantity')} type="number" className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300" placeholder="0" />
+            <input {...register('quantity')} type="number" className="input-field" placeholder="0" />
           )}
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-          <select {...register('status')} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300">
+          <label className="form-label">Status</label>
+          <select {...register('status')} className="select-field">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
 
         <div className="space-y-1.5 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
+          <label className="form-label">Image</label>
           <div className="flex items-center gap-4">
             <label className="flex-1 cursor-pointer">
-              <div className="flex items-center gap-3 px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50/50 dark:hover:bg-primary-900/10 transition-all duration-300">
+              <div className="flex items-center gap-3 px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-secondary hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50/50 dark:hover:bg-primary-900/10 transition-all duration-300">
                 <ImageIcon className="w-4 h-4" />
                 <span>{imageFile ? imageFile.name : product?.image ? 'Change image' : 'Upload image'}</span>
               </div>
@@ -249,17 +249,17 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-        <textarea {...register('description')} rows={3} className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400/50 transition-all duration-300 resize-none" placeholder="Product description..." />
+        <label className="form-label">Description</label>
+        <textarea {...register('description')} rows={3} className="input-field resize-none" placeholder="Product description..." />
       </div>
 
       <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Product Variants</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Add size and color combinations</p>
+            <h3 className="section-title">Product Variants</h3>
+            <p className="text-muted mt-0.5">Add size and color combinations</p>
           </div>
-          <button type="button" onClick={addVariant} className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-medium rounded-xl shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200">
+          <button type="button" onClick={addVariant} className="btn-primary">
             <Plus className="w-3.5 h-3.5" /> Add Variant
           </button>
         </div>
@@ -274,7 +274,7 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[60px]">{v.color}</span>
                   <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[36px]">{v.size}</span>
                   <span className="text-[11px] text-gray-400 font-mono flex-1 truncate">{v.sku}</span>
-                  <span className="text-sm text-gray-700 dark:text-gray-300 font-medium tabular-nums">Stock: {v.stock}</span>
+                  <span className="text-body font-medium tabular-nums">Stock: {v.stock}</span>
                   {v.stock <= v.min_stock && (
                     <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 font-medium">Low</span>
                   )}
@@ -344,14 +344,14 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
           <div className="text-center py-8 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl transition-colors hover:border-gray-300 dark:hover:border-gray-600">
             <Package className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
             <p className="text-sm text-gray-400 dark:text-gray-500">No variants added yet.</p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Click &ldquo;+ Add Variant&rdquo; to add size/color combinations.</p>
+            <p className="text-hint mt-0.5">Click &ldquo;+ Add Variant&rdquo; to add size/color combinations.</p>
           </div>
         )}
       </div>
 
       <div className="flex justify-end gap-3 pt-5 border-t border-gray-100 dark:border-gray-800">
-        <button type="button" onClick={onCancel} className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.97]">Cancel</button>
-        <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 disabled:from-primary-500/50 disabled:to-primary-600/50 text-white text-sm font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.97] transition-all duration-200 disabled:cursor-not-allowed">
+        <button type="button" onClick={onCancel} className="btn-secondary">Cancel</button>
+        <button type="submit" disabled={loading} className="btn-primary">
           {loading ? (
             <span className="flex items-center gap-2">
               <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />

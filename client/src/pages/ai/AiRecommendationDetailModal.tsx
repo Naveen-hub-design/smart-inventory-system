@@ -79,43 +79,43 @@ export default function AiRecommendationDetailModal({ variantId, onClose }: Prop
 
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Product</p>
+              <p className="text-muted mb-1">Product</p>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.product_name}</p>
             </div>
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">SKU</p>
+              <p className="text-muted mb-1">SKU</p>
               <p className="text-sm font-mono font-semibold text-gray-900 dark:text-white">{detail.sku}</p>
             </div>
             {detail.color && (
               <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Variant</p>
+                <p className="text-muted mb-1">Variant</p>
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">{[detail.color, detail.size].filter(Boolean).join(' · ')}</p>
               </div>
             )}
             {detail.category && (
               <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Category</p>
+                <p className="text-muted mb-1">Category</p>
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.category}</p>
               </div>
             )}
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1"><Package className="w-3 h-3" /> Current Stock</p>
+              <p className="text-muted mb-1 flex items-center gap-1"><Package className="w-3 h-3" /> Current Stock</p>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.current_stock}</p>
             </div>
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Min Stock</p>
+              <p className="text-muted mb-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> Min Stock</p>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.min_stock}</p>
             </div>
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1"><ShoppingCart className="w-3 h-3" /> Avg Daily Sales</p>
+              <p className="text-muted mb-1 flex items-center gap-1"><ShoppingCart className="w-3 h-3" /> Avg Daily Sales</p>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.avg_daily_sales}</p>
             </div>
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1"><BarChart3 className="w-3 h-3" /> Avg Monthly Sales</p>
+              <p className="text-muted mb-1 flex items-center gap-1"><BarChart3 className="w-3 h-3" /> Avg Monthly Sales</p>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.avg_monthly_sales}</p>
             </div>
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1"><CalendarDays className="w-3 h-3" /> Est. Days Remaining</p>
+              <p className="text-muted mb-1 flex items-center gap-1"><CalendarDays className="w-3 h-3" /> Est. Days Remaining</p>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">
                 {detail.days_remaining !== null && detail.days_remaining < 999
                   ? `${detail.days_remaining} days`
@@ -123,7 +123,7 @@ export default function AiRecommendationDetailModal({ variantId, onClose }: Prop
               </p>
             </div>
             <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-700/50">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1"><Brain className="w-3 h-3" /> Recommended Order</p>
+              <p className="text-muted mb-1 flex items-center gap-1"><Brain className="w-3 h-3" /> Recommended Order</p>
               <p className="text-sm font-semibold text-primary-600 dark:text-primary-400">{detail.suggested_reorder_qty} units</p>
             </div>
           </div>
@@ -132,12 +132,12 @@ export default function AiRecommendationDetailModal({ variantId, onClose }: Prop
             <div className="flex items-center gap-2">
               {trendIcon()}
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Sales Trend</p>
+                <p className="text-muted">Sales Trend</p>
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">{detail.sales_trend}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Confidence</p>
+              <p className="text-muted">Confidence</p>
               <p className={`text-sm font-bold ${confidenceColor()}`}>{detail.confidence_score}%</p>
               <div className="w-20 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mt-1 ml-auto">
                 <div className={`h-full rounded-full transition-all ${confidenceBarColor()}`} style={{ width: `${detail.confidence_score}%` }} />
@@ -149,7 +149,7 @@ export default function AiRecommendationDetailModal({ variantId, onClose }: Prop
             <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-2 flex items-center gap-1">
               <Brain className="w-3.5 h-3.5" /> AI Analysis
             </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{detail.explanation}</p>
+            <p className="text-body leading-relaxed">{detail.explanation}</p>
           </div>
         </div>
       )}

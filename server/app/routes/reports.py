@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify, send_file
 from app.models.product import Product
 from app.middleware.auth import staff_required
-from app.models.sale import Sale
-from app.models.purchase import Purchase
+from app.models.sale import Sale, SaleItem
+from app.models.purchase import Purchase, PurchaseItem
 from app.models.supplier import Supplier
 from app.models.raw_material import RawMaterial
 from app.routes.settings import get_setting
@@ -12,6 +12,8 @@ import openpyxl
 import io
 
 reports_bp = Blueprint('reports', __name__)
+
+PREVIEW_LIMIT = 20
 
 def parse_date(date_str, param_name):
     if not date_str:
@@ -43,22 +45,22 @@ def inventory_report():
     default_fmt = get_setting('report_default_format', 'json')
     format_type = request.args.get('format', default_fmt)
 
-    products = Product.query.filter_by(status='active').all()
+    products = Product.query.filter_by(status='active').limit(PREVIEW_LIMIT if format_type != 'excel' else None).all()
+
     data = [{
         'Product': p.product_name,
+        'SKU': p.barcode or 'N/A',
         'Category': p.category.name if p.category else 'N/A',
-        'Size': p.size or 'N/A',
-        'Color': p.color or 'N/A',
-        'Price': float(p.price),
-        'Quantity': p.quantity,
-        'Min Stock': p.min_stock,
-        'Status': 'Low Stock' if p.quantity <= p.min_stock else 'In Stock'
+        'Current Stock': p.quantity,
+        'Minimum Stock': p.min_stock,
+        'Status': 'Out of Stock' if p.quantity == 0 else ('Low Stock' if p.quantity <= p.min_stock else 'In Stock')
     } for p in products]
 
     if format_type == 'excel':
+        all_products = Product.query.filter_by(status='active').all()
         wb = generate_excel('Inventory_Report',
             ['Product', 'Category', 'Size', 'Color', 'Price', 'Quantity', 'Min Stock', 'Status'],
-            [[d['Product'], d['Category'], d['Size'], d['Color'], d['Price'], d['Quantity'], d['Min Stock'], d['Status']] for d in data]
+            [[p.product_name, p.category.name if p.category else 'N/A', p.size or 'N/A', p.color or 'N/A', float(p.price), p.quantity, p.min_stock, 'Low Stock' if p.quantity <= p.min_stock else 'In Stock'] for p in all_products]
         )
         output = io.BytesIO()
         wb.save(output)
@@ -67,6 +69,7 @@ def inventory_report():
                         as_attachment=True, download_name='inventory_report.xlsx')
 
     return jsonify({'data': data, 'count': len(data)}), 200
+
 
 @reports_bp.route('/sales', methods=['GET'])
 @staff_required
@@ -89,23 +92,22 @@ def sales_report():
         query = query.filter(Sale.sale_date <= end_dt)
 
     sales = query.order_by(Sale.sale_date.desc()).all()
-    data = [{
-        'Invoice': s.invoice_number,
-        'Customer': s.customer_name or 'Walk-in',
-        'Date': s.sale_date.strftime('%Y-%m-%d') if s.sale_date else '',
-        'Total': float(s.total_amount),
-        'Discount': float(s.discount),
-        'Tax': float(s.tax),
-        'Grand Total': float(s.grand_total),
-        'Payment': s.payment_method
-    } for s in sales]
-
-    total_sales = sum(d['Grand Total'] for d in data)
 
     if format_type == 'excel':
+        excel_rows = []
+        for s in sales:
+            for item in s.items:
+                excel_rows.append([
+                    s.invoice_number,
+                    s.customer_name or 'Walk-in',
+                    item.product.product_name if item.product else (item.variant.product.product_name if item.variant else 'N/A'),
+                    item.quantity,
+                    float(item.total_price),
+                    s.sale_date.strftime('%Y-%m-%d') if s.sale_date else ''
+                ])
         wb = generate_excel('Sales_Report',
-            ['Invoice', 'Customer', 'Date', 'Total', 'Discount', 'Tax', 'Grand Total', 'Payment'],
-            [[d['Invoice'], d['Customer'], d['Date'], d['Total'], d['Discount'], d['Tax'], d['Grand Total'], d['Payment']] for d in data]
+            ['Invoice', 'Customer', 'Product', 'Quantity', 'Total', 'Date'],
+            excel_rows
         )
         output = io.BytesIO()
         wb.save(output)
@@ -113,7 +115,27 @@ def sales_report():
         return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         as_attachment=True, download_name='sales_report.xlsx')
 
-    return jsonify({'data': data, 'total_sales': total_sales, 'count': len(data)}), 200
+    data = []
+    count = 0
+    for s in sales:
+        for item in s.items:
+            if count >= PREVIEW_LIMIT:
+                break
+            product_name = item.product.product_name if item.product else (item.variant.product.product_name if item.variant else 'N/A')
+            data.append({
+                'Invoice': s.invoice_number,
+                'Customer': s.customer_name or 'Walk-in',
+                'Product': product_name,
+                'Quantity': item.quantity,
+                'Total': float(item.total_price),
+                'Date': s.sale_date.strftime('%Y-%m-%d') if s.sale_date else ''
+            })
+            count += 1
+        if count >= PREVIEW_LIMIT:
+            break
+
+    return jsonify({'data': data, 'count': len(data)}), 200
+
 
 @reports_bp.route('/purchases', methods=['GET'])
 @staff_required
@@ -136,23 +158,22 @@ def purchase_report():
         query = query.filter(Purchase.purchase_date <= end_dt)
 
     purchases = query.order_by(Purchase.purchase_date.desc()).all()
-    data = [{
-        'Invoice': p.invoice_number,
-        'Supplier': p.supplier.supplier_name if p.supplier else 'N/A',
-        'Date': p.purchase_date.strftime('%Y-%m-%d') if p.purchase_date else '',
-        'Total': float(p.total_amount),
-        'Discount': float(p.discount or 0),
-        'Tax': float(p.tax or 0),
-        'Grand Total': float(p.grand_total),
-        'Status': p.status
-    } for p in purchases]
-
-    total_purchases = sum(d['Grand Total'] for d in data)
 
     if format_type == 'excel':
+        excel_rows = []
+        for p in purchases:
+            for item in p.items:
+                excel_rows.append([
+                    p.invoice_number,
+                    p.supplier.supplier_name if p.supplier else 'N/A',
+                    item.material.material_name if item.material else (item.variant.product.product_name if item.variant else 'N/A'),
+                    float(item.quantity),
+                    float(item.total_price),
+                    p.purchase_date.strftime('%Y-%m-%d') if p.purchase_date else ''
+                ])
         wb = generate_excel('Purchase_Report',
-            ['Invoice', 'Supplier', 'Date', 'Total', 'Discount', 'Tax', 'Grand Total', 'Status'],
-            [[d['Invoice'], d['Supplier'], d['Date'], d['Total'], d['Discount'], d['Tax'], d['Grand Total'], d['Status']] for d in data]
+            ['Purchase No', 'Supplier', 'Material', 'Quantity', 'Cost', 'Date'],
+            excel_rows
         )
         output = io.BytesIO()
         wb.save(output)
@@ -160,7 +181,27 @@ def purchase_report():
         return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         as_attachment=True, download_name='purchase_report.xlsx')
 
-    return jsonify({'data': data, 'total_purchases': total_purchases, 'count': len(data)}), 200
+    data = []
+    count = 0
+    for p in purchases:
+        for item in p.items:
+            if count >= PREVIEW_LIMIT:
+                break
+            material_name = item.material.material_name if item.material else (item.variant.product.product_name if item.variant else 'N/A')
+            data.append({
+                'Purchase No': p.invoice_number,
+                'Supplier': p.supplier.supplier_name if p.supplier else 'N/A',
+                'Material': material_name,
+                'Quantity': float(item.quantity),
+                'Cost': float(item.total_price),
+                'Date': p.purchase_date.strftime('%Y-%m-%d') if p.purchase_date else ''
+            })
+            count += 1
+        if count >= PREVIEW_LIMIT:
+            break
+
+    return jsonify({'data': data, 'count': len(data)}), 200
+
 
 @reports_bp.route('/suppliers', methods=['GET'])
 @staff_required
@@ -168,21 +209,21 @@ def supplier_report():
     default_fmt = get_setting('report_default_format', 'json')
     format_type = request.args.get('format', default_fmt)
 
-    suppliers = Supplier.query.all()
+    suppliers = Supplier.query.limit(PREVIEW_LIMIT if format_type != 'excel' else None).all()
+
     data = [{
         'Supplier': s.supplier_name,
-        'Contact': s.contact_person or 'N/A',
+        'Contact Person': s.contact_person or 'N/A',
         'Phone': s.phone or 'N/A',
         'Email': s.email or 'N/A',
-        'GST': s.gst_number or 'N/A',
-        'Status': s.status,
-        'Materials': len(s.raw_materials) if s.raw_materials else 0
+        'Status': s.status
     } for s in suppliers]
 
     if format_type == 'excel':
+        all_suppliers = Supplier.query.all()
         wb = generate_excel('Supplier_Report',
             ['Supplier', 'Contact', 'Phone', 'Email', 'GST', 'Status', 'Materials'],
-            [[d['Supplier'], d['Contact'], d['Phone'], d['Email'], d['GST'], d['Status'], d['Materials']] for d in data]
+            [[s.supplier_name, s.contact_person or 'N/A', s.phone or 'N/A', s.email or 'N/A', s.gst_number or 'N/A', s.status, len(s.raw_materials) if s.raw_materials else 0] for s in all_suppliers]
         )
         output = io.BytesIO()
         wb.save(output)
@@ -191,6 +232,7 @@ def supplier_report():
                         as_attachment=True, download_name='supplier_report.xlsx')
 
     return jsonify({'data': data, 'count': len(data)}), 200
+
 
 @reports_bp.route('/low-stock', methods=['GET'])
 @staff_required
@@ -201,34 +243,16 @@ def low_stock_report():
     low_products = Product.query.filter(
         Product.quantity <= Product.min_stock,
         Product.status == 'active'
-    ).all()
-
-    low_materials = RawMaterial.query.filter(
-        RawMaterial.quantity <= RawMaterial.min_stock
-    ).all()
-
-    data = {
-        'products': [{
-            'Product': p.product_name,
-            'Category': p.category.name if p.category else 'N/A',
-            'Quantity': p.quantity,
-            'Min Stock': p.min_stock,
-            'Status': 'Out of Stock' if p.quantity == 0 else 'Low Stock'
-        } for p in low_products],
-        'materials': [{
-            'Material': m.material_name,
-            'Unit': m.unit,
-            'Quantity': float(m.quantity),
-            'Min Stock': float(m.min_stock),
-            'Status': 'Out of Stock' if float(m.quantity) == 0 else 'Low Stock'
-        } for m in low_materials]
-    }
+    ).limit(PREVIEW_LIMIT if format_type != 'excel' else None).all()
 
     if format_type == 'excel':
+        all_low_products = Product.query.filter(
+            Product.quantity <= Product.min_stock,
+            Product.status == 'active'
+        ).all()
         wb = generate_excel('Low_Stock_Report',
             ['Type', 'Name', 'Quantity', 'Min Stock', 'Status'],
-            [['Product', d['Product'], d['Quantity'], d['Min Stock'], d['Status']] for d in data['products']] +
-            [['Material', d['Material'], float(d['Quantity']), float(d['Min Stock']), d['Status']] for d in data['materials']]
+            [['Product', p.product_name, p.quantity, p.min_stock, 'Out of Stock' if p.quantity == 0 else 'Low Stock'] for p in all_low_products]
         )
         output = io.BytesIO()
         wb.save(output)
@@ -236,4 +260,12 @@ def low_stock_report():
         return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         as_attachment=True, download_name='low_stock_report.xlsx')
 
-    return jsonify(data), 200
+    data = [{
+        'Product': p.product_name,
+        'Current Stock': p.quantity,
+        'Minimum Stock': p.min_stock,
+        'Required Quantity': max(0, p.min_stock - p.quantity),
+        'Status': 'Out of Stock' if p.quantity == 0 else 'Low Stock'
+    } for p in low_products]
+
+    return jsonify({'data': data, 'count': len(data)}), 200
