@@ -32,7 +32,7 @@ interface SidebarProps {
 function Label({ show, children }: { show: boolean; children: React.ReactNode }) {
   return (
     <span
-      className={`overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out ${
+      className={`overflow-hidden whitespace-nowrap transition-[opacity,max-width,transform,margin] duration-[120ms,200ms,180ms,200ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${
         show
           ? 'max-w-[200px] opacity-100 translate-x-0 ml-2'
           : 'max-w-0 opacity-0 translate-x-[-8px] ml-0'
@@ -58,7 +58,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const [expanded, setExpanded] = useState(false)
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const resolvedExpanded = isCompact ? expanded : true
+  const resolvedExpanded = expanded
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -88,12 +88,11 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
   const handleMouseLeave = useCallback(() => {
     if (window.innerWidth < 1024) return
-    if (!isCompact) return
     collapseTimer.current = setTimeout(() => {
       setExpanded(false)
       collapseTimer.current = null
     }, 350)
-  }, [isCompact])
+  }, [])
 
   return (
     <>
@@ -104,8 +103,9 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`
-          fixed top-0 left-0 z-50 h-full bg-white dark:bg-gray-900/95 dark:backdrop-blur-xl border-r border-gray-200 dark:border-gray-700/50
-          transition-all duration-300 ease-in-out shadow-lg dark:shadow-gray-950
+          fixed top-0 left-0 z-50 h-full bg-white dark:bg-gray-900/95 dark:backdrop-blur-xl border-r border-gray-200 dark:border-gray-700/50 shadow-lg dark:shadow-gray-950
+          will-change-[width] [backface-visibility:hidden]
+          transition-[width,transform,box-shadow] duration-[280ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
           lg:translate-x-0 lg:static lg:z-auto
           ${mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
           w-[260px] ${!resolvedExpanded ? 'lg:w-[80px]' : ''}
@@ -136,7 +136,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               style={{ animationDelay: `${index * 30}ms` }}
               title={!resolvedExpanded ? item.label : undefined}
               className={({ isActive }) =>
-                `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-[background-color,color,box-shadow] duration-[150ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${
                   isActive
                     ? 'bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/20 text-primary-700 dark:text-primary-300 shadow-sm dark:shadow-primary-900/20'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200'
@@ -148,7 +148,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                 <span className="truncate">{item.label}</span>
               </Label>
               {location.pathname === item.to && (
-                <span className={`ml-auto w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse-soft flex-shrink-0 transition-all duration-200 ${!resolvedExpanded ? 'opacity-0 w-0 pointer-events-none' : 'opacity-100'}`} />
+                <span className={`ml-auto w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse-soft flex-shrink-0 transition-[opacity,width] duration-[150ms] ease-out ${!resolvedExpanded ? 'opacity-0 w-0 pointer-events-none' : 'opacity-100'}`} />
               )}
             </NavLink>
           ))}
