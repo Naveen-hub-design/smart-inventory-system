@@ -32,7 +32,7 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
   const [searchingSku, setSearchingSku] = useState(false)
 
   useEffect(() => {
-    productService.getAll({ per_page: 100, status: 'active' }).then(r => setProducts(r.data.products)).catch(() => { })
+    productService.getAll({ per_page: 100, status: 'active' }).then(r => setProducts(r.data.products)).catch(() => console.error('Failed to load products'))
   }, [])
 
   const loadVariants = async (productId: number) => {
@@ -40,7 +40,7 @@ export default function SaleForm({ onSuccess, onCancel }: Props) {
     try {
       const res = await variantService.getByProduct(productId)
       setProductVariants(prev => ({ ...prev, [productId]: res.data.variants }))
-    } catch { }
+    } catch { console.error('Failed to load product variants') }
   }
 
   const doSkuSearch = async (q: string) => {

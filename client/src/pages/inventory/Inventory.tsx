@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Package, Box, AlertTriangle, ClipboardList } from 'lucide-react'
+import { Package, Box, AlertTriangle, ClipboardList, Plus } from 'lucide-react'
 import { inventoryService } from '../../services/dataService'
 import { InventoryLog } from '../../types'
 import Pagination from '../../components/ui/Pagination'
+import Modal from '../../components/ui/Modal'
 import EmptyState from '../../components/ui/EmptyState'
 import { InventorySkeleton } from '../../components/ui/LoadingSkeleton'
+import toast from 'react-hot-toast'
 
 export default function Inventory() {
   const location = useLocation()
@@ -18,6 +20,43 @@ export default function Inventory() {
   const [pages, setPages] = useState(1)
   const [total, setTotal] = useState(0)
   const [tab, setTab] = useState<'stock' | 'movements' | 'alerts'>('stock')
+  const [adjustOpen, setAdjustOpen] = useState(false)
+  const [adjustType, setAdjustType] = useState<'product' | 'material'>('product')
+  const [adjustItem, setAdjustItem] = useState<number | null>(null)
+  const [adjustQty, setAdjustQty] = useState('')
+  const [adjustNotes, setAdjustNotes] = useState('')
+  const [adjusting, setAdjusting] = useState(false)
+
+  const doAdjust = async () => {
+    if (!adjustItem) { toast.error('No item selected'); return }
+    if (!adjustQty || adjustQty.trim() === '') { toast.error('Quantity required'); return }
+    const qty = parseFloat(adjustQty)
+    if (isNaN(qty) || qty < 0) { toast.error('Quantity must be a valid non-negative number'); return }
+    setAdjusting(true)
+    try {
+      await inventoryService.adjust({
+        type: adjustType,
+        item_id: adjustItem,
+        quantity: qty,
+        notes: adjustNotes,
+      })
+      toast.success('Stock adjusted')
+      setAdjustOpen(false)
+      setAdjustItem(null)
+      setAdjustQty('')
+      setAdjustNotes('')
+      try {
+        const res = await inventoryService.getStock()
+        setStock(res.data)
+      } catch {
+        console.error('Failed to refresh stock after adjustment')
+      }
+    } catch {
+      toast.error('Failed to adjust stock')
+    } finally {
+      setAdjusting(false)
+    }
+  }
 
   useEffect(() => {
     if (location.state) {
@@ -42,7 +81,7 @@ export default function Inventory() {
           const res = await inventoryService.getLowStock()
           setLowStock(res.data)
         }
-      } catch { } finally { setLoading(false) }
+      } catch { console.error('Failed to fetch inventory data') } finally { setLoading(false) }
     }
     fetchAll()
   }, [tab, page])
@@ -87,6 +126,13 @@ export default function Inventory() {
       {loading ? <InventorySkeleton /> : (
         <>
           {tab === 'stock' && (
+            <div className="flex justify-end mb-2 animate-fade-in">
+              <button onClick={() => { setAdjustType('product'); setAdjustOpen(true) }} className="btn-secondary text-sm">
+                <Plus className="w-3.5 h-3.5" /> Adjust Stock
+              </button>
+            </div>
+          )}
+          {tab === 'stock' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
               <div className="card relative overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-400" />
@@ -117,7 +163,7 @@ export default function Inventory() {
                           </tr>
                         ) : (
                           stock.products.map((p: any, i: number) => (
-                            <tr key={p.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                            <tr key={p.id} onClick={() => { setAdjustType('product'); setAdjustItem(p.id); setAdjustQty(String(p.quantity)); setAdjustOpen(true) }} className="table-row animate-fade-in cursor-pointer" style={{ animationDelay: `${i * 30}ms` }}>
                               <td className="table-cell font-medium text-gray-900 dark:text-white">{p.name}</td>
                               <td className="table-cell text-right tabular-nums font-medium">{p.quantity}</td>
                               <td className="table-cell text-right tabular-nums text-gray-600 dark:text-gray-400">{p.min_stock}</td>
@@ -159,7 +205,7 @@ export default function Inventory() {
                           </tr>
                         ) : (
                           stock.materials.map((m: any, i: number) => (
-                            <tr key={m.id} className="table-row animate-fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+                            <tr key={m.id} onClick={() => { setAdjustType('material'); setAdjustItem(m.id); setAdjustQty(String(m.quantity)); setAdjustOpen(true) }} className="table-row animate-fade-in cursor-pointer" style={{ animationDelay: `${i * 30}ms` }}>
                               <td className="table-cell font-medium text-gray-900 dark:text-white">{m.name}</td>
                               <td className="table-cell text-right tabular-nums font-medium">
                                 {m.quantity} <span className="text-gray-400 text-xs font-normal">{m.unit}</span>
@@ -337,6 +383,46 @@ export default function Inventory() {
           )}
         </>
       )}
+
+      <Modal open={adjustOpen} onClose={() => setAdjustOpen(false)} title={`Adjust ${adjustType === 'product' ? 'Product' : 'Material'} Stock`} size="sm">
+        <div className="space-y-4">
+          {adjustType === 'product' ? (
+            <div>
+              <label className="input-label">Select Product</label>
+              <select value={adjustItem ?? ''} onChange={e => setAdjustItem(Number(e.target.value))} className="input-field">
+                <option value="">Choose...</option>
+                {stock.products.map(p => (
+                  <option key={p.id} value={p.id}>{p.name} ({p.quantity})</option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <div>
+              <label className="input-label">Select Material</label>
+              <select value={adjustItem ?? ''} onChange={e => setAdjustItem(Number(e.target.value))} className="input-field">
+                <option value="">Choose...</option>
+                {stock.materials.map(m => (
+                  <option key={m.id} value={m.id}>{m.name} ({m.quantity} {m.unit})</option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div>
+            <label className="input-label">New Quantity</label>
+            <input type="number" min="0" step="any" value={adjustQty} onChange={e => setAdjustQty(e.target.value)} className="input-field" placeholder="Enter new stock quantity" />
+          </div>
+          <div>
+            <label className="input-label">Notes (optional)</label>
+            <textarea value={adjustNotes} onChange={e => setAdjustNotes(e.target.value)} className="input-field" rows={3} placeholder="Reason for adjustment" />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <button onClick={() => setAdjustOpen(false)} className="btn-secondary">Cancel</button>
+            <button onClick={doAdjust} disabled={adjusting || !adjustItem || !adjustQty} className="btn-primary">
+              {adjusting ? 'Adjusting...' : 'Save'}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

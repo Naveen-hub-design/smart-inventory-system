@@ -32,7 +32,7 @@ def global_search():
         'name': p.product_name,
         'type': 'product',
         'detail': f"{p.color or ''} {p.size or ''} - ₹{float(p.price)}",
-        'url': f'/products/{p.id}'
+        'url': f'/products'
     } for p in products]
 
     variants = ProductVariant.query.filter(
@@ -46,7 +46,7 @@ def global_search():
         'name': v.sku,
         'type': 'variant',
         'detail': f"{v.product.product_name if v.product else ''} - {v.color or ''} {v.size or ''} - ₹{float(v.selling_price)}",
-        'url': f'/variants/{v.id}'
+        'url': f'/variants'
     } for v in variants]
 
     materials = RawMaterial.query.filter(
@@ -57,7 +57,7 @@ def global_search():
         'name': m.material_name,
         'type': 'material',
         'detail': f"{m.unit} - ₹{float(m.cost)}/unit",
-        'url': f'/materials/{m.id}'
+        'url': f'/materials'
     } for m in materials]
 
     suppliers = Supplier.query.filter(
@@ -72,7 +72,7 @@ def global_search():
         'name': s.supplier_name,
         'type': 'supplier',
         'detail': s.contact_person or s.phone or '',
-        'url': f'/suppliers/{s.id}'
+        'url': f'/suppliers'
     } for s in suppliers]
 
     purchases = Purchase.query.filter(
@@ -83,7 +83,7 @@ def global_search():
         'name': p.invoice_number,
         'type': 'purchase',
         'detail': f"₹{float(p.grand_total)}",
-        'url': f'/purchases/{p.id}'
+        'url': f'/purchases'
     } for p in purchases]
 
     sales = Sale.query.filter(
@@ -97,7 +97,7 @@ def global_search():
         'name': s.invoice_number,
         'type': 'sale',
         'detail': f"{s.customer_name or 'Walk-in'} - ₹{float(s.grand_total)}",
-        'url': f'/sales/{s.id}'
+        'url': f'/sales'
     } for s in sales]
 
     return jsonify({'results': results, 'query': query}), 200

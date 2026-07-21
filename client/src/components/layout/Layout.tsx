@@ -1,12 +1,21 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useTheme } from '../../context/ThemeContext'
+import { settingsService } from '../../services/dataService'
+import { useIdleTimer } from '../../hooks/useIdleTimer'
+import SessionTimeoutModal from '../ui/SessionTimeoutModal'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 
 export default function Layout() {
-  const { user, loading } = useAuth()
+  const { user, loading, logout } = useAuth()
+  const { setDarkMode } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [showTimeoutWarning, setShowTimeoutWarning] = useState(false)
+  const [sessionTimeout, setSessionTimeout] = useState(30)
+  const synced = useRef(false)
+  const settingsLoaded = useRef(false)
 
   const handleToggleMobile = useCallback(() => {
     setMobileOpen(prev => !prev)
@@ -15,6 +24,52 @@ export default function Layout() {
   const handleCloseMobile = useCallback(() => {
     setMobileOpen(false)
   }, [])
+
+  useEffect(() => {
+    if (!user || synced.current) return
+    synced.current = true
+    settingsService.getAll().then((res) => {
+      const s = res.data.settings
+      if (!s?.appearance) return
+      const theme = s.appearance.appearance_theme || 'light'
+      const isDark = theme === 'dark'
+      const compact = s.appearance.appearance_compact_sidebar === 'true'
+      document.documentElement.classList.toggle('dark', isDark)
+      document.documentElement.classList.toggle('compact-sidebar', compact)
+      localStorage.setItem('darkMode', JSON.stringify(isDark))
+      localStorage.setItem('sidebarCompact', JSON.stringify(compact))
+      setDarkMode(isDark)
+    }).catch(() => {})
+  }, [user, setDarkMode])
+
+  useEffect(() => {
+    if (!user || settingsLoaded.current) return
+    settingsLoaded.current = true
+    settingsService.getAll().then((res) => {
+      const raw = res.data.settings?.security?.security_session_timeout
+      if (raw) {
+        const val = parseInt(raw, 10)
+        if (!isNaN(val) && val >= 5) setSessionTimeout(val)
+      }
+    }).catch(() => {})
+  }, [user])
+
+  const handleSessionExpired = useCallback(() => {
+    setShowTimeoutWarning(false)
+    logout()
+  }, [logout])
+
+  const { reset: resetIdle } = useIdleTimer({
+    timeoutMinutes: sessionTimeout,
+    onWarn: () => setShowTimeoutWarning(true),
+    onExpired: handleSessionExpired,
+    enabled: !!user,
+  })
+
+  const handleStayLoggedIn = useCallback(() => {
+    setShowTimeoutWarning(false)
+    resetIdle()
+  }, [resetIdle])
 
   if (loading) {
     return (
@@ -47,6 +102,11 @@ export default function Layout() {
           </div>
         </main>
       </div>
+      <SessionTimeoutModal
+        open={showTimeoutWarning}
+        onStayLoggedIn={handleStayLoggedIn}
+        onLogout={handleSessionExpired}
+      />
     </div>
   )
 }

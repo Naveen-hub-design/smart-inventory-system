@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.models.supplier import Supplier
+from app.models.purchase import Purchase
+from app.models.raw_material import RawMaterial
 from app.middleware.auth import staff_required, admin_required, get_current_user
 from app.models.audit_log import create_audit_log
 from app import db
@@ -94,7 +96,7 @@ def update_supplier(id):
         return jsonify({'error': 'Supplier not found'}), 404
 
     data = request.get_json()
-    if data.get('supplier_name'):
+    if data.get('supplier_name') is not None:
         supplier.supplier_name = data['supplier_name']
     if data.get('contact_person') is not None:
         supplier.contact_person = data['contact_person']
@@ -106,7 +108,7 @@ def update_supplier(id):
         supplier.address = data['address']
     if data.get('gst_number') is not None:
         supplier.gst_number = data['gst_number']
-    if data.get('status'):
+    if data.get('status') is not None:
         supplier.status = data['status']
 
     user = get_current_user()
@@ -127,6 +129,11 @@ def delete_supplier(id):
     supplier = Supplier.query.get(id)
     if not supplier:
         return jsonify({'error': 'Supplier not found'}), 404
+
+    if Purchase.query.filter_by(supplier_id=id).first():
+        return jsonify({'error': 'Cannot delete supplier with associated purchase orders.'}), 400
+    if RawMaterial.query.filter_by(reorder_supplier=id).first():
+        return jsonify({'error': 'Cannot delete supplier assigned to raw materials.'}), 400
 
     name = supplier.supplier_name
     user = get_current_user()

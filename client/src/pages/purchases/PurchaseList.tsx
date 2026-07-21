@@ -29,7 +29,7 @@ export default function PurchaseList() {
       setPurchases(res.data.purchases)
       setPages(res.data.pages)
       setTotal(res.data.total)
-    } catch { } finally { setLoading(false) }
+    } catch { console.error('Failed to fetch purchases') } finally { setLoading(false) }
   }
 
   useEffect(() => { fetchData() }, [page, statusFilter])

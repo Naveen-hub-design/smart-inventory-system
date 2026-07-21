@@ -39,14 +39,14 @@ export default function SupplierList() {
       setSuppliers(res.data.suppliers)
       setPages(res.data.pages)
       setTotal(res.data.total)
-    } catch { } finally { setLoading(false) }
+    } catch { console.error('Failed to fetch suppliers') } finally { setLoading(false) }
   }
 
   useEffect(() => { fetchData() }, [page, statusFilter])
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this supplier?')) return
-    try { await supplierService.delete(id); toast.success('Deleted'); fetchData() } catch { }
+    try { await supplierService.delete(id); toast.success('Deleted'); fetchData() } catch { console.error('Failed to delete supplier') }
   }
 
   return (

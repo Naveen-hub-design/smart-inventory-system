@@ -5,33 +5,31 @@ from app.models.product_variant import ProductVariant
 from app.models.product import Product
 from app.middleware.auth import staff_required, get_current_user
 from app.models.audit_log import create_audit_log
-from app.services.code_generator import generate_sku, get_product_code, get_category_code, generate_barcode_value, save_qr_code_file, CATEGORY_CODES, COLOR_CODES
+from app.services.code_generator import generate_sku, get_product_code, get_category_code, get_color_code, generate_barcode_value, save_qr_code_file, CATEGORY_CODES, COLOR_CODES
 from app.routes.settings import get_setting, is_ai_feature_enabled
 from app import db
-import uuid
+from sqlalchemy import func
 import io
 import barcode
 from barcode.writer import ImageWriter
 
 product_variants_bp = Blueprint('product_variants', __name__)
 
-QR_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'uploads', 'qrcodes')
+QR_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'uploads', 'qrcodes')
 
 
 def get_next_sequence(product, variant):
-    prefix = f"{get_category_code(product.category.name if product.category else None)}-{get_product_code(product.product_name)}-{variant.color or ''}-{variant.size or ''}"
-    # Find the max sequence for this SKU prefix pattern
-    all_skus = ProductVariant.query.filter(
+    col_code = get_color_code(variant.color)
+    size_part = (variant.size or "OS").replace("-", "").replace(" ", "").upper()[:4]
+    prefix = f"{get_category_code(product.category.name if product.category else None)}-{get_product_code(product.product_name)}-{col_code}-{size_part}"
+    max_seq = db.session.query(
+        func.max(func.cast(
+            func.substring(ProductVariant.sku, len(prefix) + 2), db.Integer
+        ))
+    ).filter(
         ProductVariant.sku.like(f'{prefix}-%')
-    ).all()
-    max_seq = 0
-    for sku_row in all_skus:
-        parts = sku_row.sku.split('-')
-        if parts and parts[-1].isdigit():
-            seq = int(parts[-1])
-            if seq > max_seq:
-                max_seq = seq
-    return max_seq + 1
+    ).scalar()
+    return (max_seq or 0) + 1
 
 
 @product_variants_bp.route('/', methods=['GET'])
@@ -181,11 +179,14 @@ def update_variant(id):
 
     changed = []
     sku_regenerated = False
-    if 'size' in data:
+    auto_sku = is_ai_feature_enabled('inventory_auto_sku')
+    auto_barcode = is_ai_feature_enabled('inventory_auto_barcode')
+    auto_qr = is_ai_feature_enabled('inventory_auto_qr')
+    if 'size' in data and data['size'] != variant.size:
         variant.size = data['size']
         changed.append('size')
         sku_regenerated = True
-    if 'color' in data:
+    if 'color' in data and data['color'] != variant.color:
         variant.color = data['color']
         changed.append('color')
         sku_regenerated = True
@@ -203,19 +204,22 @@ def update_variant(id):
         changed.append('selling_price')
 
     if sku_regenerated:
-        new_sku = generate_sku(variant.product, variant, get_next_sequence(variant.product, variant))
-        while ProductVariant.query.filter(ProductVariant.sku == new_sku, ProductVariant.id != variant.id).first():
+        if auto_sku:
             new_sku = generate_sku(variant.product, variant, get_next_sequence(variant.product, variant))
-        variant.sku = new_sku
-        b = generate_barcode_value(variant.sku)
-        while ProductVariant.query.filter(ProductVariant.barcode == b, ProductVariant.id != variant.id).first():
-            b = generate_barcode_value()
-        variant.barcode = b
-        qr_filename = save_qr_code_file(variant, variant.product, QR_DIR)
-        variant.qr_code = qr_filename
-        changed.append('sku (auto-regenerated)')
-        changed.append('barcode (regenerated)')
-        changed.append('qr_code (regenerated)')
+            while ProductVariant.query.filter(ProductVariant.sku == new_sku, ProductVariant.id != variant.id).first():
+                new_sku = generate_sku(variant.product, variant, get_next_sequence(variant.product, variant))
+            variant.sku = new_sku
+            changed.append('sku (auto-regenerated)')
+        if auto_barcode:
+            b = generate_barcode_value(variant.sku or str(uuid.uuid4().hex[:12].upper()))
+            while ProductVariant.query.filter(ProductVariant.barcode == b, ProductVariant.id != variant.id).first():
+                b = generate_barcode_value()
+            variant.barcode = b
+            changed.append('barcode (regenerated)')
+        if auto_qr:
+            qr_filename = save_qr_code_file(variant, variant.product, QR_DIR)
+            variant.qr_code = qr_filename
+            changed.append('qr_code (regenerated)')
 
     variant.product.sync_stock_from_variants()
 

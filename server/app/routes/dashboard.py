@@ -134,11 +134,14 @@ def get_stock_by_category():
         func.sum(Product.quantity).label('total_quantity')
     ).filter(Product.status == 'active').group_by(Product.category_id).all()
 
+    cat_ids = [r.category_id for r in results if r.category_id]
+    categories = {c.id: c for c in Category.query.filter(Category.id.in_(cat_ids)).all()} if cat_ids else {}
+
     data = []
     for r in results:
-        category = Category.query.get(r.category_id) if r.category_id else None
+        cat = categories.get(r.category_id) if r.category_id else None
         data.append({
-            'name': category.name if category else 'Uncategorized',
+            'name': cat.name if cat else 'Uncategorized',
             'quantity': int(r.total_quantity) if r.total_quantity else 0
         })
 
@@ -188,9 +191,12 @@ def get_top_products():
         func.sum(SaleItem.total_price).label('total_revenue')
     ).group_by(SaleItem.product_id).order_by(func.sum(SaleItem.quantity).desc()).limit(5).all()
 
+    product_ids = [r.product_id for r in results if r.product_id]
+    products = {p.id: p for p in Product.query.filter(Product.id.in_(product_ids)).all()} if product_ids else {}
+
     data = []
     for r in results:
-        product = Product.query.get(r.product_id)
+        product = products.get(r.product_id)
         if product:
             data.append({
                 'name': product.product_name,

@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.models.raw_material import RawMaterial
+from app.models.purchase import PurchaseItem
 from app.middleware.auth import staff_required, get_current_user
 from app.models.audit_log import create_audit_log
 from app import db
@@ -90,9 +91,9 @@ def update_material(id):
         return jsonify({'error': 'Material not found'}), 404
 
     data = request.get_json()
-    if data.get('material_name'):
+    if data.get('material_name') is not None:
         material.material_name = data['material_name']
-    if data.get('unit'):
+    if data.get('unit') is not None:
         material.unit = data['unit']
     if data.get('supplier_id') is not None:
         material.supplier_id = int(data['supplier_id'])
@@ -122,6 +123,8 @@ def delete_material(id):
     material = RawMaterial.query.get(id)
     if not material:
         return jsonify({'error': 'Material not found'}), 404
+    if PurchaseItem.query.filter_by(material_id=id).first():
+        return jsonify({'error': 'Cannot delete material with associated purchase order items.'}), 400
     name = material.material_name
     user = get_current_user()
     create_audit_log(

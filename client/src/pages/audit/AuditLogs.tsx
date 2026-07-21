@@ -5,6 +5,7 @@ import { AuditLog } from '../../types'
 import Pagination from '../../components/ui/Pagination'
 import { TableSkeleton } from '../../components/ui/LoadingSkeleton'
 import EmptyState from '../../components/ui/EmptyState'
+import toast from 'react-hot-toast'
 
 const ACTION_ICONS: Record<string, typeof LogIn> = {
   login: LogIn,
@@ -246,7 +247,9 @@ export default function AuditLogs() {
       setPages(res.pages)
       setTotal(res.total)
       setPage(res.page)
-    } catch {
+    } catch (err) {
+      console.error('Failed to fetch audit logs:', err)
+      toast.error('Failed to load audit logs')
     } finally {
       setLoading(false)
     }

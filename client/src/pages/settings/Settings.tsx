@@ -25,9 +25,16 @@ interface SettingsData {
 interface AboutInfo {
   project_name: string
   version: string
+  description: string
+  environment: string
   backend_status: string
   database_status: string
   ai_status: string
+  python_version: string
+  platform: string
+  server_started: string
+  developer: string
+  copyright: string
 }
 
 const TABS: { id: TabId; label: string; icon: any }[] = [
@@ -48,14 +55,18 @@ const TIMEZONES = ['Asia/Kolkata', 'Asia/Dubai', 'Asia/Singapore', 'Asia/Tokyo',
 const AI_STYLES = ['professional', 'conversational', 'concise', 'detailed']
 const REPORT_FORMATS = ['excel', 'pdf', 'csv']
 const DATE_RANGES = ['7', '30', '60', '90', '180', '365']
-const TIMEOUT_OPTIONS = ['5', '10', '15', '30', '60', '120']
+const TIMEOUT_OPTIONS = ['5', '10', '15', '30', '60', '120', '240']
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PHONE_REGEX = /^[\d\s\-\+\(\)]{7,20}$/
+const URL_REGEX = /^https?:\/\/.+/
 
-function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+function Toggle({ checked, onChange, disabled }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
   return (
     <button
       type="button"
-      onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${checked ? 'bg-primary-500' : 'bg-gray-300 dark:bg-gray-600'}`}
+      onClick={() => { if (!disabled) onChange(!checked) }}
+      disabled={disabled}
+      className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${checked ? 'bg-primary-500' : 'bg-gray-300 dark:bg-gray-600'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${checked ? 'translate-x-4' : 'translate-x-0'}`} />
     </button>
@@ -188,10 +199,17 @@ export default function SettingsPage() {
 
   const [profile, setProfile] = useState({ full_name: '', email: '', phone: '', avatar: '' })
   const [originalProfile, setOriginalProfile] = useState('')
+  const [profileErrors, setProfileErrors] = useState<{ full_name?: string; email?: string; phone?: string }>({})
 
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [passwordForm, setPasswordForm] = useState({ current_password: '', new_password: '', confirm: '' })
+  const [passwordErrors, setPasswordErrors] = useState<{ current_password?: string; new_password?: string; confirm?: string }>({})
+  const [companyErrors, setCompanyErrors] = useState<Record<string, string | undefined>>({})
+  const [savingNotifKeys, setSavingNotifKeys] = useState<Set<string>>(new Set())
+  const [savingSecurity, setSavingSecurity] = useState(false)
+  const [savingKeys, setSavingKeys] = useState<Set<string>>(new Set())
+  const [backupExporting, setBackupExporting] = useState(false)
 
   const [about, setAbout] = useState<AboutInfo | null>(null)
 
@@ -218,6 +236,9 @@ export default function SettingsPage() {
         const u = profileRes.data.user
         setProfile({ full_name: u.full_name || '', email: u.email || '', phone: u.phone || '', avatar: u.avatar || '' })
         setOriginalProfile(JSON.stringify({ full_name: u.full_name || '', email: u.email || '', phone: u.phone || '' }))
+        setProfileErrors({})
+        setPasswordErrors({})
+        setCompanyErrors({})
       }
       // Apply appearance settings
       const theme = s.appearance?.appearance_theme || 'light'
@@ -238,10 +259,84 @@ export default function SettingsPage() {
   const isDirty = () => {
     const current = JSON.stringify(settings)
     const profileCurrent = JSON.stringify(profile)
-    return current !== originalSettings || (profile.full_name && profileCurrent !== originalProfile)
+    return current !== originalSettings || profileCurrent !== originalProfile
+  }
+
+  const validateCompanyFields = () => {
+    const c = settings.company
+    const errs: Record<string, string> = {}
+    if (!c.company_name?.trim()) {
+      errs.company_name = 'Company name is required'
+    }
+    if (c.company_email?.trim() && !EMAIL_REGEX.test(c.company_email.trim())) {
+      errs.company_email = 'Enter a valid email address'
+    }
+    if (c.company_phone?.trim() && !PHONE_REGEX.test(c.company_phone.trim())) {
+      errs.company_phone = 'Enter a valid phone number'
+    }
+    if (c.company_website?.trim() && !URL_REGEX.test(c.company_website.trim())) {
+      errs.company_website = 'Enter a valid URL (https://...)'
+    }
+    setCompanyErrors(errs)
+    return Object.keys(errs).length === 0
+  }
+
+  const handleNotifToggle = (key: string, enabled: boolean) => {
+    if (savingNotifKeys.has(key)) return
+    const value = enabled ? 'true' : 'false'
+    updateSetting('notifications', key, value)
+    setSavingNotifKeys((prev) => new Set(prev).add(key))
+    settingsService.update({ [key]: value })
+      .then((res) => {
+        setSettings(res.data.settings)
+        setOriginalSettings(JSON.stringify(res.data.settings))
+        toast.success(`Notifications updated`)
+      })
+      .catch((err: any) => {
+        updateSetting('notifications', key, enabled ? 'false' : 'true')
+        toast.error(err?.response?.data?.error || 'Failed to save notification preference')
+      })
+      .finally(() => {
+        setSavingNotifKeys((prev) => { const next = new Set(prev); next.delete(key); return next })
+      })
+  }
+
+  const handleSecurityChange = (key: string, value: string) => {
+    updateSetting('security', key, value)
+    setSavingSecurity(true)
+    settingsService.update({ [key]: value })
+      .then((res) => {
+        setSettings(res.data.settings)
+        setOriginalSettings(JSON.stringify(res.data.settings))
+        toast.success('Security setting saved')
+      })
+      .catch((err: any) => {
+        toast.error(err?.response?.data?.error || 'Failed to save security setting')
+      })
+      .finally(() => setSavingSecurity(false))
+  }
+
+  const handleSettingAutoSave = (category: keyof SettingsData, key: string, value: string) => {
+    if (savingKeys.has(key)) return
+    const prev = settings[category][key]
+    updateSetting(category, key, value)
+    setSavingKeys((prev) => new Set(prev).add(key))
+    settingsService.update({ [key]: value })
+      .then((res) => {
+        setSettings(res.data.settings)
+        setOriginalSettings(JSON.stringify(res.data.settings))
+      })
+      .catch((err: any) => {
+        updateSetting(category, key, prev)
+        toast.error(err?.response?.data?.error || `Failed to save ${key}`)
+      })
+      .finally(() => {
+        setSavingKeys((prev) => { const next = new Set(prev); next.delete(key); return next })
+      })
   }
 
   const handleSave = async () => {
+    if (activeTab === 'company' && !validateCompanyFields()) return
     setSaving(true)
     try {
       const payload: Record<string, string> = {}
@@ -302,48 +397,104 @@ export default function SettingsPage() {
 
   const updateProfileField = (field: string, value: string) => {
     setProfile((prev) => ({ ...prev, [field]: value }))
+    setProfileErrors((prev) => ({ ...prev, [field]: undefined }))
+  }
+
+  const validateProfile = () => {
+    const errs: { full_name?: string; email?: string; phone?: string } = {}
+    if (!profile.full_name.trim()) {
+      errs.full_name = 'Name is required'
+    }
+    if (!profile.email.trim()) {
+      errs.email = 'Email is required'
+    } else if (!EMAIL_REGEX.test(profile.email.trim())) {
+      errs.email = 'Enter a valid email address'
+    }
+    if (profile.phone.trim() && !PHONE_REGEX.test(profile.phone.trim())) {
+      errs.phone = 'Enter a valid phone number'
+    }
+    setProfileErrors(errs)
+    return Object.keys(errs).length === 0
   }
 
   const saveProfile = async () => {
+    if (!validateProfile()) return
     setSaving(true)
     try {
       const res = await settingsService.updateProfile({
-        full_name: profile.full_name,
-        email: profile.email,
-        phone: profile.phone,
+        full_name: profile.full_name.trim(),
+        email: profile.email.trim(),
+        phone: profile.phone.trim(),
       })
-      setOriginalProfile(JSON.stringify(profile))
+      const u = res.data.user
+      setProfile({ full_name: u.full_name || '', email: u.email || '', phone: u.phone || '', avatar: u.avatar || '' })
+      setOriginalProfile(JSON.stringify({ full_name: u.full_name || '', email: u.email || '', phone: u.phone || '' }))
       toast.success('Profile updated')
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Failed to update profile')
+      const msg = err?.response?.data?.error
+      if (msg === 'Email already in use') {
+        setProfileErrors((prev) => ({ ...prev, email: msg }))
+      }
+      toast.error(msg || 'Failed to update profile')
     } finally {
       setSaving(false)
     }
   }
 
+  const validatePassword = () => {
+    const errs: { current_password?: string; new_password?: string; confirm?: string } = {}
+    if (!passwordForm.current_password) {
+      errs.current_password = 'Current password is required'
+    }
+    if (!passwordForm.new_password) {
+      errs.new_password = 'New password is required'
+    } else if (passwordForm.new_password.length < 8) {
+      errs.new_password = 'Must be at least 8 characters'
+    } else if (!/[A-Z]/.test(passwordForm.new_password)) {
+      errs.new_password = 'Must contain an uppercase letter'
+    } else if (!/[a-z]/.test(passwordForm.new_password)) {
+      errs.new_password = 'Must contain a lowercase letter'
+    } else if (!/[0-9]/.test(passwordForm.new_password)) {
+      errs.new_password = 'Must contain a number'
+    } else if (passwordForm.new_password === passwordForm.current_password) {
+      errs.new_password = 'Must be different from current password'
+    }
+    if (!passwordForm.confirm) {
+      errs.confirm = 'Please confirm your new password'
+    } else if (passwordForm.new_password && passwordForm.confirm !== passwordForm.new_password) {
+      errs.confirm = 'Passwords do not match'
+    }
+    setPasswordErrors(errs)
+    return Object.keys(errs).length === 0
+  }
+
   const changePassword = async () => {
-    if (!passwordForm.current_password || !passwordForm.new_password) {
-      toast.error('Fill all password fields')
-      return
-    }
-    if (passwordForm.new_password.length < 6) {
-      toast.error('Password must be at least 6 characters')
-      return
-    }
-    if (passwordForm.new_password !== passwordForm.confirm) {
-      toast.error('Passwords do not match')
-      return
-    }
+    if (!validatePassword()) return
     setSaving(true)
     try {
-      await settingsService.changePassword({
+      const res = await settingsService.changePassword({
         current_password: passwordForm.current_password,
         new_password: passwordForm.new_password,
       })
       setPasswordForm({ current_password: '', new_password: '', confirm: '' })
-      toast.success('Password changed')
+      setPasswordErrors({})
+      if (res.data?.logout_required) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('refresh_token')
+        localStorage.removeItem('user')
+        toast.success('Password changed successfully. Please login again.', { duration: 4000 })
+        setTimeout(() => { window.location.href = '/login' }, 1500)
+      } else {
+        toast.success('Password changed successfully')
+      }
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Failed to change password')
+      const msg = err?.response?.data?.error
+      if (msg === 'Current password is incorrect') {
+        setPasswordErrors((prev) => ({ ...prev, current_password: msg }))
+      } else {
+        setPasswordErrors((prev) => ({ ...prev, new_password: msg || 'Failed to change password' }))
+      }
+      toast.error(msg || 'Failed to change password')
     } finally {
       setSaving(false)
     }
@@ -352,6 +503,16 @@ export default function SettingsPage() {
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Invalid file type. Allowed: PNG, JPG, GIF, WebP')
+      return
+    }
+    const maxSize = 2 * 1024 * 1024
+    if (file.size > maxSize) {
+      toast.error('File size must be under 2MB')
+      return
+    }
     setSaving(true)
     try {
       const res = await settingsService.uploadAvatar(file)
@@ -408,6 +569,7 @@ export default function SettingsPage() {
   }
 
   const handleExportBackup = async () => {
+    setBackupExporting(true)
     try {
       const res = await settingsService.exportBackup()
       const blob = new Blob([res.data], { type: 'application/json' })
@@ -420,12 +582,38 @@ export default function SettingsPage() {
       toast.success('Backup exported')
     } catch {
       toast.error('Export failed')
+    } finally {
+      setBackupExporting(false)
     }
   }
 
   const handleImportBackup = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    if (saving) return
+    if (!file.name.endsWith('.json')) {
+      toast.error('Invalid file type. Please select a .json file.')
+      e.target.value = ''
+      return
+    }
+    const maxSize = 10 * 1024 * 1024
+    if (file.size > maxSize) {
+      toast.error('File too large. Maximum size is 10MB.')
+      e.target.value = ''
+      return
+    }
+    try {
+      const text = await file.text()
+      JSON.parse(text)
+    } catch {
+      toast.error('Invalid backup file. The file does not contain valid JSON.')
+      e.target.value = ''
+      return
+    }
+    if (!confirm('Restore settings from this backup? This will overwrite all current settings.')) {
+      e.target.value = ''
+      return
+    }
     setSaving(true)
     try {
       await settingsService.importBackup(file)
@@ -435,6 +623,7 @@ export default function SettingsPage() {
       toast.error(err?.response?.data?.error || 'Import failed')
     } finally {
       setSaving(false)
+      e.target.value = ''
     }
   }
 
@@ -516,13 +705,16 @@ export default function SettingsPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField label="Full Name">
-                    <input id="full_name" type="text" className="input-field" value={profile.full_name} onChange={(e) => updateProfileField('full_name', e.target.value)} placeholder="John Doe" />
+                    <input id="full_name" type="text" className={`input-field ${profileErrors.full_name ? 'border-red-500' : ''}`} value={profile.full_name} onChange={(e) => updateProfileField('full_name', e.target.value)} placeholder="John Doe" />
+                    {profileErrors.full_name && <p className="text-xs text-red-500 mt-1">{profileErrors.full_name}</p>}
                   </FormField>
                   <FormField label="Email">
-                    <input id="email" type="email" className="input-field" value={profile.email} onChange={(e) => updateProfileField('email', e.target.value)} placeholder="john@example.com" />
+                    <input id="email" type="email" className={`input-field ${profileErrors.email ? 'border-red-500' : ''}`} value={profile.email} onChange={(e) => updateProfileField('email', e.target.value)} placeholder="john@example.com" />
+                    {profileErrors.email && <p className="text-xs text-red-500 mt-1">{profileErrors.email}</p>}
                   </FormField>
                   <FormField label="Phone">
-                    <input id="phone" type="tel" className="input-field" value={profile.phone} onChange={(e) => updateProfileField('phone', e.target.value)} placeholder="+91 9876543210" />
+                    <input id="phone" type="tel" className={`input-field ${profileErrors.phone ? 'border-red-500' : ''}`} value={profile.phone} onChange={(e) => updateProfileField('phone', e.target.value)} placeholder="+91 9876543210" />
+                    {profileErrors.phone && <p className="text-xs text-red-500 mt-1">{profileErrors.phone}</p>}
                   </FormField>
                 </div>
                 <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
@@ -538,17 +730,20 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField label="Current Password">
                     <div className="relative">
-                      <input id="current_password" type={showPassword ? 'text' : 'password'} className="input-field pr-9" value={passwordForm.current_password} onChange={(e) => setPasswordForm((p) => ({ ...p, current_password: e.target.value }))} />
+                      <input id="current_password" type={showPassword ? 'text' : 'password'} className={`input-field pr-9 ${passwordErrors.current_password ? 'border-red-500' : ''}`} value={passwordForm.current_password} onChange={(e) => { setPasswordForm((p) => ({ ...p, current_password: e.target.value })); setPasswordErrors((p) => ({ ...p, current_password: undefined })) }} />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                         {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </button>
                     </div>
+                    {passwordErrors.current_password && <p className="text-xs text-red-500 mt-1">{passwordErrors.current_password}</p>}
                   </FormField>
                   <FormField label="New Password">
-                    <input id="new_password" type="password" className="input-field" value={passwordForm.new_password} onChange={(e) => setPasswordForm((p) => ({ ...p, new_password: e.target.value }))} />
+                    <input id="new_password" type="password" className={`input-field ${passwordErrors.new_password ? 'border-red-500' : ''}`} value={passwordForm.new_password} onChange={(e) => { setPasswordForm((p) => ({ ...p, new_password: e.target.value })); setPasswordErrors((p) => ({ ...p, new_password: undefined })) }} />
+                    {passwordErrors.new_password && <p className="text-xs text-red-500 mt-1">{passwordErrors.new_password}</p>}
                   </FormField>
                   <FormField label="Confirm Password">
-                    <input id="confirm_password" type="password" className="input-field" value={passwordForm.confirm} onChange={(e) => setPasswordForm((p) => ({ ...p, confirm: e.target.value }))} />
+                    <input id="confirm_password" type="password" className={`input-field ${passwordErrors.confirm ? 'border-red-500' : ''}`} value={passwordForm.confirm} onChange={(e) => { setPasswordForm((p) => ({ ...p, confirm: e.target.value })); setPasswordErrors((p) => ({ ...p, confirm: undefined })) }} />
+                    {passwordErrors.confirm && <p className="text-xs text-red-500 mt-1">{passwordErrors.confirm}</p>}
                   </FormField>
                 </div>
                 <div className="flex justify-end mt-3">
@@ -587,22 +782,41 @@ export default function SettingsPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Company Name">
-                  <input type="text" className="input-field" value={settings.company.company_name || ''} onChange={(e) => updateSetting('company', 'company_name', e.target.value)} placeholder="My Company" />
+                  <input type="text" className={`input-field ${companyErrors.company_name ? 'border-red-500' : ''}`} value={settings.company.company_name || ''} onChange={(e) => { updateSetting('company', 'company_name', e.target.value); setCompanyErrors((p) => ({ ...p, company_name: undefined })) }} placeholder="My Company" />
+                  {companyErrors.company_name && <p className="text-xs text-red-500 mt-1">{companyErrors.company_name}</p>}
+                </FormField>
+                <FormField label="Registration Number">
+                  <input type="text" className="input-field" value={settings.company.company_registration_number || ''} onChange={(e) => updateSetting('company', 'company_registration_number', e.target.value)} placeholder="CIN / Registration No" />
                 </FormField>
                 <FormField label="GST / Tax Number">
                   <input type="text" className="input-field" value={settings.company.company_gst || ''} onChange={(e) => updateSetting('company', 'company_gst', e.target.value)} placeholder="GSTIN" />
                 </FormField>
                 <FormField label="Email">
-                  <input type="email" className="input-field" value={settings.company.company_email || ''} onChange={(e) => updateSetting('company', 'company_email', e.target.value)} placeholder="company@example.com" />
+                  <input type="email" className={`input-field ${companyErrors.company_email ? 'border-red-500' : ''}`} value={settings.company.company_email || ''} onChange={(e) => { updateSetting('company', 'company_email', e.target.value); setCompanyErrors((p) => ({ ...p, company_email: undefined })) }} placeholder="company@example.com" />
+                  {companyErrors.company_email && <p className="text-xs text-red-500 mt-1">{companyErrors.company_email}</p>}
                 </FormField>
                 <FormField label="Phone">
-                  <input type="tel" className="input-field" value={settings.company.company_phone || ''} onChange={(e) => updateSetting('company', 'company_phone', e.target.value)} placeholder="+91 9876543210" />
+                  <input type="tel" className={`input-field ${companyErrors.company_phone ? 'border-red-500' : ''}`} value={settings.company.company_phone || ''} onChange={(e) => { updateSetting('company', 'company_phone', e.target.value); setCompanyErrors((p) => ({ ...p, company_phone: undefined })) }} placeholder="+91 9876543210" />
+                  {companyErrors.company_phone && <p className="text-xs text-red-500 mt-1">{companyErrors.company_phone}</p>}
                 </FormField>
                 <FormField label="Website">
-                  <input type="url" className="input-field" value={settings.company.company_website || ''} onChange={(e) => updateSetting('company', 'company_website', e.target.value)} placeholder="https://example.com" />
+                  <input type="url" className={`input-field ${companyErrors.company_website ? 'border-red-500' : ''}`} value={settings.company.company_website || ''} onChange={(e) => { updateSetting('company', 'company_website', e.target.value); setCompanyErrors((p) => ({ ...p, company_website: undefined })) }} placeholder="https://example.com" />
+                  {companyErrors.company_website && <p className="text-xs text-red-500 mt-1">{companyErrors.company_website}</p>}
                 </FormField>
                 <FormField label="Address">
                   <textarea className="input-field resize-none" rows={2} value={settings.company.company_address || ''} onChange={(e) => updateSetting('company', 'company_address', e.target.value)} placeholder="123 Business St, City" />
+                </FormField>
+                <FormField label="City">
+                  <input type="text" className="input-field" value={settings.company.company_city || ''} onChange={(e) => updateSetting('company', 'company_city', e.target.value)} placeholder="Mumbai" />
+                </FormField>
+                <FormField label="State">
+                  <input type="text" className="input-field" value={settings.company.company_state || ''} onChange={(e) => updateSetting('company', 'company_state', e.target.value)} placeholder="Maharashtra" />
+                </FormField>
+                <FormField label="Country">
+                  <input type="text" className="input-field" value={settings.company.company_country || ''} onChange={(e) => updateSetting('company', 'company_country', e.target.value)} placeholder="India" />
+                </FormField>
+                <FormField label="Postal Code">
+                  <input type="text" className="input-field" value={settings.company.company_postal_code || ''} onChange={(e) => updateSetting('company', 'company_postal_code', e.target.value)} placeholder="400001" />
                 </FormField>
                 <FormField label="Currency">
                   <Select value={settings.company.company_currency || 'INR'} onChange={(v) => updateSetting('company', 'company_currency', v)} options={CURRENCIES} />
@@ -619,24 +833,39 @@ export default function SettingsPage() {
             <SectionCard title="Inventory Defaults" desc="Configure inventory management preferences">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Default Low Stock Threshold">
-                  <input type="number" min="0" className="input-field" value={settings.inventory.inventory_low_stock_threshold || '10'} onChange={(e) => updateSetting('inventory', 'inventory_low_stock_threshold', e.target.value)} />
+                  <div className="flex items-center gap-2">
+                    <input type="number" min="0" className="input-field" value={settings.inventory.inventory_low_stock_threshold || '10'} onChange={(e) => updateSetting('inventory', 'inventory_low_stock_threshold', e.target.value)} onBlur={(e) => { const v = parseInt(e.target.value, 10); if (!isNaN(v) && v >= 0) handleSettingAutoSave('inventory', 'inventory_low_stock_threshold', String(v)) }} />
+                    {savingKeys.has('inventory_low_stock_threshold') && <Loader2 className="w-4 h-4 animate-spin text-gray-400 flex-shrink-0" />}
+                  </div>
                 </FormField>
                 <FormField label="Default Product Category">
-                  <input type="text" className="input-field" value={settings.inventory.inventory_default_category || ''} onChange={(e) => updateSetting('inventory', 'inventory_default_category', e.target.value)} placeholder="General" />
+                  <div className="flex items-center gap-2">
+                    <input type="text" className="input-field" value={settings.inventory.inventory_default_category || ''} onChange={(e) => updateSetting('inventory', 'inventory_default_category', e.target.value)} onBlur={(e) => handleSettingAutoSave('inventory', 'inventory_default_category', e.target.value)} placeholder="General" />
+                    {savingKeys.has('inventory_default_category') && <Loader2 className="w-4 h-4 animate-spin text-gray-400 flex-shrink-0" />}
+                  </div>
                 </FormField>
               </div>
               <div className="mt-4 space-y-3">
                 <div className="flex items-center justify-between py-2">
                   <div><p className="text-sm font-medium text-gray-900 dark:text-white">Auto SKU Generation</p><p className="text-xs text-gray-500">Generate SKU automatically for new products</p></div>
-                  <Toggle checked={settings.inventory.inventory_auto_sku === 'true'} onChange={(v) => updateSetting('inventory', 'inventory_auto_sku', v ? 'true' : 'false')} />
+                  <div className="flex items-center gap-2">
+                    {savingKeys.has('inventory_auto_sku') && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+                    <Toggle checked={settings.inventory.inventory_auto_sku === 'true'} onChange={(v) => handleSettingAutoSave('inventory', 'inventory_auto_sku', v ? 'true' : 'false')} disabled={savingKeys.has('inventory_auto_sku')} />
+                  </div>
                 </div>
                 <div className="flex items-center justify-between py-2 border-t border-gray-100 dark:border-gray-700">
                   <div><p className="text-sm font-medium text-gray-900 dark:text-white">Auto Barcode Generation</p><p className="text-xs text-gray-500">Generate barcodes for new products</p></div>
-                  <Toggle checked={settings.inventory.inventory_auto_barcode === 'true'} onChange={(v) => updateSetting('inventory', 'inventory_auto_barcode', v ? 'true' : 'false')} />
+                  <div className="flex items-center gap-2">
+                    {savingKeys.has('inventory_auto_barcode') && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+                    <Toggle checked={settings.inventory.inventory_auto_barcode === 'true'} onChange={(v) => handleSettingAutoSave('inventory', 'inventory_auto_barcode', v ? 'true' : 'false')} disabled={savingKeys.has('inventory_auto_barcode')} />
+                  </div>
                 </div>
                 <div className="flex items-center justify-between py-2 border-t border-gray-100 dark:border-gray-700">
                   <div><p className="text-sm font-medium text-gray-900 dark:text-white">Auto QR Code Generation</p><p className="text-xs text-gray-500">Generate QR codes for new products</p></div>
-                  <Toggle checked={settings.inventory.inventory_auto_qr === 'true'} onChange={(v) => updateSetting('inventory', 'inventory_auto_qr', v ? 'true' : 'false')} />
+                  <div className="flex items-center gap-2">
+                    {savingKeys.has('inventory_auto_qr') && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+                    <Toggle checked={settings.inventory.inventory_auto_qr === 'true'} onChange={(v) => handleSettingAutoSave('inventory', 'inventory_auto_qr', v ? 'true' : 'false')} disabled={savingKeys.has('inventory_auto_qr')} />
+                  </div>
                 </div>
               </div>
             </SectionCard>
@@ -645,6 +874,16 @@ export default function SettingsPage() {
           {/* ===== AI SETTINGS ===== */}
           {activeTab === 'ai' && (
             <SectionCard title="AI Configuration" desc="Manage AI-powered features">
+              {about && (
+                <div className={`flex items-center gap-2 mb-4 px-3 py-2 rounded-lg border text-sm ${
+                  about.ai_status === 'available'
+                    ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
+                    : 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300'
+                }`}>
+                  <div className={`w-2 h-2 rounded-full ${about.ai_status === 'available' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                  <span>AI Service: {about.ai_status === 'available' ? 'Available' : 'Unavailable'}</span>
+                </div>
+              )}
               <div className="space-y-3">
                 {[
                   { key: 'ai_enabled', label: 'Enable AI Assistant', desc: 'Turn on AI-powered copilot and assistance' },
@@ -655,18 +894,25 @@ export default function SettingsPage() {
                 ].map((item) => (
                   <div key={item.key} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div><p className="text-sm font-medium text-gray-900 dark:text-white">{item.label}</p><p className="text-xs text-gray-500">{item.desc}</p></div>
-                    <Toggle checked={settings.ai[item.key] === 'true'} onChange={(v) => updateSetting('ai', item.key, v ? 'true' : 'false')} />
+                    <div className="flex items-center gap-2">
+                      {savingKeys.has(item.key) && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+                      <Toggle checked={settings.ai[item.key] === 'true'} onChange={(v) => handleSettingAutoSave('ai', item.key, v ? 'true' : 'false')} disabled={savingKeys.has(item.key)} />
+                    </div>
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                 <FormField label="AI Response Style">
-                  <Select value={settings.ai.ai_response_style || 'professional'} onChange={(v) => updateSetting('ai', 'ai_response_style', v)} options={AI_STYLES} />
+                  <div className="flex items-center gap-2">
+                    <Select value={settings.ai.ai_response_style || 'professional'} onChange={(v) => handleSettingAutoSave('ai', 'ai_response_style', v)} options={AI_STYLES} />
+                    {savingKeys.has('ai_response_style') && <Loader2 className="w-4 h-4 animate-spin text-gray-400 flex-shrink-0" />}
+                  </div>
                 </FormField>
                 <FormField label="AI Confidence Level (%)">
                   <div className="flex items-center gap-3">
-                    <input type="range" min="0" max="100" step="5" className="flex-1 accent-primary-500" value={settings.ai.ai_confidence_level || '80'} onChange={(e) => updateSetting('ai', 'ai_confidence_level', e.target.value)} />
+                    <input type="range" min="0" max="100" step="5" className="flex-1 accent-primary-500" value={settings.ai.ai_confidence_level || '80'} onChange={(e) => handleSettingAutoSave('ai', 'ai_confidence_level', e.target.value)} />
                     <span className="text-sm font-semibold text-gray-900 dark:text-white w-8 text-right">{settings.ai.ai_confidence_level || 80}</span>
+                    {savingKeys.has('ai_confidence_level') && <Loader2 className="w-4 h-4 animate-spin text-gray-400 flex-shrink-0" />}
                   </div>
                 </FormField>
               </div>
@@ -686,7 +932,10 @@ export default function SettingsPage() {
                 ].map((item) => (
                   <div key={item.key} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div><p className="text-sm font-medium text-gray-900 dark:text-white">{item.label}</p><p className="text-xs text-gray-500">{item.desc}</p></div>
-                    <Toggle checked={settings.notifications[item.key] === 'true'} onChange={(v) => updateSetting('notifications', item.key, v ? 'true' : 'false')} />
+                    <div className="flex items-center gap-2">
+                      {savingNotifKeys.has(item.key) && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+                      <Toggle checked={settings.notifications[item.key] === 'true'} onChange={(v) => handleNotifToggle(item.key, v)} disabled={savingNotifKeys.has(item.key)} />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -698,15 +947,24 @@ export default function SettingsPage() {
             <SectionCard title="Report Defaults" desc="Configure report generation preferences">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Default Export Format">
-                  <Select value={settings.reports.report_default_format || 'excel'} onChange={(v) => updateSetting('reports', 'report_default_format', v)} options={REPORT_FORMATS} />
+                  <div className="flex items-center gap-2">
+                    <Select value={settings.reports.report_default_format || 'excel'} onChange={(v) => handleSettingAutoSave('reports', 'report_default_format', v)} options={REPORT_FORMATS} />
+                    {savingKeys.has('report_default_format') && <Loader2 className="w-4 h-4 animate-spin text-gray-400 flex-shrink-0" />}
+                  </div>
                 </FormField>
                 <FormField label="Default Date Range (days)">
-                  <Select value={settings.reports.report_default_date_range || '30'} onChange={(v) => updateSetting('reports', 'report_default_date_range', v)} options={DATE_RANGES} />
+                  <div className="flex items-center gap-2">
+                    <Select value={settings.reports.report_default_date_range || '30'} onChange={(v) => handleSettingAutoSave('reports', 'report_default_date_range', v)} options={DATE_RANGES} />
+                    {savingKeys.has('report_default_date_range') && <Loader2 className="w-4 h-4 animate-spin text-gray-400 flex-shrink-0" />}
+                  </div>
                 </FormField>
               </div>
               <div className="flex items-center justify-between py-3 mt-2 border-t border-gray-100 dark:border-gray-700">
                 <div><p className="text-sm font-medium text-gray-900 dark:text-white">Company Logo on Reports</p><p className="text-xs text-gray-500">Include company logo in exported reports</p></div>
-                <Toggle checked={settings.reports.report_company_logo === 'true'} onChange={(v) => updateSetting('reports', 'report_company_logo', v ? 'true' : 'false')} />
+                <div className="flex items-center gap-2">
+                  {savingKeys.has('report_company_logo') && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+                  <Toggle checked={settings.reports.report_company_logo === 'true'} onChange={(v) => handleSettingAutoSave('reports', 'report_company_logo', v ? 'true' : 'false')} disabled={savingKeys.has('report_company_logo')} />
+                </div>
               </div>
             </SectionCard>
           )}
@@ -755,9 +1013,12 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <SectionCard title="Security" desc="Manage security preferences">
                 <FormField label="Session Timeout (minutes)">
-                  <Select value={settings.security.security_session_timeout || '30'} onChange={(v) => updateSetting('security', 'security_session_timeout', v)} options={TIMEOUT_OPTIONS} />
+                  <div className="flex items-center gap-2">
+                    <Select value={settings.security.security_session_timeout || '30'} onChange={(v) => handleSecurityChange('security_session_timeout', v)} options={TIMEOUT_OPTIONS} />
+                    {savingSecurity && <Loader2 className="w-4 h-4 animate-spin text-gray-400" />}
+                  </div>
                 </FormField>
-                <p className="text-xs text-gray-500 mt-2">After the session timeout period, you will be automatically logged out for security.</p>
+                <p className="text-xs text-gray-500 mt-2">After the session timeout period, inactive users are automatically logged out. A warning will appear before expiry.</p>
               </SectionCard>
               <SecurityInfo />
             </div>
@@ -771,17 +1032,19 @@ export default function SettingsPage() {
                   <Database className="w-8 h-8 text-primary-500 mb-2" />
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Export Settings</h4>
                   <p className="text-xs text-gray-500 mb-3">Download all system settings as a JSON backup file.</p>
-                  <button onClick={handleExportBackup} className="btn-primary w-fit">
-                    <Download className="w-3.5 h-3.5" /> Export
+                  <button onClick={handleExportBackup} disabled={backupExporting} className="btn-primary w-fit">
+                    {backupExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                    {backupExporting ? ' Exporting...' : ' Export'}
                   </button>
                 </div>
                 <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
                   <Upload className="w-8 h-8 text-emerald-500 mb-2" />
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Import Settings</h4>
                   <p className="text-xs text-gray-500 mb-3">Restore settings from a previously exported backup file.</p>
-                  <label className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.97] transition-all duration-200 cursor-pointer w-fit">
-                    <Upload className="w-3.5 h-3.5" /> Import
-                    <input type="file" accept=".json" onChange={handleImportBackup} className="hidden" />
+                  <label className={`inline-flex items-center gap-2 px-4 py-2 text-white text-sm font-medium rounded-xl shadow-lg transition-all duration-200 cursor-pointer w-fit ${saving ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.97]'}`}>
+                    {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                    {saving ? ' Importing...' : ' Import'}
+                    <input type="file" accept=".json" onChange={handleImportBackup} className="hidden" disabled={saving} />
                   </label>
                 </div>
               </div>
@@ -800,6 +1063,26 @@ export default function SettingsPage() {
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
                     <p className="text-muted mb-1">Version</p>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.version}</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 md:col-span-2">
+                    <p className="text-muted mb-1">Description</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">{about.description}</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <p className="text-muted mb-1">Environment</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white capitalize">{about.environment}</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <p className="text-muted mb-1">Python Version</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.python_version}</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <p className="text-muted mb-1">Server Platform</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.platform}</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <p className="text-muted mb-1">Server Started</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.server_started ? new Date(about.server_started).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}</p>
                   </div>
                   <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-3">
                     <div className={`w-2.5 h-2.5 rounded-full ${about.backend_status === 'healthy' ? 'bg-emerald-500' : 'bg-red-500'}`} />
@@ -821,6 +1104,13 @@ export default function SettingsPage() {
                       <p className="text-muted">AI Status</p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white capitalize">{about.ai_status}</p>
                     </div>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 md:col-span-2">
+                    <p className="text-muted mb-1">Developer</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{about.developer}</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 md:col-span-2">
+                    <p className="text-xs text-gray-400 dark:text-gray-500">{about.copyright}</p>
                   </div>
                 </div>
               ) : (

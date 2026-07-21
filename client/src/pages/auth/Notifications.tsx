@@ -21,7 +21,7 @@ export default function NotificationsPage() {
     try {
       const res = await notificationService.getAll()
       setNotifications(res.data.notifications)
-    } catch { } finally { setLoading(false) }
+    } catch { console.error('Failed to fetch notifications'); toast.error('Failed to load notifications') } finally { setLoading(false) }
   }
 
   useEffect(() => { fetchData() }, [])
@@ -31,7 +31,7 @@ export default function NotificationsPage() {
       await notificationService.markRead(id)
       if (link) navigate(link)
       else fetchData()
-    } catch { }
+    } catch { console.error('Failed to mark notification as read'); toast.error('Failed to mark as read') }
   }
 
   const handleMarkAllRead = async () => {
@@ -39,7 +39,7 @@ export default function NotificationsPage() {
       await notificationService.markAllRead()
       setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
       toast.success('All marked as read')
-    } catch { }
+    } catch { console.error('Failed to mark all notifications as read'); toast.error('Failed to mark all as read') }
   }
 
   const handleGenerateAlerts = async () => {
@@ -47,7 +47,7 @@ export default function NotificationsPage() {
       await notificationService.generateAlerts()
       toast.success('Alerts generated')
       fetchData()
-    } catch { }
+    } catch { console.error('Failed to generate alerts'); toast.error('Failed to generate alerts') }
   }
 
   const unreadCount = notifications.filter(n => !n.is_read).length

@@ -380,6 +380,7 @@ export default function AiCopilot() {
   }
 
   function ReportPreviewTable({ data, id }: { data: any; id: string }) {
+    if (!data) return <p className="text-sm text-gray-500">No data available.</p>
     let rows: any[] = []
     if (id === 'low-stock') {
       const products = data.products || []

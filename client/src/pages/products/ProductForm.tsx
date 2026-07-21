@@ -5,6 +5,7 @@ import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { Plus, X, Package, Image as ImageIcon } from 'lucide-react'
 import { productService, variantService } from '../../services/dataService'
+const UPLOADS_URL = import.meta.env.VITE_UPLOADS_URL || '/uploads'
 import { Product, Category, ProductVariant } from '../../types'
 import { GARMENT_COLORS, getColorHex } from '../../constants/colors'
 
@@ -45,6 +46,42 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
   const [variants, setVariants] = useState<VariantEntry[]>([])
   const [existingVariants, setExistingVariants] = useState<ProductVariant[]>([])
   const [nextKey, setNextKey] = useState(1)
+  const [editingExistingId, setEditingExistingId] = useState<number | null>(null)
+  const [editingColor, setEditingColor] = useState('')
+  const [editingSize, setEditingSize] = useState('')
+  const [editingSell, setEditingSell] = useState('')
+
+  const startEditExisting = (v: ProductVariant) => {
+    setEditingExistingId(v.id)
+    setEditingColor(v.color || '')
+    setEditingSize(v.size || '')
+    setEditingSell(v.selling_price?.toString() || '')
+  }
+
+  const saveExistingVariant = async (id: number) => {
+    try {
+      await variantService.update(id, {
+        color: editingColor || undefined,
+        size: editingSize || undefined,
+        selling_price: Number(editingSell) || 0,
+      })
+      setExistingVariants(prev => prev.map(v => v.id === id ? { ...v, color: editingColor, size: editingSize, selling_price: Number(editingSell) || v.selling_price } : v))
+      setEditingExistingId(null)
+      toast.success('Variant updated')
+    } catch {
+      toast.error('Failed to update variant')
+    }
+  }
+
+  const deleteExistingVariant = async (id: number) => {
+    try {
+      await variantService.delete(id)
+      setExistingVariants(prev => prev.filter(v => v.id !== id))
+      toast.success('Variant deleted')
+    } catch {
+      toast.error('Failed to delete variant')
+    }
+  }
 
   const { register, handleSubmit, formState: { errors } } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -241,7 +278,7 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
             </label>
             {(imagePreview || product?.image) && (
               <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 shrink-0">
-                <img src={imagePreview || product?.image || ''} alt="Preview" className="w-full h-full object-cover" />
+                <img src={imagePreview || (product?.image ? `${UPLOADS_URL}/products/${product.image}` : '')} alt="Preview" className="w-full h-full object-cover" />
               </div>
             )}
           </div>
@@ -268,18 +305,64 @@ export default function ProductForm({ product, categories, onSuccess, onCancel }
           <div className="mb-5 animate-fade-in">
             <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Existing Variants</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {existingVariants.map(v => (
-                <div key={v.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-premium-sm">
-                  <span className="w-3.5 h-3.5 rounded-full ring-1 ring-black/10 dark:ring-white/10 shrink-0" style={{ backgroundColor: getColorHex(v.color || '') }} />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[60px]">{v.color}</span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[36px]">{v.size}</span>
-                  <span className="text-[11px] text-gray-400 font-mono flex-1 truncate">{v.sku}</span>
-                  <span className="text-body font-medium tabular-nums">Stock: {v.stock}</span>
-                  {v.stock <= v.min_stock && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 font-medium">Low</span>
-                  )}
-                </div>
-              ))}
+              {existingVariants.map(v => {
+                const eIdx = existingVariants.indexOf(v)
+                const eKey = `existing_${v.id}_${eIdx}`
+                const isEditing = editingExistingId === v.id
+                return (
+                  <div key={v.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-premium-sm group">
+                    {isEditing ? (
+                      <>
+                        <div className="flex flex-wrap items-end gap-2 flex-1">
+                          <div className="min-w-[90px]">
+                            <label className="block text-[10px] font-medium text-gray-400 mb-0.5">Color</label>
+                            <select value={editingColor} onChange={e => setEditingColor(e.target.value)} className="w-full px-2 py-1.5 text-xs bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg">
+                              <option value="">Color</option>
+                              {GARMENT_COLORS.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                          </div>
+                          <div className="min-w-[60px]">
+                            <label className="block text-[10px] font-medium text-gray-400 mb-0.5">Size</label>
+                            <select value={editingSize} onChange={e => setEditingSize(e.target.value)} className="w-full px-2 py-1.5 text-xs bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg">
+                              <option value="">Size</option>
+                              {STANDARD_SIZES.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                          </div>
+                          <div className="w-[60px]">
+                            <label className="block text-[10px] font-medium text-gray-400 mb-0.5">Sell ₹</label>
+                            <input type="number" step="0.01" value={editingSell} onChange={e => setEditingSell(e.target.value)} className="w-full px-2 py-1.5 text-xs bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg" />
+                          </div>
+                          <div className="flex gap-1">
+                            <button type="button" onClick={() => saveExistingVariant(v.id)} className="p-1 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-all" title="Save">
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            </button>
+                            <button type="button" onClick={() => setEditingExistingId(null)} className="p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all" title="Cancel">
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-3.5 h-3.5 rounded-full ring-1 ring-black/10 dark:ring-white/10 shrink-0" style={{ backgroundColor: getColorHex(v.color || '') }} />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[60px]">{v.color}</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[36px]">{v.size}</span>
+                        <span className="text-[11px] text-gray-400 font-mono flex-1 truncate">{v.sku}</span>
+                        <span className="text-body font-medium tabular-nums">Stock: {v.stock}</span>
+                        {v.stock <= v.min_stock && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 font-medium">Low</span>
+                        )}
+                        <button type="button" onClick={() => startEditExisting(v)} className="p-1 text-blue-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all active:scale-90 opacity-0 group-hover:opacity-100" title="Edit variant">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </button>
+                        <button type="button" onClick={() => deleteExistingVariant(v.id)} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all active:scale-90 opacity-0 group-hover:opacity-100" title="Delete variant">
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
         )}

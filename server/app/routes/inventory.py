@@ -6,6 +6,7 @@ from app.middleware.auth import staff_required, get_current_user
 from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime, timedelta
+import math
 
 inventory_bp = Blueprint('inventory', __name__)
 
@@ -100,7 +101,14 @@ def adjust_inventory():
     user = get_current_user()
     item_type = data.get('type')  # 'product' or 'material'
     item_id = data.get('item_id')
-    quantity = float(data.get('quantity', 0))
+    if not item_id:
+        return jsonify({'error': 'item_id required'}), 400
+    try:
+        quantity = float(data.get('quantity', 0))
+    except (ValueError, TypeError):
+        return jsonify({'error': 'quantity must be a valid number'}), 400
+    if math.isnan(quantity) or math.isinf(quantity):
+        return jsonify({'error': 'quantity must be a finite number'}), 400
     notes = data.get('notes', '')
 
     if item_type == 'product':

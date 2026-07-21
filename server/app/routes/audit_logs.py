@@ -2,18 +2,9 @@ from flask import Blueprint, request, jsonify
 from app.models.audit_log import AuditLog
 from app.middleware.auth import admin_required
 from app import db
-from datetime import datetime
+from app.utils.helpers import parse_date
 
 audit_logs_bp = Blueprint('audit_logs', __name__)
-
-
-def parse_date(date_str):
-    if not date_str:
-        return None
-    try:
-        return datetime.fromisoformat(date_str)
-    except (ValueError, TypeError):
-        return None
 
 
 @audit_logs_bp.route('/', methods=['GET'])

@@ -34,9 +34,10 @@ def get_unread_count():
 @staff_required
 def mark_read(id):
     notification = Notification.query.get(id)
-    if notification:
-        notification.is_read = True
-        db.session.commit()
+    if not notification:
+        return jsonify({'error': 'Notification not found'}), 404
+    notification.is_read = True
+    db.session.commit()
     return jsonify({'message': 'Marked as read'}), 200
 
 
@@ -69,15 +70,21 @@ def generate_alerts():
             Product.status == 'active'
         ).all()
 
+        existing_warning_titles = set(n.title for n in Notification.query.filter(
+            Notification.type == 'warning',
+            Notification.is_read == False
+        ).all())
+
+        existing_danger_titles = set(n.title for n in Notification.query.filter(
+            Notification.type == 'danger',
+            Notification.is_read == False
+        ).all())
+
         for p in low_stock_products:
-            existing = Notification.query.filter(
-                Notification.title.like(f'%{p.product_name}%'),
-                Notification.type == 'warning',
-                Notification.is_read == False
-            ).first()
-            if not existing:
+            title = f'Low Stock: {p.product_name}'
+            if title not in existing_warning_titles:
                 notif = Notification(
-                    title=f'Low Stock: {p.product_name}',
+                    title=title,
                     message=f'Only {p.quantity} units left. Minimum stock is {p.min_stock}.',
                     type='warning',
                     link=f'/products/{p.id}'
@@ -86,14 +93,10 @@ def generate_alerts():
                 created.append(notif)
 
         for p in out_of_stock_products:
-            existing = Notification.query.filter(
-                Notification.title.like(f'%{p.product_name}%'),
-                Notification.type == 'danger',
-                Notification.is_read == False
-            ).first()
-            if not existing:
+            title = f'Out of Stock: {p.product_name}'
+            if title not in existing_danger_titles:
                 notif = Notification(
-                    title=f'Out of Stock: {p.product_name}',
+                    title=title,
                     message=f'{p.product_name} is out of stock.',
                     type='danger',
                     link=f'/products/{p.id}'

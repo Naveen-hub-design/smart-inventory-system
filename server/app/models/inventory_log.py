@@ -8,13 +8,13 @@ class InventoryLog(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     material_id = db.Column(db.Integer, db.ForeignKey('raw_materials.id'))
     variant_id = db.Column(db.Integer, db.ForeignKey('product_variants.id'), nullable=True)
-    change_type = db.Column(db.Enum('in', 'out', 'adjustment'), nullable=False)
+    change_type = db.Column(db.Enum('in', 'out', 'adjustment'), nullable=False, index=True)
     quantity = db.Column(db.Numeric(10, 2), nullable=False)
     reference_type = db.Column(db.String(50))
     reference_id = db.Column(db.Integer)
     notes = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     variant = db.relationship('ProductVariant')
 

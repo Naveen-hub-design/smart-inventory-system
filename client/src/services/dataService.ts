@@ -52,27 +52,21 @@ export const dashboardService = {
   getRecentActivities: () => api.get('/dashboard/recent-activities'),
 }
 
+function normalizeReportParams(p: any): { params: any; isBlob: boolean } {
+  if (typeof p === 'string') return { params: { format: p }, isBlob: p === 'excel' || p === 'csv' }
+  const fmt = p?.format || 'json'
+  return { params: p || {}, isBlob: fmt === 'excel' || fmt === 'csv' }
+}
+
 export const reportService = {
-  getInventory: (format?: string) => api.get('/reports/inventory', {
-    params: { format },
-    ...(format === 'excel' ? { responseType: 'blob' as const } : {}),
-  }),
-  getSales: (params?: any) => api.get('/reports/sales', {
-    params,
-    ...(params?.format === 'excel' ? { responseType: 'blob' as const } : {}),
-  }),
-  getPurchases: (params?: any) => api.get('/reports/purchases', {
-    params,
-    ...(params?.format === 'excel' ? { responseType: 'blob' as const } : {}),
-  }),
-  getSuppliers: (format?: string) => api.get('/reports/suppliers', {
-    params: { format },
-    ...(format === 'excel' ? { responseType: 'blob' as const } : {}),
-  }),
-  getLowStock: (format?: string) => api.get('/reports/low-stock', {
-    params: { format },
-    ...(format === 'excel' ? { responseType: 'blob' as const } : {}),
-  }),
+  getInventory: (p?: any) => { const n = normalizeReportParams(p); return api.get('/reports/inventory', { params: n.params, ...(n.isBlob ? { responseType: 'blob' as const } : {}) }) },
+  getSales: (p?: any) => { const n = normalizeReportParams(p); return api.get('/reports/sales', { params: n.params, ...(n.isBlob ? { responseType: 'blob' as const } : {}) }) },
+  getPurchases: (p?: any) => { const n = normalizeReportParams(p); return api.get('/reports/purchases', { params: n.params, ...(n.isBlob ? { responseType: 'blob' as const } : {}) }) },
+  getSuppliers: (p?: any) => { const n = normalizeReportParams(p); return api.get('/reports/suppliers', { params: n.params, ...(n.isBlob ? { responseType: 'blob' as const } : {}) }) },
+  getLowStock: (p?: any) => { const n = normalizeReportParams(p); return api.get('/reports/low-stock', { params: n.params, ...(n.isBlob ? { responseType: 'blob' as const } : {}) }) },
+  getSalesChartData: (months?: number) => api.get('/reports/chart-data/sales-trend', { params: { months } }),
+  getPurchaseChartData: (months?: number) => api.get('/reports/chart-data/purchase-trend', { params: { months } }),
+  getCategoryDistribution: () => api.get('/reports/chart-data/category-distribution'),
 }
 
 export const searchService = {

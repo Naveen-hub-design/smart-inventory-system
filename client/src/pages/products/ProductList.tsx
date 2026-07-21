@@ -11,6 +11,7 @@ import { TableSkeleton } from '../../components/ui/LoadingSkeleton'
 import ProductForm from './ProductForm'
 
 const API_URL = import.meta.env.VITE_API_URL || '/api'
+const UPLOADS_URL = import.meta.env.VITE_UPLOADS_URL || '/uploads'
 
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
@@ -37,7 +38,7 @@ export default function ProductList() {
       setProducts(res.data.products)
       setPages(res.data.pages)
       setTotal(res.data.total)
-    } catch {} finally {
+    } catch { console.error('Failed to fetch products') } finally {
       setLoading(false)
     }
   }
@@ -60,7 +61,7 @@ export default function ProductList() {
       await productService.delete(id)
       toast.success('Product deleted')
       fetchProducts()
-    } catch {}
+    } catch { console.error('Failed to delete product') }
   }
 
   const openEdit = (product: Product) => {
@@ -107,7 +108,8 @@ export default function ProductList() {
   const getImageUrl = (path: string | null) => {
     if (!path) return null
     if (path.startsWith('http')) return path
-    return `${API_URL.replace(/\/+$/, '')}/${path.replace(/^\/+/, '')}`
+    if (path.startsWith('/uploads/')) return path
+    return `${UPLOADS_URL.replace(/\/+$/, '')}/products/${path.replace(/^\/+/, '')}`
   }
 
   return (

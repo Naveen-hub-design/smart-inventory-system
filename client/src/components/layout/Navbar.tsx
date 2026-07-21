@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { notificationService } from '../../services/dataService'
+import { notificationService, settingsService } from '../../services/dataService'
 
 interface NavbarProps {
   onToggle: () => void
@@ -11,7 +11,7 @@ interface NavbarProps {
 
 export default function Navbar({ onToggle }: NavbarProps) {
   const { user, logout, isAdmin } = useAuth()
-  const { darkMode, toggleDarkMode } = useTheme()
+  const { darkMode, setDarkMode } = useTheme()
   const [profileOpen, setProfileOpen] = useState(false)
   const [notifCount, setNotifCount] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
@@ -23,7 +23,7 @@ export default function Navbar({ onToggle }: NavbarProps) {
       try {
         const res = await notificationService.getUnreadCount()
         setNotifCount(res.data.count)
-      } catch { }
+      } catch { console.error('Failed to fetch unread notification count') }
     }
     fetchCount()
     const interval = setInterval(fetchCount, 30000)
@@ -71,7 +71,11 @@ export default function Navbar({ onToggle }: NavbarProps) {
 
         <div className="flex items-center gap-1.5">
           <button
-            onClick={toggleDarkMode}
+            onClick={() => {
+              const newDark = !darkMode
+              setDarkMode(newDark)
+              settingsService.update({ appearance_theme: newDark ? 'dark' : 'light' }).catch(() => {})
+            }}
             className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >

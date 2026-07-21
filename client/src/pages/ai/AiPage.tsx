@@ -5,7 +5,7 @@ import {
   CalendarDays, ShieldCheck, Clock, Target, Search, Filter,
   TrendingDown, Minus, LineChart
 } from 'lucide-react'
-import { aiService, productService, dashboardService } from '../../services/dataService'
+import { aiService, productService, categoryService } from '../../services/dataService'
 import { ReorderRecommendation, ForecastItem } from '../../types'
 import { CardSkeleton } from '../../components/ui/LoadingSkeleton'
 import AiRecommendationDetailModal from './AiRecommendationDetailModal'
@@ -78,8 +78,8 @@ export default function AiPage() {
 
   useEffect(() => {
     // Load filter options on mount
-    dashboardService.getStockByCategory().then(r => {
-      setCategories(r.data.data || [])
+    categoryService.getAll({ per_page: 100 }).then(r => {
+      setCategories(r.data.categories || [])
     }).catch(() => {})
     productService.getAll({ per_page: 500 }).then(r => {
       setProducts(r.data.products || [])

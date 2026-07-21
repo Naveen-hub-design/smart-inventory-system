@@ -15,10 +15,10 @@ class User(db.Model):
     role = db.Column(db.Enum("admin", "staff"), default="staff")
     phone = db.Column(db.String(20))
     avatar = db.Column(db.String(255))
-    is_active = db.Column(db.Boolean, default=True)
+    is_active = db.Column(db.Boolean, default=True, index=True)
     password_reset_required = db.Column(db.Boolean, default=False)
     last_login = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

@@ -41,7 +41,7 @@ export default function VariantList() {
       setVariants(res.data.variants)
       setPages(res.data.pages)
       setTotal(res.data.total)
-    } catch { } finally {
+    } catch { console.error('Failed to fetch variants') } finally {
       setLoading(false)
     }
   }
@@ -49,7 +49,7 @@ export default function VariantList() {
   useEffect(() => { fetchVariants() }, [page, productFilter, colorFilter, sizeFilter])
 
   useEffect(() => {
-    productService.getAll({ per_page: 200 }).then(r => setProducts(r.data.products)).catch(() => { })
+    productService.getAll({ per_page: 200 }).then(r => setProducts(r.data.products)).catch(() => console.error('Failed to load products'))
   }, [])
 
   const handleSearch = (e: React.FormEvent) => {
@@ -64,7 +64,7 @@ export default function VariantList() {
       await variantService.delete(id)
       toast.success('Variant deleted')
       fetchVariants()
-    } catch { }
+    } catch { console.error('Failed to delete variant') }
   }
 
   const openEdit = (variant: ProductVariant) => {

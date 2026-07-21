@@ -1,4 +1,3 @@
-from flask import request
 from app.models.audit_log import create_audit_log
 from app import db
 

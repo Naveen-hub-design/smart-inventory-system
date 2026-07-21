@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, request
 from app.middleware.auth import staff_required, get_current_user
 from app.services.conversation_memory import memory
 from app.services.copilot_engine import copilot_engine

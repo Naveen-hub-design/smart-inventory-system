@@ -1,6 +1,5 @@
 import re
 from typing import Dict, List, Optional, Any
-from app import db
 from app.models.product import Product
 from app.models.product_variant import ProductVariant
 from app.models.supplier import Supplier

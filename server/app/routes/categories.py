@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.models.category import Category
+from app.models.product import Product
 from app.middleware.auth import staff_required, admin_required, get_current_user
 from app.models.audit_log import create_audit_log
 from app import db
@@ -54,7 +55,7 @@ def update_category(id):
         return jsonify({'error': 'Category not found'}), 404
 
     data = request.get_json()
-    if data.get('name'):
+    if data.get('name') is not None:
         category.name = data['name']
     if data.get('description') is not None:
         category.description = data['description']
@@ -76,6 +77,8 @@ def delete_category(id):
     category = Category.query.get(id)
     if not category:
         return jsonify({'error': 'Category not found'}), 404
+    if Product.query.filter_by(category_id=id).first():
+        return jsonify({'error': 'Cannot delete category with associated products. Reassign products first.'}), 400
     name = category.name
     user = get_current_user()
     create_audit_log(

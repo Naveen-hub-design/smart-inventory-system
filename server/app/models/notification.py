@@ -8,8 +8,8 @@ class Notification(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(200), nullable=False)
     message = db.Column(db.Text)
-    type = db.Column(db.Enum('info', 'warning', 'success', 'danger'), default='info')
-    is_read = db.Column(db.Boolean, default=False)
+    type = db.Column(db.Enum('info', 'warning', 'success', 'danger'), default='info', index=True)
+    is_read = db.Column(db.Boolean, default=False, index=True)
     link = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

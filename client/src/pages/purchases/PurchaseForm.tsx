@@ -30,8 +30,8 @@ export default function PurchaseForm({ onSuccess, onCancel }: Props) {
   const [searchingSku, setSearchingSku] = useState(false)
 
   useEffect(() => {
-    supplierService.getAll({ per_page: 100 }).then(r => setSuppliers(r.data.suppliers)).catch(() => { })
-    materialService.getAll({ per_page: 100 }).then(r => setMaterials(r.data.materials)).catch(() => { })
+    supplierService.getAll({ per_page: 100 }).then(r => setSuppliers(r.data.suppliers)).catch(() => console.error('Failed to load suppliers'))
+    materialService.getAll({ per_page: 100 }).then(r => setMaterials(r.data.materials)).catch(() => console.error('Failed to load materials'))
   }, [])
 
   const doSkuSearch = async (q: string) => {

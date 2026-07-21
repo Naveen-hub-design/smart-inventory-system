@@ -53,7 +53,7 @@ export default function Profile() {
     try {
       await authService.updateProfile(data)
       toast.success('Profile updated')
-    } catch { } finally { setSaving(false) }
+    } catch { console.error('Failed to update profile') } finally { setSaving(false) }
   }
 
   const onPasswordSubmit = async (data: PasswordForm) => {
@@ -62,7 +62,7 @@ export default function Profile() {
       await authService.changePassword(data.current_password, data.new_password)
       toast.success('Password changed')
       passwordForm.reset()
-    } catch { } finally { setChangingPwd(false) }
+    } catch { console.error('Failed to change password') } finally { setChangingPwd(false) }
   }
 
   return (

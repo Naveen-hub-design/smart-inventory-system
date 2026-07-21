@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
 import {
   LayoutDashboard, Package, Truck, ShoppingCart, Receipt,
   Boxes, BarChart3, Search, X, Bot, ShieldCheck, Settings,
@@ -43,12 +43,39 @@ function Label({ show, children }: { show: boolean; children: React.ReactNode })
   )
 }
 
+function getCompactDefault(): boolean {
+  if (document.documentElement.classList.contains('compact-sidebar')) return true
+  const stored = localStorage.getItem('sidebarCompact')
+  if (stored !== null) return stored === 'true'
+  return true
+}
+
 export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const { isAdmin } = useAuth()
   const location = useLocation()
   const visibleItems = navItems.filter(item => !item.adminOnly || isAdmin)
+  const [isCompact, setIsCompact] = useState(getCompactDefault)
   const [expanded, setExpanded] = useState(false)
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const resolvedExpanded = isCompact ? expanded : true
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const v = (e as CustomEvent).detail as boolean
+      setIsCompact(v)
+      if (v) {
+        setExpanded(false)
+        if (collapseTimer.current) {
+          clearTimeout(collapseTimer.current)
+          collapseTimer.current = null
+        }
+      }
+      localStorage.setItem('sidebarCompact', JSON.stringify(v))
+    }
+    window.addEventListener('sidebarCollapsedChange', handler)
+    return () => window.removeEventListener('sidebarCollapsedChange', handler)
+  }, [])
 
   const handleMouseEnter = useCallback(() => {
     if (window.innerWidth < 1024) return
@@ -61,11 +88,12 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
   const handleMouseLeave = useCallback(() => {
     if (window.innerWidth < 1024) return
+    if (!isCompact) return
     collapseTimer.current = setTimeout(() => {
       setExpanded(false)
       collapseTimer.current = null
     }, 350)
-  }, [])
+  }, [isCompact])
 
   return (
     <>
@@ -80,15 +108,15 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           transition-all duration-300 ease-in-out shadow-lg dark:shadow-gray-950
           lg:translate-x-0 lg:static lg:z-auto
           ${mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
-          w-[260px] ${!expanded ? 'lg:w-[80px]' : ''}
+          w-[260px] ${!resolvedExpanded ? 'lg:w-[80px]' : ''}
         `}
       >
-        <div className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-700/50 ${!expanded ? 'justify-center' : ''}`}>
-          <div className={`flex items-center overflow-hidden ${expanded ? 'gap-3' : 'gap-0'}`}>
+        <div className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-700/50 ${!resolvedExpanded ? 'justify-center' : ''}`}>
+          <div className={`flex items-center overflow-hidden ${resolvedExpanded ? 'gap-3' : 'gap-0'}`}>
             <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20 flex-shrink-0">
               <Package className="w-5 h-5 text-white" />
             </div>
-            <Label show={expanded}>
+            <Label show={resolvedExpanded}>
               <span className="font-bold text-lg bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent whitespace-nowrap">
                 SIMS
               </span>
@@ -106,21 +134,21 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               to={item.to}
               onClick={onClose}
               style={{ animationDelay: `${index * 30}ms` }}
-              title={!expanded ? item.label : undefined}
+              title={!resolvedExpanded ? item.label : undefined}
               className={({ isActive }) =>
                 `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
                     ? 'bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/20 text-primary-700 dark:text-primary-300 shadow-sm dark:shadow-primary-900/20'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200'
-                } ${!expanded ? 'justify-center px-2 gap-0' : 'gap-3'}`
+                } ${!resolvedExpanded ? 'justify-center px-2 gap-0' : 'gap-3'}`
               }
             >
               <item.icon className="flex-shrink-0 w-5 h-5" />
-              <Label show={expanded}>
+              <Label show={resolvedExpanded}>
                 <span className="truncate">{item.label}</span>
               </Label>
               {location.pathname === item.to && (
-                <span className={`ml-auto w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse-soft flex-shrink-0 transition-all duration-200 ${!expanded ? 'opacity-0 w-0 pointer-events-none' : 'opacity-100'}`} />
+                <span className={`ml-auto w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse-soft flex-shrink-0 transition-all duration-200 ${!resolvedExpanded ? 'opacity-0 w-0 pointer-events-none' : 'opacity-100'}`} />
               )}
             </NavLink>
           ))}

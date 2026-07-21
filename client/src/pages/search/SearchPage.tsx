@@ -33,7 +33,7 @@ export default function SearchPage() {
     try {
       const res = await searchService.search(q)
       setResults(res.data.results)
-    } catch { } finally {
+    } catch { console.error('Failed to perform search') } finally {
       setLoading(false)
     }
   }

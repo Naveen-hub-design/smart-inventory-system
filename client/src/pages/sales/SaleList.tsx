@@ -20,19 +20,20 @@ export default function SaleList() {
   const [modalOpen, setModalOpen] = useState(false)
   const [viewSale, setViewSale] = useState<Sale | null>(null)
 
-  const fetchData = async (searchVal = search, pageVal = page) => {
+  const fetchData = async (searchVal = search, pageVal = page, statusVal = statusFilter) => {
     setLoading(true)
     try {
       const params: any = { page: pageVal, per_page: 10, search: searchVal, sort_by: 'created_at', sort_order: 'desc' }
-      if (statusFilter) params.status = statusFilter
+      if (statusVal) params.status = statusVal
       const res = await saleService.getAll(params)
       setSales(res.data.sales)
       setPages(res.data.pages)
       setTotal(res.data.total)
-    } catch { } finally { setLoading(false) }
+    } catch { console.error('Failed to fetch sales') } finally { setLoading(false) }
   }
 
-  useEffect(() => { fetchData() }, [page, statusFilter])
+  const [searchSubmitted, setSearchSubmitted] = useState('')
+  useEffect(() => { fetchData(searchSubmitted, page, statusFilter) }, [page, statusFilter, searchSubmitted])
 
   return (
     <div className="space-y-6 animate-fade-in-up">
@@ -49,7 +50,7 @@ export default function SaleList() {
       <div className="card relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-400" />
         <div className="flex flex-col sm:flex-row gap-3 mb-5">
-          <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchData() }} className="flex-1 flex gap-2">
+          <form onSubmit={(e) => { e.preventDefault(); setSearchSubmitted(search); setPage(1) }} className="flex-1 flex gap-2">
             <div className="relative flex-1 group">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-200" />
               <input
@@ -58,7 +59,7 @@ export default function SaleList() {
                 className="input-field pl-10 pr-9"
               />
               {search && (
-                <button type="button" onClick={() => { setSearch(''); setPage(1); fetchData('', 1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <button type="button" onClick={() => { setSearch(''); setSearchSubmitted(''); setPage(1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}

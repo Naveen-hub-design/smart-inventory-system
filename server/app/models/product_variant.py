@@ -11,11 +11,11 @@ class ProductVariant(db.Model):
     sku = db.Column(db.String(100), unique=True)
     barcode = db.Column(db.String(100), unique=True)
     qr_code = db.Column(db.String(255))
-    stock = db.Column(db.Integer, nullable=False, default=0)
+    stock = db.Column(db.Integer, nullable=False, default=0, index=True)
     min_stock = db.Column(db.Integer, nullable=False, default=10)
     cost_price = db.Column(db.Numeric(10, 2), default=0)
     selling_price = db.Column(db.Numeric(10, 2), nullable=False, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     product = db.relationship('Product', backref=db.backref('variants', lazy='dynamic', cascade='all, delete-orphan'))

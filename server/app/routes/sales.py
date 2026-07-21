@@ -7,23 +7,10 @@ from app.middleware.auth import staff_required, get_current_user
 from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime
-import uuid
 from sqlalchemy import exists
+from app.utils.helpers import parse_date, generate_invoice
 
 sales_bp = Blueprint('sales', __name__)
-
-
-def parse_date(date_str):
-    if not date_str:
-        return None
-    try:
-        return datetime.fromisoformat(date_str)
-    except (ValueError, TypeError):
-        return None
-
-
-def generate_invoice():
-    return f"INV-{datetime.utcnow().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
 
 
 @sales_bp.route('/', methods=['GET'])
@@ -124,7 +111,18 @@ def create_sale():
     for item_data in data['items']:
         product_id = item_data.get('product_id')
         variant_id = item_data.get('variant_id')
-        quantity = int(item_data.get('quantity', 0))
+        if not product_id:
+            errors.append('Each item must specify a product_id')
+            continue
+        try:
+            qty_raw = item_data.get('quantity', 0)
+            quantity = int(qty_raw)
+        except (ValueError, TypeError):
+            errors.append(f'Invalid quantity: {item_data.get("quantity", 0)}')
+            continue
+        if quantity <= 0:
+            errors.append(f'Quantity must be a positive integer')
+            continue
 
         product = Product.query.get(product_id)
         if not product:
@@ -214,7 +212,43 @@ def update_sale_status(id):
     if not data or not data.get('status'):
         return jsonify({'error': 'Status required'}), 400
 
-    sale.status = data['status']
+    new_status = data['status']
+    old_status = sale.status
+
+    # Restore stock if cancelling a completed sale
+    if new_status == 'cancelled' and old_status == 'completed':
+        for item in sale.items:
+            qty = int(item.quantity)
+            if item.variant_id:
+                variant = ProductVariant.query.get(item.variant_id)
+                if variant:
+                    variant.stock += qty
+                    Product.query.get(variant.product_id).sync_stock_from_variants()
+                    log = InventoryLog(
+                        product_id=variant.product_id,
+                        variant_id=item.variant_id,
+                        change_type='in',
+                        quantity=item.quantity,
+                        reference_type='sale_cancelled',
+                        notes=f'Sale {sale.invoice_number} cancelled',
+                        user_id=get_current_user().id if get_current_user() else None
+                    )
+                    db.session.add(log)
+            else:
+                product = Product.query.get(item.product_id)
+                if product:
+                    product.quantity += qty
+                    log = InventoryLog(
+                        product_id=item.product_id,
+                        change_type='in',
+                        quantity=item.quantity,
+                        reference_type='sale_cancelled',
+                        notes=f'Sale {sale.invoice_number} cancelled',
+                        user_id=get_current_user().id if get_current_user() else None
+                    )
+                    db.session.add(log)
+
+    sale.status = new_status
     user = get_current_user()
     create_audit_log(
         username=user.username if user else 'system',
@@ -233,6 +267,39 @@ def delete_sale(id):
     sale = Sale.query.get(id)
     if not sale:
         return jsonify({'error': 'Sale not found'}), 404
+
+    # Restore stock if sale was completed
+    if sale.status == 'completed':
+        for item in sale.items:
+            qty = int(item.quantity)
+            if item.variant_id:
+                variant = ProductVariant.query.get(item.variant_id)
+                if variant:
+                    variant.stock += qty
+                    Product.query.get(variant.product_id).sync_stock_from_variants()
+                    log = InventoryLog(
+                        product_id=variant.product_id,
+                        variant_id=item.variant_id,
+                        change_type='in',
+                        quantity=item.quantity,
+                        reference_type='sale_deleted',
+                        notes=f'Sale {sale.invoice_number} deleted',
+                        user_id=get_current_user().id if get_current_user() else None
+                    )
+                    db.session.add(log)
+            else:
+                product = Product.query.get(item.product_id)
+                if product:
+                    product.quantity += qty
+                    log = InventoryLog(
+                        product_id=item.product_id,
+                        change_type='in',
+                        quantity=item.quantity,
+                        reference_type='sale_deleted',
+                        notes=f'Sale {sale.invoice_number} deleted',
+                        user_id=get_current_user().id if get_current_user() else None
+                    )
+                    db.session.add(log)
 
     invoice = sale.invoice_number
     user = get_current_user()

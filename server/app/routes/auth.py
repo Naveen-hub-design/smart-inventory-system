@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import (
     create_access_token, create_refresh_token,
     jwt_required, get_jwt_identity, get_jwt, decode_token
@@ -99,7 +99,7 @@ def logout():
                 token_type='refresh'
             ))
         except Exception:
-            pass
+            current_app.logger.warning('Failed to decode refresh token during logout')
 
     for entry in blocklist:
         db.session.add(entry)

@@ -13,9 +13,9 @@ class Sale(db.Model):
     tax = db.Column(db.Numeric(10, 2), default=0)
     grand_total = db.Column(db.Numeric(12, 2), nullable=False, default=0)
     payment_method = db.Column(db.Enum('cash', 'card', 'bank', 'other'), default='cash')
-    status = db.Column(db.Enum('pending', 'completed', 'cancelled'), default='pending')
+    status = db.Column(db.Enum('pending', 'completed', 'cancelled'), default='pending', index=True)
     notes = db.Column(db.Text)
-    sale_date = db.Column(db.DateTime, default=datetime.utcnow)
+    sale_date = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -56,10 +56,7 @@ class SaleItem(db.Model):
     variant = db.relationship('ProductVariant')
 
     def to_dict(self):
-        from app.models.product_variant import ProductVariant
-        v = None
-        if self.variant_id:
-            v = ProductVariant.query.get(self.variant_id)
+        v = self.variant if self.variant_id else None
         return {
             'id': self.id,
             'sale_id': self.sale_id,

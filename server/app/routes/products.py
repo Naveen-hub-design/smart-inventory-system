@@ -32,7 +32,10 @@ def get_products():
     query = Product.query
 
     if search:
-        query = query.filter(Product.product_name.like(f'%{search}%'))
+        query = query.filter(db.or_(
+            Product.product_name.like(f'%{search}%'),
+            Product.barcode.like(f'%{search}%')
+        ))
     if category_id:
         query = query.filter(Product.category_id == category_id)
     if status:

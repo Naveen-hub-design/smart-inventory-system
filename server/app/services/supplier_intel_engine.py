@@ -6,7 +6,6 @@ from app.models.product_variant import ProductVariant
 from app.models.sale import SaleItem, Sale
 from datetime import datetime, timedelta
 from sqlalchemy import func, case
-import math
 
 
 def _safe_div(a, b):

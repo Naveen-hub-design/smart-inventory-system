@@ -27,21 +27,21 @@ export default function MaterialList() {
       setMaterials(res.data.materials)
       setPages(res.data.pages)
       setTotal(res.data.total)
-    } catch { } finally {
+    } catch { console.error('Failed to fetch materials') } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => { fetchData() }, [page])
   useEffect(() => {
-    supplierService.getAll({ per_page: 100 }).then(r => setSuppliers(r.data.suppliers)).catch(() => { })
+    supplierService.getAll({ per_page: 100 }).then(r => setSuppliers(r.data.suppliers)).catch(() => console.error('Failed to load suppliers'))
   }, [])
 
   const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); fetchData() }
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this material?')) return
-    try { await materialService.delete(id); toast.success('Deleted'); fetchData() } catch { }
+    try { await materialService.delete(id); toast.success('Deleted'); fetchData() } catch { console.error('Failed to delete material') }
   }
 
   return (

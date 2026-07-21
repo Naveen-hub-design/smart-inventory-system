@@ -9,13 +9,20 @@ from datetime import datetime, timedelta
 import json
 import os
 import io
+import re
+import sys
+import platform
 
 settings_bp = Blueprint('settings', __name__)
+
+SERVER_STARTED = datetime.utcnow()
 
 CATEGORIES = {
     'company': ['company_name', 'company_logo', 'company_gst', 'company_address',
                 'company_email', 'company_phone', 'company_website',
-                'company_currency', 'company_timezone'],
+                'company_currency', 'company_timezone',
+                'company_city', 'company_state', 'company_country',
+                'company_postal_code', 'company_registration_number'],
     'inventory': ['inventory_low_stock_threshold', 'inventory_auto_sku',
                   'inventory_auto_barcode', 'inventory_auto_qr',
                   'inventory_default_category'],
@@ -34,6 +41,8 @@ DEFAULT_SETTINGS = {
     'company_address': '', 'company_email': '', 'company_phone': '',
     'company_website': '', 'company_currency': 'INR',
     'company_timezone': 'Asia/Kolkata',
+    'company_city': '', 'company_state': '', 'company_country': '',
+    'company_postal_code': '', 'company_registration_number': '',
     'inventory_low_stock_threshold': '10',
     'inventory_auto_sku': 'true', 'inventory_auto_barcode': 'false',
     'inventory_auto_qr': 'false', 'inventory_default_category': '',
@@ -107,9 +116,23 @@ def update_settings():
     user = get_current_user()
     updated = []
     for key, value in data.items():
-        if key in CATEGORY_MAP or key in DEFAULT_SETTINGS:
-            set_setting(key, value)
-            updated.append(key)
+        if key not in CATEGORY_MAP and key not in DEFAULT_SETTINGS:
+            continue
+        if key == 'ai_confidence_level':
+            try:
+                v = int(value)
+                if v < 0 or v > 100:
+                    return jsonify({'error': f'ai_confidence_level must be between 0 and 100'}), 400
+            except (ValueError, TypeError):
+                return jsonify({'error': f'ai_confidence_level must be a valid integer'}), 400
+        elif key == 'ai_response_style':
+            if value not in ('professional', 'conversational', 'concise', 'detailed'):
+                return jsonify({'error': f'ai_response_style must be one of professional, conversational, concise, detailed'}), 400
+        elif key in ('ai_enabled', 'ai_reorder', 'ai_forecasting', 'ai_health', 'ai_supplier_intel'):
+            if value not in ('true', 'false'):
+                return jsonify({'error': f'{key} must be "true" or "false"'}), 400
+        set_setting(key, value)
+        updated.append(key)
     if updated:
         db.session.commit()
         create_audit_log(
@@ -171,7 +194,18 @@ def change_password():
     from werkzeug.security import check_password_hash
     if not check_password_hash(user.password_hash, data['current_password']):
         return jsonify({'error': 'Current password is incorrect'}), 401
-    user.password_hash = generate_password_hash(data['new_password'])
+    new_pw = data['new_password']
+    if len(new_pw) < 8:
+        return jsonify({'error': 'Password must be at least 8 characters'}), 400
+    if not re.search(r'[A-Z]', new_pw):
+        return jsonify({'error': 'Password must contain an uppercase letter'}), 400
+    if not re.search(r'[a-z]', new_pw):
+        return jsonify({'error': 'Password must contain a lowercase letter'}), 400
+    if not re.search(r'[0-9]', new_pw):
+        return jsonify({'error': 'Password must contain a number'}), 400
+    if check_password_hash(user.password_hash, new_pw):
+        return jsonify({'error': 'New password must be different from current password'}), 400
+    user.password_hash = generate_password_hash(new_pw)
     db.session.commit()
     create_audit_log(
         username=user.username, role=user.role,
@@ -194,6 +228,8 @@ def upload_avatar():
     ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
     if ext not in allowed:
         return jsonify({'error': f'File type .{ext} not allowed'}), 400
+    if file.content_length and file.content_length > 2 * 1024 * 1024:
+        return jsonify({'error': 'File size must be under 2MB'}), 400
     upload_dir = os.path.join(current_app.config['UPLOADS_DIR'], 'avatars')
     os.makedirs(upload_dir, exist_ok=True)
     filename = f'user_{user.id}_{int(datetime.utcnow().timestamp())}.{ext}'
@@ -210,7 +246,10 @@ def remove_avatar():
     user = get_current_user()
     if user.avatar:
         filename = user.avatar.split('/')[-1]
-        filepath = os.path.join(current_app.config['UPLOADS_DIR'], 'avatars', filename)
+        uploads_dir = current_app.config.get('UPLOADS_DIR', '')
+        if not uploads_dir:
+            return jsonify({'error': 'Upload directory not configured'}), 500
+        filepath = os.path.join(uploads_dir, 'avatars', filename)
         if os.path.isfile(filepath):
             os.remove(filepath)
     user.avatar = None
@@ -230,6 +269,8 @@ def upload_logo():
     ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
     if ext not in allowed:
         return jsonify({'error': f'File type .{ext} not allowed'}), 400
+    if file.content_length and file.content_length > 2 * 1024 * 1024:
+        return jsonify({'error': 'File size must be under 2MB'}), 400
     upload_dir = os.path.join(current_app.config['UPLOADS_DIR'], 'company')
     os.makedirs(upload_dir, exist_ok=True)
     filename = f'company_logo_{int(datetime.utcnow().timestamp())}.{ext}'
@@ -268,12 +309,20 @@ def get_about():
         from app.services.erp_service_layer import erp_service
     except Exception:
         ai_status = 'unavailable'
+    env = os.getenv('APP_ENV', os.getenv('FLASK_ENV', 'production'))
     return jsonify({
         'project_name': 'Smart Inventory Management System',
         'version': '2.0.0',
+        'description': 'A comprehensive inventory and supply chain management platform with AI-powered analytics, real-time tracking, and intelligent automation.',
+        'environment': env,
         'backend_status': 'healthy',
         'database_status': db_status,
         'ai_status': ai_status,
+        'python_version': sys.version.split()[0],
+        'platform': platform.platform(),
+        'server_started': SERVER_STARTED.isoformat(),
+        'developer': 'SIMS Development Team',
+        'copyright': f'\u00a9 {datetime.utcnow().year} Smart Inventory Management System. All rights reserved.',
     }), 200
 
 
@@ -336,6 +385,8 @@ def import_backup():
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
+    if file.content_length and file.content_length > 10 * 1024 * 1024:
+        return jsonify({'error': 'Backup file must be under 10MB'}), 400
     try:
         raw = file.read().decode('utf-8')
         data = json.loads(raw)
