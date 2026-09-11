@@ -8,6 +8,7 @@ interface AuthContextType {
   token: string | null
   loading: boolean
   login: (username: string, password: string) => Promise<User>
+  loginWithGoogle: (code: string) => Promise<User>
   logout: () => void
   isAdmin: boolean
 }
@@ -65,6 +66,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return res.user
   }
 
+  const loginWithGoogle = async (code: string) => {
+    const res = await authService.googleLogin(code)
+    localStorage.setItem('token', res.access_token)
+    localStorage.setItem('refresh_token', res.refresh_token)
+    localStorage.setItem('user', JSON.stringify(res.user))
+    setToken(res.access_token)
+    setUser(res.user)
+    return res.user
+  }
+
   const logout = () => {
     const refreshToken = localStorage.getItem('refresh_token')
     api.post('/auth/logout', { refresh_token: refreshToken }).catch(() => {})
@@ -76,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isAdmin = user?.role === 'admin'
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, token, loading, login, loginWithGoogle, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   )

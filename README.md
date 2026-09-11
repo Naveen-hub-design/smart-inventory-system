@@ -129,6 +129,23 @@ The backend exposes 116+ RESTful endpoints across 16 URL prefixes:
 | `/api/audit-logs` | Audit Logs | List with filters, Get by ID |
 | `/api/ai` | AI Assistant | Health, Insights, Forecast, Reorder, Supplier Intel, Copilot Chat |
 
+## Google Sign-In (Continue with Google)
+
+The login page includes a "Continue with Google" button wired through a proper OAuth 2.0 authorization-code flow.
+
+**Frontend (already implemented):**
+- `client/src/services/googleAuth.ts` builds the Google authorization URL from environment variables and verifies the OAuth `state` parameter.
+- `client/src/pages/auth/GoogleOAuthCallback.tsx` (route `/oauth/google/callback`) exchanges the returned code with the backend and stores the issued tokens through `AuthContext.loginWithGoogle`.
+
+**Configuration required:**
+
+1. Create a Web application OAuth client ID in [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+2. Add `<your-app-origin>/oauth/google/callback` to the client's **Authorized redirect URIs**.
+3. Set `VITE_GOOGLE_CLIENT_ID` (and optionally `VITE_GOOGLE_REDIRECT_URI`) in `client/.env` — see `client/.env.example`. The frontend client ID is public by design; **never** put a client secret in the frontend.
+4. Backend endpoint (not yet implemented): `POST /api/auth/google` accepting `{ "code": "<authorization_code>" }`. It must exchange the code for tokens via Google, find or provision a SIMS user by the Google email, and return the same payload shape as `POST /api/auth/login`: `{ access_token, refresh_token, user }`.
+
+Until `VITE_GOOGLE_CLIENT_ID` is set, the button shows a "not configured" message and does not attempt authentication.
+
 ## Database Schema
 
 15 tables with normalized relationships:

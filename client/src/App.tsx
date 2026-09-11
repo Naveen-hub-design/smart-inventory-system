@@ -4,6 +4,7 @@ import { useAuth } from './context/AuthContext'
 import Layout from './components/layout/Layout'
 import Login from './pages/auth/Login'
 import ForgotPassword from './pages/auth/ForgotPassword'
+import GoogleOAuthCallback from './pages/auth/GoogleOAuthCallback'
 import AccessDenied from './pages/errors/AccessDenied'
 
 const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'))
@@ -22,6 +23,7 @@ const Settings = lazy(() => import('./pages/settings/Settings'))
 const AuditLogs = lazy(() => import('./pages/audit/AuditLogs'))
 const VariantList = lazy(() => import('./pages/variants/VariantList'))
 const AiPage = lazy(() => import('./pages/ai/AiPage'))
+const Landing = lazy(() => import('./pages/landing/Landing'))
 
 function PageLoader() {
   return (
@@ -47,17 +49,30 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function LandingRoute() {
+  const { user, loading } = useAuth()
+  if (loading) return <PageLoader />
+  return user ? (
+    <Navigate to="/dashboard" replace />
+  ) : (
+    <Suspense fallback={<PageLoader />}>
+      <Landing />
+    </Suspense>
+  )
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/" element={
+      <Route path="/oauth/google/callback" element={<GoogleOAuthCallback />} />
+      <Route path="/" element={<LandingRoute />} />
+      <Route element={
         <ProtectedRoute>
           <Layout />
         </ProtectedRoute>
       }>
-        <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<Suspense fallback={<PageLoader />}><Dashboard /></Suspense>} />
         <Route path="products" element={<Suspense fallback={<PageLoader />}><ProductList /></Suspense>} />
         <Route path="materials" element={<Suspense fallback={<PageLoader />}><MaterialList /></Suspense>} />
