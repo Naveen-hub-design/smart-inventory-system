@@ -7,6 +7,11 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Newsreader', 'Playfair Display', 'Georgia', 'serif'],
+        display: ['Newsreader', 'Playfair Display', 'Georgia', 'serif'],
+      },
       colors: {
         primary: {
           50: '#eff6ff',

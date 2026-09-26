@@ -1,13 +1,26 @@
+import React from 'react'
 import toast from 'react-hot-toast'
 import { isGoogleOAuthConfigured, getGoogleAuthUrl } from '../../services/googleAuth'
 
 function GoogleGIcon() {
   return (
-    <svg viewBox="0 0 48 48" className="w-5 h-5 shrink-0" aria-hidden="true">
-      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" aria-hidden="true">
+      <path
+        fill="#EA4335"
+        d="M12 5c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.7 1.6 15 0.7 12 0.7 7.4 0.7 3.5 3.3 1.5 7.1l3.9 3C6.3 7.4 8.9 5 12 5z"
+      />
+      <path
+        fill="#4285F4"
+        d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.9 3c2.3-2.1 3.5-5.2 3.5-9z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.4 14.9c-.2-.7-.4-1.5-.4-2.4s.1-1.7.4-2.4l-3.9-3C.5 8.9 0 10.4 0 12s.5 3.1 1.5 4.9l3.9-3z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23.3c3.2 0 6-1.1 8-3l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.7-2.1-6.6-5l-3.9 3C3.5 20.7 7.4 23.3 12 23.3z"
+      />
     </svg>
   )
 }
@@ -24,18 +37,21 @@ export default function GoogleSignInButton() {
   }
 
   return (
-    <div className="mt-3 animate-fade-in">
-      <div className="flex items-center gap-3">
-        <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
-        <span className="text-xs font-medium text-gray-400 dark:text-gray-500">or continue with</span>
-        <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
+    <div className="mt-5 w-full">
+      <div className="relative flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-[#E2E1DA]" />
+        </div>
+        <div className="relative bg-[#F4F3EE] px-3">
+          <span className="text-[11px] font-medium text-[#9CA3AF]">or continue with</span>
+        </div>
       </div>
 
       <button
         type="button"
         onClick={handleClick}
         aria-label="Continue with Google"
-        className="mt-3 w-full h-11 flex items-center justify-center gap-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+        className="mt-4 w-full h-[46px] flex items-center justify-center gap-2.5 bg-transparent hover:bg-[#EAE9E2]/70 active:scale-[0.99] border border-[#D5D4CC] rounded-xl text-[13.5px] font-medium text-[#374151] transition-all duration-150 shadow-none focus:outline-none focus:ring-2 focus:ring-[#111827]/10"
       >
         <GoogleGIcon />
         <span>Continue with Google</span>

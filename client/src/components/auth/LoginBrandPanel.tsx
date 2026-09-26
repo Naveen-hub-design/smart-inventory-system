@@ -1,6 +1,15 @@
-import { Package, Activity } from 'lucide-react'
+import React from 'react'
 
-const SERIF = "[font-family:Georgia,'Times_New_Roman',serif]"
+export function SimsLogoIcon({ className = 'w-5 h-5' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2.5L19.5 6.8V17.2L12 21.5L4.5 17.2V6.8L12 2.5Z" fill="currentColor" fillOpacity="0.1" />
+      <path d="M12 2.8L19.2 7L12 11.2L4.8 7L12 2.8Z" fill="white" fillOpacity="0.95" />
+      <path d="M4.8 7.3L12 11.4V20.8L4.8 16.7V7.3Z" fill="white" fillOpacity="0.55" />
+      <path d="M12 11.4L19.2 7.3V16.7L12 20.8V11.4Z" fill="white" fillOpacity="0.78" />
+    </svg>
+  )
+}
 
 const metrics = [
   { label: 'PRODUCTS', value: '174+' },
@@ -10,71 +19,75 @@ const metrics = [
 
 export default function LoginBrandPanel() {
   return (
-    <aside className="relative hidden lg:flex lg:w-[60%] lg:shrink-0 flex-col justify-between overflow-hidden bg-gradient-to-br from-[#0d1526] via-[#0a0f1e] to-[#111a36] select-none">
-      {/* Subtle slow atmospheric drift over the dark base */}
-      <div className="pointer-events-none absolute -inset-[4%] animate-wave-slower bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.12),transparent_65%)]" />
-      {/* Readability overlays */}
-      <div className="pointer-events-none absolute inset-0 bg-[#060b18]/55" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#04070f]/85 via-transparent to-[#04070f]/35" />
+    <aside className="relative hidden lg:flex lg:w-[58%] xl:w-[60%] lg:shrink-0 flex-col justify-between overflow-hidden bg-[#070b14] select-none min-h-screen">
+      {/* Background Warehouse Image */}
+      <img
+        src="/warehouse_hero.jpg"
+        alt="SIMS Warehouse Logistics"
+        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none brightness-[0.82] contrast-[1.08]"
+      />
 
-      {/* Top-left brand */}
-      <div className="relative z-10 flex items-center gap-3 p-8 xl:p-10 animate-fade-in-down">
-        <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 backdrop-blur-sm flex items-center justify-center">
-          <Package className="w-5 h-5 text-white" />
+      {/* Atmospheric dark overlays for high contrast and exact moody cinematic look */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050912]/95 via-[#050912]/50 to-[#050912]/30" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050912]/80 via-transparent to-[#050912]/20" />
+      <div className="pointer-events-none absolute inset-0 bg-[#050912]/25 backdrop-brightness-95" />
+
+      {/* Top-left brand header */}
+      <div className="relative z-10 flex items-center gap-3.5 p-8 lg:p-10 xl:p-12">
+        <div className="w-11 h-11 rounded-full bg-[#111726]/85 border border-white/15 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/40">
+          <SimsLogoIcon className="w-5 h-5 text-white" />
         </div>
         <div className="leading-tight">
-          <p className="text-[15px] font-bold text-white tracking-wide">SIMS</p>
-          <p className="text-[11px] text-white/60 font-medium tracking-wide">
+          <p className="text-[16px] font-bold text-white tracking-wider">SIMS</p>
+          <p className="text-[11px] text-white/70 font-medium tracking-wide">
             Smart Inventory Management System
           </p>
         </div>
       </div>
 
-      {/* Lower-middle editorial content */}
-      <div className="relative z-10 px-8 xl:px-12 pb-10 xl:pb-12">
-        <div className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <span className="inline-flex items-center px-3.5 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.18em] text-white/85 border border-white/25 bg-white/5">
+      {/* Lower editorial content */}
+      <div className="relative z-10 px-8 lg:px-10 xl:px-14 pb-10 lg:pb-12 xl:pb-14">
+        <div>
+          {/* Badge */}
+          <span className="inline-flex items-center px-3.5 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.18em] text-white/85 border border-white/20 bg-white/[0.05] backdrop-blur-sm">
             INVENTORY OPERATIONS
           </span>
-          <h1
-            className={`mt-5 text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight text-white ${SERIF}`}
-          >
-            Command
-            <br />
-            every aisle.
+
+          {/* Editorial Headline */}
+          <h1 className="mt-5 text-5xl lg:text-[54px] xl:text-[62px] font-bold leading-[1.06] tracking-tight text-white font-serif">
+            Command<br />every aisle.
           </h1>
-          <p className="mt-4 max-w-md text-[15px] text-white/70 leading-relaxed">
+
+          {/* Subtitle */}
+          <p className="mt-4 max-w-md text-sm lg:text-[15px] text-white/75 leading-relaxed font-normal">
             Real-time inventory control, analytics, and intelligent operations — built
             for teams who cannot afford a miss.
           </p>
         </div>
 
-        <div
-          className="mt-8 border-t border-white/15 pt-6 animate-fade-in-up"
-          style={{ animationDelay: '200ms' }}
-        >
-          <div className="grid grid-cols-3 max-w-lg">
+        {/* Divider & Key Metrics */}
+        <div className="mt-8 border-t border-white/15 pt-6">
+          <div className="grid grid-cols-3 max-w-lg gap-4">
             {metrics.map((m, i) => (
-              <div key={m.label} className={i > 0 ? 'border-l border-white/15 pl-6' : ''}>
-                <p className="text-[10px] font-semibold tracking-[0.16em] text-white/50">
+              <div key={m.label} className={i > 0 ? 'border-l border-white/15 pl-4 sm:pl-6' : ''}>
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.16em] text-white/50 uppercase">
                   {m.label}
                 </p>
-                <p className={`mt-1.5 text-[26px] font-semibold text-white tabular-nums ${SERIF}`}>
+                <p className="mt-1.5 text-2xl sm:text-[28px] font-medium text-white tabular-nums font-serif">
                   {m.value}
                 </p>
               </div>
             ))}
           </div>
-          <p className="mt-3 text-[10px] tracking-wide text-white/35">Sample demo data</p>
         </div>
 
-        <div
-          className="mt-6 flex items-center gap-2 text-xs text-white/60 animate-fade-in-up"
-          style={{ animationDelay: '300ms' }}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <Activity className="w-3.5 h-3.5 text-emerald-400/80" />
-          All inventory systems operational
+        {/* Operational Status Dot */}
+        <div className="mt-7 flex items-center gap-2.5 text-xs text-white/75 font-normal">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10b981]" />
+          </span>
+          <span>All inventory systems operational</span>
         </div>
       </div>
     </aside>
