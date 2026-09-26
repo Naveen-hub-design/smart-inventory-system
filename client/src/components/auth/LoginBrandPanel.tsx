@@ -31,6 +31,9 @@ const featureCards = [
 export default function LoginBrandPanel() {
   return (
     <aside className="relative hidden lg:flex lg:w-[44%] xl:w-[46%] lg:shrink-0 flex-col overflow-hidden bg-[#0b1b33] p-8 xl:p-10 select-none">
+      {/* Subtle ambient motion: slow navy sheen drift + faint dot-grid drift */}
+      <div className="pointer-events-none absolute inset-0 animate-gradient-shift bg-[linear-gradient(120deg,rgba(59,130,246,0.09),rgba(99,102,241,0.06),rgba(59,130,246,0.09))]" />
+      <div className="pointer-events-none absolute inset-0 animate-wave-slower opacity-60 bg-[radial-gradient(rgba(148,197,255,0.10)_1px,transparent_1px)] [background-size:22px_22px]" />
       {/* Top-left logo */}
       <div className="relative z-10 flex items-center gap-3 animate-fade-in-down">
         <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">

@@ -281,7 +281,8 @@ def get_barcode(id):
         try:
             code128 = barcode.get('code128', barcode_value, writer=ImageWriter())
             buf = io.BytesIO()
-            code128.write(buf)
+            img = code128.render()
+            img.save(buf, format='PNG')
             buf.seek(0)
             download = request.args.get('download', 'false').lower() == 'true'
             return send_file(buf, mimetype='image/png',

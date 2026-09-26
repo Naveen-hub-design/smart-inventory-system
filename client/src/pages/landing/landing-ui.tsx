@@ -90,25 +90,51 @@ export function formatIN(n: number) {
   return n.toLocaleString('en-IN')
 }
 
-/** Consistent section heading: eyebrow + title + description. */
+/** Consistent section heading: numbered eyebrow + title + description. */
 export function SectionHeading({
   eyebrow,
   title,
   desc,
+  tone = 'light',
+  index,
 }: {
   eyebrow: string
   title: ReactNode
   desc: string
+  tone?: 'light' | 'dark'
+  index?: string
 }) {
+  const dark = tone === 'dark'
   return (
     <Reveal className="mx-auto max-w-2xl text-center">
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase text-blue-300 bg-blue-500/10 border border-blue-400/20">
+      <span
+        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase ${
+          dark
+            ? 'text-blue-300 bg-blue-500/10 border border-blue-400/20'
+            : 'text-blue-700 bg-blue-50 border border-blue-200'
+        }`}
+      >
+        {index && (
+          <span className={`font-bold tabular-nums ${dark ? 'text-indigo-300' : 'text-blue-500'}`}>
+            {index}
+          </span>
+        )}
         {eyebrow}
       </span>
-      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white text-balance">
+      <h2
+        className={`mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-balance ${
+          dark ? 'text-white' : 'text-slate-900'
+        }`}
+      >
         {title}
       </h2>
-      <p className="mt-3 text-sm sm:text-base text-slate-400 leading-relaxed">{desc}</p>
+      <p
+        className={`mt-3 text-sm sm:text-base leading-relaxed ${
+          dark ? 'text-slate-400' : 'text-slate-600'
+        }`}
+      >
+        {desc}
+      </p>
     </Reveal>
   )
 }

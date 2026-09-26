@@ -1,28 +1,26 @@
 import LandingNavbar from './LandingNavbar'
 import LandingHero from './LandingHero'
 import {
-  StatsStrip,
+  CapabilityLine,
   Features,
   HowItWorks,
-  DashboardPreview,
+  DashboardShowcase,
   AISection,
-  SecuritySection,
   FinalCTA,
   LandingFooter,
 } from './LandingSections'
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#070c1c] text-slate-200 antialiased overflow-x-clip">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 antialiased overflow-x-clip">
       <LandingNavbar />
       <main>
         <LandingHero />
-        <StatsStrip />
+        <CapabilityLine />
         <Features />
         <HowItWorks />
-        <DashboardPreview />
+        <DashboardShowcase />
         <AISection />
-        <SecuritySection />
         <FinalCTA />
       </main>
       <LandingFooter />

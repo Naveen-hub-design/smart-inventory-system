@@ -1,55 +1,38 @@
 import { useNavigate } from 'react-router-dom'
 import {
-  Activity,
   AlertTriangle,
   ArrowRight,
   BarChart3,
-  Bell,
   Boxes,
-  CheckCircle2,
-  Clock,
-  Database,
-  FileText,
+  Brain,
   Lock,
   Package,
-  Server,
-  ShieldCheck,
   Sparkles,
   TrendingUp,
-  Users,
+  ArrowLeftRight,
   Zap,
 } from 'lucide-react'
-import { Reveal, SectionHeading, useCountUp, useInView, formatIN } from './landing-ui'
+import { Reveal, SectionHeading } from './landing-ui'
+import DashboardMock from './DashboardMock'
 
-/* ---------------- Stats strip ---------------- */
+/* ---------------- Capability line ---------------- */
 
-const stats = [
-  { icon: Boxes, value: '200+', label: 'Products Managed' },
-  { icon: Activity, value: 'Real-time', label: 'Tracking' },
-  { icon: BarChart3, value: 'Smart', label: 'Analytics' },
-  { icon: Clock, value: '24/7', label: 'Monitoring' },
-]
+const capabilities = ['Inventory', 'Sales', 'Purchases', 'Analytics', 'AI Insights']
 
-export function StatsStrip() {
+export function CapabilityLine() {
   return (
-    <section className="relative border-y border-white/10 bg-white/[0.02]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <section className="relative border-y border-slate-200/80 bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
         <Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((s) => {
-              const Icon = s.icon
-              return (
-                <div key={s.label} className="flex items-center justify-center gap-3">
-                  <span className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center shrink-0">
-                    <Icon className="w-5 h-5 text-blue-400" />
-                  </span>
-                  <span>
-                    <span className="block text-xl font-bold text-white tracking-tight">{s.value}</span>
-                    <span className="block text-xs text-slate-400">{s.label}</span>
-                  </span>
-                </div>
-              )
-            })}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            {capabilities.map((c, i) => (
+              <span key={c} className="flex items-center gap-6">
+                <span className="text-sm font-semibold text-slate-700 tracking-wide">{c}</span>
+                {i < capabilities.length - 1 && (
+                  <span className="w-1 h-1 rounded-full bg-slate-300" aria-hidden="true" />
+                )}
+              </span>
+            ))}
           </div>
         </Reveal>
       </div>
@@ -62,27 +45,27 @@ export function StatsStrip() {
 const features = [
   {
     icon: Boxes,
-    tile: 'bg-blue-500/15 text-blue-300',
-    title: 'Real-time Inventory Tracking',
-    desc: 'Monitor stock levels and inventory movement in real time.',
+    tile: 'bg-blue-50 text-blue-600',
+    title: 'Inventory Control',
+    desc: 'Products, variants, stock and movements.',
+  },
+  {
+    icon: ArrowLeftRight,
+    tile: 'bg-emerald-50 text-emerald-600',
+    title: 'Sales & Purchasing',
+    desc: 'Track transactions and purchasing activity.',
   },
   {
     icon: BarChart3,
-    tile: 'bg-emerald-500/15 text-emerald-300',
-    title: 'Smart Analytics',
-    desc: 'Turn inventory and sales data into actionable business insights.',
+    tile: 'bg-indigo-50 text-indigo-600',
+    title: 'Analytics & Reports',
+    desc: 'Understand performance through meaningful data.',
   },
   {
-    icon: Bell,
-    tile: 'bg-amber-500/15 text-amber-300',
-    title: 'Intelligent Alerts',
-    desc: 'Automatically identify low-stock items and important inventory events.',
-  },
-  {
-    icon: ShieldCheck,
-    tile: 'bg-indigo-500/15 text-indigo-300',
-    title: 'Secure Role-based Access',
-    desc: 'Keep business data protected with secure authentication and access control.',
+    icon: Brain,
+    tile: 'bg-violet-50 text-violet-600',
+    title: 'Intelligent Insights',
+    desc: 'Identify stock issues and reorder requirements.',
   },
 ]
 
@@ -92,22 +75,21 @@ export function Features() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Features"
-          title="Everything you need to manage inventory smarter."
-          desc="SIMS brings inventory, materials, sales, analytics and alerts together in one intelligent platform."
+          index="01"
+          title="Everything your inventory needs. Nothing unnecessary."
+          desc="Four focused capabilities that cover the full inventory workflow."
         />
-        <div className="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {features.map((f, i) => {
             const Icon = f.icon
             return (
               <Reveal key={f.title} delay={i * 90}>
-                <div className="h-full rounded-2xl bg-white/[0.03] border border-white/10 p-5 hover:border-blue-400/30 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300">
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${f.tile} ring-1 ring-white/10`}
-                  >
+                <div className="h-full rounded-2xl bg-white border border-slate-200 p-6 shadow-premium hover:shadow-premium-lg hover:-translate-y-1 hover:border-blue-200 transition-all duration-300">
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${f.tile}`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="mt-4 text-[15px] font-semibold text-white leading-snug">{f.title}</h3>
-                  <p className="mt-1.5 text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                  <h3 className="mt-4 text-[15px] font-semibold text-slate-900 leading-snug">{f.title}</h3>
+                  <p className="mt-1.5 text-sm text-slate-600 leading-relaxed">{f.desc}</p>
                 </div>
               </Reveal>
             )
@@ -118,39 +100,38 @@ export function Features() {
   )
 }
 
-/* ---------------- How it works ---------------- */
+/* ---------------- How SIMS works ---------------- */
 
 const steps = [
-  { n: '01', title: 'Track', desc: 'Capture and monitor inventory activity.' },
-  { n: '02', title: 'Analyze', desc: 'Understand stock, sales and business performance.' },
-  { n: '03', title: 'Optimize', desc: 'Use insights and alerts to make faster decisions.' },
+  { n: '01', title: 'TRACK', desc: 'Keep products, variants, suppliers and stock organized.' },
+  { n: '02', title: 'ANALYZE', desc: 'Understand sales, purchases and inventory trends.' },
+  { n: '03', title: 'ACT', desc: 'Use insights and alerts to make faster decisions.' },
 ]
 
 export function HowItWorks() {
   return (
-    <section id="solutions" className="relative py-16 sm:py-24 scroll-mt-16 bg-white/[0.015] border-y border-white/[0.07]">
+    <section id="solutions" className="relative py-16 sm:py-24 scroll-mt-16 bg-white border-y border-slate-200/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="How it works"
-          title="From inventory data to better decisions."
+          index="02"
+          title="From stock data to better decisions."
           desc="A simple flow that turns everyday stock activity into confident business moves."
         />
-        <div className="mt-10 sm:mt-14 relative grid md:grid-cols-3 gap-8 md:gap-6">
-          {/* Connecting line */}
-          <div
-            className="hidden md:block absolute top-7 left-[18%] right-[18%] border-t-2 border-dashed border-blue-400/20"
-            aria-hidden="true"
-          />
+        <div className="mt-10 sm:mt-14 grid md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 md:gap-4 items-start max-w-5xl mx-auto">
           {steps.map((s, i) => (
-            <Reveal key={s.n} delay={i * 120}>
-              <div className="relative text-center px-4">
-                <div className="relative z-10 mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/25 ring-1 ring-white/15">
-                  <span className="text-sm font-bold text-white tabular-nums">{s.n}</span>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-white">{s.title}</h3>
-                <p className="mt-1.5 text-sm text-slate-400 leading-relaxed max-w-xs mx-auto">{s.desc}</p>
-              </div>
-            </Reveal>
+            <div key={s.n} className="contents">
+              <Reveal delay={i * 120} className="text-center px-2">
+                <p className="text-sm font-bold text-blue-600 tabular-nums tracking-widest">{s.n}</p>
+                <h3 className="mt-2 text-lg font-bold text-slate-900 tracking-wide">{s.title}</h3>
+                <p className="mt-2 text-sm text-slate-600 leading-relaxed max-w-[240px] mx-auto">{s.desc}</p>
+              </Reveal>
+              {i < steps.length - 1 && (
+                <span className="hidden md:flex items-center justify-center pt-8 text-slate-300" aria-hidden="true">
+                  <ArrowRight className="w-6 h-6" />
+                </span>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -158,189 +139,60 @@ export function HowItWorks() {
   )
 }
 
-/* ---------------- Dashboard preview ---------------- */
+/* ---------------- Dashboard showcase ---------------- */
 
-const previewStats = [
-  { label: 'Total Products', value: 1284, prefix: '', suffix: '', color: 'text-blue-400' },
-  { label: 'Inventory Value', value: 864, prefix: '₹', suffix: 'L', color: 'text-emerald-400' },
-  { label: 'Low Stock Items', value: 18, prefix: '', suffix: '', color: 'text-amber-400' },
-  { label: 'Revenue (MTD)', value: 126, prefix: '₹', suffix: 'L', color: 'text-indigo-400' },
+const showcaseLabels = [
+  { label: 'Real-time inventory', pos: 'xl:-left-4 xl:top-24' },
+  { label: 'Sales analytics', pos: 'xl:-right-4 xl:top-1/3' },
+  { label: 'Stock alerts', pos: 'xl:-left-4 xl:bottom-1/4' },
+  { label: 'AI insights', pos: 'xl:-right-4 xl:bottom-24' },
 ]
 
-const salesBars = [38, 52, 44, 61, 58, 74, 69, 82, 77, 90, 86, 96]
-
-const distribution = [
-  { label: 'Electronics', pct: 72, bar: 'from-blue-500 to-blue-400' },
-  { label: 'Hardware', pct: 54, bar: 'from-indigo-500 to-indigo-400' },
-  { label: 'Raw Materials', pct: 63, bar: 'from-emerald-500 to-emerald-400' },
-  { label: 'Accessories', pct: 38, bar: 'from-amber-500 to-amber-400' },
-]
-
-const previewAlerts = [
-  { item: 'Copper wire 2mm', detail: '4 units left', level: 'Critical', cls: 'bg-red-500/15 text-red-300' },
-  { item: 'Steel bolts M8', detail: '12 units left', level: 'Low', cls: 'bg-amber-500/15 text-amber-300' },
-  { item: 'PVC pipe 1 inch', detail: '21 units left', level: 'Watch', cls: 'bg-blue-500/15 text-blue-300' },
-]
-
-const previewTxns = [
-  { id: 'INV-8831', party: 'Walk-in Customer', items: '24 items', amount: '₹18,240', kind: 'Sale', cls: 'bg-emerald-500/15 text-emerald-300' },
-  { id: 'PO-1042', party: 'Sharma Suppliers', items: '120 items', amount: '₹64,500', kind: 'Purchase', cls: 'bg-blue-500/15 text-blue-300' },
-  { id: 'INV-8830', party: 'Tech Solutions', items: '8 items', amount: '₹9,750', kind: 'Sale', cls: 'bg-emerald-500/15 text-emerald-300' },
-  { id: 'PO-1041', party: 'National Traders', items: '60 items', amount: '₹32,100', kind: 'Purchase', cls: 'bg-blue-500/15 text-blue-300' },
-]
-
-export function DashboardPreview() {
-  const { ref, inView } = useInView<HTMLDivElement>(0.2)
-  const animated = previewStats.map((s) => s.value)
-  const v0 = useCountUp(animated[0], inView)
-  const v1 = useCountUp(animated[1], inView)
-  const v2 = useCountUp(animated[2], inView)
-  const v3 = useCountUp(animated[3], inView)
-  const values = [v0, v1, v2, v3]
-
+export function DashboardShowcase() {
   return (
     <section id="analytics" className="relative py-16 sm:py-24 scroll-mt-16 overflow-hidden">
-      <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 h-80 w-[46rem] max-w-none rounded-full bg-indigo-600/10 blur-[130px]" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Dashboard"
-          title="One platform. Complete inventory visibility."
-          desc="Stock levels, sales performance, alerts and transactions — visible at a glance, updated in real time."
+          eyebrow="Product tour"
+          index="03"
+          title="One platform. Complete visibility."
+          desc="The actual SIMS dashboard — stat cards, sales and purchase charts, transactions and AI insights in one view."
         />
 
         <Reveal delay={150} className="mt-10 sm:mt-14">
-          <div ref={ref} className="relative">
-            <div className="pointer-events-none absolute -inset-4 rounded-[28px] bg-gradient-to-br from-blue-600/20 via-indigo-600/10 to-transparent blur-2xl" />
+          <div className="relative xl:mx-8">
             {/* Browser frame */}
-            <div className="relative rounded-2xl border border-white/10 bg-[#0a1330] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.7)] overflow-hidden">
-              {/* Frame top bar */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.02]">
+            <div className="relative rounded-2xl border border-slate-200 bg-white shadow-[0_40px_80px_-32px_rgba(15,23,42,0.28)] overflow-hidden hover:shadow-[0_48px_90px_-32px_rgba(15,23,42,0.34)] transition-shadow duration-300">
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100 bg-slate-50">
                 <div className="flex gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-300" />
                 </div>
-                <div className="mx-auto hidden sm:flex items-center gap-2 px-4 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] text-slate-400">
+                <div className="mx-auto hidden sm:flex items-center gap-2 px-4 py-1 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-500">
                   <Lock className="w-3 h-3" /> app.sims.io/dashboard
                 </div>
                 <div className="w-10 hidden sm:block" />
               </div>
-
-              <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
-                {/* Stat row */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {previewStats.map((s, i) => (
-                    <div
-                      key={s.label}
-                      className="rounded-xl bg-white/[0.04] border border-white/10 p-3.5 sm:p-4"
-                    >
-                      <p className="text-[11px] font-medium tracking-wide uppercase text-slate-400">
-                        {s.label}
-                      </p>
-                      <p className="mt-1.5 text-xl sm:text-2xl font-bold text-white tabular-nums tracking-tight">
-                        {s.prefix}
-                        {formatIN(values[i])}
-                        {s.suffix}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid lg:grid-cols-5 gap-3 sm:gap-4">
-                  {/* Sales analytics */}
-                  <div className="lg:col-span-3 rounded-xl bg-white/[0.04] border border-white/10 p-4 sm:p-5">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-white flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-blue-400" /> Sales analytics
-                      </p>
-                      <span className="text-[11px] text-slate-500">Last 12 months</span>
-                    </div>
-                    <div className="mt-4 flex items-end gap-1.5 sm:gap-2 h-28 sm:h-32">
-                      {salesBars.map((h, i) => (
-                        <div key={i} className="flex-1 flex items-end h-full">
-                          <div
-                            className="w-full rounded-t-md bg-gradient-to-t from-blue-600/70 to-blue-400/90"
-                            style={{ height: `${h}%` }}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Stock distribution */}
-                  <div className="lg:col-span-2 rounded-xl bg-white/[0.04] border border-white/10 p-4 sm:p-5">
-                    <p className="text-sm font-semibold text-white flex items-center gap-2">
-                      <Boxes className="w-4 h-4 text-indigo-400" /> Stock distribution
-                    </p>
-                    <div className="mt-4 space-y-3.5">
-                      {distribution.map((d) => (
-                        <div key={d.label}>
-                          <div className="flex items-center justify-between text-[11px] mb-1.5">
-                            <span className="text-slate-300">{d.label}</span>
-                            <span className="text-slate-400 tabular-nums">{d.pct}%</span>
-                          </div>
-                          <div className="h-2 rounded-full bg-white/[0.06]">
-                            <div
-                              className={`h-full rounded-full bg-gradient-to-r ${d.bar}`}
-                              style={{ width: `${d.pct}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
-                  {/* Low-stock alerts */}
-                  <div className="rounded-xl bg-white/[0.04] border border-white/10 p-4 sm:p-5">
-                    <p className="text-sm font-semibold text-white flex items-center gap-2">
-                      <AlertTriangle className="w-4 h-4 text-amber-400" /> Low-stock alerts
-                    </p>
-                    <div className="mt-3 space-y-2.5">
-                      {previewAlerts.map((a) => (
-                        <div
-                          key={a.item}
-                          className="flex items-center gap-3 text-xs rounded-lg bg-white/[0.03] border border-white/[0.07] px-3 py-2"
-                        >
-                          <span className="text-slate-200 font-medium truncate">{a.item}</span>
-                          <span className="text-slate-500 shrink-0">{a.detail}</span>
-                          <span
-                            className={`ml-auto shrink-0 px-2 py-0.5 rounded-full font-semibold ${a.cls}`}
-                          >
-                            {a.level}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Recent transactions */}
-                  <div className="rounded-xl bg-white/[0.04] border border-white/10 p-4 sm:p-5">
-                    <p className="text-sm font-semibold text-white flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-emerald-400" /> Recent transactions
-                    </p>
-                    <div className="mt-3 space-y-2.5">
-                      {previewTxns.map((t) => (
-                        <div
-                          key={t.id}
-                          className="flex items-center gap-3 text-xs rounded-lg bg-white/[0.03] border border-white/[0.07] px-3 py-2"
-                        >
-                          <span className="text-slate-400 tabular-nums shrink-0">{t.id}</span>
-                          <span className="text-slate-200 truncate">{t.party}</span>
-                          <span className="ml-auto text-slate-300 tabular-nums shrink-0">{t.amount}</span>
-                          <span className={`shrink-0 px-2 py-0.5 rounded-full font-semibold ${t.cls}`}>
-                            {t.kind}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              <div className="p-3 sm:p-5 bg-gray-50">
+                <DashboardMock variant="full" />
               </div>
             </div>
+
+            {/* Subtle labels — desktop only, purely annotative */}
+            {showcaseLabels.map((c, i) => (
+              <div
+                key={c.label}
+                className={`hidden xl:flex absolute ${c.pos} items-center gap-2 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-premium`}
+              >
+                <span className="w-5 h-5 rounded-full bg-primary-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+                  {i + 1}
+                </span>
+                <span className="text-xs font-medium text-slate-700 whitespace-nowrap">{c.label}</span>
+              </div>
+            ))}
             <p className="mt-3 text-center text-[11px] text-slate-500">
-              Illustrative product preview — sample data
+              Interface preview of the implemented dashboard — sample data
             </p>
           </div>
         </Reveal>
@@ -349,137 +201,96 @@ export function DashboardPreview() {
   )
 }
 
-/* ---------------- AI section ---------------- */
+/* ---------------- AI section (the one dark section) ---------------- */
 
-const aiPoints = [
-  { title: 'Low-stock risks', desc: 'Spot items likely to run out before they do.' },
-  { title: 'Inventory trends', desc: 'See which categories are growing or slowing.' },
-  { title: 'Sales patterns', desc: 'Understand what sells, when, and how fast.' },
-  { title: 'Business insights', desc: 'Turn raw activity into clear next actions.' },
-]
-
-const flowNodes = [
-  { icon: Database, label: 'Inventory Data' },
-  { icon: Sparkles, label: 'AI Analysis' },
-  { icon: Zap, label: 'Smart Actions' },
+const reorderSample = [
+  { name: 'Copper wire 2mm', priority: 'High', cls: 'bg-red-500/15 text-red-300', qty: '+240' },
+  { name: 'Steel bolts M8', priority: 'Medium', cls: 'bg-amber-500/15 text-amber-300', qty: '+120' },
+  { name: 'PVC pipe 1 inch', priority: 'Medium', cls: 'bg-amber-500/15 text-amber-300', qty: '+60' },
 ]
 
 export function AISection() {
   return (
-    <section id="ai" className="relative py-16 sm:py-24 scroll-mt-16 bg-[#050a1a] border-y border-white/[0.07] overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 animate-gradient-shift bg-[linear-gradient(115deg,rgba(59,130,246,0.07),rgba(99,102,241,0.05),rgba(59,130,246,0.07))]" />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="AI Intelligence"
-          title="Turn inventory data into intelligence."
-          desc="SIMS analyses stock, sales and supplier activity to surface risks and opportunities automatically."
-        />
-
-        {/* Data-flow visualization */}
-        <Reveal delay={120}>
-          <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-0 max-w-3xl mx-auto">
-            {flowNodes.map((n, i) => {
-              const Icon = n.icon
+    <section id="ai" className="relative py-16 sm:py-24 scroll-mt-16 bg-[#0A1730] overflow-hidden">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div>
+          <Reveal>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase text-indigo-300 bg-indigo-500/10 border border-indigo-400/20">
+              <span className="font-bold tabular-nums text-indigo-200">04</span>
+              AI Intelligence
+            </span>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white text-balance">
+              Turn inventory data into actionable insight.
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
+              SIMS analyzes inventory signals to help identify products that may require
+              attention, support reorder decisions and provide a clearer view of
+              inventory health.
+            </p>
+          </Reveal>
+          <div className="mt-6 space-y-3">
+            {[
+              { icon: AlertTriangle, text: 'Inventory health scoring across the catalog' },
+              { icon: TrendingUp, text: 'Demand trends across products and categories' },
+              { icon: Zap, text: 'Priority-ranked reorder recommendations' },
+            ].map((row, i) => {
+              const Icon = row.icon
               return (
-                <div key={n.label} className="flex flex-col sm:flex-row items-center flex-1">
-                  <div className="flex flex-col items-center rounded-2xl bg-white/[0.04] border border-white/10 px-6 py-5 w-full sm:w-auto sm:min-w-[180px]">
-                    <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/25 ring-1 ring-white/15">
-                      <Icon className="w-5 h-5 text-white" />
+                <Reveal key={row.text} delay={i * 90}>
+                  <div className="flex items-center gap-3 text-sm text-slate-300">
+                    <span className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-indigo-300" />
                     </span>
-                    <span className="mt-2.5 text-sm font-semibold text-white">{n.label}</span>
+                    {row.text}
                   </div>
-                  {i < flowNodes.length - 1 && (
-                    <div className="flex sm:flex-1 flex-col sm:flex-row items-center justify-center py-2 sm:py-0 sm:px-3" aria-hidden="true">
-                      {/* vertical connector on mobile, horizontal on desktop */}
-                      <span className="sm:hidden w-px h-6 bg-gradient-to-b from-blue-400/40 to-blue-400/10" />
-                      <span className="hidden sm:flex flex-1 items-center gap-1.5">
-                        <span className="flex-1 h-px bg-gradient-to-r from-blue-400/10 via-blue-400/40 to-blue-400/10" />
-                        <span
-                          className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"
-                          style={{ animationDelay: `${i * 400}ms` }}
-                        />
-                        <span className="flex-1 h-px bg-gradient-to-r from-blue-400/10 via-blue-400/40 to-blue-400/10" />
-                      </span>
-                    </div>
-                  )}
-                </div>
+                </Reveal>
               )
             })}
           </div>
-        </Reveal>
+        </div>
 
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {aiPoints.map((a, i) => (
-            <Reveal key={a.title} delay={i * 90}>
-              <div className="flex gap-3 rounded-2xl bg-white/[0.03] border border-white/10 p-4 h-full">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="text-sm font-semibold text-white">{a.title}</h3>
-                  <p className="mt-1 text-[13px] text-slate-400 leading-relaxed">{a.desc}</p>
+        {/* AI insight panel — mirrors the real AI Insights Summary */}
+        <Reveal delay={150}>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 sm:p-6 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.7)]">
+            <p className="text-sm font-semibold text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-300" /> Inventory insight
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-2.5">
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Inventory Health</p>
+                <p className="mt-1 text-xl font-bold text-white tabular-nums">
+                  86<span className="text-sm text-slate-400">%</span>
+                </p>
+                <div className="mt-2 h-1.5 rounded-full bg-white/10">
+                  <div className="h-full w-[86%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400" />
                 </div>
               </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ---------------- Security section ---------------- */
-
-const securityItems = [
-  {
-    icon: Lock,
-    tile: 'bg-blue-500/15 text-blue-300',
-    title: 'Secure authentication',
-    desc: 'JWT-secured sign-in with encrypted sessions and Google SSO support.',
-  },
-  {
-    icon: Users,
-    tile: 'bg-indigo-500/15 text-indigo-300',
-    title: 'Role-based access',
-    desc: 'Admin and staff roles keep sensitive operations properly protected.',
-  },
-  {
-    icon: ShieldCheck,
-    tile: 'bg-emerald-500/15 text-emerald-300',
-    title: 'Protected business data',
-    desc: 'Validated inputs, full activity audit logs, and safe data backups.',
-  },
-  {
-    icon: Server,
-    tile: 'bg-amber-500/15 text-amber-300',
-    title: 'Reliable backend',
-    desc: 'A structured Flask REST API backed by a relational SQL database.',
-  },
-]
-
-export function SecuritySection() {
-  return (
-    <section id="security" className="relative py-16 sm:py-24 scroll-mt-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Security"
-          title="Built for secure business operations."
-          desc="Authentication, access control, and data protection are part of the foundation — not an afterthought."
-        />
-        <div className="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {securityItems.map((s, i) => {
-            const Icon = s.icon
-            return (
-              <Reveal key={s.title} delay={i * 90}>
-                <div className="h-full rounded-2xl bg-white/[0.03] border border-white/10 p-5 hover:border-blue-400/30 transition-colors duration-300">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.tile} ring-1 ring-white/10`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="mt-4 text-[15px] font-semibold text-white">{s.title}</h3>
-                  <p className="mt-1.5 text-sm text-slate-400 leading-relaxed">{s.desc}</p>
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Demand Trend</p>
+                <p className="mt-1 text-xl font-bold text-emerald-300">Increasing</p>
+                <p className="mt-2 text-[11px] text-slate-500">vs. previous period</p>
+              </div>
+            </div>
+            <p className="mt-4 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              Products requiring reorder
+            </p>
+            <div className="mt-2 space-y-1.5">
+              {reorderSample.map((r) => (
+                <div
+                  key={r.name}
+                  className="flex items-center gap-2.5 rounded-lg bg-white/[0.03] border border-white/[0.07] px-3 py-2"
+                >
+                  <span className="text-xs text-slate-200 truncate">{r.name}</span>
+                  <span className={`ml-auto shrink-0 px-2 py-0.5 rounded-full text-[10px] font-semibold ${r.cls}`}>
+                    {r.priority}
+                  </span>
+                  <span className="text-xs font-semibold text-indigo-300 tabular-nums shrink-0">{r.qty}</span>
                 </div>
-              </Reveal>
-            )
-          })}
-        </div>
+              ))}
+            </div>
+            <p className="mt-3 text-[11px] text-slate-500">Illustrative preview — sample data</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
@@ -493,22 +304,37 @@ export function FinalCTA() {
     <section id="cta" className="relative py-16 sm:py-24 scroll-mt-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d1f4d] via-[#101c4a] to-[#1a1446] border border-white/10 px-6 py-12 sm:px-12 sm:py-16 text-center">
-            <div className="pointer-events-none absolute inset-0 animate-gradient-shift bg-[linear-gradient(115deg,rgba(59,130,246,0.14),rgba(99,102,241,0.10),rgba(59,130,246,0.14))]" />
+          <div className="relative overflow-hidden rounded-3xl bg-primary-600 px-6 py-12 sm:px-12 sm:py-16 text-center shadow-[0_32px_70px_-28px_rgba(37,99,235,0.55)]">
+            <div
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(ellipse_70%_90%_at_50%_50%,black,transparent)]"
+              aria-hidden="true"
+            />
             <div className="relative">
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white text-balance">
-                Ready to manage inventory smarter?
+                Your inventory.
+                <br />
+                Under control.
               </h2>
-              <p className="mt-3 max-w-xl mx-auto text-sm sm:text-base text-slate-300/80 leading-relaxed">
-                Bring inventory tracking, analytics and intelligent insights into one powerful platform.
+              <p className="mt-3 max-w-xl mx-auto text-sm sm:text-base text-blue-100/90 leading-relaxed">
+                Bring products, transactions, analytics and intelligent inventory insights
+                together in one platform.
               </p>
-              <button
-                type="button"
-                onClick={() => navigate('/login')}
-                className="mt-8 inline-flex items-center gap-2 px-7 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-xl transition-all duration-200 active:scale-[0.97]"
-              >
-                Get Started <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 bg-white hover:bg-blue-50 text-primary-700 text-sm font-semibold rounded-xl shadow-lg transition-all duration-200 active:scale-[0.97]"
+                >
+                  Explore SIMS <ArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3 text-sm font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/25 hover:border-white/40 rounded-xl transition-all duration-200"
+                >
+                  Sign In
+                </button>
+              </div>
             </div>
           </div>
         </Reveal>
@@ -519,62 +345,45 @@ export function FinalCTA() {
 
 /* ---------------- Footer ---------------- */
 
+const footerLinks = [
+  { label: 'Features', href: '#features' },
+  { label: 'Solutions', href: '#solutions' },
+  { label: 'Analytics', href: '#analytics' },
+  { label: 'About', href: '#about' },
+  { label: 'Sign In', href: '/login' },
+]
+
 export function LandingFooter() {
   return (
-    <footer id="about" className="relative border-t border-white/10 bg-[#050a1a] scroll-mt-16">
+    <footer id="about" className="relative border-t border-slate-200 bg-white scroll-mt-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-start gap-8">
+          <div className="md:max-w-sm">
             <div className="flex items-center gap-2.5">
-              <span className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 ring-1 ring-white/15">
+              <span className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/20">
                 <Package className="w-5 h-5 text-white" />
               </span>
-              <span className="text-[15px] font-bold text-white tracking-tight">SIMS</span>
+              <span className="text-[15px] font-bold text-slate-900 tracking-tight">SIMS</span>
             </div>
-            <p className="mt-3 text-sm text-slate-400">Smart Inventory Management System</p>
-            <p className="mt-2 max-w-sm text-[13px] text-slate-500 leading-relaxed">
-              Real-time inventory tracking, intelligent analytics, and automated business
-              insights for modern businesses.
+            <p className="mt-3 text-sm text-slate-600">Smart Inventory Management System</p>
+            <p className="mt-2 text-[13px] text-slate-500 leading-relaxed">
+              Inventory control, built for smarter operations.
             </p>
           </div>
-          <div>
-            <p className="text-xs font-semibold tracking-wider uppercase text-slate-300">Product</p>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {[
-                { label: 'Features', href: '#features' },
-                { label: 'How it Works', href: '#solutions' },
-                { label: 'Dashboard', href: '#analytics' },
-                { label: 'AI Intelligence', href: '#ai' },
-              ].map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} className="text-slate-400 hover:text-white transition-colors">
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="text-xs font-semibold tracking-wider uppercase text-slate-300">Resources</p>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {[
-                { label: 'Analytics', href: '#analytics' },
-                { label: 'Security', href: '#security' },
-                { label: 'Contact', href: '#cta' },
-                { label: 'Sign In', href: '/login' },
-              ].map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} className="text-slate-400 hover:text-white transition-colors">
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <nav className="md:ml-auto flex flex-wrap gap-x-8 gap-y-3" aria-label="Footer">
+            {footerLinks.map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
         </div>
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-          <span>&copy; 2026 SIMS. All rights reserved.</span>
-          <span>Inventory + Analytics + Automation + Security</span>
+        <div className="mt-10 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+          &copy; 2026 SIMS. All rights reserved.
         </div>
       </div>
     </footer>

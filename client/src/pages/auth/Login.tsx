@@ -82,9 +82,12 @@ export default function Login() {
       <LoginBrandPanel />
 
       {/* ============ RIGHT PANEL — Login form ============ */}
-      <section className="relative flex min-h-screen w-full flex-col items-center justify-center bg-gray-50 dark:bg-gray-950 p-4 sm:p-6 lg:flex-1 lg:p-8">
+      <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-950 p-4 sm:p-6 lg:flex-1 lg:p-8">
+        {/* Subtle ambient motion: slow sheen drift + faint dot-grid drift */}
+        <div className="pointer-events-none absolute inset-0 animate-gradient-shift bg-[linear-gradient(120deg,rgba(59,130,246,0.08),rgba(99,102,241,0.05),rgba(59,130,246,0.08))] dark:bg-[linear-gradient(120deg,rgba(59,130,246,0.06),rgba(99,102,241,0.04),rgba(59,130,246,0.06))]" />
+        <div className="pointer-events-none absolute inset-0 animate-wave-slower opacity-70 bg-[radial-gradient(rgba(100,116,139,0.12)_1px,transparent_1px)] [background-size:22px_22px] dark:bg-[radial-gradient(rgba(148,163,184,0.07)_1px,transparent_1px)]" />
         {/* Mobile / Tablet Header */}
-        <div className="flex flex-col items-center mb-6 lg:hidden animate-fade-in-down">
+        <div className="relative z-10 flex flex-col items-center mb-6 lg:hidden animate-fade-in-down">
           <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">
             <Package className="w-6 h-6 text-white" />
           </div>
