@@ -26,7 +26,7 @@ const AiPage = lazy(() => import('./pages/ai/AiPage'))
 
 function PageLoader() {
   return (
-    <div className="h-full flex items-center justify-center bg-gray-50 dark:bg-gray-950 p-12">
+    <div className="h-full flex items-center justify-center bg-[#F9F7F1] dark:bg-gray-950 p-12">
       <div className="flex flex-col items-center gap-3">
         <div className="animate-spin w-8 h-8 border-[3px] border-primary-200 dark:border-primary-800 border-t-primary-600 rounded-full" />
       </div>
