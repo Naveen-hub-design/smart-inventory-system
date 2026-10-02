@@ -14,8 +14,8 @@ export const authService = {
     return data
   },
 
-  googleLogin: async (code: string): Promise<LoginResponse> => {
-    const { data } = await api.post('/auth/google', { code })
+  googleLogin: async (credential: string): Promise<LoginResponse> => {
+    const { data } = await api.post('/auth/google', { credential })
     return data
   },
 

@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { isGoogleOAuthConfigured, getGoogleAuthUrl } from '../../services/googleAuth'
+import { useAuth } from '../../context/AuthContext'
+import {
+  isGoogleOAuthConfigured,
+  requestGoogleCredential,
+} from '../../services/googleAuth'
 
 function GoogleGIcon() {
   return (
@@ -27,13 +32,66 @@ function GoogleGIcon() {
 
 export default function GoogleSignInButton() {
   const configured = isGoogleOAuthConfigured()
+  const { loginWithGoogle } = useAuth()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const inFlight = useRef(false)
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (!configured) {
       toast('Google sign-in is not configured yet. Please contact your administrator.')
       return
     }
-    window.location.href = getGoogleAuthUrl()
+    // Single-flight guard: ignore duplicate clicks while authenticating.
+    if (inFlight.current) return
+    inFlight.current = true
+    setLoading(true)
+    try {
+      // 1. Google authenticates the user and returns an ID token.
+      //    The token is NOT trusted here — the backend verifies it.
+      const credential = await requestGoogleCredential()
+      // 2. Backend verifies the token, matches the SIMS account by the
+      //    verified email, and returns the normal SIMS JWT response.
+      const user = await loginWithGoogle(credential)
+      toast.success('Signed in with Google!')
+      if (user.password_reset_required) {
+        // Mirror the normal-login flow (Login's redirect effect may fire
+        // first, so delay slightly to land on the forced-change page).
+        setTimeout(() => navigate('/profile?forceChange=1'), 100)
+      }
+    } catch (err: any) {
+      if (err?.message === 'cancelled') {
+        // User dismissed the Google prompt — stay silent.
+        return
+      }
+      if (err?.message === 'not-configured') {
+        toast('Google sign-in is not configured yet. Please contact your administrator.')
+        return
+      }
+      if (!err?.response) {
+        // No backend response: GIS script/timeout/popup issues, or the
+        // API server is unreachable (axios network error).
+        if (err?.message === 'timeout') {
+          toast.error('Google sign-in timed out. Please try again.')
+        } else if (err?.isAxiosError) {
+          toast.error('Unable to connect to the authentication server.')
+        } else {
+          toast.error('Google authentication failed. Please try again.')
+        }
+        return
+      }
+      const status: number | undefined = err.response?.status
+      const serverMessage: string | undefined = err.response?.data?.error
+      if (status === 401 || status === 403) {
+        // Backend decides: unregistered email, inactive account, or bad token.
+        toast.error(serverMessage || 'Google authentication failed. Please try again.')
+      } else {
+        toast.error('Google authentication failed. Please try again.')
+      }
+    } finally {
+      inFlight.current = false
+      setLoading(false)
+    }
   }
 
   return (
@@ -50,11 +108,21 @@ export default function GoogleSignInButton() {
       <button
         type="button"
         onClick={handleClick}
+        disabled={loading}
         aria-label="Continue with Google"
-        className="mt-4 w-full h-[46px] flex items-center justify-center gap-2.5 bg-transparent hover:bg-[#EAE9E2]/70 active:scale-[0.99] border border-[#D5D4CC] rounded-xl text-[13.5px] font-medium text-[#374151] transition-all duration-150 shadow-none focus:outline-none focus:ring-2 focus:ring-[#111827]/10"
+        className="mt-4 w-full h-[46px] flex items-center justify-center gap-2.5 bg-transparent hover:bg-[#EAE9E2]/70 active:scale-[0.99] border border-[#D5D4CC] rounded-xl text-[13.5px] font-medium text-[#374151] transition-all duration-150 shadow-none focus:outline-none focus:ring-2 focus:ring-[#111827]/10 disabled:opacity-70 disabled:cursor-not-allowed disabled:active:scale-100"
       >
-        <GoogleGIcon />
-        <span>Continue with Google</span>
+        {loading ? (
+          <>
+            <span className="w-4 h-4 border-2 border-[#9CA3AF]/40 border-t-[#374151] rounded-full animate-spin" />
+            <span>Connecting to Google…</span>
+          </>
+        ) : (
+          <>
+            <GoogleGIcon />
+            <span>Continue with Google</span>
+          </>
+        )}
       </button>
     </div>
   )

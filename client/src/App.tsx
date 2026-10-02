@@ -23,7 +23,6 @@ const Settings = lazy(() => import('./pages/settings/Settings'))
 const AuditLogs = lazy(() => import('./pages/audit/AuditLogs'))
 const VariantList = lazy(() => import('./pages/variants/VariantList'))
 const AiPage = lazy(() => import('./pages/ai/AiPage'))
-const Landing = lazy(() => import('./pages/landing/Landing'))
 
 function PageLoader() {
   return (
@@ -49,26 +48,23 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-function LandingRoute() {
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+
+function PublicOrLanding() {
   const { user, loading } = useAuth()
   if (loading) return <PageLoader />
-  return user ? (
-    <Navigate to="/dashboard" replace />
-  ) : (
-    <Suspense fallback={<PageLoader />}>
-      <Landing />
-    </Suspense>
-  )
+  return user ? <Navigate to="/dashboard" replace /> : <Suspense fallback={<PageLoader />}><LandingPage /></Suspense>
 }
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<PublicOrLanding />} />
+      <Route path="/landing" element={<Suspense fallback={<PageLoader />}><LandingPage /></Suspense>} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/oauth/google/callback" element={<GoogleOAuthCallback />} />
-      <Route path="/" element={<LandingRoute />} />
-      <Route element={
+      <Route path="/" element={
         <ProtectedRoute>
           <Layout />
         </ProtectedRoute>
@@ -90,7 +86,7 @@ export default function App() {
         <Route path="settings" element={<AdminRoute><Suspense fallback={<PageLoader />}><Settings /></Suspense></AdminRoute>} />
         <Route path="audit-logs" element={<AdminRoute><Suspense fallback={<PageLoader />}><AuditLogs /></Suspense></AdminRoute>} />
       </Route>
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

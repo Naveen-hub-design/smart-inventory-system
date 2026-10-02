@@ -4,6 +4,7 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity, get_jwt, decode_token
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+import os
 from app.models.user import User, generate_employee_id
 from app.models.token_blocklist import TokenBlocklist
 from app.models.password_reset_request import PasswordResetRequest
@@ -22,6 +23,31 @@ def _get_session_expiry():
         return timedelta(minutes=30)
 
 auth_bp = Blueprint('auth', __name__)
+
+
+def _issue_login_tokens(user):
+    """Build the standard SIMS login response for an authenticated user.
+
+    Used by both username/password login and verified Google login so the
+    application JWT, claims and response shape are always identical.
+    The role always comes from the SIMS database, never from the client.
+    """
+    claims = {'role': user.role, 'username': user.username}
+    access_token = create_access_token(
+        identity=str(user.id),
+        additional_claims=claims,
+        expires_delta=_get_session_expiry()
+    )
+    refresh_token = create_refresh_token(
+        identity=str(user.id),
+        additional_claims=claims
+    )
+    return {
+        'message': 'Login successful',
+        'access_token': access_token,
+        'refresh_token': refresh_token,
+        'user': user.to_dict()
+    }
 
 
 @auth_bp.route('/login', methods=['POST'])
@@ -65,23 +91,105 @@ def login():
     )
     db.session.commit()
 
-    claims = {'role': user.role, 'username': user.username}
-    access_token = create_access_token(
-        identity=str(user.id),
-        additional_claims=claims,
-        expires_delta=_get_session_expiry()
-    )
-    refresh_token = create_refresh_token(
-        identity=str(user.id),
-        additional_claims=claims
-    )
+    return jsonify(_issue_login_tokens(user)), 200
 
-    return jsonify({
-        'message': 'Login successful',
-        'access_token': access_token,
-        'refresh_token': refresh_token,
-        'user': user.to_dict()
-    }), 200
+
+@auth_bp.route('/google', methods=['POST'])
+def google_login():
+    """Sign in with a verified Google Identity Services ID token.
+
+    Request body: { "credential": "<Google ID token>" }
+
+    Security rules (all enforced here, never trusting the frontend):
+    - The credential is verified server-side with Google's official library
+      (signature, expiry, audience/client ID and issuer are all checked).
+    - The email is taken ONLY from the verified token, never from the client.
+    - NO account is ever created: the email must already exist in SIMS.
+    - Inactive accounts are rejected.
+    - The role always comes from the SIMS database; the client cannot
+      supply or escalate it.
+    On success the SAME SIMS JWT response as normal login is returned.
+    """
+    data = request.get_json(silent=True) or {}
+    credential = data.get('credential', '')
+    if not credential or not isinstance(credential, str):
+        return jsonify({'error': 'Google credential is required'}), 400
+
+    client_id = os.getenv('GOOGLE_CLIENT_ID', '')
+    if not client_id:
+        current_app.logger.error('GOOGLE_CLIENT_ID is not configured')
+        return jsonify({'error': 'Google sign-in is not configured on the server.'}), 500
+
+    try:
+        from google.oauth2 import id_token as google_id_token
+        from google.auth.transport import requests as google_requests
+        idinfo = google_id_token.verify_oauth2_token(
+            credential, google_requests.Request(), client_id
+        )
+    except ImportError:
+        current_app.logger.error('google-auth library is not installed')
+        return jsonify({'error': 'Google sign-in is not configured on the server.'}), 500
+    except ValueError:
+        # Invalid, expired, malformed token, or wrong audience.
+        create_audit_log(
+            username='unknown',
+            role='unknown',
+            action='login',
+            module='auth',
+            description='Rejected Google login with an invalid credential',
+            status='failure'
+        )
+        db.session.commit()
+        return jsonify({'error': 'Google authentication failed. Please try again.'}), 401
+    except Exception:
+        current_app.logger.exception('Unexpected error verifying Google credential')
+        return jsonify({'error': 'Google authentication failed. Please try again.'}), 500
+
+    if idinfo.get('iss') not in ('accounts.google.com', 'https://accounts.google.com'):
+        return jsonify({'error': 'Google authentication failed. Please try again.'}), 401
+    if not idinfo.get('email_verified'):
+        return jsonify({'error': 'Google authentication failed. Please try again.'}), 401
+
+    email = (idinfo.get('email') or '').strip().lower()
+    if not email:
+        return jsonify({'error': 'Google authentication failed. Please try again.'}), 401
+
+    user = User.query.filter(db.func.lower(User.email) == email).first()
+    if not user:
+        create_audit_log(
+            username=email,
+            role='unknown',
+            action='login',
+            module='auth',
+            description=f'Rejected Google login for unregistered email {email}',
+            status='failure'
+        )
+        db.session.commit()
+        return jsonify({'error': 'Google account is not registered in SIMS. Please contact the administrator.'}), 401
+
+    if not user.is_active:
+        create_audit_log(
+            username=user.username,
+            role=user.role,
+            action='login',
+            module='auth',
+            description=f'Rejected Google login for deactivated account {user.username}',
+            status='failure'
+        )
+        db.session.commit()
+        return jsonify({'error': 'Your SIMS account is inactive. Please contact the administrator.'}), 403
+
+    user.last_login = datetime.utcnow()
+    create_audit_log(
+        username=user.username,
+        role=user.role,
+        action='login',
+        module='auth',
+        description=f'User {user.username} logged in with Google'
+    )
+    db.session.commit()
+
+    return jsonify(_issue_login_tokens(user)), 200
 
 
 @auth_bp.route('/logout', methods=['POST'])
