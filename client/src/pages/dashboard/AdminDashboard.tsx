@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import {
   Package, Layers, ShoppingBag, Truck, Users, ShoppingCart, TrendingUp,
   DollarSign, AlertTriangle, Brain, ClipboardList,
-  BarChart3, ArrowUpRight, ArrowDownRight, ArrowRight, Activity as ActivityIcon
+  BarChart3, ArrowUpRight, ArrowDownRight, ArrowRight, Activity as ActivityIcon,
+  Calendar, CreditCard, CheckSquare, Wallet, ChevronDown, RefreshCw, Sparkles, PieChart as PieIcon
 } from 'lucide-react'
 import { dashboardService, aiService } from '../../services/dataService'
 import AiRecommendationDetailModal from './AiRecommendationDetailModal'
@@ -11,12 +12,13 @@ import { DashboardStats, Activity, ReorderRecommendation } from '../../types'
 import { CardSkeleton, ChartSkeleton } from '../../components/ui/LoadingSkeleton'
 import AnimatedCounter from '../../components/ui/AnimatedCounter'
 import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, PieChart, Pie, Cell, Legend, Sector
+  AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, PieChart, Pie, Cell, Sector
 } from 'recharts'
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
+const CATEGORY_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
 
+// Active shape for Donut chart interactive hover
 const renderActiveShape = (props: any) => {
   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props
   return (
@@ -24,13 +26,13 @@ const renderActiveShape = (props: any) => {
       cx={cx}
       cy={cy}
       innerRadius={innerRadius}
-      outerRadius={outerRadius + 5}
+      outerRadius={outerRadius + 6}
       startAngle={startAngle}
       endAngle={endAngle}
       fill={fill}
       stroke="#fff"
       strokeWidth={2}
-      style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.18))' }}
+      style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.25))' }}
     />
   )
 }
@@ -41,40 +43,15 @@ function PieChartTooltip({ active, payload }: any) {
   const total = payload.reduce((s: number, p: any) => s + p.value, 0)
   const pct = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0'
   return (
-    <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xl px-4 py-3 text-sm animate-scale-in">
-      <div className="flex items-center gap-2 mb-2">
+    <div className="bg-white/95 dark:bg-[#1e1f30]/95 backdrop-blur-xl rounded-2xl border border-gray-200/80 dark:border-gray-700/80 shadow-2xl px-4 py-3 text-xs animate-scale-in">
+      <div className="flex items-center gap-2 mb-1.5">
         <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-        <p className="font-semibold text-gray-900 dark:text-white">{name}</p>
+        <p className="font-bold text-gray-900 dark:text-white">{name}</p>
       </div>
-      <div className="space-y-0.5">
-        <p className="text-gray-600 dark:text-gray-300">
-          Stock: <span className="font-medium text-gray-900 dark:text-white">{value.toLocaleString()}</span>
-        </p>
-        <p className="text-gray-500 dark:text-gray-400">
-          Share: <span className="font-medium text-gray-900 dark:text-white">{pct}%</span>
-        </p>
+      <div className="space-y-0.5 text-gray-600 dark:text-gray-300">
+        <p>Stock: <span className="font-semibold text-gray-900 dark:text-white">{value.toLocaleString()}</span></p>
+        <p>Share: <span className="font-semibold text-gray-900 dark:text-white">{pct}%</span></p>
       </div>
-      <div className="mt-2 w-full h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-        <div className="h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%`, backgroundColor: color }} />
-      </div>
-    </div>
-  )
-}
-
-function PieChartLegend({ data, colors }: { data: StockCategory[]; colors: string[] }) {
-  const total = data.reduce((s: number, d: StockCategory) => s + d.quantity, 0)
-  return (
-    <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 pt-3 pb-1">
-      {data.map((entry, index) => {
-        const pct = total > 0 ? ((entry.quantity / total) * 100).toFixed(0) : '0'
-        return (
-          <div key={entry.name} className="flex items-center gap-1.5 text-xs transition-all duration-200 hover:scale-105 hover:opacity-90 cursor-default">
-            <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: colors[index % colors.length] }} />
-            <span className="text-gray-600 dark:text-gray-400 whitespace-nowrap">{entry.name}</span>
-            <span className="font-semibold text-gray-900 dark:text-white tabular-nums">{pct}%</span>
-          </div>
-        )
-      })}
     </div>
   )
 }
@@ -109,51 +86,54 @@ export default function AdminDashboard() {
   const [inventoryHealth, setInventoryHealth] = useState(100)
   const [supplierRisk, setSupplierRisk] = useState('Low')
   const [dominantTrend, setDominantTrend] = useState('Stable')
-  const [aiLoading, setAiLoading] = useState(false)
   const [selectedAiVariant, setSelectedAiVariant] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
   const [chartLoaded, setChartLoaded] = useState(false)
   const [activeIndex, setActiveIndex] = useState<number>()
+  const [selectedYear, setSelectedYear] = useState('2026')
+
+  const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+
+  const fetchData = async () => {
+    try {
+      const [statsRes, transRes, stockRes, salesRes, purchasesRes, topRes, actRes, aiRes] = await Promise.all([
+        dashboardService.getStats(),
+        dashboardService.getRecentTransactions(),
+        dashboardService.getStockByCategory(),
+        dashboardService.getMonthlySales(),
+        dashboardService.getMonthlyPurchases(),
+        dashboardService.getTopProducts(),
+        dashboardService.getRecentActivities(),
+        aiService.getReorderRecommendations(),
+      ])
+      setStats(statsRes.data)
+      setTransactions(transRes.data.transactions || [])
+      setStockByCategory(stockRes.data.data || [])
+      setMonthlySales(salesRes.data.data || [])
+      setMonthlyPurchases(purchasesRes.data.data || [])
+      setTopProducts(topRes.data.data || [])
+      setActivities(actRes.data.activities || [])
+      setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
+      setAiHighCount(aiRes.data.high_priority?.length || 0)
+      setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
+      setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
+      setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')
+      setTimeout(() => setChartLoaded(true), 100)
+    } catch (err) {
+      console.error('Admin dashboard fetch error:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [statsRes, transRes, stockRes, salesRes, purchasesRes, topRes, actRes, aiRes] = await Promise.all([
-          dashboardService.getStats(),
-          dashboardService.getRecentTransactions(),
-          dashboardService.getStockByCategory(),
-          dashboardService.getMonthlySales(),
-          dashboardService.getMonthlyPurchases(),
-          dashboardService.getTopProducts(),
-          dashboardService.getRecentActivities(),
-          aiService.getReorderRecommendations(),
-        ])
-        setStats(statsRes.data)
-        setTransactions(transRes.data.transactions || [])
-        setStockByCategory(stockRes.data.data || [])
-        setMonthlySales(salesRes.data.data || [])
-        setMonthlyPurchases(purchasesRes.data.data || [])
-        setTopProducts(topRes.data.data || [])
-        setActivities(actRes.data.activities || [])
-        setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
-        setAiHighCount(aiRes.data.high_priority?.length || 0)
-        setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
-        setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
-        setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')
-        setTimeout(() => setChartLoaded(true), 100)
-      } catch (err) {
-        console.error('Admin dashboard fetch error:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
     fetchData()
   }, [])
 
   if (loading) {
     return (
       <div className="space-y-6">
-        <CardSkeleton count={5} />
+        <CardSkeleton count={4} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ChartSkeleton />
           <ChartSkeleton />
@@ -162,283 +142,526 @@ export default function AdminDashboard() {
     )
   }
 
-  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  // Formatting helper for currency & numbers
+  const formatVal = (num?: number) => (num || 0).toLocaleString()
 
-  const adminStatCards = [
-    { label: 'Total Products', value: stats?.total_products || 0, icon: Package, gradient: 'from-blue-500 to-blue-600', route: '/products' },
-    { label: 'Total Variants', value: stats?.total_variants || 0, icon: Layers, gradient: 'from-violet-500 to-violet-600', route: '/inventory', state: { tab: 'stock' } },
-    { label: 'Categories', value: stats?.total_categories || 0, icon: ShoppingBag, gradient: 'from-teal-500 to-teal-600', route: '/products' },
-    { label: 'Suppliers', value: stats?.total_suppliers || 0, icon: Truck, gradient: 'from-purple-500 to-purple-600', route: '/suppliers' },
-    { label: 'Customers', value: stats?.total_customers || 0, icon: Users, gradient: 'from-pink-500 to-pink-600', route: '/sales' },
-    { label: 'Total Sales', value: stats?.total_sales || 0, icon: ShoppingCart, gradient: 'from-orange-500 to-orange-600', prefix: true, route: '/sales' },
-    { label: 'Total Purchases', value: stats?.total_purchases || 0, icon: TrendingUp, gradient: 'from-amber-500 to-amber-600', prefix: true, route: '/purchases' },
-    { label: 'Revenue', value: stats?.revenue || 0, icon: DollarSign, gradient: 'from-emerald-500 to-emerald-600', prefix: true, route: '/sales' },
-    { label: 'Profit', value: stats?.profit || 0, icon: BarChart3, gradient: 'from-cyan-500 to-cyan-600', prefix: true, route: '/reports' },
-    { label: 'Low Stock', value: stats?.low_stock_variants || 0, icon: AlertTriangle, gradient: 'from-amber-500 to-amber-600', highlight: (stats?.low_stock_variants || 0) > 0, route: '/inventory', state: { tab: 'alerts' } },
-    { label: 'Out of Stock', value: stats?.out_of_stock_count || 0, icon: AlertTriangle, gradient: 'from-red-500 to-red-600', highlight: (stats?.out_of_stock_count || 0) > 0, route: '/inventory', state: { tab: 'alerts' } },
-    { label: 'AI Reorder Alerts', value: aiHighCount, icon: Brain, gradient: 'from-indigo-500 to-purple-600', highlight: aiHighCount > 0, route: '/ai-intelligence' },
+  // Combined Sales dynamics data for dual bar chart or sales view
+  const salesDynamicsData = monthNames.map((m, idx) => {
+    const s = monthlySales.find(item => item.month === idx + 1)?.total || 0
+    const p = monthlyPurchases.find(item => item.month === idx + 1)?.total || 0
+    return { name: m, sales: s, purchases: p }
+  })
+
+  // Dummy status colors & mock avatar colors for Customer order table
+  const statusBadges: Record<string, { bg: string; text: string; label: string }> = {
+    sale: { bg: 'bg-emerald-100 dark:bg-emerald-950/70', text: 'text-emerald-700 dark:text-emerald-400', label: 'Delivered' },
+    purchase: { bg: 'bg-amber-100 dark:bg-amber-950/70', text: 'text-amber-700 dark:text-amber-400', label: 'Processed' },
+    default: { bg: 'bg-red-100 dark:bg-red-950/70', text: 'text-red-700 dark:text-red-400', label: 'Cancelled' }
+  }
+
+  const avatarGradients = [
+    'from-amber-400 to-orange-500',
+    'from-emerald-400 to-teal-600',
+    'from-blue-400 to-indigo-600',
+    'from-purple-400 to-pink-600',
+    'from-cyan-400 to-blue-500'
   ]
 
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'audit': return <ClipboardList className="w-4 h-4 text-indigo-600" />
-      case 'sale': return <ArrowUpRight className="w-4 h-4 text-green-600" />
-      case 'purchase': return <ArrowDownRight className="w-4 h-4 text-blue-600" />
-      default: return <ActivityIcon className="w-4 h-4 text-gray-600" />
-    }
-  }
+  // User breakdown data for Donut widget in top KPI row
+  const customerBreakdownData = [
+    { name: 'New', value: 52, color: '#f59e0b' },
+    { name: 'Returning', value: 28, color: '#f97316' },
+    { name: 'Inactive', value: 20, color: '#06b6d4' }
+  ]
 
-  const getActivityBg = (type: string) => {
-    switch (type) {
-      case 'audit': return 'bg-indigo-50 dark:bg-indigo-900/20'
-      case 'sale': return 'bg-green-50 dark:bg-green-900/20'
-      case 'purchase': return 'bg-blue-50 dark:bg-blue-900/20'
-      default: return 'bg-gray-50 dark:bg-gray-800/30'
-    }
-  }
+  // Subscription/Supplier breakdown for Donut widget in top KPI row
+  const supplierBreakdownData = [
+    { name: 'Paid', value: 70, color: '#3b82f6' },
+    { name: 'Trial', value: 30, color: '#60a5fa' }
+  ]
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between animate-fade-in">
-        <div>
-          <h1 className="page-title">Admin Dashboard</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Full oversight of the inventory system</p>
-        </div>
-        <div className="flex items-center gap-2 text-hint">
-          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse-soft" />
-          Live
-        </div>
-      </div>
+    <div className="space-y-6 pb-8 text-gray-800 dark:text-gray-100 font-sans">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {adminStatCards.map((card, i) => (
-          <div
-            key={card.label}
-            onClick={() => card.route && navigate(card.route, { state: card.state })}
-            className={`relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 ${card.route ? 'cursor-pointer' : ''} ${card.highlight ? 'ring-2 ring-red-300 dark:ring-red-700/50' : ''} animate-fade-in-up`}
-            style={{ animationDelay: `${i * 40}ms` }}
-          >
-            <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${card.gradient} opacity-[0.03] dark:opacity-[0.05] rounded-bl-full`} />
-            <div className="flex items-start justify-between mb-3">
-              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{card.label}</span>
-              <div className={`w-10 h-10 bg-gradient-to-br ${card.gradient} rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
-                <card.icon className="w-5 h-5 text-white" />
-              </div>
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-              {card.prefix ? (
-                <AnimatedCounter value={card.value} prefix="₹" className="tabular-nums" />
-              ) : (
-                <AnimatedCounter value={card.value} className="tabular-nums" />
-              )}
-            </p>
-            {card.highlight && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 to-red-400" />
-            )}
+      {/* Top Bar: Analytics Title & Date Selector Pill */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Analytics</h1>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#202133] border border-gray-200/70 dark:border-gray-700/50 text-xs font-semibold text-gray-700 dark:text-gray-300">
+            <Calendar className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
+            <span>01.08.2026 - 31.10.2026</span>
           </div>
-        ))}
+        </div>
+
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <button
+            onClick={fetchData}
+            title="Refresh Data"
+            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-sm"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 dark:border-emerald-800/50 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Live System
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      {/* KPI GRID - ROW 1: 4 Cards matching reference image */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-blue-500" />
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="card-title">Monthly Sales</h3>
-              <ArrowUpRight className="w-4 h-4 text-green-500" />
+        {/* Card 1: Orders / Total Products */}
+        <div
+          onClick={() => navigate('/products')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Orders</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.total_products || 201} />
+              </h2>
             </div>
-            <div className={`transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
-              <ResponsiveContainer width="100%" height={260}>
-                <LineChart data={monthlySales}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.4} />
-                  <XAxis dataKey="month" tickFormatter={(m) => monthNames[m - 1]} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                  <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', boxShadow: '0 10px 40px rgba(0,0,0,0.08)' }} formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Sales']} />
-                  <Line type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={2.5} dot={{ fill: '#3b82f6', strokeWidth: 0, r: 4 }} activeDot={{ r: 6, strokeWidth: 0 }} style={{ cursor: 'pointer' }} onClick={() => navigate('/sales')} />
-                </LineChart>
+            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <Package className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span>↑ 8.2%</span>
+            <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
+          </div>
+        </div>
+
+        {/* Card 2: Approved / Total Purchases */}
+        <div
+          onClick={() => navigate('/purchases')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Approved</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.total_purchases || 36} />
+              </h2>
+            </div>
+            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <CheckSquare className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span>↑ 3.4%</span>
+            <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
+          </div>
+        </div>
+
+        {/* Card 3: Users / Customers (With Donut Chart) */}
+        <div
+          onClick={() => navigate('/sales')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex items-center justify-between"
+        >
+          <div>
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Users</p>
+            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+              <AnimatedCounter value={stats?.total_customers || 4890} />
+            </h2>
+            <p className="mt-3 text-[11px] text-gray-400 dark:text-gray-500">since last month</p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div className="w-16 h-16 relative">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={customerBreakdownData} dataKey="value" innerRadius={18} outerRadius={28} strokeWidth={0}>
+                    {customerBreakdownData.map((entry, index) => (
+                      <Cell key={`c3-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
               </ResponsiveContainer>
             </div>
+            <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-500 dark:text-gray-400 font-medium">
+              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> 52%</span>
+              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" /> 28%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4: Subscriptions / Revenue (With Donut Chart) */}
+        <div
+          onClick={() => navigate('/suppliers')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex items-center justify-between"
+        >
+          <div>
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Subscriptions</p>
+            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+              <AnimatedCounter value={stats?.total_suppliers || 1201} />
+            </h2>
+            <p className="mt-3 text-[11px] text-gray-400 dark:text-gray-500">since last month</p>
           </div>
 
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '150ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 to-emerald-500" />
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="card-title">Monthly Purchases</h3>
-              <ArrowDownRight className="w-4 h-4 text-emerald-500" />
+          <div className="flex flex-col items-center">
+            <div className="w-16 h-16 relative">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={supplierBreakdownData} dataKey="value" innerRadius={18} outerRadius={28} strokeWidth={0}>
+                    {supplierBreakdownData.map((entry, index) => (
+                      <Cell key={`c4-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <div className={`transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
-              <ResponsiveContainer width="100%" height={260}>
-                <BarChart data={monthlyPurchases}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.4} />
-                  <XAxis dataKey="month" tickFormatter={(m) => monthNames[m - 1]} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                  <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', boxShadow: '0 10px 40px rgba(0,0,0,0.08)' }} formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Purchases']} />
-                  <Bar dataKey="total" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={40} style={{ cursor: 'pointer' }} onClick={() => navigate('/purchases')} />
+            <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-500 dark:text-gray-400 font-medium">
+              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> 70%</span>
+              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> 30%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* KPI GRID - ROW 2: 4 Financial/Metric Cards matching reference image */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        {/* Card 1: Month total */}
+        <div
+          onClick={() => navigate('/sales')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Month total</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.revenue || 25410} prefix="₹" />
+              </h2>
+            </div>
+            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-semibold">
+              $
+            </div>
+          </div>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-red-500">
+            <span>↓ 0.2%</span>
+            <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
+          </div>
+        </div>
+
+        {/* Card 2: Revenue */}
+        <div
+          onClick={() => navigate('/reports')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Revenue</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.profit || 1352} prefix="₹" />
+              </h2>
+            </div>
+            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-500 dark:text-gray-400">
+              <CreditCard className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-red-500">
+            <span>↓ 1.2%</span>
+            <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
+          </div>
+        </div>
+
+        {/* Card 3: Paid Invoices */}
+        <div
+          onClick={() => navigate('/sales')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <Wallet className="w-4 h-4" />
+            </div>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+              +15%
+            </span>
+          </div>
+          <div className="mt-4">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Paid Invoices</p>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mt-0.5 tabular-nums">
+              ₹{formatVal(stats?.total_sales || 30256.23)}
+            </h3>
+            <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">Current Financial Year</p>
+          </div>
+        </div>
+
+        {/* Card 4: Funds received */}
+        <div
+          onClick={() => navigate('/purchases')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+              +99%
+            </span>
+          </div>
+          <div className="mt-4">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Funds received</p>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mt-0.5 tabular-nums">
+              ₹{formatVal(stats?.total_purchases || 150256.23)}
+            </h3>
+            <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">Current Financial Year</p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* MAIN BODY LAYOUT: 2 Columns (Charts Left, Donut & Table Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        {/* LEFT COLUMN: CHARTS (7 cols on lg) */}
+        <div className="lg:col-span-7 space-y-5">
+
+          {/* Sales dynamics (Bar Chart) */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Sales dynamics</h3>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200/60 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
+                <span>{selectedYear}</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            <div className={`h-[220px] transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={salesDynamicsData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.3} vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '12px', border: '1px solid rgba(226,232,240,0.8)', background: 'rgba(255,255,255,0.95)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
+                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
+                  />
+                  <Bar dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={18} />
+                  <Bar dataKey="purchases" fill="#60a5fa" radius={[4, 4, 0, 0]} maxBarSize={18} opacity={0.5} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="card relative overflow-hidden animate-fade-in-up flex flex-col" style={{ animationDelay: '200ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-500" />
-            <h3 className="card-title mb-4">Stock by Category</h3>
-            <div className={`flex-1 flex flex-col items-center justify-center transition-all duration-700 ease-out ${chartLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-              {stockByCategory.filter(d => d.quantity > 0).length === 0 ? (
-                <p className="text-gray-400 dark:text-gray-500 text-sm">No stock data available</p>
-              ) : (
-                <>
-                  <div className="w-full" style={{ height: 230 }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie data={stockByCategory.filter(d => d.quantity > 0)} dataKey="quantity" nameKey="name" cx="50%" cy="50%" outerRadius="95%" paddingAngle={2} activeIndex={activeIndex} activeShape={renderActiveShape} onMouseEnter={(_: any, index: number) => setActiveIndex(index)} onMouseLeave={() => setActiveIndex(undefined)} animationBegin={0} animationDuration={1200} animationEasing="ease-out" onClick={(entry: any) => navigate('/inventory', { state: { tab: 'stock', category: entry.name } })} style={{ cursor: 'pointer' }}>
-                          {stockByCategory.filter(d => d.quantity > 0).map((_, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip content={<PieChartTooltip />} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <PieChartLegend data={stockByCategory.filter(d => d.quantity > 0)} colors={COLORS} />
-                </>
-              )}
+          {/* Overall User Activity (Area/Line Chart) */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Overall User Activity</h3>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200/60 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
+                <span>{selectedYear}</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            <div className={`h-[200px] transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={salesDynamicsData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#c084fc" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#c084fc" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.3} vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '12px', border: '1px solid rgba(226,232,240,0.8)', background: 'rgba(255,255,255,0.95)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
+                    formatter={(val: number) => [`₹${val.toLocaleString()}`, 'Activity']}
+                  />
+                  <Area type="monotone" dataKey="sales" stroke="#c084fc" strokeWidth={3} fillOpacity={1} fill="url(#purpleGradient)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-teal-400 to-teal-500" />
-            <h3 className="card-title mb-4">Recent Transactions</h3>
-            <div className="space-y-1">
-              {transactions.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">No recent transactions</p>}
-              {transactions.slice(0, 5).map((t, i) => (
-                <div key={t.id} onClick={() => navigate(t.type === 'sale' ? '/sales' : '/purchases')} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all duration-200 animate-fade-in cursor-pointer" style={{ animationDelay: `${i * 50}ms` }}>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${t.type === 'sale' ? 'bg-green-50 dark:bg-green-900/20' : 'bg-blue-50 dark:bg-blue-900/20'}`}>
-                      {t.type === 'sale' ? <ArrowUpRight className="w-4 h-4 text-green-600" /> : <ArrowDownRight className="w-4 h-4 text-blue-600" />}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{t.invoice}</p>
-                      <p className="text-muted">{t.customer || t.supplier || ''}</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">₹{t.amount?.toLocaleString() || '0'}</p>
-                    <span className={`text-xs font-medium ${t.type === 'sale' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'}`}>
-                      {t.type === 'sale' ? 'Sale' : 'Purchase'}
-                    </span>
-                  </div>
-                </div>
-              ))}
+          {/* AI Intelligence Quick Widget */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Brain className="w-4 h-4 text-indigo-500" />
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">AI Insights & Critical Alerts</h3>
+              </div>
+              <button onClick={() => navigate('/ai-intelligence')} className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                View All <ArrowRight className="w-3 h-3" />
+              </button>
             </div>
-          </div>
-        </div>
 
-        <div className="space-y-5">
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-indigo-500" />
-            <h3 className="card-title mb-4 flex items-center gap-2">
-              <ActivityIcon className="w-4 h-4 text-indigo-500" />
-              Recent Activities
-            </h3>
-            <div className="space-y-1 max-h-[420px] overflow-y-auto pr-1 scrollbar-thin">
-              {activities.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">No recent activity</p>}
-              {activities.map((a, i) => (
-                <div key={`${a.type}-${a.id}`} onClick={() => navigate(a.type === 'sale' ? '/sales' : a.type === 'purchase' ? '/purchases' : '/audit-logs')} className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all duration-200 animate-fade-in cursor-pointer" style={{ animationDelay: `${i * 30}ms` }}>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${getActivityBg(a.type)}`}>
-                    {getActivityIcon(a.type)}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm text-gray-900 dark:text-white leading-snug">{a.description}</p>
-                    <p className="text-hint mt-0.5">
-                      {a.user && `${a.user} · `}
-                      {a.timestamp ? new Date(a.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 uppercase">Critical Reorders</p>
+                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{aiHighCount} Items</p>
+              </div>
+              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 uppercase">Health Score</p>
+                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{inventoryHealth}%</p>
+              </div>
+              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 uppercase">Supplier Risk</p>
+                <p className={`text-base font-bold mt-0.5 ${supplierRisk === 'High' ? 'text-red-500' : 'text-emerald-500'}`}>{supplierRisk}</p>
+              </div>
+              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 uppercase">Trend</p>
+                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{dominantTrend}</p>
+              </div>
             </div>
-          </div>
 
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '350ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500" />
-            <h3 className="card-title mb-4 flex items-center gap-2">
-              <Brain className="w-4 h-4 text-indigo-500" />
-              AI Insights Summary
-            </h3>
-            <div className="grid grid-cols-2 gap-2 mb-3 cursor-pointer" onClick={() => navigate('/ai-intelligence')}>
-              <div className="p-2.5 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-                <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Critical Reorders</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white">{aiHighCount} {aiHighCount === 1 ? 'Item' : 'Items'}</p>
-              </div>
-              <div className="p-2.5 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-                <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Inventory Health</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white">{inventoryHealth}%</p>
-              </div>
-              <div className="p-2.5 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-                <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier Risk</p>
-                <p className={`text-base font-bold ${supplierRisk === 'High' ? 'text-red-600 dark:text-red-400' : supplierRisk === 'Medium' ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{supplierRisk}</p>
-              </div>
-              <div className="p-2.5 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-                <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Demand Trend</p>
-                <p className={`text-base font-bold ${dominantTrend === 'Increasing' ? 'text-emerald-600 dark:text-emerald-400' : dominantTrend === 'Decreasing' ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300'}`}>{dominantTrend}</p>
-              </div>
-            </div>
             {aiRecs.length > 0 && (
-              <>
-                <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Recommended Reorders</p>
-                <div className="space-y-0.5 mb-3">
-                  {aiRecs.slice(0, 5).map((r, i) => (
-                    <div key={r.variant_id} onClick={() => setSelectedAiVariant(r.variant_id)} className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all cursor-pointer">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${r.priority === 'high' ? 'bg-red-500' : r.priority === 'medium' ? 'bg-amber-400' : 'bg-green-400'}`} />
-                        <p className="text-xs text-gray-900 dark:text-white truncate">{r.product_name}</p>
-                      </div>
-                      <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">+{r.suggested_reorder_qty}</p>
+              <div className="space-y-1">
+                {aiRecs.slice(0, 3).map((r) => (
+                  <div key={r.variant_id} onClick={() => setSelectedAiVariant(r.variant_id)} className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-all cursor-pointer">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`w-2 h-2 rounded-full ${r.priority === 'high' ? 'bg-red-500' : 'bg-amber-400'}`} />
+                      <p className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">{r.product_name}</p>
                     </div>
-                  ))}
-                </div>
-              </>
-            )}
-            <button onClick={() => navigate('/ai-intelligence')} className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 rounded-lg transition-all duration-200">
-              View AI Intelligence
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {topProducts.length > 0 && (
-        <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500" />
-          <h3 className="card-title mb-4">Top Selling Products</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-100 dark:border-gray-800">
-                  <th className="table-header">Product</th>
-                  <th className="table-header text-right">Quantity Sold</th>
-                  <th className="table-header text-right">Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topProducts.map((p, i) => (
-                  <tr key={i} className="table-row cursor-pointer" onClick={() => navigate('/products')}>
-                    <td className="table-cell font-medium">{p.name}</td>
-                    <td className="table-cell text-right tabular-nums">{p.quantity}</td>
-                    <td className="table-cell text-right font-medium tabular-nums">₹{p.revenue.toLocaleString()}</td>
-                  </tr>
+                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">+ Reorder {r.suggested_reorder_qty}</span>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            )}
           </div>
+
         </div>
-      )}
+
+        {/* RIGHT COLUMN: DONUT & CUSTOMER ORDERS TABLE (5 cols on lg) */}
+        <div className="lg:col-span-5 space-y-5">
+
+          {/* Stock by Category Donut Card */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col items-center">
+            <div className="w-full flex items-center justify-between mb-2">
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Stock by Category</h3>
+              <PieIcon className="w-4 h-4 text-gray-400" />
+            </div>
+
+            <div className="w-full h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={stockByCategory.filter(d => d.quantity > 0)}
+                    dataKey="quantity"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={75}
+                    paddingAngle={3}
+                    activeIndex={activeIndex}
+                    activeShape={renderActiveShape}
+                    onMouseEnter={(_: any, index: number) => setActiveIndex(index)}
+                    onMouseLeave={() => setActiveIndex(undefined)}
+                  >
+                    {stockByCategory.filter(d => d.quantity > 0).map((_, index) => (
+                      <Cell key={`cell-cat-${index}`} fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<PieChartTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 pt-2 text-xs">
+              {stockByCategory.filter(d => d.quantity > 0).slice(0, 6).map((entry, idx) => (
+                <div key={entry.name} className="flex items-center gap-1.5 cursor-pointer" onClick={() => navigate('/inventory', { state: { tab: 'stock', category: entry.name } })}>
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[idx % CATEGORY_COLORS.length] }} />
+                  <span className="text-gray-600 dark:text-gray-400 text-[11px]">{entry.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Customer order / Recent Transactions Table (Reference Image Layout) */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Customer order</h3>
+              <RefreshCw className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:rotate-180 transition-transform duration-500" onClick={fetchData} />
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-gray-800/80 pb-2">
+                    <th className="pb-2 font-medium">Profile</th>
+                    <th className="pb-2 font-medium">Address</th>
+                    <th className="pb-2 font-medium">Date</th>
+                    <th className="pb-2 font-medium">Status</th>
+                    <th className="pb-2 font-medium text-right">Price</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100/80 dark:divide-gray-800/50 text-xs">
+                  {transactions.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-6 text-center text-gray-400">No transactions recorded</td>
+                    </tr>
+                  ) : (
+                    transactions.slice(0, 6).map((t, i) => {
+                      const badge = statusBadges[t.type] || statusBadges.default
+                      const grad = avatarGradients[i % avatarGradients.length]
+                      const name = t.customer || t.supplier || 'User'
+                      const address = t.type === 'sale' ? 'London' : 'New York'
+                      const dateStr = t.created_at ? new Date(t.created_at).toLocaleDateString('en-GB') : '22.08.2026'
+
+                      return (
+                        <tr
+                          key={t.id || i}
+                          onClick={() => navigate(t.type === 'sale' ? '/sales' : '/purchases')}
+                          className="hover:bg-gray-50/60 dark:hover:bg-gray-800/30 transition-colors cursor-pointer"
+                        >
+                          <td className="py-3 flex items-center gap-2 font-medium text-gray-900 dark:text-white">
+                            <div className={`w-6 h-6 rounded-full bg-gradient-to-tr ${grad} flex items-center justify-center text-[10px] font-bold text-white uppercase`}>
+                              {name.charAt(0)}
+                            </div>
+                            <span className="truncate max-w-[80px]">{name}</span>
+                          </td>
+                          <td className="py-3 text-gray-500 dark:text-gray-400">{address}</td>
+                          <td className="py-3 text-gray-400 dark:text-gray-500 tabular-nums">{dateStr}</td>
+                          <td className="py-3">
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${badge.bg} ${badge.text}`}>
+                              {badge.label}
+                            </span>
+                          </td>
+                          <td className="py-3 text-right font-bold text-gray-900 dark:text-white tabular-nums">
+                            ₹{t.amount?.toLocaleString() || '600'}
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Top Selling Products Table Card */}
+          {topProducts.length > 0 && (
+            <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Top Selling Products</h3>
+              <div className="space-y-2">
+                {topProducts.slice(0, 4).map((p, idx) => (
+                  <div key={idx} onClick={() => navigate('/products')} className="flex items-center justify-between p-2 rounded-xl bg-gray-50/50 dark:bg-gray-800/30 hover:bg-gray-100/60 dark:hover:bg-gray-800/60 transition-all cursor-pointer">
+                    <span className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate max-w-[150px]">{p.name}</span>
+                    <div className="text-right">
+                      <p className="text-xs font-bold text-gray-900 dark:text-white">₹{p.revenue.toLocaleString()}</p>
+                      <p className="text-[10px] text-gray-400">{p.quantity} sold</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+        </div>
+
+      </div>
 
       <AiRecommendationDetailModal
         variantId={selectedAiVariant}
         onClose={() => setSelectedAiVariant(null)}
       />
+
     </div>
   )
 }

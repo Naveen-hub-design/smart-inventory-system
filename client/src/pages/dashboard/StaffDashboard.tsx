@@ -1,5 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
-import { TrendingUp, Package, AlertTriangle, PlusCircle, ShoppingCart, ClipboardList, FileText, ArrowUpRight, ArrowDownRight, DollarSign, Activity as ActivityIcon, Users, UserCheck, ShieldCheck, UserCog } from 'lucide-react'
+import {
+  TrendingUp, Package, AlertTriangle, PlusCircle, ShoppingCart,
+  FileText, DollarSign, Activity as ActivityIcon,
+  Users, UserCheck, ShieldCheck, UserCog, Calendar, RefreshCw, ArrowRight
+} from 'lucide-react'
 import { dashboardService } from '../../services/dataService'
 import { authService } from '../../services/authService'
 import { DashboardStats, Activity, User } from '../../types'
@@ -14,23 +18,24 @@ export default function StaffDashboard() {
   const [employees, setEmployees] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [statsRes, actRes, empRes] = await Promise.all([
-          dashboardService.getStats(),
-          dashboardService.getRecentActivities(),
-          authService.getUsers({ per_page: 100 }).catch(() => ({ users: [] })),
-        ])
-        setStats(statsRes.data)
-        setActivities(actRes.data.activities || [])
-        setEmployees(empRes.users || [])
-      } catch (err) {
-        console.error('Staff dashboard fetch error:', err)
-      } finally {
-        setLoading(false)
-      }
+  const fetchData = async () => {
+    try {
+      const [statsRes, actRes, empRes] = await Promise.all([
+        dashboardService.getStats(),
+        dashboardService.getRecentActivities(),
+        authService.getUsers({ per_page: 100 }).catch(() => ({ users: [] })),
+      ])
+      setStats(statsRes.data)
+      setActivities(actRes.data.activities || [])
+      setEmployees(empRes.users || [])
+    } catch (err) {
+      console.error('Staff dashboard fetch error:', err)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchData()
   }, [])
 
@@ -39,13 +44,7 @@ export default function StaffDashboard() {
     const active = employees.filter(u => u.is_active).length
     const admins = employees.filter(u => u.role === 'admin').length
     const staff = total - admins
-    const newThisMonth = employees.filter(u => {
-      if (!u.created_at) return false
-      const created = new Date(u.created_at)
-      const now = new Date()
-      return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear()
-    }).length
-    return { total, active, admins, staff, newThisMonth }
+    return { total, active, admins, staff }
   }, [employees])
 
   if (loading) {
@@ -57,216 +56,289 @@ export default function StaffDashboard() {
     )
   }
 
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'audit': return <ClipboardList className="w-4 h-4 text-indigo-600" />
-      case 'sale': return <ArrowUpRight className="w-4 h-4 text-green-600" />
-      case 'purchase': return <ArrowDownRight className="w-4 h-4 text-blue-600" />
-      default: return <ActivityIcon className="w-4 h-4 text-gray-600" />
-    }
-  }
-
-  const getActivityBg = (type: string) => {
-    switch (type) {
-      case 'audit': return 'bg-indigo-50 dark:bg-indigo-900/20'
-      case 'sale': return 'bg-green-50 dark:bg-green-900/20'
-      case 'purchase': return 'bg-blue-50 dark:bg-blue-900/20'
-      default: return 'bg-gray-50 dark:bg-gray-800/30'
-    }
-  }
-
   const quickActions = [
-    { label: 'New Sale', icon: ShoppingCart, color: 'from-emerald-500 to-emerald-600', onClick: () => navigate('/sales') },
-    { label: 'New Purchase', icon: PlusCircle, color: 'from-blue-500 to-blue-600', onClick: () => navigate('/purchases') },
-    { label: 'View Products', icon: Package, color: 'from-violet-500 to-violet-600', onClick: () => navigate('/products') },
-    { label: 'Inventory', icon: FileText, color: 'from-amber-500 to-amber-600', onClick: () => navigate('/inventory') },
+    { label: 'New Sale', icon: ShoppingCart, color: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400', onClick: () => navigate('/sales') },
+    { label: 'New Purchase', icon: PlusCircle, color: 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400', onClick: () => navigate('/purchases') },
+    { label: 'View Products', icon: Package, color: 'bg-purple-50 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400', onClick: () => navigate('/products') },
+    { label: 'Inventory', icon: FileText, color: 'bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400', onClick: () => navigate('/inventory') },
   ]
 
   const lowStock = (stats?.low_stock_variants || 0) + (stats?.low_stock_count || 0)
 
+  const avatarGradients = [
+    'from-amber-400 to-orange-500',
+    'from-emerald-400 to-teal-600',
+    'from-blue-400 to-indigo-600',
+    'from-purple-400 to-pink-600'
+  ]
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between animate-fade-in">
-        <div>
-          <h1 className="page-title">Staff Dashboard</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Daily operations at a glance</p>
+    <div className="space-y-6 pb-8 text-gray-800 dark:text-gray-100 font-sans">
+
+      {/* Top Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Staff Operations</h1>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#202133] border border-gray-200/70 dark:border-gray-700/50 text-xs font-semibold text-gray-700 dark:text-gray-300">
+            <Calendar className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
+            <span>01.08.2026 - 31.10.2026</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <button
+            onClick={fetchData}
+            title="Refresh Data"
+            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-sm"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 dark:border-emerald-800/50 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Operational View
+          </div>
         </div>
       </div>
 
+      {/* TOP KPI CARDS (Reference Image Style) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div onClick={() => navigate('/sales')} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer">
-          <div className="flex items-start justify-between mb-3">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Today's Sales</span>
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-              <TrendingUp className="w-5 h-5 text-white" />
+
+        <div
+          onClick={() => navigate('/sales')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Today's Sales</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.today_sales || 0} prefix="₹" />
+              </h2>
+            </div>
+            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <TrendingUp className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-            <AnimatedCounter value={stats?.today_sales || 0} prefix="₹" className="tabular-nums" />
-          </p>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span>↑ Active</span>
+            <span className="text-gray-400 dark:text-gray-500 font-normal">for today</span>
+          </div>
         </div>
 
-        <div onClick={() => navigate('/products')} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '50ms' }}>
-          <div className="flex items-start justify-between mb-3">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Available Products</span>
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-              <Package className="w-5 h-5 text-white" />
+        <div
+          onClick={() => navigate('/products')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Available Products</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.available_products || 0} />
+              </h2>
+            </div>
+            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <Package className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-            <AnimatedCounter value={stats?.available_products || 0} className="tabular-nums" />
-          </p>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span>Ready for dispatch</span>
+          </div>
         </div>
 
-        <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '100ms' }}>
-          <div className="flex items-start justify-between mb-3">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Low Stock Alerts</span>
-            <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-              <AlertTriangle className="w-5 h-5 text-white" />
+        <div
+          onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Low Stock Alerts</p>
+              <h2 className={`text-3xl font-extrabold mt-1 tabular-nums ${lowStock > 0 ? 'text-red-500' : 'text-gray-900 dark:text-white'}`}>
+                <AnimatedCounter value={lowStock} />
+              </h2>
+            </div>
+            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-amber-500">
+              <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
-          <p className={`text-2xl font-bold tracking-tight ${lowStock > 0 ? 'text-red-500' : 'text-gray-900 dark:text-white'}`}>
-            <AnimatedCounter value={lowStock} className="tabular-nums" />
-          </p>
-          {lowStock > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 to-red-400" />
-          )}
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+            <span>Requires attention</span>
+          </div>
         </div>
 
-        <div onClick={() => navigate('/sales')} className="relative overflow-hidden group rounded-xl shadow-premium bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 p-5 transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-0.5 animate-fade-in-up cursor-pointer" style={{ animationDelay: '150ms' }}>
-          <div className="flex items-start justify-between mb-3">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Sales</span>
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-              <DollarSign className="w-5 h-5 text-white" />
+        <div
+          onClick={() => navigate('/sales')}
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Total Sales</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+                <AnimatedCounter value={stats?.total_sales || 0} prefix="₹" />
+              </h2>
+            </div>
+            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+              <DollarSign className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-            <AnimatedCounter value={stats?.total_sales || 0} prefix="₹" className="tabular-nums" />
-          </p>
+          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span>Total Cumulative</span>
+          </div>
         </div>
+
       </div>
 
-      <div className="card relative overflow-hidden animate-fade-in-up">
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-primary-500" />
-        <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-7 h-7 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-            <Users className="w-4 h-4 text-primary-600 dark:text-primary-400" />
-          </div>
-          <h3 className="card-title">Employee Summary</h3>
+      {/* EMPLOYEE SUMMARY ROW */}
+      <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Users className="w-4 h-4 text-indigo-500" />
+            Employee Oversight
+          </h3>
+          <button onClick={() => navigate('/users')} className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+            Manage <ArrowRight className="w-3 h-3" />
+          </button>
         </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
-            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md shadow-primary-500/20">
-              <Users className="w-4 h-4 text-white" />
+          <div className="p-3 rounded-xl bg-gray-50/70 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs">
+              <Users className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Total</p>
-              <p className="text-lg font-bold text-gray-900 dark:text-white tabular-nums leading-tight">{employeeStats.total}</p>
+              <p className="text-[10px] text-gray-400 uppercase font-semibold">Total Staff</p>
+              <p className="text-base font-extrabold text-gray-900 dark:text-white tabular-nums">{employeeStats.total}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200/50 dark:border-emerald-800/30 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
-            <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20">
-              <UserCheck className="w-4 h-4 text-white" />
+
+          <div className="p-3 rounded-xl bg-gray-50/70 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
+              <UserCheck className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Active</p>
-              <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300 tabular-nums leading-tight">{employeeStats.active}</p>
+              <p className="text-[10px] text-gray-400 uppercase font-semibold">Active</p>
+              <p className="text-base font-extrabold text-gray-900 dark:text-white tabular-nums">{employeeStats.active}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-200/50 dark:border-indigo-800/30 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
-            <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-md shadow-indigo-500/20">
-              <ShieldCheck className="w-4 h-4 text-white" />
+
+          <div className="p-3 rounded-xl bg-gray-50/70 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xs">
+              <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">Admins</p>
-              <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300 tabular-nums leading-tight">{employeeStats.admins}</p>
+              <p className="text-[10px] text-gray-400 uppercase font-semibold">Admins</p>
+              <p className="text-base font-extrabold text-gray-900 dark:text-white tabular-nums">{employeeStats.admins}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-200/50 dark:border-blue-800/30 transition-all duration-200 hover:shadow-premium-sm cursor-pointer" onClick={() => navigate('/users')}>
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
-              <UserCog className="w-4 h-4 text-white" />
+
+          <div className="p-3 rounded-xl bg-gray-50/70 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-xs">
+              <UserCog className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-medium text-blue-600 dark:text-blue-400">Staff</p>
-              <p className="text-lg font-bold text-blue-700 dark:text-blue-300 tabular-nums leading-tight">{employeeStats.staff}</p>
+              <p className="text-[10px] text-gray-400 uppercase font-semibold">Staff Role</p>
+              <p className="text-base font-extrabold text-gray-900 dark:text-white tabular-nums">{employeeStats.staff}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      {/* MAIN TWO-COLUMN SECTION */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-        <div className="lg:col-span-2 grid grid-cols-1 gap-5">
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-indigo-500" />
-            <h3 className="card-title mb-4 flex items-center gap-2">
-              <ActivityIcon className="w-4 h-4 text-indigo-500" />
-              Recent Activities
-            </h3>
-            <div className="space-y-1 max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
-              {activities.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">No recent activity</p>}
-              {activities.map((a, i) => (
-                <div key={`${a.type}-${a.id}`} onClick={() => navigate(a.type === 'sale' ? '/sales' : a.type === 'purchase' ? '/purchases' : '/audit-logs')} className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all duration-200 animate-fade-in cursor-pointer" style={{ animationDelay: `${i * 30}ms` }}>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${getActivityBg(a.type)}`}>
-                    {getActivityIcon(a.type)}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm text-gray-900 dark:text-white leading-snug">{a.description}</p>
-                    <p className="text-hint mt-0.5">
-                      {a.timestamp ? new Date(a.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
-                    </p>
-                  </div>
-                </div>
-              ))}
+        {/* LEFT COLUMN: ACTIVITIES LIST (7 cols) */}
+        <div className="lg:col-span-7 space-y-5">
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <ActivityIcon className="w-4 h-4 text-indigo-500" />
+                Recent System Activity
+              </h3>
+              <RefreshCw className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:rotate-180 transition-transform duration-500" onClick={fetchData} />
+            </div>
+
+            <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+              {activities.length === 0 ? (
+                <p className="py-8 text-center text-xs text-gray-400">No recent activity recorded</p>
+              ) : (
+                activities.map((a, i) => {
+                  const grad = avatarGradients[i % avatarGradients.length]
+                  return (
+                    <div
+                      key={`${a.type}-${a.id}-${i}`}
+                      onClick={() => navigate(a.type === 'sale' ? '/sales' : a.type === 'purchase' ? '/purchases' : '/audit-logs')}
+                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-all cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-800"
+                    >
+                      <div className={`w-8 h-8 rounded-full bg-gradient-to-tr ${grad} flex items-center justify-center text-[10px] font-bold text-white uppercase shrink-0`}>
+                        {a.type.charAt(0)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-semibold text-gray-900 dark:text-white truncate">{a.description}</p>
+                        <p className="text-[10px] text-gray-400 mt-0.5">
+                          {a.user ? `${a.user} · ` : ''}
+                          {a.timestamp ? new Date(a.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 capitalize">
+                        {a.type}
+                      </span>
+                    </div>
+                  )
+                })
+              )}
             </div>
           </div>
         </div>
 
-        <div className="space-y-5">
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 to-violet-500" />
-            <h3 className="card-title mb-4">Quick Actions</h3>
+        {/* RIGHT COLUMN: QUICK ACTIONS & ALERTS (5 cols) */}
+        <div className="lg:col-span-5 space-y-5">
+
+          {/* Quick Actions */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Quick Operations</h3>
             <div className="grid grid-cols-2 gap-3">
-              {quickActions.map((action) => (
+              {quickActions.map((act) => (
                 <button
-                  key={action.label}
-                  onClick={action.onClick}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800 hover:shadow-premium-lg hover:-translate-y-0.5 transition-all duration-200 group"
+                  key={act.label}
+                  onClick={act.onClick}
+                  className="flex flex-col items-center gap-2 p-3.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800/60 hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-all group"
                 >
-                  <div className={`w-10 h-10 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center shadow-lg transition-transform duration-200 group-hover:scale-110`}>
-                    <action.icon className="w-5 h-5 text-white" />
+                  <div className={`p-2 rounded-lg ${act.color} group-hover:scale-110 transition-transform`}>
+                    <act.icon className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{action.label}</span>
+                  <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">{act.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="card relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500" />
-            <h3 className="card-title mb-3 flex items-center gap-2">
+          {/* Low Stock Summary */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
-              Low Stock Summary
+              Stock Health Quick Check
             </h3>
             <div className="space-y-2">
-              <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="flex items-center justify-between p-3 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 cursor-pointer transition-all duration-200 hover:shadow-premium-sm">
-                <span className="text-body">Product Variants</span>
-                <span className="text-sm font-bold text-amber-600 tabular-nums">{stats?.low_stock_variants || 0}</span>
+              <div
+                onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })}
+                className="flex items-center justify-between p-3 rounded-xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200/50 dark:border-amber-900/40 cursor-pointer hover:shadow-sm transition-all"
+              >
+                <span className="text-xs font-semibold text-amber-800 dark:text-amber-300">Product Variants Low</span>
+                <span className="text-sm font-bold text-amber-600 dark:text-amber-400 tabular-nums">{stats?.low_stock_variants || 0}</span>
               </div>
-              <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="flex items-center justify-between p-3 rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 cursor-pointer transition-all duration-200 hover:shadow-premium-sm">
-                <span className="text-body">Out of Stock</span>
-                <span className="text-sm font-bold text-red-600 tabular-nums">{stats?.out_of_stock_count || 0}</span>
-              </div>
-              <div onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 cursor-pointer transition-all duration-200 hover:shadow-premium-sm">
-                <span className="text-body">Legacy Low Stock</span>
-                <span className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">{stats?.low_stock_count || 0}</span>
+
+              <div
+                onClick={() => navigate('/inventory', { state: { tab: 'alerts' } })}
+                className="flex items-center justify-between p-3 rounded-xl bg-red-50/60 dark:bg-red-950/30 border border-red-200/50 dark:border-red-900/40 cursor-pointer hover:shadow-sm transition-all"
+              >
+                <span className="text-xs font-semibold text-red-800 dark:text-red-300">Out of Stock Items</span>
+                <span className="text-sm font-bold text-red-600 dark:text-red-400 tabular-nums">{stats?.out_of_stock_count || 0}</span>
               </div>
             </div>
           </div>
+
         </div>
+
       </div>
+
     </div>
   )
 }
-
-
