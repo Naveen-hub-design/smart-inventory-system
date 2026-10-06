@@ -50,15 +50,22 @@ function getCompactDefault(): boolean {
   return true
 }
 
+function getAutoHideDefault(): boolean {
+  const stored = localStorage.getItem('sidebarAutoHide')
+  if (stored !== null) return stored === 'true'
+  return true
+}
+
 export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const { isAdmin } = useAuth()
   const location = useLocation()
   const visibleItems = navItems.filter(item => !item.adminOnly || isAdmin)
   const [isCompact, setIsCompact] = useState(getCompactDefault)
+  const [autoHide, setAutoHide] = useState(getAutoHideDefault)
   const [expanded, setExpanded] = useState(false)
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const resolvedExpanded = expanded
+  const resolvedExpanded = expanded || !autoHide
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -75,6 +82,15 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     }
     window.addEventListener('sidebarCollapsedChange', handler)
     return () => window.removeEventListener('sidebarCollapsedChange', handler)
+  }, [])
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const v = (e as CustomEvent).detail as boolean
+      setAutoHide(v)
+    }
+    window.addEventListener('sidebarAutoHideChange', handler)
+    return () => window.removeEventListener('sidebarAutoHideChange', handler)
   }, [])
 
   const handleMouseEnter = useCallback(() => {

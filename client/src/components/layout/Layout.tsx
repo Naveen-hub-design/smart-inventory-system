@@ -34,11 +34,14 @@ export default function Layout() {
       const theme = s.appearance.appearance_theme || 'light'
       const isDark = theme === 'dark'
       const compact = s.appearance.appearance_compact_sidebar === 'true'
+      const autoHide = s.appearance.appearance_auto_hide_sidebar !== 'false'
       document.documentElement.classList.toggle('dark', isDark)
       document.documentElement.classList.toggle('compact-sidebar', compact)
       localStorage.setItem('darkMode', JSON.stringify(isDark))
       localStorage.setItem('sidebarCompact', JSON.stringify(compact))
+      localStorage.setItem('sidebarAutoHide', String(autoHide))
       setDarkMode(isDark)
+      window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: autoHide }))
     }).catch(() => {})
   }, [user, setDarkMode])
 

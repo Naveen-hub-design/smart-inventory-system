@@ -32,7 +32,7 @@ CATEGORIES = {
                       'notify_suppliers', 'notify_email'],
     'reports': ['report_default_format', 'report_company_logo',
                 'report_default_date_range'],
-    'appearance': ['appearance_theme', 'appearance_compact_sidebar'],
+    'appearance': ['appearance_theme', 'appearance_compact_sidebar', 'appearance_auto_hide_sidebar'],
     'security': ['security_session_timeout'],
 }
 
@@ -55,6 +55,7 @@ DEFAULT_SETTINGS = {
     'report_default_format': 'excel', 'report_company_logo': 'true',
     'report_default_date_range': '30',
     'appearance_theme': 'light', 'appearance_compact_sidebar': 'false',
+    'appearance_auto_hide_sidebar': 'true',
     'security_session_timeout': '30',
 }
 

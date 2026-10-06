@@ -8,7 +8,7 @@ import os
 from app.models.user import User, generate_employee_id
 from app.models.token_blocklist import TokenBlocklist
 from app.models.password_reset_request import PasswordResetRequest
-from app.middleware.auth import admin_required, get_current_user
+from app.middleware.auth import admin_required, get_current_user, staff_required
 from app.models.audit_log import create_audit_log
 from app.routes.settings import get_setting
 from app import db
@@ -428,7 +428,7 @@ def reject_password_reset(id):
 
 @auth_bp.route('/users', methods=['GET'])
 @jwt_required()
-@admin_required
+@staff_required
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
@@ -509,7 +509,7 @@ def create_user():
 
 @auth_bp.route('/users/<int:id>', methods=['GET'])
 @jwt_required()
-@admin_required
+@staff_required
 def get_user(id):
     user = User.query.get(id)
     if not user:

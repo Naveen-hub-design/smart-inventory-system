@@ -244,11 +244,14 @@ export default function SettingsPage() {
       const theme = s.appearance?.appearance_theme || 'light'
       const isDark = theme === 'dark'
       const compact = s.appearance?.appearance_compact_sidebar === 'true'
+      const autoHide = s.appearance?.appearance_auto_hide_sidebar !== 'false'
       document.documentElement.classList.toggle('dark', isDark)
       document.documentElement.classList.toggle('compact-sidebar', compact)
       localStorage.setItem('darkMode', JSON.stringify(isDark))
       localStorage.setItem('sidebarCompact', JSON.stringify(compact))
+      localStorage.setItem('sidebarAutoHide', String(autoHide))
       setDarkMode(isDark)
+      window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: autoHide }))
     } catch (err: any) {
       toast.error('Failed to load settings')
     } finally {
@@ -352,11 +355,14 @@ export default function SettingsPage() {
       const theme = res.data.settings.appearance?.appearance_theme || 'light'
       const isDark = theme === 'dark'
       const compact = res.data.settings.appearance?.appearance_compact_sidebar === 'true'
+      const autoHide = res.data.settings.appearance?.appearance_auto_hide_sidebar !== 'false'
       document.documentElement.classList.toggle('dark', isDark)
       document.documentElement.classList.toggle('compact-sidebar', compact)
       localStorage.setItem('darkMode', JSON.stringify(isDark))
       localStorage.setItem('sidebarCompact', JSON.stringify(compact))
+      localStorage.setItem('sidebarAutoHide', String(autoHide))
       setDarkMode(isDark)
+      window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: autoHide }))
       toast.success('Settings saved')
     } catch (err: any) {
       toast.error(err?.response?.data?.error || 'Failed to save settings')
@@ -375,11 +381,14 @@ export default function SettingsPage() {
       const theme = res.data.settings.appearance?.appearance_theme || 'light'
       const isDark = theme === 'dark'
       const compact = res.data.settings.appearance?.appearance_compact_sidebar === 'true'
+      const autoHide = res.data.settings.appearance?.appearance_auto_hide_sidebar !== 'false'
       document.documentElement.classList.toggle('dark', isDark)
       document.documentElement.classList.toggle('compact-sidebar', compact)
       localStorage.setItem('darkMode', JSON.stringify(isDark))
       localStorage.setItem('sidebarCompact', JSON.stringify(compact))
+      localStorage.setItem('sidebarAutoHide', String(autoHide))
       setDarkMode(isDark)
+      window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: autoHide }))
       toast.success('Settings reset to defaults')
     } catch {
       toast.error('Failed to reset settings')
@@ -1003,6 +1012,23 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between py-2 border-t border-gray-100 dark:border-gray-700">
                   <div><p className="text-sm font-medium text-gray-900 dark:text-white">Compact Sidebar</p><p className="text-xs text-gray-500">Use a narrower sidebar layout</p></div>
                   <Toggle checked={settings.appearance.appearance_compact_sidebar === 'true'} onChange={(v) => { updateSetting('appearance', 'appearance_compact_sidebar', v ? 'true' : 'false'); document.documentElement.classList.toggle('compact-sidebar', v); localStorage.setItem('sidebarCompact', JSON.stringify(v)); localStorage.setItem('sidebarCollapsed', String(v)); window.dispatchEvent(new CustomEvent('sidebarCollapsedChange', { detail: v })) }} />
+                </div>
+                <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">Sidebar</p>
+                  <div className="flex items-center justify-between py-2">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">Auto-hide sidebar</p>
+                      <p className="text-xs text-gray-500">Automatically hide the sidebar and reveal it when the cursor reaches the edge.</p>
+                    </div>
+                    <Toggle
+                      checked={settings.appearance.appearance_auto_hide_sidebar !== 'false'}
+                      onChange={(v) => {
+                        updateSetting('appearance', 'appearance_auto_hide_sidebar', v ? 'true' : 'false');
+                        localStorage.setItem('sidebarAutoHide', String(v));
+                        window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: v }));
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </SectionCard>
