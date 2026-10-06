@@ -103,7 +103,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`
-          fixed top-0 left-0 z-50 h-full bg-white dark:bg-gray-900/95 dark:backdrop-blur-xl border-r border-gray-200 dark:border-gray-700/50 shadow-lg dark:shadow-gray-950
+          fixed top-0 left-0 z-50 h-full bg-[#F9F7F1] dark:bg-gray-900/95 dark:backdrop-blur-xl border-r border-gray-200/70 dark:border-gray-700/50 shadow-lg dark:shadow-gray-950
           will-change-[width] [backface-visibility:hidden]
           transition-[width,transform,box-shadow] duration-[280ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
           lg:translate-x-0 lg:static lg:z-auto
