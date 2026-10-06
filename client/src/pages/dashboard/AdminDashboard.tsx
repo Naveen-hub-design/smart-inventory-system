@@ -143,7 +143,7 @@ export default function AdminDashboard() {
   }
 
   // Formatting helper for currency & numbers
-  const formatVal = (num?: number) => (num || 0).toLocaleString()
+  const formatVal = (num?: number) => (num || 0).toLocaleString('en-IN')
 
   // Combined Sales dynamics data for dual bar chart or sales view
   const salesDynamicsData = monthNames.map((m, idx) => {
@@ -152,11 +152,12 @@ export default function AdminDashboard() {
     return { name: m, sales: s, purchases: p }
   })
 
-  // Dummy status colors & mock avatar colors for Customer order table
-  const statusBadges: Record<string, { bg: string; text: string; label: string }> = {
-    sale: { bg: 'bg-emerald-100 dark:bg-emerald-950/70', text: 'text-emerald-700 dark:text-emerald-400', label: 'Delivered' },
-    purchase: { bg: 'bg-amber-100 dark:bg-amber-950/70', text: 'text-amber-700 dark:text-amber-400', label: 'Processed' },
-    default: { bg: 'bg-red-100 dark:bg-red-950/70', text: 'text-red-700 dark:text-red-400', label: 'Cancelled' }
+  // Status badges mapping for Customer order table
+  const statusBadges: Record<string, { bg: string; text: string; border: string; label: string }> = {
+    sale: { bg: 'bg-emerald-50 dark:bg-emerald-950/50', text: 'text-emerald-700 dark:text-emerald-400', border: 'border-emerald-200/60 dark:border-emerald-800/40', label: 'Delivered' },
+    purchase: { bg: 'bg-amber-50 dark:bg-amber-950/50', text: 'text-amber-700 dark:text-amber-400', border: 'border-amber-200/60 dark:border-amber-800/40', label: 'Processed' },
+    pending: { bg: 'bg-blue-50 dark:bg-blue-950/50', text: 'text-blue-700 dark:text-blue-400', border: 'border-blue-200/60 dark:border-blue-800/40', label: 'Pending' },
+    default: { bg: 'bg-red-50 dark:bg-red-950/50', text: 'text-red-700 dark:text-red-400', border: 'border-red-200/60 dark:border-red-800/40', label: 'Cancelled' }
   }
 
   const avatarGradients = [
@@ -184,95 +185,95 @@ export default function AdminDashboard() {
     <div className="space-y-6 pb-8 text-gray-800 dark:text-gray-100 font-sans">
 
       {/* Top Bar: Analytics Title & Date Selector Pill */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Analytics</h1>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#202133] border border-gray-200/70 dark:border-gray-700/50 text-xs font-semibold text-gray-700 dark:text-gray-300">
-            <Calendar className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-xs font-semibold text-gray-700 dark:text-gray-300 shadow-2xs">
+            <Calendar className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
             <span>01.08.2026 - 31.10.2026</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 self-end sm:self-auto">
+        <div className="flex items-center gap-2.5 self-end sm:self-auto">
           <button
             onClick={fetchData}
             title="Refresh Data"
-            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-sm"
+            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-2xs"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 dark:border-emerald-800/50 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-xs font-medium text-emerald-700 dark:text-emerald-400 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Live System
+            <span>Live System</span>
           </div>
         </div>
       </div>
 
-      {/* KPI GRID - ROW 1: 4 Cards matching reference image */}
+      {/* KPI GRID - ROW 1: 4 Primary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        {/* Card 1: Orders / Total Products */}
+        {/* Card 1: Orders */}
         <div
           onClick={() => navigate('/products')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Orders</p>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Orders</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5 tabular-nums tracking-tight">
                 <AnimatedCounter value={stats?.total_products || 201} />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
               <Package className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+          <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
             <span>↑ 8.2%</span>
             <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
           </div>
         </div>
 
-        {/* Card 2: Approved / Total Purchases */}
+        {/* Card 2: Approved */}
         <div
           onClick={() => navigate('/purchases')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Approved</p>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Approved</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5 tabular-nums tracking-tight">
                 <AnimatedCounter value={stats?.total_purchases || 36} />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/80 dark:border-gray-700/70 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
               <CheckSquare className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+          <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
             <span>↑ 3.4%</span>
             <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
           </div>
         </div>
 
-        {/* Card 3: Users / Customers (With Donut Chart) */}
+        {/* Card 3: Users */}
         <div
           onClick={() => navigate('/sales')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex items-center justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex items-center justify-between"
         >
           <div>
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Users</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Users</p>
+            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5 tabular-nums tracking-tight">
               <AnimatedCounter value={stats?.total_customers || 4890} />
             </h2>
             <p className="mt-3 text-[11px] text-gray-400 dark:text-gray-500">since last month</p>
           </div>
 
           <div className="flex flex-col items-center">
-            <div className="w-16 h-16 relative">
+            <div className="w-14 h-14 relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={customerBreakdownData} dataKey="value" innerRadius={18} outerRadius={28} strokeWidth={0}>
+                  <Pie data={customerBreakdownData} dataKey="value" innerRadius={16} outerRadius={26} strokeWidth={0}>
                     {customerBreakdownData.map((entry, index) => (
                       <Cell key={`c3-${index}`} fill={entry.color} />
                     ))}
@@ -281,30 +282,30 @@ export default function AdminDashboard() {
               </ResponsiveContainer>
             </div>
             <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-500 dark:text-gray-400 font-medium">
-              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> 52%</span>
-              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" /> 28%</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> 52%</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" /> 28%</span>
             </div>
           </div>
         </div>
 
-        {/* Card 4: Subscriptions / Revenue (With Donut Chart) */}
+        {/* Card 4: Subscriptions */}
         <div
           onClick={() => navigate('/suppliers')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex items-center justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex items-center justify-between"
         >
           <div>
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Subscriptions</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Subscriptions</p>
+            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5 tabular-nums tracking-tight">
               <AnimatedCounter value={stats?.total_suppliers || 1201} />
             </h2>
             <p className="mt-3 text-[11px] text-gray-400 dark:text-gray-500">since last month</p>
           </div>
 
           <div className="flex flex-col items-center">
-            <div className="w-16 h-16 relative">
+            <div className="w-14 h-14 relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={supplierBreakdownData} dataKey="value" innerRadius={18} outerRadius={28} strokeWidth={0}>
+                  <Pie data={supplierBreakdownData} dataKey="value" innerRadius={16} outerRadius={26} strokeWidth={0}>
                     {supplierBreakdownData.map((entry, index) => (
                       <Cell key={`c4-${index}`} fill={entry.color} />
                     ))}
@@ -313,99 +314,99 @@ export default function AdminDashboard() {
               </ResponsiveContainer>
             </div>
             <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-500 dark:text-gray-400 font-medium">
-              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> 70%</span>
-              <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> 30%</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> 70%</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> 30%</span>
             </div>
           </div>
         </div>
 
       </div>
 
-      {/* KPI GRID - ROW 2: 4 Financial/Metric Cards matching reference image */}
+      {/* KPI GRID - ROW 2: 4 Secondary Financial Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        {/* Card 1: Month total */}
+        {/* Card 5: Month total */}
         <div
           onClick={() => navigate('/sales')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Month total</p>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Month total</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5 tabular-nums tracking-tight">
                 <AnimatedCounter value={stats?.revenue || 25410} prefix="₹" />
               </h2>
             </div>
-            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-semibold">
-              $
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-bold shadow-2xs">
+              ₹
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-red-500">
+          <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-red-500">
             <span>↓ 0.2%</span>
             <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
           </div>
         </div>
 
-        {/* Card 2: Revenue */}
+        {/* Card 6: Revenue */}
         <div
           onClick={() => navigate('/reports')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Revenue</p>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Revenue</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1.5 tabular-nums tracking-tight">
                 <AnimatedCounter value={stats?.profit || 1352} prefix="₹" />
               </h2>
             </div>
-            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-500 dark:text-gray-400">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
               <CreditCard className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-red-500">
+          <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-red-500">
             <span>↓ 1.2%</span>
             <span className="text-gray-400 dark:text-gray-500 font-normal">since last month</span>
           </div>
         </div>
 
-        {/* Card 3: Paid Invoices */}
+        {/* Card 7: Paid Invoices */}
         <div
           onClick={() => navigate('/sales')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
-            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
               <Wallet className="w-4 h-4" />
             </div>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100/80 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-200/50 dark:border-purple-800/40">
               +15%
             </span>
           </div>
-          <div className="mt-4">
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Paid Invoices</p>
-            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mt-0.5 tabular-nums">
+          <div className="mt-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Paid Invoices</p>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums tracking-tight">
               ₹{formatVal(stats?.total_sales || 30256.23)}
             </h3>
             <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">Current Financial Year</p>
           </div>
         </div>
 
-        {/* Card 4: Funds received */}
+        {/* Card 8: Funds received */}
         <div
           onClick={() => navigate('/purchases')}
-          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
-            <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center text-gray-600 dark:text-gray-300">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
               <ShoppingBag className="w-4 h-4" />
             </div>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-200/50 dark:border-emerald-800/40">
               +99%
             </span>
           </div>
-          <div className="mt-4">
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Funds received</p>
-            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mt-0.5 tabular-nums">
+          <div className="mt-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Funds received</p>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mt-1 tabular-nums tracking-tight">
               ₹{formatVal(stats?.total_purchases || 150256.23)}
             </h3>
             <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">Current Financial Year</p>
@@ -414,111 +415,135 @@ export default function AdminDashboard() {
 
       </div>
 
-      {/* MAIN BODY LAYOUT: 2 Columns (Charts Left, Donut & Table Right) */}
+      {/* MAIN DASHBOARD CONTENT GRID (Left 7 cols, Right 5 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-        {/* LEFT COLUMN: CHARTS (7 cols on lg) */}
+        {/* LEFT COLUMN: CHARTS & AI (7 cols on lg) */}
         <div className="lg:col-span-7 space-y-5">
 
           {/* Sales dynamics (Bar Chart) */}
-          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Sales dynamics</h3>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200/60 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
+              <div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">Sales dynamics</h3>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">Monthly sales vs purchasing performance</p>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer shadow-2xs">
                 <span>{selectedYear}</span>
-                <ChevronDown className="w-3.5 h-3.5" />
+                <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </div>
             </div>
 
             <div className={`h-[220px] transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={salesDynamicsData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.3} vertical={false} />
-                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                <BarChart data={salesDynamicsData} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.5} vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ borderRadius: '12px', border: '1px solid rgba(226,232,240,0.8)', background: 'rgba(255,255,255,0.95)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
+                    contentStyle={{ borderRadius: '12px', border: '1px solid rgba(226,232,240,0.9)', background: 'rgba(255,255,255,0.98)', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
+                    formatter={(value: number) => [`₹${value.toLocaleString('en-IN')}`, 'Amount']}
                   />
-                  <Bar dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={18} />
-                  <Bar dataKey="purchases" fill="#60a5fa" radius={[4, 4, 0, 0]} maxBarSize={18} opacity={0.5} />
+                  <Bar dataKey="sales" name="Sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={18} />
+                  <Bar dataKey="purchases" name="Purchases" fill="#93c5fd" radius={[4, 4, 0, 0]} maxBarSize={18} opacity={0.65} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Overall User Activity (Area/Line Chart) */}
-          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Overall User Activity</h3>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200/60 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
+              <div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">Overall User Activity</h3>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">Operational interactions & transaction intensity</p>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer shadow-2xs">
                 <span>{selectedYear}</span>
-                <ChevronDown className="w-3.5 h-3.5" />
+                <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </div>
             </div>
 
             <div className={`h-[200px] transition-opacity duration-700 ${chartLoaded ? 'opacity-100' : 'opacity-0'}`}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={salesDynamicsData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+                <AreaChart data={salesDynamicsData} margin={{ top: 10, right: 5, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#c084fc" stopOpacity={0.35} />
+                      <stop offset="5%" stopColor="#c084fc" stopOpacity={0.3} />
                       <stop offset="95%" stopColor="#c084fc" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.3} vertical={false} />
-                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.5} vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ borderRadius: '12px', border: '1px solid rgba(226,232,240,0.8)', background: 'rgba(255,255,255,0.95)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-                    formatter={(val: number) => [`₹${val.toLocaleString()}`, 'Activity']}
+                    contentStyle={{ borderRadius: '12px', border: '1px solid rgba(226,232,240,0.9)', background: 'rgba(255,255,255,0.98)', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
+                    formatter={(val: number) => [`₹${val.toLocaleString('en-IN')}`, 'Activity']}
                   />
-                  <Area type="monotone" dataKey="sales" stroke="#c084fc" strokeWidth={3} fillOpacity={1} fill="url(#purpleGradient)" />
+                  <Area type="monotone" dataKey="sales" stroke="#c084fc" strokeWidth={2.5} fillOpacity={1} fill="url(#purpleGradient)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          {/* AI Intelligence Quick Widget */}
-          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-indigo-500" />
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white">AI Insights & Critical Alerts</h3>
+          {/* AI Insights & Critical Alerts Operations Panel */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 border-l-4 border-l-primary-500 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+            <div className="flex items-center justify-between mb-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 dark:bg-primary-950/50 border border-primary-100 dark:border-primary-900/40 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">AI Insights & Critical Alerts</h3>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400">Continuous automated inventory monitoring & stock recommendations</p>
+                </div>
               </div>
-              <button onClick={() => navigate('/ai-intelligence')} className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
-                View All <ArrowRight className="w-3 h-3" />
+              <button
+                onClick={() => navigate('/ai-intelligence')}
+                className="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 flex items-center gap-1 transition-colors"
+              >
+                <span>View All</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 uppercase">Critical Reorders</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{aiHighCount} Items</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
+              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Critical Reorders</p>
+                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5 tabular-nums">{aiHighCount} Items</p>
               </div>
-              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 uppercase">Health Score</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{inventoryHealth}%</p>
+              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Health Score</p>
+                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5 tabular-nums">{inventoryHealth}%</p>
               </div>
-              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 uppercase">Supplier Risk</p>
-                <p className={`text-base font-bold mt-0.5 ${supplierRisk === 'High' ? 'text-red-500' : 'text-emerald-500'}`}>{supplierRisk}</p>
+              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Supplier Risk</p>
+                <p className={`text-base font-bold mt-0.5 ${supplierRisk === 'High' ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400'}`}>{supplierRisk}</p>
               </div>
-              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 uppercase">Trend</p>
+              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Trend</p>
                 <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{dominantTrend}</p>
               </div>
             </div>
 
             {aiRecs.length > 0 && (
-              <div className="space-y-1">
+              <div className="space-y-1.5 border-t border-gray-100 dark:border-gray-800/80 pt-3">
                 {aiRecs.slice(0, 3).map((r) => (
-                  <div key={r.variant_id} onClick={() => setSelectedAiVariant(r.variant_id)} className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-all cursor-pointer">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className={`w-2 h-2 rounded-full ${r.priority === 'high' ? 'bg-red-500' : 'bg-amber-400'}`} />
-                      <p className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">{r.product_name}</p>
+                  <div
+                    key={r.variant_id}
+                    onClick={() => setSelectedAiVariant(r.variant_id)}
+                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-all cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-800"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span className={`w-2 h-2 rounded-full shrink-0 ${r.priority === 'high' ? 'bg-red-500' : 'bg-amber-400'}`} />
+                      <div>
+                        <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">{r.product_name}</p>
+                        <p className="text-[10px] text-gray-400 dark:text-gray-500">Low stock · Reorder threshold reached</p>
+                      </div>
                     </div>
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">+ Reorder {r.suggested_reorder_qty}</span>
+                    <button className="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 px-2.5 py-1 rounded-lg bg-primary-50/80 dark:bg-primary-950/40 border border-primary-200/50 dark:border-primary-800/40 transition-colors">
+                      Reorder {r.suggested_reorder_qty} →
+                    </button>
                   </div>
                 ))}
               </div>
@@ -527,13 +552,16 @@ export default function AdminDashboard() {
 
         </div>
 
-        {/* RIGHT COLUMN: DONUT & CUSTOMER ORDERS TABLE (5 cols on lg) */}
+        {/* RIGHT COLUMN: DONUT, CUSTOMER ORDERS TABLE & TOP PRODUCTS (5 cols on lg) */}
         <div className="lg:col-span-5 space-y-5">
 
           {/* Stock by Category Donut Card */}
-          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col items-center">
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col items-center">
             <div className="w-full flex items-center justify-between mb-2">
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Stock by Category</h3>
+              <div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">Stock by Category</h3>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">Inventory distribution across product types</p>
+              </div>
               <PieIcon className="w-4 h-4 text-gray-400" />
             </div>
 
@@ -546,8 +574,8 @@ export default function AdminDashboard() {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={75}
+                    innerRadius={52}
+                    outerRadius={78}
                     paddingAngle={3}
                     activeIndex={activeIndex}
                     activeShape={renderActiveShape}
@@ -563,32 +591,45 @@ export default function AdminDashboard() {
               </ResponsiveContainer>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 pt-2 text-xs">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 pt-2 text-xs w-full">
               {stockByCategory.filter(d => d.quantity > 0).slice(0, 6).map((entry, idx) => (
-                <div key={entry.name} className="flex items-center gap-1.5 cursor-pointer" onClick={() => navigate('/inventory', { state: { tab: 'stock', category: entry.name } })}>
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[idx % CATEGORY_COLORS.length] }} />
-                  <span className="text-gray-600 dark:text-gray-400 text-[11px]">{entry.name}</span>
+                <div
+                  key={entry.name}
+                  className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => navigate('/inventory', { state: { tab: 'stock', category: entry.name } })}
+                >
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CATEGORY_COLORS[idx % CATEGORY_COLORS.length] }} />
+                  <span className="text-gray-600 dark:text-gray-400 text-[11px] font-medium">{entry.name}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Customer order / Recent Transactions Table (Reference Image Layout) */}
-          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+          {/* Customer order / Recent Transactions Table */}
+          <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Customer order</h3>
-              <RefreshCw className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:rotate-180 transition-transform duration-500" onClick={fetchData} />
+              <div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">Customer order</h3>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">Recent order transactions & status</p>
+              </div>
+              <button
+                onClick={fetchData}
+                title="Refresh Table"
+                className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <RefreshCw className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:rotate-180 transition-transform duration-500" />
+              </button>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-gray-800/80 pb-2">
-                    <th className="pb-2 font-medium">Profile</th>
-                    <th className="pb-2 font-medium">Address</th>
-                    <th className="pb-2 font-medium">Date</th>
-                    <th className="pb-2 font-medium">Status</th>
-                    <th className="pb-2 font-medium text-right">Price</th>
+                  <tr className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-gray-800 pb-2">
+                    <th className="pb-2.5 font-medium">Profile</th>
+                    <th className="pb-2.5 font-medium">Address</th>
+                    <th className="pb-2.5 font-medium">Date</th>
+                    <th className="pb-2.5 font-medium">Status</th>
+                    <th className="pb-2.5 font-medium text-right">Price</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100/80 dark:divide-gray-800/50 text-xs">
@@ -608,23 +649,23 @@ export default function AdminDashboard() {
                         <tr
                           key={t.id || i}
                           onClick={() => navigate(t.type === 'sale' ? '/sales' : '/purchases')}
-                          className="hover:bg-gray-50/60 dark:hover:bg-gray-800/30 transition-colors cursor-pointer"
+                          className="hover:bg-gray-50/70 dark:hover:bg-gray-800/40 transition-colors cursor-pointer"
                         >
-                          <td className="py-3 flex items-center gap-2 font-medium text-gray-900 dark:text-white">
-                            <div className={`w-6 h-6 rounded-full bg-gradient-to-tr ${grad} flex items-center justify-center text-[10px] font-bold text-white uppercase`}>
+                          <td className="py-3 flex items-center gap-2 font-semibold text-gray-900 dark:text-white">
+                            <div className={`w-6 h-6 rounded-full bg-gradient-to-tr ${grad} flex items-center justify-center text-[10px] font-bold text-white uppercase shrink-0`}>
                               {name.charAt(0)}
                             </div>
-                            <span className="truncate max-w-[80px]">{name}</span>
+                            <span className="truncate max-w-[90px]" title={name}>{name}</span>
                           </td>
                           <td className="py-3 text-gray-500 dark:text-gray-400">{address}</td>
                           <td className="py-3 text-gray-400 dark:text-gray-500 tabular-nums">{dateStr}</td>
                           <td className="py-3">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${badge.bg} ${badge.text}`}>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${badge.bg} ${badge.text} ${badge.border}`}>
                               {badge.label}
                             </span>
                           </td>
                           <td className="py-3 text-right font-bold text-gray-900 dark:text-white tabular-nums">
-                            ₹{t.amount?.toLocaleString() || '600'}
+                            ₹{t.amount?.toLocaleString('en-IN') || '600'}
                           </td>
                         </tr>
                       )
@@ -637,15 +678,22 @@ export default function AdminDashboard() {
 
           {/* Top Selling Products Table Card */}
           {topProducts.length > 0 && (
-            <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Top Selling Products</h3>
-              <div className="space-y-2">
+            <div className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">Top Selling Products</h3>
+                <Package className="w-4 h-4 text-gray-400" />
+              </div>
+              <div className="space-y-1.5">
                 {topProducts.slice(0, 4).map((p, idx) => (
-                  <div key={idx} onClick={() => navigate('/products')} className="flex items-center justify-between p-2 rounded-xl bg-gray-50/50 dark:bg-gray-800/30 hover:bg-gray-100/60 dark:hover:bg-gray-800/60 transition-all cursor-pointer">
-                    <span className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate max-w-[150px]">{p.name}</span>
+                  <div
+                    key={idx}
+                    onClick={() => navigate('/products')}
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/60 dark:bg-gray-800/30 hover:bg-gray-100/70 dark:hover:bg-gray-800/60 transition-all cursor-pointer border border-transparent hover:border-gray-200/50 dark:hover:border-gray-700/50"
+                  >
+                    <span className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate max-w-[160px]" title={p.name}>{p.name}</span>
                     <div className="text-right">
-                      <p className="text-xs font-bold text-gray-900 dark:text-white">₹{p.revenue.toLocaleString()}</p>
-                      <p className="text-[10px] text-gray-400">{p.quantity} sold</p>
+                      <p className="text-xs font-extrabold text-gray-900 dark:text-white tabular-nums">₹{p.revenue.toLocaleString('en-IN')}</p>
+                      <p className="text-[10px] text-gray-400 font-medium">{p.quantity} sold</p>
                     </div>
                   </div>
                 ))}
