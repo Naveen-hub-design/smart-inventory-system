@@ -49,11 +49,11 @@ export default function Navbar({ onToggle }: NavbarProps) {
   }
 
   return (
-    <header className="sticky top-0 z-30 bg-[#F9F7F1]/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50">
+    <header className="sticky top-0 z-30 bg-[#F8F6EF]/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-[#E8E1D3] dark:border-gray-700/50">
       <div className="flex items-center justify-between px-4 py-2.5">
         <div className="flex items-center gap-3">
-          <button onClick={onToggle} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-            <Menu className="w-5 h-5" />
+          <button onClick={onToggle} className="p-1.5 hover:bg-white/60 dark:hover:bg-gray-800 rounded-lg transition-colors">
+            <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
           </button>
           <form onSubmit={handleSearch} className="hidden sm:flex items-center">
             <div className="relative group">
@@ -63,7 +63,7 @@ export default function Navbar({ onToggle }: NavbarProps) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, suppliers..."
-                className="pl-9 pr-4 py-2 w-64 lg:w-80 bg-gray-100 dark:bg-gray-800/50 border border-transparent focus:border-primary-500/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50"
+                className="pl-9 pr-4 py-2 w-64 lg:w-80 bg-white/80 dark:bg-gray-800/50 border border-[#E8E1D3] dark:border-gray-700/80 focus:border-primary-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 shadow-sm"
               />
             </div>
           </form>

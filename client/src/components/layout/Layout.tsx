@@ -76,7 +76,7 @@ export default function Layout() {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#F9F7F1] dark:bg-gray-950">
+      <div className="h-screen flex items-center justify-center bg-[#F8F6EF] dark:bg-gray-950">
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
             <div className="animate-spin w-10 h-10 border-[3px] border-primary-200 dark:border-primary-800 border-t-primary-600 rounded-full" />
@@ -95,7 +95,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex h-screen bg-[#F9F7F1] dark:bg-gray-950">
+    <div className="flex h-screen bg-[#F8F6EF] dark:bg-gray-950">
       <Sidebar mobileOpen={mobileOpen} onClose={handleCloseMobile} />
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         <Navbar onToggle={handleToggleMobile} />

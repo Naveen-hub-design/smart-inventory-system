@@ -79,7 +79,7 @@ export default function StaffDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Staff Operations</h1>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-xs font-semibold text-gray-700 dark:text-gray-300 shadow-2xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-xs font-semibold text-gray-700 dark:text-gray-300 shadow-sm">
             <Calendar className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
             <span>01.08.2026 - 31.10.2026</span>
           </div>
@@ -89,11 +89,11 @@ export default function StaffDashboard() {
           <button
             onClick={fetchData}
             title="Refresh Data"
-            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-2xs"
+            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-sm"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-xs font-medium text-emerald-700 dark:text-emerald-400 shadow-2xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-xs font-medium text-emerald-700 dark:text-emerald-400 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Operational View</span>
           </div>
@@ -114,7 +114,7 @@ export default function StaffDashboard() {
                 <AnimatedCounter value={stats?.today_sales || 0} prefix="₹" />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function StaffDashboard() {
                 <AnimatedCounter value={stats?.available_products || 0} />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <Package className="w-4 h-4" />
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function StaffDashboard() {
                 <AnimatedCounter value={lowStock} />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-amber-500 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-amber-500 shadow-sm">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
@@ -175,7 +175,7 @@ export default function StaffDashboard() {
                 <AnimatedCounter value={stats?.total_sales || 0} prefix="₹" />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>

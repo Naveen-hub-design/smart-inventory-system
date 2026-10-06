@@ -188,7 +188,7 @@ export default function AdminDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Analytics</h1>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-xs font-semibold text-gray-700 dark:text-gray-300 shadow-2xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-xs font-semibold text-gray-700 dark:text-gray-300 shadow-sm">
             <Calendar className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
             <span>01.08.2026 - 31.10.2026</span>
           </div>
@@ -198,11 +198,11 @@ export default function AdminDashboard() {
           <button
             onClick={fetchData}
             title="Refresh Data"
-            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-2xs"
+            className="p-2 rounded-xl bg-white dark:bg-[#1e1f30] border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-sm"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-xs font-medium text-emerald-700 dark:text-emerald-400 shadow-2xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-xs font-medium text-emerald-700 dark:text-emerald-400 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Live System</span>
           </div>
@@ -224,7 +224,7 @@ export default function AdminDashboard() {
                 <AnimatedCounter value={stats?.total_products || 201} />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <Package className="w-4 h-4" />
             </div>
           </div>
@@ -246,7 +246,7 @@ export default function AdminDashboard() {
                 <AnimatedCounter value={stats?.total_purchases || 36} />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <CheckSquare className="w-4 h-4" />
             </div>
           </div>
@@ -337,7 +337,7 @@ export default function AdminDashboard() {
                 <AnimatedCounter value={stats?.revenue || 25410} prefix="₹" />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-bold shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-bold shadow-sm">
               ₹
             </div>
           </div>
@@ -359,7 +359,7 @@ export default function AdminDashboard() {
                 <AnimatedCounter value={stats?.profit || 1352} prefix="₹" />
               </h2>
             </div>
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <CreditCard className="w-4 h-4" />
             </div>
           </div>
@@ -375,7 +375,7 @@ export default function AdminDashboard() {
           className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <Wallet className="w-4 h-4" />
             </div>
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100/80 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-200/50 dark:border-purple-800/40">
@@ -397,7 +397,7 @@ export default function AdminDashboard() {
           className="bg-white dark:bg-[#1e1f30] rounded-2xl p-5 border border-gray-200/70 dark:border-gray-800/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
         >
           <div className="flex items-start justify-between">
-            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-2xs">
+            <div className="w-9 h-9 rounded-xl border border-gray-200/60 dark:border-gray-700/60 bg-gray-50/80 dark:bg-gray-800/60 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-sm">
               <ShoppingBag className="w-4 h-4" />
             </div>
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-200/50 dark:border-emerald-800/40">
@@ -428,7 +428,7 @@ export default function AdminDashboard() {
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">Sales dynamics</h3>
                 <p className="text-[11px] text-gray-500 dark:text-gray-400">Monthly sales vs purchasing performance</p>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer shadow-2xs">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer shadow-sm">
                 <span>{selectedYear}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </div>
@@ -458,7 +458,7 @@ export default function AdminDashboard() {
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">Overall User Activity</h3>
                 <p className="text-[11px] text-gray-500 dark:text-gray-400">Operational interactions & transaction intensity</p>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer shadow-2xs">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/70 dark:border-gray-700/60 text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer shadow-sm">
                 <span>{selectedYear}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </div>

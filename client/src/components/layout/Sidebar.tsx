@@ -119,7 +119,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`
-          fixed top-0 left-0 z-50 h-full bg-[#F9F7F1] dark:bg-gray-900/95 dark:backdrop-blur-xl border-r border-gray-200/70 dark:border-gray-700/50 shadow-lg dark:shadow-gray-950
+          fixed top-0 left-0 z-50 h-full bg-[#F8F6EF] dark:bg-gray-900/95 dark:backdrop-blur-xl border-r border-[#E8E1D3] dark:border-gray-700/50 shadow-lg dark:shadow-gray-950
           will-change-[width] [backface-visibility:hidden]
           transition-[width,transform,box-shadow] duration-[280ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
           lg:translate-x-0 lg:static lg:z-auto
@@ -127,13 +127,13 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           w-[260px] ${!resolvedExpanded ? 'lg:w-[80px]' : ''}
         `}
       >
-        <div className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-700/50 ${!resolvedExpanded ? 'justify-center' : ''}`}>
+        <div className={`flex items-center p-4 border-b border-[#E8E1D3] dark:border-gray-700/50 ${!resolvedExpanded ? 'justify-center' : ''}`}>
           <div className={`flex items-center overflow-hidden ${resolvedExpanded ? 'gap-3' : 'gap-0'}`}>
-            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20 flex-shrink-0">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/20 flex-shrink-0">
               <Package className="w-5 h-5 text-white" />
             </div>
             <Label show={resolvedExpanded}>
-              <span className="font-bold text-lg bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent whitespace-nowrap">
+              <span className="font-bold text-lg bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent whitespace-nowrap">
                 SIMS
               </span>
             </Label>
@@ -154,8 +154,8 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               className={({ isActive }) =>
                 `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-[background-color,color,box-shadow] duration-[150ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${
                   isActive
-                    ? 'bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/20 text-primary-700 dark:text-primary-300 shadow-sm dark:shadow-primary-900/20'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200'
+                    ? 'bg-gradient-to-r from-primary-50 to-primary-100/80 dark:from-primary-950/40 dark:to-primary-900/30 text-primary-800 dark:text-primary-300 shadow-sm font-semibold'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200'
                 } ${!resolvedExpanded ? 'justify-center px-2 gap-0' : 'gap-3'}`
               }
             >
