@@ -24,7 +24,18 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
-    CORS(app, origins=["http://localhost:5173", "http://localhost:4173", "http://localhost:3000"], supports_credentials=True)
+    CORS(app,
+         origins=[
+             "http://localhost:5173",
+             "http://127.0.0.1:5173",
+             "http://localhost:4173",
+             "http://localhost:3000",
+             "https://smart-inventory-system-client.vercel.app",
+         ],
+         supports_credentials=True,
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    )
     ma.init_app(app)
 
     from app.models.token_blocklist import TokenBlocklist
