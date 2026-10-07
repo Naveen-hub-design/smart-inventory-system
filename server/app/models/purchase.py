@@ -12,7 +12,7 @@ class Purchase(db.Model):
     discount = db.Column(db.Numeric(10, 2), default=0)
     tax = db.Column(db.Numeric(10, 2), default=0)
     grand_total = db.Column(db.Numeric(12, 2), nullable=False, default=0)
-    status = db.Column(db.Enum('pending', 'completed', 'cancelled'), default='pending', index=True)
+    status = db.Column(db.Enum('pending', 'completed', 'cancelled', name="purchase_status"), default='pending', index=True)
     notes = db.Column(db.Text)
     purchase_date = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

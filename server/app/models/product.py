@@ -14,7 +14,7 @@ class Product(db.Model):
     min_stock = db.Column(db.Integer, nullable=False, default=10)
     image = db.Column(db.String(255))
     barcode = db.Column(db.String(100), unique=True)
-    status = db.Column(db.Enum('active', 'inactive'), default='active', index=True)
+    status = db.Column(db.Enum('active', 'inactive', name="product_status"), default='active', index=True)
     description = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

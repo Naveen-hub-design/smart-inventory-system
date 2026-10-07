@@ -12,7 +12,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     full_name = db.Column(db.String(100), nullable=False)
     employee_id = db.Column(db.String(20), unique=True, nullable=True)
-    role = db.Column(db.Enum("admin", "staff"), default="staff")
+    role = db.Column(db.Enum("admin", "staff", name="user_role"), default="staff")
     phone = db.Column(db.String(20))
     avatar = db.Column(db.String(255))
     is_active = db.Column(db.Boolean, default=True, index=True)

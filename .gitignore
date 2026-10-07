@@ -17,3 +17,5 @@ server/logs/*
 .vscode/
 .idea/
 server/instance/*.db
+.neon
+.env.local

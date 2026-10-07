@@ -11,7 +11,7 @@ class Supplier(db.Model):
     email = db.Column(db.String(100))
     address = db.Column(db.Text)
     gst_number = db.Column(db.String(50))
-    status = db.Column(db.Enum('active', 'inactive'), default='active')
+    status = db.Column(db.Enum('active', 'inactive', name="supplier_status"), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
