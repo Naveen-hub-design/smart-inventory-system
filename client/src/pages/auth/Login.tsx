@@ -75,14 +75,10 @@ export default function Login() {
     try {
       const loggedUser = await login(data.username, data.password)
       setSuccess(true)
-      setTimeout(() => {
-        toast.success('Welcome back!')
-        if (loggedUser?.password_reset_required) {
-          navigate('/profile?forceChange=1')
-        } else {
-          navigate('/dashboard')
-        }
-      }, 500)
+      toast.success('Welcome back!')
+      if (loggedUser?.password_reset_required) {
+        navigate('/profile?forceChange=1')
+      }
     } catch (err: any) {
       console.error('Login error:', err)
       toast.error(err.response?.data?.error || err.message || 'Invalid credentials')

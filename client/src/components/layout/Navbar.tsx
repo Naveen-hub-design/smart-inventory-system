@@ -18,16 +18,42 @@ export default function Navbar({ onToggle }: NavbarProps) {
   const profileRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
+  const navbarInstanceId = useRef(Math.random().toString(36).substring(2, 7))
+  const fetchCounter = useRef(0)
+
   useEffect(() => {
-    const fetchCount = async () => {
+    let isSubscribed = true
+
+    const fetchCount = async (trigger: string) => {
+      fetchCounter.current += 1
+      if (import.meta.env.DEV) {
+        console.log(`[Navbar:${navbarInstanceId.current}] unread-count fetch #${fetchCounter.current} starting | Trigger: ${trigger} | Time: ${new Date().toLocaleTimeString()}`)
+      }
       try {
         const res = await notificationService.getUnreadCount()
-        setNotifCount(res.data.count)
-      } catch { console.error('Failed to fetch unread notification count') }
+        if (isSubscribed) {
+          setNotifCount(res.data.count)
+        }
+      } catch (err) {
+        if (isSubscribed) {
+          console.error('Failed to fetch unread notification count', err)
+        }
+      }
     }
-    fetchCount()
-    const interval = setInterval(fetchCount, 30000)
-    return () => clearInterval(interval)
+
+    fetchCount('mount')
+
+    const interval = setInterval(() => {
+      fetchCount('polling_interval')
+    }, 30000)
+
+    return () => {
+      isSubscribed = false
+      clearInterval(interval)
+      if (import.meta.env.DEV) {
+        console.log(`[Navbar:${navbarInstanceId.current}] Cleaned up polling interval for instance`)
+      }
+    }
   }, [])
 
   useEffect(() => {

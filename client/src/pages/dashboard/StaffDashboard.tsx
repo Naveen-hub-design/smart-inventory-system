@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import {
   TrendingUp, Package, AlertTriangle, PlusCircle, ShoppingCart,
   FileText, DollarSign, Activity as ActivityIcon,
@@ -35,7 +35,11 @@ export default function StaffDashboard() {
     }
   }
 
+  const fetchedRef = useRef(false)
+
   useEffect(() => {
+    if (fetchedRef.current) return
+    fetchedRef.current = true
     fetchData()
   }, [])
 

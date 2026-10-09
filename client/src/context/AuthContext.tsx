@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (token) {
+    if (token && !user) {
       authService.getMe()
         .then((res) => setUser(res.user))
         .catch(() => {
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } else {
       setLoading(false)
     }
-  }, [token])
+  }, [token, user])
 
   const login = async (username: string, password: string) => {
     const res = await authService.login(username, password)

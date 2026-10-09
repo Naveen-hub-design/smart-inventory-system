@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/
 
 const api = axios.create({
   baseURL: API_URL,
-  timeout: 15000
+  timeout: 60000
 })
 
 api.interceptors.request.use((config) => {
@@ -95,5 +95,23 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+const pendingRequests = new Map<string, Promise<any>>()
+const originalGet = api.get
+
+api.get = async (url: string, config?: any) => {
+  const key = `get:${url}?${JSON.stringify(config?.params || {})}`
+
+  if (pendingRequests.has(key)) {
+    return pendingRequests.get(key)
+  }
+
+  const promise = originalGet(url, config).finally(() => {
+    pendingRequests.delete(key)
+  })
+
+  pendingRequests.set(key, promise)
+  return promise
+}
 
 export default api

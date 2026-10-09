@@ -14,7 +14,6 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false)
   const [sessionTimeout, setSessionTimeout] = useState(30)
-  const synced = useRef(false)
   const settingsLoaded = useRef(false)
 
   const handleToggleMobile = useCallback(() => {
@@ -26,36 +25,35 @@ export default function Layout() {
   }, [])
 
   useEffect(() => {
-    if (!user || synced.current) return
-    synced.current = true
-    settingsService.getAll().then((res) => {
-      const s = res.data.settings
-      if (!s?.appearance) return
-      const theme = s.appearance.appearance_theme || 'light'
-      const isDark = theme === 'dark'
-      const compact = s.appearance.appearance_compact_sidebar === 'true'
-      const autoHide = s.appearance.appearance_auto_hide_sidebar !== 'false'
-      document.documentElement.classList.toggle('dark', isDark)
-      document.documentElement.classList.toggle('compact-sidebar', compact)
-      localStorage.setItem('darkMode', JSON.stringify(isDark))
-      localStorage.setItem('sidebarCompact', JSON.stringify(compact))
-      localStorage.setItem('sidebarAutoHide', String(autoHide))
-      setDarkMode(isDark)
-      window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: autoHide }))
-    }).catch(() => {})
-  }, [user, setDarkMode])
-
-  useEffect(() => {
     if (!user || settingsLoaded.current) return
     settingsLoaded.current = true
     settingsService.getAll().then((res) => {
-      const raw = res.data.settings?.security?.security_session_timeout
+      const s = res.data.settings
+      if (!s) return
+
+      // Sync appearance settings
+      if (s.appearance) {
+        const theme = s.appearance.appearance_theme || 'light'
+        const isDark = theme === 'dark'
+        const compact = s.appearance.appearance_compact_sidebar === 'true'
+        const autoHide = s.appearance.appearance_auto_hide_sidebar !== 'false'
+        document.documentElement.classList.toggle('dark', isDark)
+        document.documentElement.classList.toggle('compact-sidebar', compact)
+        localStorage.setItem('darkMode', JSON.stringify(isDark))
+        localStorage.setItem('sidebarCompact', JSON.stringify(compact))
+        localStorage.setItem('sidebarAutoHide', String(autoHide))
+        setDarkMode(isDark)
+        window.dispatchEvent(new CustomEvent('sidebarAutoHideChange', { detail: autoHide }))
+      }
+
+      // Sync security session timeout
+      const raw = s.security?.security_session_timeout
       if (raw) {
         const val = parseInt(raw, 10)
         if (!isNaN(val) && val >= 5) setSessionTimeout(val)
       }
     }).catch(() => {})
-  }, [user])
+  }, [user, setDarkMode])
 
   const handleSessionExpired = useCallback(() => {
     setShowTimeoutWarning(false)

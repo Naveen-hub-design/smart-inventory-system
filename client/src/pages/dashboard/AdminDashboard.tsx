@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Package, Layers, ShoppingBag, Truck, Users, ShoppingCart, TrendingUp,
@@ -88,6 +88,7 @@ export default function AdminDashboard() {
   const [dominantTrend, setDominantTrend] = useState('Stable')
   const [selectedAiVariant, setSelectedAiVariant] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
+  const [aiLoading, setAiLoading] = useState(true)
   const [chartLoaded, setChartLoaded] = useState(false)
   const [activeIndex, setActiveIndex] = useState<number>()
   const [selectedYear, setSelectedYear] = useState('2026')
@@ -95,38 +96,44 @@ export default function AdminDashboard() {
   const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
   const fetchData = async () => {
+    // 1. Load core dashboard data immediately (fast DB queries)
     try {
-      const [statsRes, transRes, stockRes, salesRes, purchasesRes, topRes, actRes, aiRes] = await Promise.all([
-        dashboardService.getStats(),
-        dashboardService.getRecentTransactions(),
-        dashboardService.getStockByCategory(),
-        dashboardService.getMonthlySales(),
-        dashboardService.getMonthlyPurchases(),
-        dashboardService.getTopProducts(),
-        dashboardService.getRecentActivities(),
-        aiService.getReorderRecommendations(),
-      ])
-      setStats(statsRes.data)
-      setTransactions(transRes.data.transactions || [])
-      setStockByCategory(stockRes.data.data || [])
-      setMonthlySales(salesRes.data.data || [])
-      setMonthlyPurchases(purchasesRes.data.data || [])
-      setTopProducts(topRes.data.data || [])
-      setActivities(actRes.data.activities || [])
-      setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
-      setAiHighCount(aiRes.data.high_priority?.length || 0)
-      setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
-      setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
-      setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')
+      const res = await dashboardService.getSummary()
+      const data = res.data
+      setStats(data.stats)
+      setTransactions(data.recent_transactions.transactions || [])
+      setStockByCategory(data.stock_by_category.data || [])
+      setMonthlySales(data.monthly_sales.data || [])
+      setMonthlyPurchases(data.monthly_purchases.data || [])
+      setTopProducts(data.top_products.data || [])
+      setActivities(data.recent_activities.activities || [])
       setTimeout(() => setChartLoaded(true), 100)
     } catch (err) {
       console.error('Admin dashboard fetch error:', err)
     } finally {
       setLoading(false)
     }
+
+    // 2. Load AI recommendations separately — heavy endpoint, must not block the dashboard
+    try {
+      const aiRes = await aiService.getReorderRecommendations()
+      setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
+      setAiHighCount(aiRes.data.high_priority?.length || 0)
+      setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
+      setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
+      setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')
+    } catch (err) {
+      console.error('AI recommendations fetch error:', err)
+    } finally {
+      setAiLoading(false)
+    }
   }
 
+  const fetchedRef = useRef(false)
+
   useEffect(() => {
+    if (fetchedRef.current) return
+    fetchedRef.current = true
     fetchData()
   }, [])
 
@@ -507,46 +514,58 @@ export default function AdminDashboard() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
-              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Critical Reorders</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5 tabular-nums">{aiHighCount} Items</p>
+            {aiLoading ? (
+              <div className="flex items-center justify-center py-8 gap-2 text-gray-400 dark:text-gray-500">
+                <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                <span className="text-xs font-medium">Loading AI insights…</span>
               </div>
-              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Health Score</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5 tabular-nums">{inventoryHealth}%</p>
-              </div>
-              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Supplier Risk</p>
-                <p className={`text-base font-bold mt-0.5 ${supplierRisk === 'High' ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400'}`}>{supplierRisk}</p>
-              </div>
-              <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Trend</p>
-                <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{dominantTrend}</p>
-              </div>
-            </div>
-
-            {aiRecs.length > 0 && (
-              <div className="space-y-1.5 border-t border-gray-100 dark:border-gray-800/80 pt-3">
-                {aiRecs.slice(0, 3).map((r) => (
-                  <div
-                    key={r.variant_id}
-                    onClick={() => setSelectedAiVariant(r.variant_id)}
-                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-all cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-800"
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <span className={`w-2 h-2 rounded-full shrink-0 ${r.priority === 'high' ? 'bg-red-500' : 'bg-amber-400'}`} />
-                      <div>
-                        <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">{r.product_name}</p>
-                        <p className="text-[10px] text-gray-400 dark:text-gray-500">Low stock · Reorder threshold reached</p>
-                      </div>
-                    </div>
-                    <button className="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 px-2.5 py-1 rounded-lg bg-primary-50/80 dark:bg-primary-950/40 border border-primary-200/50 dark:border-primary-800/40 transition-colors">
-                      Reorder {r.suggested_reorder_qty} →
-                    </button>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
+                  <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                    <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Critical Reorders</p>
+                    <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5 tabular-nums">{aiHighCount} Items</p>
                   </div>
-                ))}
-              </div>
+                  <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                    <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Health Score</p>
+                    <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5 tabular-nums">{inventoryHealth}%</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                    <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Supplier Risk</p>
+                    <p className={`text-base font-bold mt-0.5 ${supplierRisk === 'High' ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400'}`}>{supplierRisk}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+                    <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Trend</p>
+                    <p className="text-base font-bold text-gray-900 dark:text-white mt-0.5">{dominantTrend}</p>
+                  </div>
+                </div>
+
+                {aiRecs.length > 0 && (
+                  <div className="space-y-1.5 border-t border-gray-100 dark:border-gray-800/80 pt-3">
+                    {aiRecs.slice(0, 3).map((r) => (
+                      <div
+                        key={r.variant_id}
+                        onClick={() => setSelectedAiVariant(r.variant_id)}
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-all cursor-pointer border border-transparent hover:border-gray-100 dark:hover:border-gray-800"
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className={`w-2 h-2 rounded-full shrink-0 ${r.priority === 'high' ? 'bg-red-500' : 'bg-amber-400'}`} />
+                          <div>
+                            <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">{r.product_name}</p>
+                            <p className="text-[10px] text-gray-400 dark:text-gray-500">Low stock · Reorder threshold reached</p>
+                          </div>
+                        </div>
+                        <button className="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 px-2.5 py-1 rounded-lg bg-primary-50/80 dark:bg-primary-950/40 border border-primary-200/50 dark:border-primary-800/40 transition-colors">
+                          Reorder {r.suggested_reorder_qty} →
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
 

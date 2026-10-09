@@ -43,6 +43,7 @@ export const inventoryService = {
 }
 
 export const dashboardService = {
+  getSummary: () => api.get('/dashboard/summary'),
   getStats: () => api.get('/dashboard/stats'),
   getRecentTransactions: () => api.get('/dashboard/recent-transactions'),
   getStockByCategory: () => api.get('/dashboard/stock-by-category'),
