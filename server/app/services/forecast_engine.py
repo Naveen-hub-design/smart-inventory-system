@@ -42,21 +42,66 @@ def get_forecasts(category_id=None, product_id=None, date_from=None, date_to=Non
         query = query.filter(ProductVariant.product_id == product_id)
 
     variants = query.all()
+    variant_ids = [v.id for v in variants]
+
+    sold_90_map = {}
+    sold_60_map = {}
+    sold_30_map = {}
+    daily_series_map = {}
+
+    if variant_ids:
+        sales_90 = db.session.query(
+            SaleItem.variant_id, func.sum(SaleItem.quantity)
+        ).join(Sale).filter(
+            SaleItem.variant_id.in_(variant_ids),
+            Sale.status == 'completed',
+            Sale.sale_date >= lookback
+        ).group_by(SaleItem.variant_id).all()
+        sold_90_map = {r[0]: int(r[1]) for r in sales_90}
+
+        sales_60 = db.session.query(
+            SaleItem.variant_id, func.sum(SaleItem.quantity)
+        ).join(Sale).filter(
+            SaleItem.variant_id.in_(variant_ids),
+            Sale.status == 'completed',
+            Sale.sale_date >= lookback_60
+        ).group_by(SaleItem.variant_id).all()
+        sold_60_map = {r[0]: int(r[1]) for r in sales_60}
+
+        sales_30 = db.session.query(
+            SaleItem.variant_id, func.sum(SaleItem.quantity)
+        ).join(Sale).filter(
+            SaleItem.variant_id.in_(variant_ids),
+            Sale.status == 'completed',
+            Sale.sale_date >= lookback_30
+        ).group_by(SaleItem.variant_id).all()
+        sold_30_map = {r[0]: int(r[1]) for r in sales_30}
+
+        daily_rows = db.session.query(
+            SaleItem.variant_id,
+            func.date(Sale.sale_date).label('day'),
+            func.sum(SaleItem.quantity).label('qty')
+        ).join(Sale).filter(
+            SaleItem.variant_id.in_(variant_ids),
+            Sale.status == 'completed',
+            Sale.sale_date >= lookback_30,
+            Sale.sale_date < now
+        ).group_by(SaleItem.variant_id, func.date(Sale.sale_date)).all()
+
+        for r in daily_rows:
+            vid = r[0]
+            day_str = str(r[1])
+            qty = int(r[2])
+            if vid not in daily_series_map:
+                daily_series_map[vid] = {}
+            daily_series_map[vid][day_str] = qty
 
     results = []
 
     for v in variants:
-        total_sold_90 = db.session.query(func.sum(SaleItem.quantity)).join(Sale).filter(
-            SaleItem.variant_id == v.id,
-            Sale.status == 'completed',
-            Sale.sale_date >= lookback
-        ).scalar() or 0
-
-        total_sold_60 = db.session.query(func.sum(SaleItem.quantity)).join(Sale).filter(
-            SaleItem.variant_id == v.id,
-            Sale.status == 'completed',
-            Sale.sale_date >= lookback_60
-        ).scalar() or 0
+        total_sold_90 = sold_90_map.get(v.id, 0)
+        total_sold_60 = sold_60_map.get(v.id, 0)
+        recent_30_total = sold_30_map.get(v.id, 0)
 
         product = v.product
 
@@ -94,15 +139,7 @@ def get_forecasts(category_id=None, product_id=None, date_from=None, date_to=Non
         weekly_avg = daily_avg * 7
         monthly_avg = daily_avg * 30
 
-        # Trend calculation (compare recent 30d vs older 60d)
-        recent_30 = total_sold_60  # actually this is the last 60 days total... let me recalculate
-
         # Recent 30 days
-        recent_30_total = db.session.query(func.sum(SaleItem.quantity)).join(Sale).filter(
-            SaleItem.variant_id == v.id,
-            Sale.status == 'completed',
-            Sale.sale_date >= lookback_30
-        ).scalar() or 0
         recent_30_avg = recent_30_total / 30
 
         # Older 30-90 days
@@ -153,12 +190,14 @@ def get_forecasts(category_id=None, product_id=None, date_from=None, date_to=Non
             risk = 'Low Risk'
 
         # Chart data: last 30 days actual + next 30 days predicted
-        chart_actual = _daily_sales_series(v.id, lookback_30, now)
+        daily_lookup = daily_series_map.get(v.id, {})
+        chart_actual = []
         chart_labels = []
         chart_predicted = []
 
         d = lookback_30
         for _ in range(30):
+            chart_actual.append(int(daily_lookup.get(str(d.date()), 0)))
             chart_labels.append(d.strftime('%b %d'))
             d += timedelta(days=1)
 
@@ -166,7 +205,7 @@ def get_forecasts(category_id=None, product_id=None, date_from=None, date_to=Non
         for i in range(30):
             chart_predicted.append(round(predicted_daily))
 
-        # Pad actual to exactly 30 entries
+        # Pad actual to exactly 30 entries (though it should already be 30)
         while len(chart_actual) < 30:
             chart_actual.insert(0, 0)
         chart_actual = chart_actual[-30:]

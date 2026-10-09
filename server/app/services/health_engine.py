@@ -31,7 +31,7 @@ def _get_health_status(score):
     return 'Poor'
 
 
-def _compute_health_at(now, lookback_days, variants, variant_ids, weights):
+def _compute_health_at(now, lookback_days, variants, weights, total_stock_value, all_sales):
     start = now - timedelta(days=lookback_days)
     n = len(variants)
 
@@ -42,35 +42,30 @@ def _compute_health_at(now, lookback_days, variants, variant_ids, weights):
             'factors': {k: {'score': 0, 'weight': v} for k, v in weights.items()},
         }
 
-    # Sales data in period
-    sale_rows = db.session.query(
-        SaleItem.variant_id,
-        func.coalesce(func.sum(SaleItem.quantity), 0).label('total_qty'),
-        func.coalesce(func.sum(SaleItem.total_price), 0).label('total_revenue'),
-        func.max(Sale.sale_date).label('last_sale_date'),
-    ).join(Sale).filter(
-        Sale.status == 'completed',
-        SaleItem.variant_id.in_(variant_ids),
-        Sale.sale_date >= start,
-        Sale.sale_date <= now,
-    ).group_by(SaleItem.variant_id).all()
+    sale_dict = {}
+    for vid, qty, price, sdate in all_sales:
+        if start <= sdate <= now:
+            if vid not in sale_dict:
+                sale_dict[vid] = {'qty': 0, 'rev': 0, 'last': sdate}
+            sale_dict[vid]['qty'] += qty
+            sale_dict[vid]['rev'] += price
+            if sdate > sale_dict[vid]['last']:
+                sale_dict[vid]['last'] = sdate
 
+    class MockSale:
+        def __init__(self, vid, q, r, l):
+            self.variant_id = vid
+            self.total_qty = q
+            self.total_revenue = r
+            self.last_sale_date = l
+
+    sale_rows = [MockSale(vid, d['qty'], d['rev'], d['last']) for vid, d in sale_dict.items()]
     sale_map = {r.variant_id: r for r in sale_rows}
 
-    # Inventory value calculation
-    total_stock_value = db.session.query(
-        func.coalesce(func.sum(ProductVariant.stock * func.coalesce(ProductVariant.cost_price, 0)), 0)
-    ).filter(
-        ProductVariant.id.in_(variant_ids)
-    ).scalar()
-    total_stock_value = float(total_stock_value)
+    variant_cost_map = {v.id: float(v.cost_price or 0) for v in variants}
 
-    # --- Factor scores ---
     # 1. Stock Availability
-    adequately_stocked = 0
-    for v in variants:
-        if v.stock >= v.min_stock:
-            adequately_stocked += 1
+    adequately_stocked = sum(1 for v in variants if v.stock >= v.min_stock)
     stock_avail_score = _safe_div(adequately_stocked, n) * 100
 
     # 2. Low Stock Risk
@@ -102,24 +97,23 @@ def _compute_health_at(now, lookback_days, variants, variant_ids, weights):
         last_sale = s.last_sale_date if s else None
         if v.stock > 0 and (last_sale is None or (now - last_sale).days > 90):
             dead_stock_count += 1
-            dead_stock_value += v.stock * float(v.cost_price or 0)
+            dead_stock_value += v.stock * variant_cost_map.get(v.id, 0)
     dead_stock_score = (1 - _safe_div(dead_stock_count, n)) * 100
 
-    # 5. Sales Performance (revenue relative to stock value)
+    # 5. Sales Performance
     total_revenue = sum(float(s.total_revenue) for s in sale_rows)
     sales_perf_score = min(_safe_div(total_revenue, max(total_stock_value, 1)) * 100, 100)
 
     # 6. Inventory Turnover
     cogs = sum(
-        float(s.total_qty) * float(
-            next((v.cost_price or 0) for v in variants if v.id == s.variant_id)
-        ) for s in sale_rows
+        float(s.total_qty) * variant_cost_map.get(s.variant_id, 0)
+        for s in sale_rows
     )
     avg_inventory = max(total_stock_value, 1)
     turnover_ratio = _safe_div(cogs, avg_inventory) * (365 / max(lookback_days, 1))
     turnover_score = min(turnover_ratio * 20, 100)
 
-    # 7. Forecast Confidence (based on data volume)
+    # 7. Forecast Confidence
     variants_with_data = sum(1 for v in variants if sale_map.get(v.id) and float(sale_map[v.id].total_qty) > 0)
     data_coverage = _safe_div(variants_with_data, n)
     forecast_conf_score = min(data_coverage * 100 + 20, 100)
@@ -191,9 +185,35 @@ def get_health(category_id=None, supplier_id=None, date_from=None, date_to=None)
     else:
         end_date = now
 
+    earliest_lookback = min(
+        start_date,
+        now - timedelta(weeks=11, days=now.weekday()) - timedelta(days=365)
+    )
+
+    all_sales = []
+    if variant_ids:
+        all_sales = db.session.query(
+            SaleItem.variant_id,
+            SaleItem.quantity,
+            SaleItem.total_price,
+            Sale.sale_date
+        ).join(Sale).filter(
+            Sale.status == 'completed',
+            SaleItem.variant_id.in_(variant_ids),
+            Sale.sale_date >= earliest_lookback,
+            Sale.sale_date <= end_date
+        ).all()
+
+    total_stock_value = db.session.query(
+        func.coalesce(func.sum(ProductVariant.stock * func.coalesce(ProductVariant.cost_price, 0)), 0)
+    ).filter(
+        ProductVariant.id.in_(variant_ids)
+    ).scalar()
+    total_stock_value = float(total_stock_value or 0)
+
     # Compute current health with custom date range
     current_lookback = (end_date - start_date).days or 1
-    current = _compute_health_at(end_date, current_lookback, variants, variant_ids, weights)
+    current = _compute_health_at(end_date, current_lookback, variants, weights, total_stock_value, all_sales)
 
     # Compute weekly trend data (last 12 weeks)
     trend_labels = []
@@ -203,7 +223,7 @@ def get_health(category_id=None, supplier_id=None, date_from=None, date_to=None)
         week_lookback = min((now - week_date).days, 1)
         if week_lookback < 7:
             week_lookback = 7
-        res = _compute_health_at(week_date, week_lookback, variants, variant_ids, weights)
+        res = _compute_health_at(week_date, week_lookback, variants, weights, total_stock_value, all_sales)
         trend_labels.append(week_date.strftime('%b %d'))
         trend_values.append(res['overall_score'])
 
@@ -217,8 +237,8 @@ def get_health(category_id=None, supplier_id=None, date_from=None, date_to=None)
 
     category_health = []
     for cat_name, cat_v_list in cat_variants.items():
-        cat_ids = [v.id for v in cat_v_list]
-        cat_result = _compute_health_at(end_date, current_lookback, cat_v_list, cat_ids, weights)
+        cat_stock_value = sum(v.stock * float(v.cost_price or 0) for v in cat_v_list)
+        cat_result = _compute_health_at(end_date, current_lookback, cat_v_list, weights, cat_stock_value, all_sales)
         adequately = sum(1 for v in cat_v_list if v.stock >= v.min_stock)
         category_health.append({
             'category_name': cat_name,
@@ -244,9 +264,8 @@ def get_health(category_id=None, supplier_id=None, date_from=None, date_to=None)
         strengths.append("Healthy inventory levels with minimal overstock")
     if current['factors']['low_stock_risk']['score'] >= 80:
         strengths.append("Low risk of stock-outs across most products")
-    if current['sales_performance'] if False else True:
-        if current['total_revenue'] > 0:
-            strengths.append(f"Positive sales revenue of Rs.{current['total_revenue']:,.0f} in the period")
+    if current['total_revenue'] > 0:
+        strengths.append(f"Positive sales revenue of Rs.{current['total_revenue']:,.0f} in the period")
 
     # Issues
     issues = []

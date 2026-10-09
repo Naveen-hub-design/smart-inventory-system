@@ -1,56 +1,65 @@
 from app import db
 from app.models.product_variant import ProductVariant
+from app.models.product import Product
 from app.models.sale import SaleItem, Sale
 from app.models.supplier import Supplier
 from datetime import datetime, timedelta
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload, selectinload
 import math
+import time
 
 LEAD_TIME_DAYS = 14
 SAFETY_STOCK_DAYS = 7
 LOOKBACK_DAYS = 90
 
 
-def _calculate_trend(variant_id, lookback_date, now):
-    """Determine sales trend (Increasing/Stable/Decreasing) and confidence score."""
-    midpoint = lookback_date + (now - lookback_date) / 2
-
-    older = db.session.query(func.sum(SaleItem.quantity).label('qty')).join(Sale).filter(
-        SaleItem.variant_id == variant_id,
+def _calculate_trend_bulk(lookback_date, midpoint, now):
+    """Bulk-fetch older and recent sales for ALL variants in 2 queries.
+    Returns two dicts: {variant_id: qty} for older and recent halves.
+    This replaces the N+1 pattern of calling 2 queries per variant.
+    """
+    older_rows = db.session.query(
+        SaleItem.variant_id,
+        func.sum(SaleItem.quantity).label('qty')
+    ).join(Sale).filter(
+        SaleItem.variant_id.isnot(None),
         Sale.status == 'completed',
         Sale.sale_date >= lookback_date,
         Sale.sale_date < midpoint
-    ).scalar() or 0
+    ).group_by(SaleItem.variant_id).all()
 
-    recent = db.session.query(func.sum(SaleItem.quantity).label('qty')).join(Sale).filter(
-        SaleItem.variant_id == variant_id,
+    recent_rows = db.session.query(
+        SaleItem.variant_id,
+        func.sum(SaleItem.quantity).label('qty')
+    ).join(Sale).filter(
+        SaleItem.variant_id.isnot(None),
         Sale.status == 'completed',
         Sale.sale_date >= midpoint,
         Sale.sale_date <= now
-    ).scalar() or 0
+    ).group_by(SaleItem.variant_id).all()
 
-    days_total = (now - lookback_date).days
-    half = days_total / 2
+    older_map = {r.variant_id: int(r.qty) for r in older_rows}
+    recent_map = {r.variant_id: int(r.qty) for r in recent_rows}
+    return older_map, recent_map
+
+
+def _trend_from_maps(variant_id, older_map, recent_map, half):
+    """Compute trend and confidence from pre-fetched bulk maps (no DB calls)."""
+    older = older_map.get(variant_id, 0)
+    recent = recent_map.get(variant_id, 0)
     older_avg = older / half if half > 0 else 0
     recent_avg = recent / half if half > 0 else 0
-
     total_sold = older + recent
 
-    # Confidence: based on data volume and consistency
     if total_sold == 0:
-        trend = 'Stable'
-        confidence = 30
+        return 'Stable', 30
     elif recent_avg > older_avg * 1.1:
-        trend = 'Increasing'
-        confidence = min(95, 50 + int(total_sold / 2))
+        return 'Increasing', min(95, 50 + int(total_sold / 2))
     elif recent_avg < older_avg * 0.9:
-        trend = 'Decreasing'
-        confidence = min(95, 50 + int(total_sold / 2))
+        return 'Decreasing', min(95, 50 + int(total_sold / 2))
     else:
-        trend = 'Stable'
-        confidence = min(90, 40 + int(total_sold / 2))
-
-    return trend, confidence
+        return 'Stable', min(90, 40 + int(total_sold / 2))
 
 
 def _generate_explanation(variant, daily_avg, days_remaining, priority, suggested_order, trend):
@@ -101,38 +110,50 @@ def _generate_explanation(variant, daily_avg, days_remaining, priority, suggeste
 
 
 def get_recommendations():
+    timings = {}
+
+    t_start = time.perf_counter()
     now = datetime.utcnow()
     lookback_date = now - timedelta(days=LOOKBACK_DAYS)
+    midpoint = lookback_date + (now - lookback_date) / 2
+    half = (now - lookback_date).days / 2
 
-    # Aggregate sales per variant in lookback period
+    # --- Stage 4: Sales-history loading ---
+    t_sales_start = time.perf_counter()
+    older_map, recent_map = _calculate_trend_bulk(lookback_date, midpoint, now)
+
+    # Step 2: Derive 90-day sales total directly from trend maps (removes redundant 90-day query A)
     sales_data = {}
-    rows = db.session.query(
-        SaleItem.variant_id,
-        func.sum(SaleItem.quantity).label('total_qty')
-    ).join(Sale).filter(
-        SaleItem.variant_id.isnot(None),
-        Sale.status == 'completed',
-        Sale.sale_date >= lookback_date
-    ).group_by(SaleItem.variant_id).all()
+    for v_id in set(older_map.keys()) | set(recent_map.keys()):
+        sales_data[v_id] = older_map.get(v_id, 0) + recent_map.get(v_id, 0)
 
-    for r in rows:
-        sales_data[r.variant_id] = int(r.total_qty)
+    timings['sales_history_ms'] = (time.perf_counter() - t_sales_start) * 1000.0
 
-    variants = ProductVariant.query.join(
-        ProductVariant.product
+    # --- Stage 3: Product/variant loading ---
+    t_prod_start = time.perf_counter()
+    variants = ProductVariant.query.options(
+        joinedload(ProductVariant.product).joinedload(Product.category)
     ).filter(
         ProductVariant.stock >= 0
     ).all()
+    timings['product_loading_ms'] = (time.perf_counter() - t_prod_start) * 1000.0
+
+    # --- Stage 6 & 8: Forecast & Reorder calculations ---
+    t_calc_start = time.perf_counter()
+    t_forecast_accum = 0.0
+    t_reorder_accum = 0.0
 
     recommendations = []
 
     for v in variants:
+        t_f_0 = time.perf_counter()
         total_sold = sales_data.get(v.id, 0)
         daily_avg = total_sold / LOOKBACK_DAYS if total_sold > 0 else 0
         monthly_avg = daily_avg * 30
-
         days_remaining = int(v.stock / daily_avg) if daily_avg > 0 else 999
+        t_forecast_accum += (time.perf_counter() - t_f_0) * 1000.0
 
+        t_r_0 = time.perf_counter()
         # Priority level
         if v.stock <= v.min_stock or (daily_avg > 0 and days_remaining < 7):
             priority = 'high'
@@ -157,11 +178,10 @@ def get_recommendations():
             if suggested_order < v.min_stock and v.stock < v.min_stock:
                 suggested_order = v.min_stock * 2
         else:
-            # No sales data — recommend based on min_stock
             suggested_order = max(0, v.min_stock * 2 - v.stock)
 
-        # Trend and confidence
-        trend, confidence = _calculate_trend(v.id, lookback_date, now)
+        # Trend from pre-fetched maps — no DB call
+        trend, confidence = _trend_from_maps(v.id, older_map, recent_map, half)
         explanation = _generate_explanation(v, daily_avg, days_remaining, priority, suggested_order, trend)
 
         product = v.product
@@ -184,8 +204,10 @@ def get_recommendations():
             'confidence_score': confidence,
             'sales_trend': trend,
         })
+        t_reorder_accum += (time.perf_counter() - t_r_0) * 1000.0
 
     # Sort: high first, then medium, then low
+    t_sort_0 = time.perf_counter()
     priority_order = {'high': 0, 'medium': 1, 'low': 2}
     recommendations.sort(key=lambda r: (priority_order.get(r['priority'], 9), r['days_remaining'] or 999))
 
@@ -193,8 +215,22 @@ def get_recommendations():
     high = [r for r in recommendations if r['priority'] == 'high']
     medium = [r for r in recommendations if r['priority'] == 'medium']
     low = [r for r in recommendations if r['priority'] == 'low']
+    t_reorder_accum += (time.perf_counter() - t_sort_0) * 1000.0
 
-    # Summary metrics
+    timings['forecast_calc_ms'] = t_forecast_accum
+    timings['reorder_calc_ms'] = t_reorder_accum
+
+    # --- Stage 5: Purchase-history / Supplier loading ---
+    # Step 3: Consolidate active & inactive supplier counts into 1 GROUP BY query
+    t_purch_start = time.perf_counter()
+    sup_rows = db.session.query(Supplier.status, func.count(Supplier.id)).group_by(Supplier.status).all()
+    sup_counts = {r[0]: r[1] for r in sup_rows}
+    active = sup_counts.get('active', 0)
+    inactive = sup_counts.get('inactive', 0)
+    timings['purchase_history_ms'] = (time.perf_counter() - t_purch_start) * 1000.0
+
+    # --- Stage 7: Health calculations ---
+    t_health_start = time.perf_counter()
     healthy_count = sum(1 for r in recommendations if r['current_stock'] >= r['min_stock'])
     total_variants = len(variants)
     inventory_health_pct = round(healthy_count / total_variants * 100) if total_variants > 0 else 100
@@ -205,8 +241,6 @@ def get_recommendations():
             trend_counts[r['sales_trend']] = trend_counts.get(r['sales_trend'], 0) + 1
     dominant_trend = max(trend_counts, key=trend_counts.get) if trend_counts else 'Stable'
 
-    active = Supplier.query.filter_by(status='active').count()
-    inactive = Supplier.query.filter_by(status='inactive').count()
     total_sup = active + inactive
     if total_sup == 0:
         supplier_risk = 'Low'
@@ -216,8 +250,14 @@ def get_recommendations():
         supplier_risk = 'Medium'
     else:
         supplier_risk = 'Low'
+    timings['health_calc_ms'] = (time.perf_counter() - t_health_start) * 1000.0
 
-    return {
+    # --- Stage 9: Any AI/model/API call ---
+    t_ai_start = time.perf_counter()
+    # No external model/API call in this function
+    timings['ai_model_ms'] = (time.perf_counter() - t_ai_start) * 1000.0
+
+    res = {
         'recommendations': recommendations[:50],
         'high_priority': high,
         'medium_priority': medium,
@@ -229,7 +269,9 @@ def get_recommendations():
         'inventory_health_percent': inventory_health_pct,
         'supplier_risk': supplier_risk,
         'dominant_trend': dominant_trend,
+        '_stage_timings': timings,
     }
+    return res
 
 
 def get_recommendation_detail(variant_id):
@@ -270,7 +312,10 @@ def get_recommendation_detail(variant_id):
     else:
         suggested_order = max(0, v.min_stock * 2 - v.stock)
 
-    trend, confidence = _calculate_trend(v.id, lookback_date, now)
+    midpoint = lookback_date + (now - lookback_date) / 2
+    half = (now - lookback_date).days / 2
+    older_map, recent_map = _calculate_trend_bulk(lookback_date, midpoint, now)
+    trend, confidence = _trend_from_maps(v.id, older_map, recent_map, half)
     explanation = _generate_explanation(v, daily_avg, days_remaining, priority, suggested_order, trend)
 
     product = v.product
