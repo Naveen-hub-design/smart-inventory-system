@@ -8,6 +8,7 @@ from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime
 from sqlalchemy import exists
+from sqlalchemy.orm import joinedload, selectinload
 from app.utils.helpers import parse_date, generate_invoice
 
 sales_bp = Blueprint('sales', __name__)
@@ -25,7 +26,11 @@ def get_sales():
     sort_by = request.args.get('sort_by', 'created_at')
     sort_order = request.args.get('sort_order', 'desc')
 
-    query = Sale.query
+    query = Sale.query.options(
+        joinedload(Sale.user),
+        selectinload(Sale.items).selectinload(SaleItem.variant).selectinload(ProductVariant.product),
+        selectinload(Sale.items).selectinload(SaleItem.product)
+    )
 
     if search:
         variant_match = exists().select_from(

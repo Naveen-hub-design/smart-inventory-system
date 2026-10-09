@@ -10,7 +10,7 @@ from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime
 from decimal import Decimal
-from sqlalchemy import exists
+from sqlalchemy.orm import joinedload, selectinload
 from app.utils.helpers import parse_date, generate_invoice
 
 purchases_bp = Blueprint('purchases', __name__)
@@ -29,7 +29,12 @@ def get_purchases():
     sort_by = request.args.get('sort_by', 'created_at')
     sort_order = request.args.get('sort_order', 'desc')
 
-    query = Purchase.query
+    query = Purchase.query.options(
+        joinedload(Purchase.supplier),
+        joinedload(Purchase.user),
+        selectinload(Purchase.items).selectinload(PurchaseItem.material),
+        selectinload(Purchase.items).selectinload(PurchaseItem.variant).selectinload(ProductVariant.product)
+    )
 
     if search:
         variant_match = exists().select_from(

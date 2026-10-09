@@ -7,7 +7,7 @@ class RawMaterial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     material_name = db.Column(db.String(200), nullable=False)
     unit = db.Column(db.String(50), nullable=False)
-    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'))
+    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'), index=True)
     quantity = db.Column(db.Numeric(10, 2), nullable=False, default=0)
     min_stock = db.Column(db.Numeric(10, 2), nullable=False, default=10)
     cost = db.Column(db.Numeric(10, 2), nullable=False, default=0)

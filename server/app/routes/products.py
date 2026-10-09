@@ -8,6 +8,7 @@ from app.routes.settings import get_setting, is_ai_feature_enabled
 from app import db
 import os
 import uuid
+from sqlalchemy.orm import joinedload
 from werkzeug.utils import secure_filename
 
 products_bp = Blueprint('products', __name__)
@@ -29,7 +30,7 @@ def get_products():
     sort_by = request.args.get('sort_by', 'created_at')
     sort_order = request.args.get('sort_order', 'desc')
 
-    query = Product.query
+    query = Product.query.options(joinedload(Product.category))
 
     if search:
         query = query.filter(db.or_(

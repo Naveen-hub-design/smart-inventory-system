@@ -5,7 +5,7 @@ class ProductVariant(db.Model):
     __tablename__ = 'product_variants'
 
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False, index=True)
     size = db.Column(db.String(20))
     color = db.Column(db.String(50))
     sku = db.Column(db.String(100), unique=True)

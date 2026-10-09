@@ -28,6 +28,9 @@ def create_app():
          origins=[
              "http://localhost:5173",
              "http://127.0.0.1:5173",
+             "http://localhost:5174",
+             "http://127.0.0.1:5174",
+             "http://localhost:5175",
              "http://localhost:4173",
              "http://localhost:3000",
              "https://smart-inventory-system-client.vercel.app",
@@ -62,6 +65,42 @@ def create_app():
     @jwt.unauthorized_loader
     def missing_token_callback(error):
         return jsonify({'error': 'Authentication required'}), 401
+
+    from flask import g
+    from sqlalchemy import event
+    from sqlalchemy.engine import Engine
+    import time
+
+    @event.listens_for(Engine, "before_cursor_execute")
+    def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+        conn.info.setdefault('query_start_time', []).append(time.perf_counter())
+
+    @event.listens_for(Engine, "after_cursor_execute")
+    def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+        if conn.info.get('query_start_time'):
+            duration = (time.perf_counter() - conn.info['query_start_time'].pop()) * 1000.0
+            try:
+                if hasattr(g, 'sql_queries'):
+                    g.sql_queries.append((statement, duration))
+            except Exception:
+                pass
+
+    @app.before_request
+    def start_timing():
+        g.start_time = time.perf_counter()
+        g.sql_queries = []
+
+    @app.after_request
+    def record_metrics(response):
+        if hasattr(g, 'start_time'):
+            total_time_ms = (time.perf_counter() - g.start_time) * 1000.0
+            sql_queries = getattr(g, 'sql_queries', [])
+            sql_count = len(sql_queries)
+            sql_time_ms = sum(dur for _, dur in sql_queries)
+            response.headers['X-SQL-Query-Count'] = str(sql_count)
+            response.headers['X-SQL-Execution-Time-MS'] = f"{sql_time_ms:.2f}"
+            response.headers['X-HTTP-Processing-Time-MS'] = f"{total_time_ms:.2f}"
+        return response
 
     from app.routes.auth import auth_bp
     from app.routes.products import products_bp
@@ -119,6 +158,16 @@ def create_app():
     @app.route('/uploads/<path:filename>')
     def serve_upload(filename):
         return send_from_directory(uploads_dir, filename)
+
+    @app.route('/')
+    @app.route('/api/health')
+    def index():
+        return jsonify({
+            'status': 'online',
+            'message': 'Smart Inventory Management System API Server',
+            'version': '1.0.0'
+        }), 200
+
 
     # Migrate files from old uploads path (server/uploads/) to correct path (project-root/uploads/)
     old_uploads = os.path.join(os.path.dirname(uploads_dir), 'server', 'uploads')

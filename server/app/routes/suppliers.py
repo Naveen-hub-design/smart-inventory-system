@@ -4,6 +4,7 @@ from app.models.purchase import Purchase
 from app.models.raw_material import RawMaterial
 from app.middleware.auth import staff_required, admin_required, get_current_user
 from app.models.audit_log import create_audit_log
+from sqlalchemy.orm import selectinload
 from app import db
 
 suppliers_bp = Blueprint('suppliers', __name__)
@@ -19,7 +20,7 @@ def get_suppliers():
     sort_by = request.args.get('sort_by', 'created_at')
     sort_order = request.args.get('sort_order', 'desc')
 
-    query = Supplier.query
+    query = Supplier.query.options(selectinload(Supplier.raw_materials))
 
     if search:
         query = query.filter(Supplier.supplier_name.like(f'%{search}%'))
@@ -46,7 +47,7 @@ def get_suppliers():
 @suppliers_bp.route('/all', methods=['GET'])
 @staff_required
 def get_all_suppliers():
-    suppliers = Supplier.query.filter_by(status='active').all()
+    suppliers = Supplier.query.options(selectinload(Supplier.raw_materials)).filter_by(status='active').all()
     return jsonify({'suppliers': [s.to_dict() for s in suppliers]}), 200
 
 

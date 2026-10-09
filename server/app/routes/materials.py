@@ -3,6 +3,7 @@ from app.models.raw_material import RawMaterial
 from app.models.purchase import PurchaseItem
 from app.middleware.auth import staff_required, get_current_user
 from app.models.audit_log import create_audit_log
+from sqlalchemy.orm import joinedload
 from app import db
 
 materials_bp = Blueprint('materials', __name__)
@@ -17,7 +18,7 @@ def get_materials():
     sort_by = request.args.get('sort_by', 'created_at')
     sort_order = request.args.get('sort_order', 'desc')
 
-    query = RawMaterial.query
+    query = RawMaterial.query.options(joinedload(RawMaterial.supplier))
 
     if search:
         query = query.filter(RawMaterial.material_name.like(f'%{search}%'))
@@ -43,7 +44,7 @@ def get_materials():
 @materials_bp.route('/all', methods=['GET'])
 @staff_required
 def get_all_materials():
-    materials = RawMaterial.query.all()
+    materials = RawMaterial.query.options(joinedload(RawMaterial.supplier)).all()
     return jsonify({'materials': [m.to_dict() for m in materials]}), 200
 
 @materials_bp.route('/<int:id>', methods=['GET'])

@@ -6,8 +6,8 @@ class Purchase(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     invoice_number = db.Column(db.String(50), unique=True, nullable=False)
-    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index=True)
     total_amount = db.Column(db.Numeric(12, 2), nullable=False, default=0)
     discount = db.Column(db.Numeric(10, 2), default=0)
     tax = db.Column(db.Numeric(10, 2), default=0)
@@ -15,7 +15,7 @@ class Purchase(db.Model):
     status = db.Column(db.Enum('pending', 'completed', 'cancelled', name="purchase_status"), default='pending', index=True)
     notes = db.Column(db.Text)
     purchase_date = db.Column(db.DateTime, default=datetime.utcnow, index=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     items = db.relationship('PurchaseItem', backref='purchase', lazy='joined', cascade='all, delete-orphan')
@@ -43,9 +43,9 @@ class PurchaseItem(db.Model):
     __tablename__ = 'purchase_items'
 
     id = db.Column(db.Integer, primary_key=True)
-    purchase_id = db.Column(db.Integer, db.ForeignKey('purchases.id'), nullable=False)
-    material_id = db.Column(db.Integer, db.ForeignKey('raw_materials.id'), nullable=True)
-    variant_id = db.Column(db.Integer, db.ForeignKey('product_variants.id'), nullable=True)
+    purchase_id = db.Column(db.Integer, db.ForeignKey('purchases.id'), nullable=False, index=True)
+    material_id = db.Column(db.Integer, db.ForeignKey('raw_materials.id'), nullable=True, index=True)
+    variant_id = db.Column(db.Integer, db.ForeignKey('product_variants.id'), nullable=True, index=True)
     quantity = db.Column(db.Numeric(10, 2), nullable=False)
     unit_price = db.Column(db.Numeric(10, 2), nullable=False)
     total_price = db.Column(db.Numeric(12, 2), nullable=False)
