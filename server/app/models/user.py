@@ -17,6 +17,7 @@ class User(db.Model):
     avatar = db.Column(db.String(255))
     is_active = db.Column(db.Boolean, default=True, index=True)
     password_reset_required = db.Column(db.Boolean, default=False)
+    token_version = db.Column(db.Integer, default=1, nullable=False)
     last_login = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     updated_at = db.Column(

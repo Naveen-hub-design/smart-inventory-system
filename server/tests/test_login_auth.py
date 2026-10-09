@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _tmp = tempfile.NamedTemporaryFile(suffix='.db', delete=False)
 _tmp.close()
 os.environ['DATABASE_URL'] = f'sqlite:///{_tmp.name}'
-os.environ['JWT_SECRET_KEY'] = 'test-jwt-secret'
+os.environ['JWT_SECRET_KEY'] = 'test-jwt-secret-must-be-32-bytes-long'
 
 from app.config.config import Config
 Config.SQLALCHEMY_ENGINE_OPTIONS = {}

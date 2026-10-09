@@ -23,7 +23,18 @@ class Config:
             'connect_timeout': 30,
         },
     }
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key-sims-2024')
+    env = os.getenv('FLASK_ENV', os.getenv('APP_ENV', 'production'))
+    
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    if not JWT_SECRET_KEY:
+        if env in ('development', 'testing'):
+            JWT_SECRET_KEY = 'dev-fallback-secret-key-sims-must-be-32bytes!'
+        else:
+            raise RuntimeError("CRITICAL: JWT_SECRET_KEY environment variable is missing in production.")
+            
+    if len(JWT_SECRET_KEY.encode('utf-8')) < 32:
+        raise RuntimeError("CRITICAL: JWT_SECRET_KEY must be at least 32 bytes long for secure HMAC-SHA256 signatures.")
+
     JWT_ACCESS_TOKEN_EXPIRES = 28800
     UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024

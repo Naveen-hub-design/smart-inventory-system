@@ -28,7 +28,7 @@ auth_bp = Blueprint('auth', __name__)
 
 def _issue_login_tokens(user):
     """Build the standard SIMS login response for an authenticated user."""
-    claims = {'role': user.role, 'username': user.username}
+    claims = {'role': user.role, 'username': user.username, 'tv': user.token_version}
     access_token = create_access_token(
         identity=str(user.id),
         additional_claims=claims,
@@ -129,7 +129,7 @@ def login():
 
     # 6. JWT Creation (using captured variables, avoiding ORM expiration re-fetch)
     t_jwt_start = time.perf_counter()
-    claims = {'role': user_role, 'username': user_username}
+    claims = {'role': user_role, 'username': user_username, 'tv': user.token_version}
     access_token = create_access_token(
         identity=user_id,
         additional_claims=claims,
@@ -331,7 +331,8 @@ def refresh():
         identity=identity,
         additional_claims={
             'role': claims.get('role', 'staff'),
-            'username': claims.get('username', '')
+            'username': claims.get('username', ''),
+            'tv': claims.get('tv', 1)
         }
     )
     return jsonify({'access_token': access_token}), 200
@@ -388,6 +389,7 @@ def change_password():
 
     user.password_hash = generate_password_hash(data['new_password'])
     user.password_reset_required = False
+    user.token_version += 1
     create_audit_log(
         username=user.username,
         role=user.role,
@@ -483,6 +485,7 @@ def approve_password_reset(id):
 
     user.password_hash = generate_password_hash(data['new_password'])
     user.password_reset_required = True
+    user.token_version += 1
     req.status = 'approved'
     req.resolved_at = datetime.utcnow()
     admin = get_current_user()
@@ -678,6 +681,7 @@ def toggle_user_status(id):
         return jsonify({'error': 'is_active field required'}), 400
 
     user.is_active = bool(data['is_active'])
+    user.token_version += 1
     status = 'activated' if user.is_active else 'deactivated'
     admin = get_current_user()
     create_audit_log(
@@ -707,6 +711,7 @@ def reset_user_password(id):
         return jsonify({'error': 'new_password required'}), 400
 
     user.password_hash = generate_password_hash(data['new_password'])
+    user.token_version += 1
     admin = get_current_user()
     create_audit_log(
         username=admin.username,

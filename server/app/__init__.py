@@ -16,7 +16,7 @@ def create_app():
     app = Flask(__name__, static_folder='../static')
     app.config.from_object(Config)
 
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret-key-sims-2024')
+
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
     app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -47,8 +47,26 @@ def create_app():
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload):
         jti = jwt_payload['jti']
-        token = TokenBlocklist.query.filter_by(jti=jti).first()
-        return token is not None
+        token_type = jwt_payload.get('type')
+        user_id = jwt_payload.get('sub')
+        token_ver = jwt_payload.get('tv', 1)
+
+        # 1. Check explicit session blocklist (for normal logouts)
+        if TokenBlocklist.query.filter_by(jti=jti).first():
+            return True
+
+        # 2. Check user status & token_version (for deactivation / password resets)
+        if user_id:
+            from app.models.user import User
+            # Lightweight query avoids instantiating the full ORM model
+            user_data = db.session.query(User.is_active, User.token_version).filter_by(id=user_id).first()
+            if not user_data:
+                return True
+            is_active, current_tv = user_data
+            if not is_active or current_tv != token_ver:
+                return True
+
+        return False
 
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
@@ -227,6 +245,14 @@ def create_app():
                 db.session.execute(db.text('ALTER TABLE product_variants ADD COLUMN qr_code VARCHAR(255)'))
         except Exception:
             pass
+            
+        try:
+            users_columns = [col['name'] for col in inspector.get_columns('users')]
+            if 'token_version' not in users_columns:
+                db.session.execute(db.text('ALTER TABLE users ADD COLUMN token_version INTEGER DEFAULT 1 NOT NULL'))
+        except Exception:
+            pass
+
         db.session.commit()
 
         from app.models.user import User
