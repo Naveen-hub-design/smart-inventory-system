@@ -64,23 +64,41 @@ for cat, keys in CATEGORIES.items():
     for k in keys:
         CATEGORY_MAP[k] = cat
 
+_SETTINGS_CACHE = {}
+
+
+def clear_settings_cache(key=None):
+    """Clear all cached settings or a specific setting key."""
+    global _SETTINGS_CACHE
+    if key is None:
+        _SETTINGS_CACHE.clear()
+    else:
+        _SETTINGS_CACHE.pop(key, None)
+
 
 def get_setting(key, default=''):
+    if key in _SETTINGS_CACHE:
+        return _SETTINGS_CACHE[key]
     setting = SystemSetting.query.filter_by(key=key).first()
     if setting:
-        return setting.value
-    return DEFAULT_SETTINGS.get(key, default)
+        val = setting.value
+    else:
+        val = DEFAULT_SETTINGS.get(key, default)
+    _SETTINGS_CACHE[key] = val
+    return val
 
 
 def set_setting(key, value):
+    val_str = str(value)
     setting = SystemSetting.query.filter_by(key=key).first()
     if setting:
-        setting.value = str(value)
+        setting.value = val_str
         setting.updated_at = datetime.utcnow()
     else:
         cat = CATEGORY_MAP.get(key, 'general')
-        setting = SystemSetting(key=key, value=str(value), category=cat)
+        setting = SystemSetting(key=key, value=val_str, category=cat)
         db.session.add(setting)
+    _SETTINGS_CACHE[key] = val_str
     return setting
 
 
@@ -150,6 +168,7 @@ def update_settings():
 @admin_required
 def reset_settings():
     user = get_current_user()
+    clear_settings_cache()
     SystemSetting.query.delete()
     for key, value in DEFAULT_SETTINGS.items():
         cat = CATEGORY_MAP.get(key, 'general')

@@ -1,10 +1,11 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, g
 from flask_jwt_extended import (
     create_access_token, create_refresh_token,
     jwt_required, get_jwt_identity, get_jwt, decode_token
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
+import time
 from app.models.user import User, generate_employee_id
 from app.models.token_blocklist import TokenBlocklist
 from app.models.password_reset_request import PasswordResetRequest
@@ -26,12 +27,7 @@ auth_bp = Blueprint('auth', __name__)
 
 
 def _issue_login_tokens(user):
-    """Build the standard SIMS login response for an authenticated user.
-
-    Used by both username/password login and verified Google login so the
-    application JWT, claims and response shape are always identical.
-    The role always comes from the SIMS database, never from the client.
-    """
+    """Build the standard SIMS login response for an authenticated user."""
     claims = {'role': user.role, 'username': user.username}
     access_token = create_access_token(
         identity=str(user.id),
@@ -52,12 +48,34 @@ def _issue_login_tokens(user):
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
+    t_start = time.perf_counter()
     data = request.get_json()
     if not data or not data.get('username') or not data.get('password'):
         return jsonify({'error': 'Username and password required'}), 400
 
+    # 1. User DB Lookup
+    t_user_start = time.perf_counter()
     user = User.query.filter_by(username=data['username']).first()
-    if not user or not check_password_hash(user.password_hash, data['password']):
+    t_user_ms = (time.perf_counter() - t_user_start) * 1000.0
+
+    if not user:
+        create_audit_log(
+            username=data['username'],
+            role='unknown',
+            action='login',
+            module='auth',
+            description=f'Failed login attempt for {data["username"]}',
+            status='failure'
+        )
+        db.session.commit()
+        return jsonify({'error': 'Invalid credentials'}), 401
+
+    # 2. Password Hash Verification
+    t_pwd_start = time.perf_counter()
+    pwd_valid = check_password_hash(user.password_hash, data['password'])
+    t_pwd_ms = (time.perf_counter() - t_pwd_start) * 1000.0
+
+    if not pwd_valid:
         create_audit_log(
             username=data['username'],
             role='unknown',
@@ -81,17 +99,96 @@ def login():
         db.session.commit()
         return jsonify({'error': 'Account is deactivated'}), 403
 
+    user_id = str(user.id)
+    user_username = user.username
+    user_role = user.role
+
+    # 3. User Serialization (before commit)
+    t_serial_start = time.perf_counter()
     user.last_login = datetime.utcnow()
+    user_dict = user.to_dict()
+    t_serial_ms = (time.perf_counter() - t_serial_start) * 1000.0
+
+    # 4. Audit Log & DB Commit
+    t_commit_start = time.perf_counter()
     create_audit_log(
-        username=user.username,
-        role=user.role,
+        username=user_username,
+        role=user_role,
+        user_id=int(user_id),
         action='login',
         module='auth',
-        description=f'User {user.username} logged in'
+        description=f'User {user_username} logged in'
     )
     db.session.commit()
+    t_commit_ms = (time.perf_counter() - t_commit_start) * 1000.0
 
-    return jsonify(_issue_login_tokens(user)), 200
+    # 5. Settings DB Lookup
+    t_setting_start = time.perf_counter()
+    session_expiry = _get_session_expiry()
+    t_setting_ms = (time.perf_counter() - t_setting_start) * 1000.0
+
+    # 6. JWT Creation (using captured variables, avoiding ORM expiration re-fetch)
+    t_jwt_start = time.perf_counter()
+    claims = {'role': user_role, 'username': user_username}
+    access_token = create_access_token(
+        identity=user_id,
+        additional_claims=claims,
+        expires_delta=session_expiry
+    )
+    refresh_token = create_refresh_token(
+        identity=user_id,
+        additional_claims=claims
+    )
+    t_jwt_ms = (time.perf_counter() - t_jwt_start) * 1000.0
+
+    t_total_ms = (time.perf_counter() - t_start) * 1000.0
+
+    # Capture SQL metrics
+    sql_queries = getattr(g, 'sql_queries', [])
+    total_sql_count = len(sql_queries)
+    total_db_time_ms = sum(dur for _, dur in sql_queries)
+    total_python_time_ms = t_total_ms - total_db_time_ms
+
+    debug_timing = {
+        'stages': {
+            '1_User_DB_Lookup': round(t_user_ms, 2),
+            '2_Password_Hash_Verify': round(t_pwd_ms, 2),
+            '3_Audit_Log_and_DB_Commit': round(t_commit_ms, 2),
+            '4_Settings_DB_Lookup': round(t_setting_ms, 2),
+            '5_JWT_Creation': round(t_jwt_ms, 2),
+            '6_User_Serialization': round(t_serial_ms, 2),
+            'TOTAL_LOGIN_REQUEST_TIME': round(t_total_ms, 2)
+        },
+        'sql_stats': {
+            'total_sql_queries': total_sql_count,
+            'total_db_time_ms': round(total_db_time_ms, 2),
+            'total_python_time_ms': round(total_python_time_ms, 2)
+        },
+        'sql_queries': [
+            {'sql': stmt, 'duration_ms': round(dur, 2)} for stmt, dur in sql_queries
+        ]
+    }
+
+    # Print clean timing report to console
+    print("\n" + "="*70)
+    print("POST /api/auth/login PERFORMANCE PROFILING REPORT")
+    print("="*70)
+    for k, v in debug_timing['stages'].items():
+        print(f"  {k:<30} : {v:8.2f} ms")
+    print("-" * 70)
+    print(f"  Total SQL Queries Executed    : {total_sql_count}")
+    print(f"  Total Database Time           : {total_db_time_ms:8.2f} ms")
+    print(f"  Total Python CPU Time         : {total_python_time_ms:8.2f} ms")
+    print("="*70 + "\n")
+
+    res_data = {
+        'message': 'Login successful',
+        'access_token': access_token,
+        'refresh_token': refresh_token,
+        'user': user_dict
+    }
+
+    return jsonify(res_data), 200
 
 
 @auth_bp.route('/google', methods=['POST'])
