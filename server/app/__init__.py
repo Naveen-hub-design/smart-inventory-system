@@ -51,22 +51,27 @@ def create_app():
         user_id = jwt_payload.get('sub')
         token_ver = jwt_payload.get('tv', 1)
 
-        # 1. Check explicit session blocklist (for normal logouts)
-        if TokenBlocklist.query.filter_by(jti=jti).first():
+        try:
+            # 1. Check explicit session blocklist (for normal logouts)
+            if TokenBlocklist.query.filter_by(jti=jti).first():
+                return True
+
+            # 2. Check user status & token_version (for deactivation / password resets)
+            if user_id:
+                from app.models.user import User
+                # Lightweight query avoids instantiating the full ORM model
+                user_data = db.session.query(User.is_active, User.token_version).filter_by(id=user_id).first()
+                if not user_data:
+                    return True
+                is_active, current_tv = user_data
+                if not is_active or current_tv != token_ver:
+                    return True
+
+            return False
+        except Exception as e:
+            from flask import current_app
+            current_app.logger.error("Database error during token revocation check.")
             return True
-
-        # 2. Check user status & token_version (for deactivation / password resets)
-        if user_id:
-            from app.models.user import User
-            # Lightweight query avoids instantiating the full ORM model
-            user_data = db.session.query(User.is_active, User.token_version).filter_by(id=user_id).first()
-            if not user_data:
-                return True
-            is_active, current_tv = user_data
-            if not is_active or current_tv != token_ver:
-                return True
-
-        return False
 
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):

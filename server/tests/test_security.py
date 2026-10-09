@@ -93,3 +93,21 @@ def test_strict_secret_key_requirements():
     # Restore valid key
     os.environ['JWT_SECRET_KEY'] = 'test-jwt-secret-must-be-32-bytes-long'
     importlib.reload(app.config.config)
+
+def test_database_exception_in_blocklist_loader(client, auth_headers):
+    import unittest.mock
+
+    # Verify token works normally first
+    res1 = client.get('/api/auth/me', headers=auth_headers)
+    assert res1.status_code == 200
+
+    # Mock the database session query to raise an Exception
+    with unittest.mock.patch('app.models.token_blocklist.TokenBlocklist.query') as mock_query:
+        # Simulate a database connection loss
+        mock_query.filter_by.side_effect = Exception("Simulated DB OperationalError")
+
+        res2 = client.get('/api/auth/me', headers=auth_headers)
+
+        # Should fail closed (revoked) instead of crashing with 500
+        assert res2.status_code == 401
+        assert 'revoked' in res2.json.get('error', '').lower()
