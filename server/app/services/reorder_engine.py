@@ -19,28 +19,22 @@ def _calculate_trend_bulk(lookback_date, midpoint, now):
     Returns two dicts: {variant_id: qty} for older and recent halves.
     This replaces the N+1 pattern of calling 2 queries per variant.
     """
-    older_rows = db.session.query(
+    # Eliminate redundant query by using conditional aggregation (CASE WHEN) in a single DB pass
+    from sqlalchemy import case
+    
+    rows = db.session.query(
         SaleItem.variant_id,
-        func.sum(SaleItem.quantity).label('qty')
+        func.sum(case((Sale.sale_date < midpoint, SaleItem.quantity), else_=0)).label('older_qty'),
+        func.sum(case((Sale.sale_date >= midpoint, SaleItem.quantity), else_=0)).label('recent_qty')
     ).join(Sale).filter(
         SaleItem.variant_id.isnot(None),
         Sale.status == 'completed',
         Sale.sale_date >= lookback_date,
-        Sale.sale_date < midpoint
-    ).group_by(SaleItem.variant_id).all()
-
-    recent_rows = db.session.query(
-        SaleItem.variant_id,
-        func.sum(SaleItem.quantity).label('qty')
-    ).join(Sale).filter(
-        SaleItem.variant_id.isnot(None),
-        Sale.status == 'completed',
-        Sale.sale_date >= midpoint,
         Sale.sale_date <= now
     ).group_by(SaleItem.variant_id).all()
 
-    older_map = {r.variant_id: int(r.qty) for r in older_rows}
-    recent_map = {r.variant_id: int(r.qty) for r in recent_rows}
+    older_map = {r.variant_id: int(r.older_qty) for r in rows}
+    recent_map = {r.variant_id: int(r.recent_qty) for r in rows}
     return older_map, recent_map
 
 
@@ -259,9 +253,9 @@ def get_recommendations():
 
     res = {
         'recommendations': recommendations[:50],
-        'high_priority': high,
-        'medium_priority': medium,
-        'safe_items': low,
+        'high_priority_count': len(high),
+        'medium_priority_count': len(medium),
+        'safe_items_count': len(low),
         'generated_at': now.isoformat(),
         'lookback_days': LOOKBACK_DAYS,
         'lead_time_days': LEAD_TIME_DAYS,
