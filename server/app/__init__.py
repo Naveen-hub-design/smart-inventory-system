@@ -295,10 +295,11 @@ def create_app():
 
             db.session.commit()
 
-            from app.models.user import User
-            from app.models.setting import SystemSetting
-            from werkzeug.security import generate_password_hash
+        from app.models.user import User
+        from app.models.setting import SystemSetting
+        from werkzeug.security import generate_password_hash
 
+        try:
             if not User.query.filter_by(username='admin').first():
                 db.session.add(User(
                     username='admin',
@@ -327,6 +328,8 @@ def create_app():
                     cat = CATEGORY_MAP.get(key, 'general')
                     db.session.add(SystemSetting(key=key, value=value, category=cat))
             db.session.commit()
+        except Exception:
+            db.session.rollback()
 
     return app
 

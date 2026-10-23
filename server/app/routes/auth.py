@@ -22,6 +22,9 @@ def _get_session_expiry():
         return timedelta(minutes=max(5, min(minutes, 480)))
     except (ValueError, TypeError):
         return timedelta(minutes=30)
+def _invalidate_user_cache(user_id=None, jti=None):
+    if hasattr(current_app, 'invalidate_auth_cache'):
+        current_app.invalidate_auth_cache(user_id=user_id, jti=jti)
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -402,6 +405,7 @@ def change_password():
         description=f'User {user.username} changed their own password'
     )
     db.session.commit()
+    _invalidate_user_cache(user_id=user.id)
     return jsonify({'message': 'Password changed successfully'}), 200
 
 
@@ -504,6 +508,7 @@ def approve_password_reset(id):
         description=f'Admin {admin.username if admin else "unknown"} approved password reset for {user.username}'
     )
     db.session.commit()
+    _invalidate_user_cache(user_id=user.id)
 
     return jsonify({'message': 'Password reset approved. User must change password on next login.'}), 200
 
@@ -696,6 +701,7 @@ def toggle_user_status(id):
         description=f'Admin {admin.username} {status} user {user.username}'
     )
     db.session.commit()
+    _invalidate_user_cache(user_id=user.id)
     return jsonify({'message': f'User {status}', 'user': user.to_dict()}), 200
 
 
@@ -725,6 +731,7 @@ def reset_user_password(id):
         description=f'Admin {admin.username} reset password for user {user.username}'
     )
     db.session.commit()
+    _invalidate_user_cache(user_id=user.id)
     return jsonify({'message': 'Password reset successfully'}), 200
 
 
@@ -750,4 +757,5 @@ def delete_user(id):
     )
     db.session.delete(user)
     db.session.commit()
+    _invalidate_user_cache(user_id=user.id)
     return jsonify({'message': 'User deleted'}), 200

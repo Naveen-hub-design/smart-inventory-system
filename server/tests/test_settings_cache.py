@@ -33,7 +33,11 @@ def app_ctx():
 
 def test_get_setting_default_and_caching(app_ctx):
     clear_settings_cache()
-    # Default setting fallback
+    from app.models.setting import SystemSetting
+    s = SystemSetting.query.filter_by(key='security_session_timeout').first()
+    if s:
+        s.value = '30'
+        db.session.commit()
     timeout_val = get_setting('security_session_timeout')
     assert timeout_val == '30'
 

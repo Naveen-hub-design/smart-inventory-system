@@ -27,13 +27,17 @@ class Config:
         SQLALCHEMY_ENGINE_OPTIONS = {}
     else:
         SQLALCHEMY_ENGINE_OPTIONS = {
-            'pool_size': 10,
-            'max_overflow': 20,
-            'pool_recycle': 300,       # Recycle connections every 5 min
-            'pool_pre_ping': False,     # Disable 300ms pre-ping roundtrip on checkout
+            'pool_size': 5,
+            'max_overflow': 10,
+            'pool_recycle': 120,       # Recycle connections every 2 min before Neon/NAT drops them
+            'pool_pre_ping': True,     # Auto-reconnect if Neon drops idle SSL connection
             'pool_timeout': 30,
             'connect_args': {
                 'connect_timeout': 15,
+                'keepalives': 1,
+                'keepalives_idle': 30,
+                'keepalives_interval': 10,
+                'keepalives_count': 5,
             },
         }
     env = os.getenv('FLASK_ENV', os.getenv('APP_ENV', 'production'))

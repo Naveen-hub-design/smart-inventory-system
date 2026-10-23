@@ -101,6 +101,10 @@ def test_database_exception_in_blocklist_loader(client, auth_headers):
     res1 = client.get('/api/auth/me', headers=auth_headers)
     assert res1.status_code == 200
 
+    # Invalidate cache to test DB exception path directly
+    if hasattr(client.application, 'invalidate_auth_cache'):
+        client.application.invalidate_auth_cache()
+
     # Mock the database session query to raise an Exception
     with unittest.mock.patch('app.models.token_blocklist.TokenBlocklist.query') as mock_query:
         # Simulate a database connection loss
