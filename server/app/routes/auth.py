@@ -319,6 +319,10 @@ def logout():
             description=f'User {user.username} logged out'
         )
     db.session.commit()
+
+    if hasattr(current_app, 'invalidate_auth_cache'):
+        current_app.invalidate_auth_cache(user_id=user.id if user else None, jti=access_jti)
+
     return jsonify({'message': 'Logged out'}), 200
 
 

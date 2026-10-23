@@ -96,19 +96,82 @@ api.interceptors.response.use(
   }
 )
 
+interface CacheEntry {
+  data: any
+  status: number
+  statusText: string
+  headers: any
+  config: any
+  timestamp: number
+}
+
+const responseCache = new Map<string, CacheEntry>()
 const pendingRequests = new Map<string, Promise<any>>()
 const originalGet = api.get
 
+export const clearApiCache = (filter?: string) => {
+  if (!filter) {
+    responseCache.clear()
+    return
+  }
+  for (const key of responseCache.keys()) {
+    if (key.includes(filter)) {
+      responseCache.delete(key)
+    }
+  }
+}
+
+// Invalidate cache on mutations (POST, PUT, DELETE, PATCH)
+api.interceptors.response.use(
+  (response) => {
+    const method = response.config.method?.toLowerCase()
+    if (method && ['post', 'put', 'delete', 'patch'].includes(method)) {
+      responseCache.clear()
+    }
+    return response
+  },
+  undefined
+)
+
 api.get = async (url: string, config?: any) => {
+  const isNoCache = config?.headers?.['Cache-Control'] === 'no-cache'
   const key = `get:${url}?${JSON.stringify(config?.params || {})}`
+
+  if (!isNoCache) {
+    const cached = responseCache.get(key)
+    // 30-second TTL: allows instant navigation between tabs without network lag
+    if (cached && (Date.now() - cached.timestamp) < 30000) {
+      return Promise.resolve({
+        data: cached.data,
+        status: cached.status,
+        statusText: cached.statusText,
+        headers: cached.headers,
+        config: cached.config,
+      })
+    }
+  }
 
   if (pendingRequests.has(key)) {
     return pendingRequests.get(key)
   }
 
-  const promise = originalGet(url, config).finally(() => {
-    pendingRequests.delete(key)
-  })
+  const promise = originalGet(url, config)
+    .then((res: any) => {
+      if (!isNoCache && res?.status === 200) {
+        responseCache.set(key, {
+          data: res.data,
+          status: res.status,
+          statusText: res.statusText,
+          headers: res.headers,
+          config: res.config,
+          timestamp: Date.now()
+        })
+      }
+      return res
+    })
+    .finally(() => {
+      pendingRequests.delete(key)
+    })
 
   pendingRequests.set(key, promise)
   return promise

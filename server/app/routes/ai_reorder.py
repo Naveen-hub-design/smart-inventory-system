@@ -9,6 +9,13 @@ from app.routes.settings import is_ai_feature_enabled
 ai_bp = Blueprint('ai_reorder', __name__)
 
 
+_REORDER_CACHE = {'timestamp': 0, 'data': None}
+REORDER_CACHE_TTL = 60
+
+def clear_reorder_cache():
+    _REORDER_CACHE['timestamp'] = 0
+    _REORDER_CACHE['data'] = None
+
 @ai_bp.route('/reorder-recommendations', methods=['GET'])
 def reorder_recommendations():
     g.sql_queries = []
@@ -29,6 +36,11 @@ def reorder_recommendations():
     role = claims.get('role', 'system')
     t_auth_ms = (time.perf_counter() - t_auth_start) * 1000.0
 
+    # Cache hit check
+    now_ts = time.time()
+    if _REORDER_CACHE['data'] and (now_ts - _REORDER_CACHE['timestamp']) < REORDER_CACHE_TTL:
+        return jsonify(_REORDER_CACHE['data']), 200
+
     # 2. Initial DB / Settings
     t_init_db_start = time.perf_counter()
     if not is_ai_feature_enabled('ai_reorder'):
@@ -39,17 +51,9 @@ def reorder_recommendations():
     result = get_recommendations()
     stage_timings = result.pop('_stage_timings', {})
 
-    # Audit log
-    t_audit_start = time.perf_counter()
-    create_audit_log(
-        username=username,
-        role=role,
-        user_id=int(user_id) if user_id else None,
-        action='recommendations_generated',
-        module='inventory',
-        description=f'AI reorder recommendations generated — {result["total_analyzed"]} variants analyzed, {result["high_priority_count"]} high priority'
-    )
-    t_audit_ms = (time.perf_counter() - t_audit_start) * 1000.0
+    # Cache the result
+    _REORDER_CACHE['timestamp'] = now_ts
+    _REORDER_CACHE['data'] = dict(result)
 
     # 10. Serialization
     t_serial_start = time.perf_counter()
@@ -76,7 +80,6 @@ def reorder_recommendations():
             '8_Reorder_Calculations': round(stage_timings.get('reorder_calc_ms', 0), 2),
             '9_AI_Model_Calls': round(stage_timings.get('ai_model_ms', 0), 2),
             '10_Serialization': round(t_serial_ms, 2),
-            'Other_Audit_Log': round(t_audit_ms, 2),
             'TOTAL_HTTP': round(t_total_ms, 2)
         },
         'sql_stats': {

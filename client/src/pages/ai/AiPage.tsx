@@ -80,14 +80,16 @@ export default function AiPage() {
   }, [tab, filterCategory, filterProduct])
 
   useEffect(() => {
-    // Load filter options on mount
-    categoryService.getAll({ per_page: 100 }).then(r => {
-      setCategories(r.data.categories || [])
-    }).catch(() => {})
-    productService.getAll({ per_page: 500 }).then(r => {
-      setProducts(r.data.products || [])
-    }).catch(() => {})
-  }, [])
+    // Load filter options on-demand when forecasting tab is opened
+    if (tab === 'forecasting' && products.length === 0) {
+      categoryService.getAll({ per_page: 100 }).then(r => {
+        setCategories(r.data.categories || [])
+      }).catch(() => {})
+      productService.getAllSimple().then(r => {
+        setProducts(r.data.products || [])
+      }).catch(() => {})
+    }
+  }, [tab])
 
   useEffect(() => {
     setLoading(true)

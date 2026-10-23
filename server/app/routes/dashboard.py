@@ -216,11 +216,17 @@ def get_summary():
 @dashboard_bp.route('/stats', methods=['GET'])
 @staff_required
 def get_stats():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['stats']), 200
     return jsonify(_get_stats()), 200
 
 @dashboard_bp.route('/recent-transactions', methods=['GET'])
 @staff_required
 def get_recent_transactions():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['recent_transactions']), 200
     recent_sales = Sale.query.order_by(Sale.created_at.desc()).limit(5).all()
     recent_purchases = Purchase.query.options(db.joinedload(Purchase.supplier)).order_by(Purchase.created_at.desc()).limit(5).all()
     return jsonify(_get_recent_transactions(recent_sales, recent_purchases)), 200
@@ -228,26 +234,41 @@ def get_recent_transactions():
 @dashboard_bp.route('/stock-by-category', methods=['GET'])
 @staff_required
 def get_stock_by_category():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['stock_by_category']), 200
     return jsonify(_get_stock_by_category()), 200
 
 @dashboard_bp.route('/monthly-sales', methods=['GET'])
 @staff_required
 def get_monthly_sales():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['monthly_sales']), 200
     return jsonify(_get_monthly_data()['monthly_sales']), 200
 
 @dashboard_bp.route('/monthly-purchases', methods=['GET'])
 @staff_required
 def get_monthly_purchases():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['monthly_purchases']), 200
     return jsonify(_get_monthly_data()['monthly_purchases']), 200
 
 @dashboard_bp.route('/top-products', methods=['GET'])
 @staff_required
 def get_top_products():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['top_products']), 200
     return jsonify(_get_top_products()), 200
 
 @dashboard_bp.route('/recent-activities', methods=['GET'])
 @staff_required
 def get_recent_activities():
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']['recent_activities']), 200
     recent_sales = Sale.query.order_by(Sale.created_at.desc()).limit(5).all()
     recent_purchases = Purchase.query.order_by(Purchase.created_at.desc()).limit(5).all()
     recent_audits = AuditLog.query.order_by(AuditLog.created_at.desc()).limit(10).all()

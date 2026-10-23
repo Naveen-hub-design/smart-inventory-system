@@ -96,37 +96,42 @@ export default function AdminDashboard() {
   const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
   const fetchData = async () => {
-    // 1. Load core dashboard data immediately (fast DB queries)
-    try {
-      const res = await dashboardService.getSummary()
-      const data = res.data
-      setStats(data.stats)
-      setTransactions(data.recent_transactions.transactions || [])
-      setStockByCategory(data.stock_by_category.data || [])
-      setMonthlySales(data.monthly_sales.data || [])
-      setMonthlyPurchases(data.monthly_purchases.data || [])
-      setTopProducts(data.top_products.data || [])
-      setActivities(data.recent_activities.activities || [])
-      setTimeout(() => setChartLoaded(true), 100)
-    } catch (err) {
-      console.error('Admin dashboard fetch error:', err)
-    } finally {
-      setLoading(false)
-    }
+    // 1. Dispatch summary and AI recommendations in parallel to eliminate waterfall
+    const summaryPromise = dashboardService.getSummary()
+      .then(res => {
+        const data = res.data
+        setStats(data.stats)
+        setTransactions(data.recent_transactions.transactions || [])
+        setStockByCategory(data.stock_by_category.data || [])
+        setMonthlySales(data.monthly_sales.data || [])
+        setMonthlyPurchases(data.monthly_purchases.data || [])
+        setTopProducts(data.top_products.data || [])
+        setActivities(data.recent_activities.activities || [])
+        setTimeout(() => setChartLoaded(true), 100)
+      })
+      .catch(err => {
+        console.error('Admin dashboard fetch error:', err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
 
-    // 2. Load AI recommendations separately — heavy endpoint, must not block the dashboard
-    try {
-      const aiRes = await aiService.getReorderRecommendations()
-      setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
-      setAiHighCount(aiRes.data.high_priority_count ?? (aiRes.data.high_priority?.length || 0))
-      setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
-      setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
-      setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')
-    } catch (err) {
-      console.error('AI recommendations fetch error:', err)
-    } finally {
-      setAiLoading(false)
-    }
+    const aiPromise = aiService.getReorderRecommendations()
+      .then(aiRes => {
+        setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
+        setAiHighCount(aiRes.data.high_priority_count ?? (aiRes.data.high_priority?.length || 0))
+        setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
+        setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
+        setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')
+      })
+      .catch(err => {
+        console.error('AI recommendations fetch error:', err)
+      })
+      .finally(() => {
+        setAiLoading(false)
+      })
+
+    await Promise.allSettled([summaryPromise, aiPromise])
   }
 
   const fetchedRef = useRef(false)

@@ -10,19 +10,32 @@ class Config:
     # defaults to the psycopg (v3) driver. Force psycopg2 by rewriting the scheme.
     if _db_url.startswith('postgresql://'):
         _db_url = _db_url.replace('postgresql://', 'postgresql+psycopg2://', 1)
+    
+    # Resolve relative SQLite URI to absolute path
+    if _db_url.startswith('sqlite:///') and not _db_url.startswith('sqlite:////'):
+        rel_path = _db_url[len('sqlite:///'):]
+        if not os.path.isabs(rel_path):
+            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            abs_db = os.path.join(base_dir, rel_path)
+            _db_url = f"sqlite:///{abs_db.replace(os.sep, '/')}"
+
     SQLALCHEMY_DATABASE_URI = _db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # Connection pool tuning for remote Neon cloud DB (high latency)
-    SQLALCHEMY_ENGINE_OPTIONS = {
-        'pool_size': 5,
-        'max_overflow': 10,
-        'pool_recycle': 300,       # Recycle connections every 5 min (Neon drops idle ones)
-        'pool_pre_ping': True,     # Test connection health before use
-        'pool_timeout': 30,
-        'connect_args': {
-            'connect_timeout': 30,
-        },
-    }
+
+    # Connection pool tuning: SQLite does not take connection pool connect_timeout
+    if _db_url.startswith('sqlite'):
+        SQLALCHEMY_ENGINE_OPTIONS = {}
+    else:
+        SQLALCHEMY_ENGINE_OPTIONS = {
+            'pool_size': 10,
+            'max_overflow': 20,
+            'pool_recycle': 300,       # Recycle connections every 5 min
+            'pool_pre_ping': False,     # Disable 300ms pre-ping roundtrip on checkout
+            'pool_timeout': 30,
+            'connect_args': {
+                'connect_timeout': 15,
+            },
+        }
     env = os.getenv('FLASK_ENV', os.getenv('APP_ENV', 'production'))
     
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')

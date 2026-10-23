@@ -24,17 +24,23 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
+    allowed_origins = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+        "http://localhost:5175",
+        "http://localhost:4173",
+        "http://localhost:3000",
+        r"^https:\/\/.*\.vercel\.app$",
+        r"^https:\/\/.*\.onrender\.com$",
+    ]
+    frontend_env = os.getenv('FRONTEND_URL')
+    if frontend_env:
+        allowed_origins.append(frontend_env.strip())
+
     CORS(app,
-         origins=[
-             "http://localhost:5173",
-             "http://127.0.0.1:5173",
-             "http://localhost:5174",
-             "http://127.0.0.1:5174",
-             "http://localhost:5175",
-             "http://localhost:4173",
-             "http://localhost:3000",
-             "https://smart-inventory-system-client.vercel.app",
-         ],
+         origins=allowed_origins,
          supports_credentials=True,
          allow_headers=["Content-Type", "Authorization"],
          methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
@@ -44,28 +50,57 @@ def create_app():
     from app.models.token_blocklist import TokenBlocklist
     from app.models.password_reset_request import PasswordResetRequest
 
+    # In-memory auth cache: eliminates 2 DB roundtrips (600ms+) on EVERY authenticated request
+    _USER_AUTH_CACHE = {}  # (user_id_str, token_ver) -> {'is_active': bool, 'time': float}
+    _AUTH_CACHE_TTL = 60   # 60-second TTL
+    _REVOKED_JTIS = set()
+
+    def invalidate_auth_cache(user_id=None, jti=None):
+        if jti:
+            _REVOKED_JTIS.add(jti)
+        if user_id:
+            keys_to_del = [k for k in _USER_AUTH_CACHE if k[0] == str(user_id)]
+            for k in keys_to_del:
+                _USER_AUTH_CACHE.pop(k, None)
+        elif not jti:
+            _USER_AUTH_CACHE.clear()
+
+    app.invalidate_auth_cache = invalidate_auth_cache
+
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload):
         jti = jwt_payload['jti']
-        token_type = jwt_payload.get('type')
         user_id = jwt_payload.get('sub')
         token_ver = jwt_payload.get('tv', 1)
 
+        # 1. Quick in-memory revoked JTI check
+        if jti in _REVOKED_JTIS:
+            return True
+
+        # 2. Check cached user status
+        now = time.time()
+        cache_key = (str(user_id), token_ver)
+        cached = _USER_AUTH_CACHE.get(cache_key)
+        if cached and (now - cached['time']) < _AUTH_CACHE_TTL:
+            return not cached['is_active']
+
         try:
-            # 1. Check explicit session blocklist (for normal logouts)
+            # 3. Check explicit session blocklist in DB
             if TokenBlocklist.query.filter_by(jti=jti).first():
+                _REVOKED_JTIS.add(jti)
                 return True
 
-            # 2. Check user status & token_version (for deactivation / password resets)
+            # 4. Check user status & token_version in DB
             if user_id:
                 from app.models.user import User
-                # Lightweight query avoids instantiating the full ORM model
                 user_data = db.session.query(User.is_active, User.token_version).filter_by(id=user_id).first()
                 if not user_data:
+                    _USER_AUTH_CACHE[cache_key] = {'is_active': False, 'time': now}
                     return True
                 is_active, current_tv = user_data
-                if not is_active or current_tv != token_ver:
-                    return True
+                is_valid = bool(is_active and current_tv == token_ver)
+                _USER_AUTH_CACHE[cache_key] = {'is_active': is_valid, 'time': now}
+                return not is_valid
 
             return False
         except Exception as e:
@@ -206,92 +241,92 @@ def create_app():
                     if os.path.isfile(src) and not os.path.exists(dst):
                         shutil.copy2(src, dst)
                         os.remove(src)
-
     with app.app_context():
-        db.create_all()
-
         from sqlalchemy import inspect
         inspector = inspect(db.engine)
-        audit_columns = [col['name'] for col in inspector.get_columns('audit_logs')]
-        if 'user_id' not in audit_columns:
-            db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN user_id INTEGER REFERENCES users(id)'))
-        if 'status' not in audit_columns:
-            db.session.execute(db.text("ALTER TABLE audit_logs ADD COLUMN status VARCHAR(20) DEFAULT 'success'"))
-        if 'request_method' not in audit_columns:
-            db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN request_method VARCHAR(10)'))
-        if 'endpoint' not in audit_columns:
-            db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN endpoint VARCHAR(200)'))
-        if 'created_at' not in audit_columns:
-            db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN created_at DATETIME'))
-        db.session.commit()
+        existing_tables = set(inspector.get_table_names())
 
-        # Migration for variant_id columns
-        try:
-            si_columns = [col['name'] for col in inspector.get_columns('sale_items')]
-            if 'variant_id' not in si_columns:
-                db.session.execute(db.text('ALTER TABLE sale_items ADD COLUMN variant_id INTEGER REFERENCES product_variants(id)'))
-        except Exception:
-            pass
-        try:
-            pi_columns = [col['name'] for col in inspector.get_columns('purchase_items')]
-            if 'variant_id' not in pi_columns:
-                db.session.execute(db.text('ALTER TABLE purchase_items ADD COLUMN variant_id INTEGER REFERENCES product_variants(id)'))
-        except Exception:
-            pass
-        try:
-            il_columns = [col['name'] for col in inspector.get_columns('inventory_logs')]
-            if 'variant_id' not in il_columns:
-                db.session.execute(db.text('ALTER TABLE inventory_logs ADD COLUMN variant_id INTEGER REFERENCES product_variants(id)'))
-        except Exception:
-            pass
-        try:
-            pv_columns = [col['name'] for col in inspector.get_columns('product_variants')]
-            if 'qr_code' not in pv_columns:
-                db.session.execute(db.text('ALTER TABLE product_variants ADD COLUMN qr_code VARCHAR(255)'))
-        except Exception:
-            pass
-            
-        try:
-            users_columns = [col['name'] for col in inspector.get_columns('users')]
-            if 'token_version' not in users_columns:
-                db.session.execute(db.text('ALTER TABLE users ADD COLUMN token_version INTEGER DEFAULT 1 NOT NULL'))
-        except Exception:
-            pass
+        if 'users' not in existing_tables:
+            db.create_all()
+            audit_columns = [col['name'] for col in inspector.get_columns('audit_logs')]
+            if 'user_id' not in audit_columns:
+                db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN user_id INTEGER REFERENCES users(id)'))
+            if 'status' not in audit_columns:
+                db.session.execute(db.text("ALTER TABLE audit_logs ADD COLUMN status VARCHAR(20) DEFAULT 'success'"))
+            if 'request_method' not in audit_columns:
+                db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN request_method VARCHAR(10)'))
+            if 'endpoint' not in audit_columns:
+                db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN endpoint VARCHAR(200)'))
+            if 'created_at' not in audit_columns:
+                db.session.execute(db.text('ALTER TABLE audit_logs ADD COLUMN created_at DATETIME'))
+            db.session.commit()
 
-        db.session.commit()
+            try:
+                si_columns = [col['name'] for col in inspector.get_columns('sale_items')]
+                if 'variant_id' not in si_columns:
+                    db.session.execute(db.text('ALTER TABLE sale_items ADD COLUMN variant_id INTEGER REFERENCES product_variants(id)'))
+            except Exception:
+                pass
+            try:
+                pi_columns = [col['name'] for col in inspector.get_columns('purchase_items')]
+                if 'variant_id' not in pi_columns:
+                    db.session.execute(db.text('ALTER TABLE purchase_items ADD COLUMN variant_id INTEGER REFERENCES product_variants(id)'))
+            except Exception:
+                pass
+            try:
+                il_columns = [col['name'] for col in inspector.get_columns('inventory_logs')]
+                if 'variant_id' not in il_columns:
+                    db.session.execute(db.text('ALTER TABLE inventory_logs ADD COLUMN variant_id INTEGER REFERENCES product_variants(id)'))
+            except Exception:
+                pass
+            try:
+                pv_columns = [col['name'] for col in inspector.get_columns('product_variants')]
+                if 'qr_code' not in pv_columns:
+                    db.session.execute(db.text('ALTER TABLE product_variants ADD COLUMN qr_code VARCHAR(255)'))
+            except Exception:
+                pass
+                
+            try:
+                users_columns = [col['name'] for col in inspector.get_columns('users')]
+                if 'token_version' not in users_columns:
+                    db.session.execute(db.text('ALTER TABLE users ADD COLUMN token_version INTEGER DEFAULT 1 NOT NULL'))
+            except Exception:
+                pass
 
-        from app.models.user import User
-        from app.models.setting import SystemSetting
-        from werkzeug.security import generate_password_hash
+            db.session.commit()
 
-        if not User.query.filter_by(username='admin').first():
-            db.session.add(User(
-                username='admin',
-                email='admin@sims.com',
-                password_hash=generate_password_hash('admin123'),
-                full_name='Admin User',
-                role='admin',
-                employee_id='EMP0001',
-                is_active=True
-            ))
+            from app.models.user import User
+            from app.models.setting import SystemSetting
+            from werkzeug.security import generate_password_hash
 
-        if not User.query.filter_by(username='staff1').first():
-            db.session.add(User(
-                username='staff1',
-                email='staff1@sims.com',
-                password_hash=generate_password_hash('staff123'),
-                full_name='Staff One',
-                role='staff',
-                employee_id='EMP0002',
-                is_active=True
-            ))
+            if not User.query.filter_by(username='admin').first():
+                db.session.add(User(
+                    username='admin',
+                    email='admin@sims.com',
+                    password_hash=generate_password_hash('admin123'),
+                    full_name='Admin User',
+                    role='admin',
+                    employee_id='EMP0001',
+                    is_active=True
+                ))
 
-        if not SystemSetting.query.first():
-            from app.routes.settings import DEFAULT_SETTINGS, CATEGORY_MAP
-            for key, value in DEFAULT_SETTINGS.items():
-                cat = CATEGORY_MAP.get(key, 'general')
-                db.session.add(SystemSetting(key=key, value=value, category=cat))
+            if not User.query.filter_by(username='staff1').first():
+                db.session.add(User(
+                    username='staff1',
+                    email='staff1@sims.com',
+                    password_hash=generate_password_hash('staff123'),
+                    full_name='Staff One',
+                    role='staff',
+                    employee_id='EMP0002',
+                    is_active=True
+                ))
 
-        db.session.commit()
+            if not SystemSetting.query.first():
+                from app.routes.settings import DEFAULT_SETTINGS, CATEGORY_MAP
+                for key, value in DEFAULT_SETTINGS.items():
+                    cat = CATEGORY_MAP.get(key, 'general')
+                    db.session.add(SystemSetting(key=key, value=value, category=cat))
+            db.session.commit()
 
     return app
+
