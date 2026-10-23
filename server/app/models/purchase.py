@@ -20,8 +20,8 @@ class Purchase(db.Model):
 
     items = db.relationship('PurchaseItem', backref='purchase', lazy='joined', cascade='all, delete-orphan')
 
-    def to_dict(self):
-        return {
+    def to_dict(self, include_items=True):
+        data = {
             'id': self.id,
             'invoice_number': self.invoice_number,
             'supplier_id': self.supplier_id,
@@ -35,9 +35,11 @@ class Purchase(db.Model):
             'status': self.status,
             'notes': self.notes,
             'purchase_date': self.purchase_date.isoformat() if self.purchase_date else None,
-            'items': [item.to_dict() for item in self.items],
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
+        if include_items:
+            data['items'] = [item.to_dict() for item in self.items]
+        return data
 
 class PurchaseItem(db.Model):
     __tablename__ = 'purchase_items'

@@ -42,9 +42,12 @@ export default function AiPage() {
   const [tab, setTab] = useState<Tab>('overview')
   const [data, setData] = useState<{
     recommendations: ReorderRecommendation[]
-    high_priority: ReorderRecommendation[]
-    medium_priority: ReorderRecommendation[]
-    safe_items: ReorderRecommendation[]
+    high_priority_count?: number
+    medium_priority_count?: number
+    safe_items_count?: number
+    high_priority?: ReorderRecommendation[]
+    medium_priority?: ReorderRecommendation[]
+    safe_items?: ReorderRecommendation[]
     generated_at: string
     total_analyzed: number
   } | null>(null)
@@ -95,9 +98,9 @@ export default function AiPage() {
 
   const healthScore = () => {
     if (!data || data.total_analyzed === 0) return 0
-    const high = data.high_priority?.length || 0
-    const med = data.medium_priority?.length || 0
-    const safe = data.safe_items?.length || 0
+    const high = data.high_priority_count ?? (data.high_priority?.length || 0)
+    const med = data.medium_priority_count ?? (data.medium_priority?.length || 0)
+    const safe = data.safe_items_count ?? (data.safe_items?.length || 0)
     const score = Math.round(((safe * 100) + (med * 60) + (high * 20)) / data.total_analyzed)
     return Math.min(100, Math.max(0, score))
   }
@@ -110,7 +113,7 @@ export default function AiPage() {
 
   const needsReorder = () => {
     if (!data) return 0
-    return (data.high_priority?.length || 0) + (data.medium_priority?.length || 0)
+    return (data.high_priority_count ?? (data.high_priority?.length || 0)) + (data.medium_priority_count ?? (data.medium_priority?.length || 0))
   }
 
   const priorityBadge = (p: string) => {
@@ -198,7 +201,7 @@ export default function AiPage() {
                     </div>
                   </div>
                   <p className="text-hint">
-                    {data.high_priority?.length || 0} high · {data.medium_priority?.length || 0} medium priority
+                    {data.high_priority_count ?? (data.high_priority?.length || 0)} high · {data.medium_priority_count ?? (data.medium_priority?.length || 0)} medium priority
                   </p>
                 </div>
                 <div className="card animate-fade-in-up" style={{ animationDelay: '100ms' }}>
@@ -217,7 +220,7 @@ export default function AiPage() {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">High Priority</p>
-                      <p className="text-3xl font-bold text-red-600 dark:text-red-400 mt-1">{data.high_priority?.length || 0}</p>
+                      <p className="text-3xl font-bold text-red-600 dark:text-red-400 mt-1">{data.high_priority_count ?? (data.high_priority?.length || 0)}</p>
                     </div>
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center shadow-lg">
                       <AlertTriangle className="w-5 h-5 text-white" />
@@ -229,7 +232,7 @@ export default function AiPage() {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Medium Priority</p>
-                      <p className="text-3xl font-bold text-amber-600 dark:text-amber-400 mt-1">{data.medium_priority?.length || 0}</p>
+                      <p className="text-3xl font-bold text-amber-600 dark:text-amber-400 mt-1">{data.medium_priority_count ?? (data.medium_priority?.length || 0)}</p>
                     </div>
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg">
                       <Clock className="w-5 h-5 text-white" />

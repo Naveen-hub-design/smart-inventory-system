@@ -47,7 +47,7 @@ def reorder_recommendations():
         user_id=int(user_id) if user_id else None,
         action='recommendations_generated',
         module='inventory',
-        description=f'AI reorder recommendations generated — {result["total_analyzed"]} variants analyzed, {len(result["high_priority"])} high priority'
+        description=f'AI reorder recommendations generated — {result["total_analyzed"]} variants analyzed, {result["high_priority_count"]} high priority'
     )
     t_audit_ms = (time.perf_counter() - t_audit_start) * 1000.0
 

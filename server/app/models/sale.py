@@ -21,8 +21,8 @@ class Sale(db.Model):
 
     items = db.relationship('SaleItem', backref='sale', lazy='joined', cascade='all, delete-orphan')
 
-    def to_dict(self):
-        return {
+    def to_dict(self, include_items=True):
+        data = {
             'id': self.id,
             'invoice_number': self.invoice_number,
             'customer_name': self.customer_name,
@@ -36,9 +36,11 @@ class Sale(db.Model):
             'status': self.status,
             'notes': self.notes,
             'sale_date': self.sale_date.isoformat() if self.sale_date else None,
-            'items': [item.to_dict() for item in self.items],
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
+        if include_items:
+            data['items'] = [item.to_dict() for item in self.items]
+        return data
 
 class SaleItem(db.Model):
     __tablename__ = 'sale_items'

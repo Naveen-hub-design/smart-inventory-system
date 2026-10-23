@@ -31,9 +31,7 @@ def get_purchases():
 
     query = Purchase.query.options(
         joinedload(Purchase.supplier),
-        joinedload(Purchase.user),
-        selectinload(Purchase.items).selectinload(PurchaseItem.material),
-        selectinload(Purchase.items).selectinload(PurchaseItem.variant).selectinload(ProductVariant.product)
+        joinedload(Purchase.user)
     )
 
     if search:
@@ -78,7 +76,7 @@ def get_purchases():
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
     return jsonify({
-        'purchases': [p.to_dict() for p in pagination.items],
+        'purchases': [p.to_dict(include_items=False) for p in pagination.items],
         'total': pagination.total,
         'pages': pagination.pages,
         'page': page,

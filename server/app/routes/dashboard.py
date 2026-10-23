@@ -12,6 +12,14 @@ from app.models.audit_log import AuditLog
 from app import db
 from datetime import datetime
 from sqlalchemy import func
+import time
+
+_SUMMARY_CACHE = {'timestamp': 0, 'data': None}
+CACHE_TTL = 30
+
+def clear_dashboard_cache():
+    _SUMMARY_CACHE['timestamp'] = 0
+    _SUMMARY_CACHE['data'] = None
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -179,13 +187,18 @@ def _get_recent_activities(recent_sales, recent_purchases, recent_audits):
 @dashboard_bp.route('/summary', methods=['GET'])
 @staff_required
 def get_summary():
+    global _SUMMARY_CACHE
+    now = time.time()
+    if _SUMMARY_CACHE['data'] and (now - _SUMMARY_CACHE['timestamp']) < CACHE_TTL:
+        return jsonify(_SUMMARY_CACHE['data']), 200
+
     recent_sales = Sale.query.order_by(Sale.created_at.desc()).limit(5).all()
     recent_purchases = Purchase.query.options(db.joinedload(Purchase.supplier)).order_by(Purchase.created_at.desc()).limit(5).all()
     recent_audits = AuditLog.query.order_by(AuditLog.created_at.desc()).limit(10).all()
 
     monthly_data = _get_monthly_data()
 
-    return jsonify({
+    data = {
         'stats': _get_stats(),
         'recent_transactions': _get_recent_transactions(recent_sales, recent_purchases),
         'stock_by_category': _get_stock_by_category(),
@@ -193,7 +206,12 @@ def get_summary():
         'monthly_purchases': monthly_data['monthly_purchases'],
         'top_products': _get_top_products(),
         'recent_activities': _get_recent_activities(recent_sales, recent_purchases, recent_audits)
-    }), 200
+    }
+
+    _SUMMARY_CACHE['timestamp'] = now
+    _SUMMARY_CACHE['data'] = data
+
+    return jsonify(data), 200
 
 @dashboard_bp.route('/stats', methods=['GET'])
 @staff_required

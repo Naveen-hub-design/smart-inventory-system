@@ -1,0 +1,72 @@
+
+==================================================
+SUMMARY ENDPOINT PROFILE
+  Sales Limit 5   :   500.54 ms
+  Purch Limit 5   :   310.15 ms
+  Audit Limit 10  :   293.54 ms
+  Stats           :   306.62 ms
+  Trans Python    :     0.18 ms
+  Stock by Cat    :   298.15 ms
+  Monthly Sales   :   318.89 ms
+  Monthly Purch   :   285.40 ms
+  Top Products    :   296.67 ms
+  Act Python      :     0.21 ms
+  TOTAL HANDLER   :  2610.37 ms
+==================================================
+
+==================================================
+SUMMARY ENDPOINT PROFILE
+  Sales Limit 5   :   306.60 ms
+  Purch Limit 5   :   416.94 ms
+  Audit Limit 10  :   396.03 ms
+  Stats           :   419.62 ms
+  Trans Python    :     0.10 ms
+  Stock by Cat    :   502.54 ms
+  Monthly Sales   :   403.73 ms
+  Monthly Purch   :   309.58 ms
+  Top Products    :   407.38 ms
+  Act Python      :     0.10 ms
+  TOTAL HANDLER   :  3162.64 ms
+==================================================
+
+==================================================
+SUMMARY ENDPOINT PROFILE
+  Sales Limit 5   :   308.49 ms
+  Purch Limit 5   :   409.96 ms
+  Audit Limit 10  :   408.61 ms
+  Stats           :   414.83 ms
+  Trans Python    :     0.05 ms
+  Stock by Cat    :   303.39 ms
+  Monthly Data    :   306.70 ms
+  Top Products    :   312.04 ms
+  Act Python      :     0.06 ms
+  TOTAL HANDLER   :  2464.15 ms
+==================================================
+
+==================================================
+SUMMARY ENDPOINT PROFILE
+  Sales Limit 5   :   303.10 ms
+  Purch Limit 5   :   411.94 ms
+  Audit Limit 10  :   305.97 ms
+  Stats           :   393.82 ms
+  Trans Python    :     0.13 ms
+  Stock by Cat    :   430.69 ms
+  Monthly Data    :   286.57 ms
+  Top Products    :   425.60 ms
+  Act Python      :     0.12 ms
+  TOTAL HANDLER   :  2557.96 ms
+==================================================
+
+==================================================
+SUMMARY ENDPOINT PROFILE
+  Sales Limit 5   :   308.21 ms
+  Purch Limit 5   :   324.73 ms
+  Audit Limit 10  :   404.82 ms
+  Stats           :   320.99 ms
+  Trans Python    :     0.13 ms
+  Stock by Cat    :   480.55 ms
+  Monthly Data    :   319.53 ms
+  Top Products    :   407.39 ms
+  Act Python      :     0.18 ms
+  TOTAL HANDLER   :  2566.55 ms
+==================================================

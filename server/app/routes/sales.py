@@ -10,6 +10,7 @@ from datetime import datetime
 from sqlalchemy import exists
 from sqlalchemy.orm import joinedload, selectinload
 from app.utils.helpers import parse_date, generate_invoice
+from app.routes.dashboard import clear_dashboard_cache
 
 sales_bp = Blueprint('sales', __name__)
 
@@ -27,9 +28,7 @@ def get_sales():
     sort_order = request.args.get('sort_order', 'desc')
 
     query = Sale.query.options(
-        joinedload(Sale.user),
-        selectinload(Sale.items).selectinload(SaleItem.variant).selectinload(ProductVariant.product),
-        selectinload(Sale.items).selectinload(SaleItem.product)
+        joinedload(Sale.user)
     )
 
     if search:
@@ -71,7 +70,7 @@ def get_sales():
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
     return jsonify({
-        'sales': [s.to_dict() for s in pagination.items],
+        'sales': [s.to_dict(include_items=False) for s in pagination.items],
         'total': pagination.total,
         'pages': pagination.pages,
         'page': page,

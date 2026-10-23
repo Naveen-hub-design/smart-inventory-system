@@ -118,7 +118,7 @@ export default function AdminDashboard() {
     try {
       const aiRes = await aiService.getReorderRecommendations()
       setAiRecs((aiRes.data.recommendations || []).slice(0, 10))
-      setAiHighCount(aiRes.data.high_priority?.length || 0)
+      setAiHighCount(aiRes.data.high_priority_count ?? (aiRes.data.high_priority?.length || 0))
       setInventoryHealth(aiRes.data.inventory_health_percent ?? 100)
       setSupplierRisk(aiRes.data.supplier_risk ?? 'Low')
       setDominantTrend(aiRes.data.dominant_trend ?? 'Stable')

@@ -7,13 +7,14 @@ from app.models.audit_log import create_audit_log
 from app import db
 from datetime import datetime, timedelta
 import math
+from app.routes.dashboard import clear_dashboard_cache
 
 inventory_bp = Blueprint('inventory', __name__)
 
 @inventory_bp.route('/stock', methods=['GET'])
 @staff_required
 def get_current_stock():
-    products = Product.query.filter_by(status='active').all()
+    products = Product.query.options(db.joinedload(Product.category)).filter_by(status='active').all()
     materials = RawMaterial.query.all()
 
     return jsonify({
@@ -43,7 +44,16 @@ def get_stock_movements():
     change_type = request.args.get('change_type', '')
     days = request.args.get('days', 30, type=int)
 
-    query = InventoryLog.query
+    from sqlalchemy.orm import joinedload, selectinload
+    from app.models.inventory_log import InventoryLog
+    from app.models.product_variant import ProductVariant
+    
+    query = InventoryLog.query.options(
+        joinedload(InventoryLog.product),
+        joinedload(InventoryLog.material),
+        joinedload(InventoryLog.user),
+        joinedload(InventoryLog.variant).joinedload(ProductVariant.product)
+    )
     if change_type:
         query = query.filter(InventoryLog.change_type == change_type)
 
@@ -142,6 +152,7 @@ def adjust_inventory():
         description=f'User {user.username if user else "system"} adjusted {item_type} #{item_id} stock to {quantity}'
     )
     db.session.commit()
+    clear_dashboard_cache()
 
     return jsonify({'message': 'Inventory adjusted'}), 200
 
@@ -151,7 +162,15 @@ def get_timeline():
     days = request.args.get('days', 7, type=int)
     cutoff = datetime.utcnow() - timedelta(days=days)
 
-    logs = InventoryLog.query.filter(
+    from sqlalchemy.orm import joinedload
+    from app.models.product_variant import ProductVariant
+    
+    logs = InventoryLog.query.options(
+        joinedload(InventoryLog.product),
+        joinedload(InventoryLog.material),
+        joinedload(InventoryLog.user),
+        joinedload(InventoryLog.variant).joinedload(ProductVariant.product)
+    ).filter(
         InventoryLog.created_at >= cutoff
     ).order_by(InventoryLog.created_at.desc()).limit(50).all()
 
