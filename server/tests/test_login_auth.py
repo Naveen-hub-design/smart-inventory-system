@@ -80,3 +80,50 @@ def test_login_invalid_password(client):
 def test_login_missing_fields(client):
     res = client.post('/api/auth/login', json={'username': 'testuser'})
     assert res.status_code == 400
+
+
+def test_staff_role_permissions_and_admin_endpoints(client):
+    """Verify Staff user gets 200 on staff endpoints, but 403 on admin-only settings."""
+    with client.application.app_context():
+        staff_user = User(
+            username='teststaff',
+            email='staff@example.com',
+            password_hash=generate_password_hash('staffpass123'),
+            full_name='Test Staff',
+            role='staff',
+            is_active=True
+        )
+        db.session.add(staff_user)
+        db.session.commit()
+
+    # Staff login
+    res = client.post('/api/auth/login', json={
+        'username': 'teststaff',
+        'password': 'staffpass123'
+    })
+    assert res.status_code == 200
+    staff_data = res.get_json()
+    assert staff_data['user']['role'] == 'staff'
+    staff_token = staff_data['access_token']
+    staff_headers = {'Authorization': f'Bearer {staff_token}'}
+
+    # Staff accessing permitted dashboard stats -> 200 OK
+    stat_res = client.get('/api/dashboard/stats', headers=staff_headers)
+    assert stat_res.status_code == 200
+
+    # Staff attempting admin-only settings -> 403 Forbidden with exact message
+    settings_res = client.get('/api/settings/', headers=staff_headers)
+    assert settings_res.status_code == 403
+    assert settings_res.get_json() == {'error': 'Admin access required'}
+
+    # Admin accessing settings -> 200 OK
+    admin_login = client.post('/api/auth/login', json={
+        'username': 'testuser',
+        'password': 'password123'
+    })
+    admin_token = admin_login.get_json()['access_token']
+    admin_headers = {'Authorization': f'Bearer {admin_token}'}
+
+    admin_settings_res = client.get('/api/settings/', headers=admin_headers)
+    assert admin_settings_res.status_code == 200
+

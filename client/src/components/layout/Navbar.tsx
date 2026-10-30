@@ -100,7 +100,9 @@ export default function Navbar({ onToggle }: NavbarProps) {
             onClick={() => {
               const newDark = !darkMode
               setDarkMode(newDark)
-              settingsService.update({ appearance_theme: newDark ? 'dark' : 'light' }).catch(() => {})
+              if (isAdmin) {
+                settingsService.update({ appearance_theme: newDark ? 'dark' : 'light' }).catch(() => {})
+              }
             }}
             className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
             title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}

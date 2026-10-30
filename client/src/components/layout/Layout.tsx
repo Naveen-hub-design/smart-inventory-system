@@ -9,7 +9,7 @@ import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 
 export default function Layout() {
-  const { user, loading, logout } = useAuth()
+  const { user, loading, logout, isAdmin } = useAuth()
   const { setDarkMode } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false)
@@ -25,8 +25,17 @@ export default function Layout() {
   }, [])
 
   useEffect(() => {
-    if (!user || settingsLoaded.current) return
+    if (!user) {
+      settingsLoaded.current = false
+      return
+    }
+    if (settingsLoaded.current) return
     settingsLoaded.current = true
+
+    // System settings (/api/settings/) are Admin-only. Staff users use local defaults
+    // and should not trigger unauthorized background requests during dashboard load.
+    if (!isAdmin) return
+
     settingsService.getAll().then((res) => {
       const s = res.data.settings
       if (!s) return
@@ -53,7 +62,7 @@ export default function Layout() {
         if (!isNaN(val) && val >= 5) setSessionTimeout(val)
       }
     }).catch(() => {})
-  }, [user, setDarkMode])
+  }, [user, isAdmin, setDarkMode])
 
   const handleSessionExpired = useCallback(() => {
     setShowTimeoutWarning(false)
